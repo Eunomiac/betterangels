@@ -1,11 +1,11 @@
-// #region ▒░▒░▒░▒[IMPORTS] Importing Modules ▒░▒░▒░▒ ~
-// #region ░░░░░░░[CONSTANTS]░░░░ Globally-Accessible Constants, Settings, Configuration ░░░░░░░ ~
+// #region ▒░▒░▒░▒[IMPORTS] Importing Modules ▒░▒░▒░▒
+// #region ░░░░░░░[CONSTANTS]░░░░ Globally-Accessible Constants, Settings, Configuration ░░░░░░░
 import {BETTERANGELS} from "./helpers/config.mjs";
 // #endregion ░░░░[CONSTANTS]░░░░
-// #region ░░░░░░░[UTILITIES]░░░░ Utility Functions ░░░░░░░ ~
+// #region ░░░░░░░[UTILITIES]░░░░ Utility Functions ░░░░░░░
 import {preloadHandlebarsTemplates} from "./helpers/templates.mjs";
 // #endregion ░░░░[UTILITIES]░░░░
-// #region ░░░░░░░[CLASSES]░░░░ Foundry Class Extensions ░░░░░░░ ~
+// #region ░░░░░░░[CLASSES]░░░░ Foundry Class Extensions ░░░░░░░
 import {BetterAngelsActor} from "./documents/actor.mjs";
 import {BetterAngelsItem} from "./documents/item.mjs";
 import {BetterAngelsActorSheet} from "./sheets/actor-sheet.mjs";
@@ -13,11 +13,11 @@ import {BetterAngelsItemSheet} from "./sheets/item-sheet.mjs";
 // #endregion ░░░░[CLASSES]░░░░
 // #endregion ▒▒▒▒[IMPORTS]▒▒▒▒
 
-// #region ████████ ON INIT: On-Initialization Hook ████████ ~
+// #region ████████ ON INIT: On-Initialization Hook ████████
 Hooks.once("init", async () => {
     CONFIG.BETTERANGELS = BETTERANGELS; // Apply Configuration Settings
 
-    // #region ░░░░░░░[CLASSES]░░░░ Register & Apply Class Extensions ░░░░░░░ ~
+    // #region ░░░░░░░[CLASSES]░░░░ Register & Apply Class Extensions ░░░░░░░
     game.betterangels = {
         BetterAngelsActor,
         BetterAngelsItem
@@ -34,23 +34,11 @@ Hooks.once("init", async () => {
     return preloadHandlebarsTemplates(); // Preload Handlebars templates.
 });
 // #endregion ▄▄▄▄▄ ON INIT ▄▄▄▄▄
-// #region ████████ ON READY: On-Ready Hook ████████ ~
+// #region ████████ ON READY: On-Ready Hook ████████
 Hooks.once("ready", async () => {
 
 });
 // #endregion ▄▄▄▄▄ ON READY ▄▄▄▄▄
 
-// #region ████████ HANDLEBARS: Custom Handlebar Helpers ████████ ~
-/** Handlebars.registerHelper("concat", (...args) => {
-    let outStr = "";
-
-    for (const arg in args) {
-        if (typeof args[arg] !== "object") {
-            outStr += args[arg];
-        }
-    }
-
-    return outStr;
-});
-Handlebars.registerHelper("toLowerCase", (str) => str.toLowerCase()); **/
+// #region ████████ HANDLEBARS: Custom Handlebar Helpers ████████
 // #endregion ▄▄▄▄▄ HANDLEBARS ▄▄▄▄▄
