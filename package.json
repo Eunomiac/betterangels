@@ -3,10 +3,8 @@
   "version": "0.0.1-prealpha",
   "description": "An implementation of the One Roll Engine by Greg Stolze: Play a supervillain compelled towards evil by a demon riding your soul!",
   "scripts": {
-    "build all": "gulp",
-    "compile js": "gulp js",
-    "compile css": "gulp css",
-    "compile html": "gulp html",
+    "gulp": "gulp",
+    "build": "gulp build",
     "watch": "gulp watch"
   },
   "browserslist": [

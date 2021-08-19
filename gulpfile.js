@@ -1,70 +1,82 @@
+// #region ████████ CONFIGURATION: Define Parsing Behavior ████████
+const CURRENTVERSION = "0.0.1-prealpha";
+const BUILDMAP = { // Source and Destination globs defining files to build.
+    js: {
+        "./dist/module": ["module/**/*.mjs"],
+        "./dist/lib": ["lib/**/*.mjs", "lib/**/*.js", "lib/**/*.jsx"]
+    },
+    css: {
+        "./dist/css/": ["scss/**/*.scss"],
+        "./css/": ["scss/**/*.scss"],
+        "./dist/lib": ["lib/**/*.scss", "lib/**/*.css"]
+    },
+    html: {
+        "./dist/templates": []
+    }
+};
+const REGEXPPATTERNS = { // [searchPattern, replacePattern] values to run against all files of given type.
+    js: [
+        [
+            /^\|\* {5}▌█+v@@VERSION@@█+@@DATE@@█+.*?$/gmu,
+            (match) => {
+                const subStrs = `|*     ▌██ v${currentVersionInfo.version} ██ ${currentVersionInfo.date} ██▐     *|`.split(/█/u);
+                const lengthDiff = match.length - subStrs.join("").length;
+                subStrs[1] = "█".repeat(Math.floor((lengthDiff - 2) / 2));
+                subStrs[3] = "█".repeat(2 + (lengthDiff % 2));
+                [, subStrs[5]] = subStrs;
+                return subStrs.join("");
+            }
+        ],                                          // Insert date and version info into file headers.
+        [/\n?\s*\/\*~(.|\n)*?~\*\/\n?/gs, ""],      // Strip multi-line comments of form '/*~ ... ~*/'
+        [/\n?\s*\/\*\*(.|\n)*?\*\/\n?/gs, ""],      // Strip multi-line comments of form '/** ... */'
+        [/\n?\s*\/\/~.*?$/gm, ""],                  // Strip single-line comments of form '//~ ...'
+        [/\s*\/\/\s*eslint.*$/gm, ""],              // Strip single-line linting directives
+        [/\s*\/\*\s*eslint[^*]*\*\/\s*/g, ""],      // Strip multi-line linting directives
+        [/\s*\/\/ no default.*$/gm, ""],            // Strip '// no default'
+        [/\s*\/\/ falls through.*$/gm, ""],         // Strip '// falls through'
+        [/\s*~$/gm, ""],                            // Strip '~' from end-of-lines (used for automatic region folding)
+        [/#reg.*? /gs, ""],                         // Convert 'region' headers to standard headers
+        [/^\s*\/\/\s*#endreg.*$/gm, "\n"],          // Convert region footers to blank lines
+        [/(^[ \t]*\r?\n[ \t]*$){2,}/gm, "\n"],      // Strip excess blank lines
+        [/\s*\n$/g, ""],                            // Trim whitespace from end of files
+        [/^\s*\n/g, ""]                             // Trim whitespace from start of files
+    ]
+};
+// #endregion ▄▄▄▄▄ CONFIGURATION ▄▄▄▄▄
+
+// #region ▒░▒░▒░▒[INITIALIZATION]▒░▒░▒░▒ ~
 const {src, dest, series, parallel, watch} = require("gulp");
 const prefix = require("gulp-autoprefixer");
 const replacer = require("gulp-replace");
 const sass = require("gulp-sass")(require("node-sass"));
 
 const currentVersionInfo = {
-    version: "0.0.1-prealpha",
+    version: CURRENTVERSION,
     date: new Date().toString().match(/\b[A-Z][a-z]+ \d+ \d+/).shift()
 };
-
-const BUILDFUNCS = {};
-const DEFAULTBUILDFUNCS = [];
+const [BUILDFUNCS, WATCHFUNCS] = [[], []];
+// #endregion ▒▒▒▒[INITIALIZATION]▒▒▒▒
 
 // #region ████████ JS: Compiling Javascript ████████ ~
-const BUILDFILES_JS = {
-    "./dist/module": ["module/betterangels.mjs"],
-    "./dist/module/documents": ["module/documents/*.mjs"]
-};
-const regexpReplacePatterns = [
-    [
-        /^\|\* {5}▌█+v@@VERSION@@█+@@DATE@@█+.*?$/gmu,
-        (match) => {
-            const subStrs = `|*     ▌██ v${currentVersionInfo.version} ██ ${currentVersionInfo.date} ██▐     *|`.split(/█/u);
-            const lengthDiff = match.length - subStrs.join("").length;
-            subStrs[1] = "█".repeat(Math.floor((lengthDiff - 2) / 2));
-            subStrs[3] = "█".repeat(2 + (lengthDiff % 2));
-            [, subStrs[5]] = subStrs;
-            return subStrs.join("");
-        }
-    ], // Insert date and version info into file headers.
-    [/\n?\s*\/\*~(.|\n)*?~\*\/\n?/gs, ""], // Strip comment blocks beginning with '/*~'
-    [/\n?\s*\/\*\*(.|\n)*?\*\/\n?/gs, ""], // Strip comment blocks beginning with '/**'
-    [/\n?\s*\/\/~.*?$/gm, ""], // Strip comments beginning with '//~'
-    [/\s*\/\/\s*eslint.*$/gm, ""], // Strip eslint enable/disable single-line comments
-    [/\s*\/\*\s*eslint[^*]*\*\/\s*/g, ""], // Strip eslint enable/disable mult-line comments
-    [/\s*\/\/ no default.*$/gm, ""], // Strip '// no default'
-    [/\s*\/\/ falls through.*$/gm, ""], // Strip '// falls through'
-    [/\s*~$/gm, ""], // Strip '~' from end-of-lines (used for automatic region folding)
-    [/(\s*\n\s*)+/g, "$1"], // Strip excess blank lines
-    [/\s*\n$/g, ""], // Strip whitespace from end of files
-    [/^\s*\n/g, ""] //  Strip whitespace from start of files
-];
-
 const BUILDFUNCS_JS = ((sourceDestGlobs) => {
     const compiledJSFuncs = [];
     for (const [destGlob, sourceGlobs] of Object.entries(sourceDestGlobs)) {
         for (const sourceGlob of sourceGlobs) {
-            compiledJSFuncs.push(() => regexpReplacePatterns
+            compiledJSFuncs.push(() => REGEXPPATTERNS.js
                 .reduce((gulper, replaceArgs) => gulper.pipe(replacer(...replaceArgs)), src(sourceGlob))
                 .pipe(dest(destGlob)));
         }
     }
     return compiledJSFuncs;
-})(BUILDFILES_JS);
+})(BUILDMAP.js);
 
 if (BUILDFUNCS_JS.length) {
-    BUILDFUNCS.js = series(...BUILDFUNCS_JS);
-    DEFAULTBUILDFUNCS.push(parallel(BUILDFUNCS.js));
+    const seriesFuncs = series(...BUILDFUNCS_JS);
+    BUILDFUNCS.push(seriesFuncs);
+    Object.values(BUILDMAP.js).forEach((sourceGlob) => WATCHFUNCS.push([sourceGlob, seriesFuncs]));
 }
 // #endregion ▄▄▄▄▄ JS ▄▄▄▄▄
-
 // #region ████████ CSS: Compiling CSS ████████ ~
-const BUILDFILES_CSS = {
-    "./dist/css/": ["scss/**/*.scss"],
-    "./css/": ["scss/**/*.scss"]
-};
-
 const BUILDFUNCS_CSS = ((sourceDestGlobs) => {
     const compiledCSSFuncs = [];
     for (const [destGlob, sourceGlobs] of Object.entries(sourceDestGlobs)) { 
@@ -79,19 +91,15 @@ const BUILDFUNCS_CSS = ((sourceDestGlobs) => {
         }
     }
     return compiledCSSFuncs;
-})(BUILDFILES_CSS);
+})(BUILDMAP.css);
 
 if (BUILDFUNCS_CSS.length) {
-    BUILDFUNCS.css = series(...BUILDFUNCS_CSS);
-    DEFAULTBUILDFUNCS.push(parallel(BUILDFUNCS.css));
+    const seriesFuncs = series(...BUILDFUNCS_CSS);
+    BUILDFUNCS.push(seriesFuncs);
+    Object.values(BUILDMAP.css).forEach((sourceGlob) => WATCHFUNCS.push([sourceGlob, seriesFuncs]));
 }
 // #endregion ▄▄▄▄▄ CSS ▄▄▄▄▄
-
 // #region ████████ HTML: Compiling HTML ████████ ~
-const BUILDFILES_HTML = {
-    "./dist/templates": []
-};
-
 const BUILDFUNCS_HTML = ((sourceDestGlobs) => {
     const compiledHTMLFuncs = [];
     for (const [destGlob, sourceGlobs] of Object.entries(sourceDestGlobs)) {
@@ -104,47 +112,22 @@ const BUILDFUNCS_HTML = ((sourceDestGlobs) => {
         }
     }
     return compiledHTMLFuncs;
-})(BUILDFILES_HTML);
+})(BUILDMAP.html);
 
 if (BUILDFUNCS_HTML.length) {
-    BUILDFUNCS.html = series(...BUILDFUNCS_HTML);
-    DEFAULTBUILDFUNCS.push(parallel(BUILDFUNCS.html));
+    const seriesFuncs = series(...BUILDFUNCS_HTML);
+    BUILDFUNCS.push(seriesFuncs);
+    Object.values(BUILDMAP.html).forEach((sourceGlob) => WATCHFUNCS.push([sourceGlob, seriesFuncs]));
 }
 // #endregion ▄▄▄▄▄ HTML ▄▄▄▄▄
-
-// #region ████████ WATCH TASKS: Watch Tasks to Fire On File Update ████████ ~
+// #region ████████ WATCH: Watch Tasks to Fire On File Update ████████ ~
 function watchUpdates() {
-    for (const type of Object.keys(BUILDFUNCS)) {
-        switch (type) {
-            case "js": {
-                for (const sourceGlob of Object.values(BUILDFILES_JS)) {
-                    watch(sourceGlob, BUILDFUNCS.js);
-                }
-                break;
-            }
-            case "css": {
-                for (const sourceGlob of Object.values(BUILDFILES_CSS)) {
-                    watch(sourceGlob, BUILDFUNCS.css);
-                }
-                break;
-            }
-            case "html": {
-                for (const sourceGlob of Object.values(BUILDFILES_HTML)) {
-                    watch(sourceGlob, BUILDFUNCS.html);
-                }
-                break;
-            }
-            // no default
-        }
-    }
+    WATCHFUNCS.forEach(([sourceGlob, funcs]) => watch(sourceGlob, funcs));
 }
-BUILDFUNCS.watch = watchUpdates;
-DEFAULTBUILDFUNCS.push(watchUpdates);
-// #endregion ▄▄▄▄▄ WATCH TASKS ▄▄▄▄▄
+// #endregion ▄▄▄▄▄ WATCH ▄▄▄▄▄
 
 // #region ▒░▒░▒░▒[EXPORTS]▒░▒░▒░▒ ~
-exports.default = series(...DEFAULTBUILDFUNCS);
-for (const [expType, expFunc] of Object.entries(BUILDFUNCS)) {
-    exports[expType] = expFunc;
-}
+exports.default = series(parallel(...BUILDFUNCS), watchUpdates);
+exports.build = parallel(...BUILDFUNCS);
+exports.watch = watchUpdates;
 // #endregion ▒▒▒▒[EXPORTS]▒▒▒▒

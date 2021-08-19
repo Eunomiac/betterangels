@@ -1,23 +1,23 @@
-// #region ▒░▒░▒░▒[IMPORTS] Importing Modules ▒░▒░▒░▒
-// #region ░░░░░░░[CONSTANTS]░░░░ Globally-Accessible Constants, Settings, Configuration ░░░░░░░
+// ████████ IMPORTS: Importing Modules ████████
+// ▮▮▮▮▮▮▮[Constants]▮▮▮▮▮▮▮
 import {BETTERANGELS} from "./helpers/config.mjs";
-// #endregion ░░░░[CONSTANTS]░░░░
-// #region ░░░░░░░[UTILITIES]░░░░ Utility Functions ░░░░░░░
+
+// ▮▮▮▮▮▮▮[Utility]▮▮▮▮▮▮▮
 import {preloadHandlebarsTemplates} from "./helpers/templates.mjs";
-// #endregion ░░░░[UTILITIES]░░░░
-// #region ░░░░░░░[CLASSES]░░░░ Foundry Class Extensions ░░░░░░░
+
+// ▮▮▮▮▮▮▮[Classes]▮▮▮▮▮▮▮
 import {BetterAngelsActor} from "./documents/actor.mjs";
 import {BetterAngelsItem} from "./documents/item.mjs";
 import {BetterAngelsActorSheet} from "./sheets/actor-sheet.mjs";
 import {BetterAngelsItemSheet} from "./sheets/item-sheet.mjs";
-// #endregion ░░░░[CLASSES]░░░░
-// #endregion ▒▒▒▒[IMPORTS]▒▒▒▒
 
-// #region ████████ ON INIT: On-Initialization Hook ████████
+// ████████ ON INIT: On-Initialization Hook ████████
 Hooks.once("init", async () => {
-    CONFIG.BETTERANGELS = BETTERANGELS; // Apply Configuration Settings
 
-    // #region ░░░░░░░[CLASSES]░░░░ Register & Apply Class Extensions ░░░░░░░
+    // ▮▮▮▮▮▮▮[Configuration] Apply Configuration Settings ▮▮▮▮▮▮▮
+    CONFIG.BETTERANGELS = BETTERANGELS;
+
+    // ▮▮▮▮▮▮▮[Classes] Register & Apply Class Extensions ▮▮▮▮▮▮▮
     game.betterangels = {
         BetterAngelsActor,
         BetterAngelsItem
@@ -28,17 +28,16 @@ Hooks.once("init", async () => {
     Actors.unregisterSheet("core", ActorSheet);
     Actors.registerSheet("betterangels", BetterAngelsActorSheet, {makeDefault: true});
     Items.unregisterSheet("core", ItemSheet);
-    Items.registerSheet("betterangels", BetterAngelsItemSheet, {makeDefault: true});
-    // #endregion ░░░░[CLASSES]░░░░
+    Items.registerSheet("betterangels", BetterAngelsItemSheet, {makeDefault: true});    
 
-    return preloadHandlebarsTemplates(); // Preload Handlebars templates.
+    // ▮▮▮▮▮▮▮[Handlebar Templates] Preload Handlebars Templates ▮▮▮▮▮▮▮
+    return preloadHandlebarsTemplates();
+
 });
-// #endregion ▄▄▄▄▄ ON INIT ▄▄▄▄▄
-// #region ████████ ON READY: On-Ready Hook ████████
+
+// ████████ ON READY: On-Ready Hook ████████
 Hooks.once("ready", async () => {
-
+ 
 });
-// #endregion ▄▄▄▄▄ ON READY ▄▄▄▄▄
 
-// #region ████████ HANDLEBARS: Custom Handlebar Helpers ████████
-// #endregion ▄▄▄▄▄ HANDLEBARS ▄▄▄▄▄
+// ████████ HANDLEBARS: Custom Handlebar Helpers ████████

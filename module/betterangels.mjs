@@ -1,23 +1,26 @@
-// #region ▒░▒░▒░▒[IMPORTS] Importing Modules ▒░▒░▒░▒ ~
-// #region ░░░░░░░[CONSTANTS]░░░░ Globally-Accessible Constants, Settings, Configuration ░░░░░░░ ~
+// #region ████████ IMPORTS: Importing Modules ████████ ~
+// #region ▮▮▮▮▮▮▮[Constants]▮▮▮▮▮▮▮ ~
 import {BETTERANGELS} from "./helpers/config.mjs";
-// #endregion ░░░░[CONSTANTS]░░░░
-// #region ░░░░░░░[UTILITIES]░░░░ Utility Functions ░░░░░░░ ~
+// #endregion ▮▮▮▮[Constants]▮▮▮▮
+// #region ▮▮▮▮▮▮▮[Utility]▮▮▮▮▮▮▮ ~
 import {preloadHandlebarsTemplates} from "./helpers/templates.mjs";
-// #endregion ░░░░[UTILITIES]░░░░
-// #region ░░░░░░░[CLASSES]░░░░ Foundry Class Extensions ░░░░░░░ ~
+// #endregion ▮▮▮▮[Utility]▮▮▮▮
+// #region ▮▮▮▮▮▮▮[Classes]▮▮▮▮▮▮▮ ~
 import {BetterAngelsActor} from "./documents/actor.mjs";
 import {BetterAngelsItem} from "./documents/item.mjs";
 import {BetterAngelsActorSheet} from "./sheets/actor-sheet.mjs";
 import {BetterAngelsItemSheet} from "./sheets/item-sheet.mjs";
-// #endregion ░░░░[CLASSES]░░░░
-// #endregion ▒▒▒▒[IMPORTS]▒▒▒▒
+// #endregion ▮▮▮▮[Classes]▮▮▮▮
+// #endregion ▄▄▄▄▄ IMPORTS ▄▄▄▄▄
 
-// #region ████████ ON INIT: On-Initialization Hook ████████ ~
+// #region ████████ ON INIT: On-Initialization Hook ████████
 Hooks.once("init", async () => {
-    CONFIG.BETTERANGELS = BETTERANGELS; // Apply Configuration Settings
 
-    // #region ░░░░░░░[CLASSES]░░░░ Register & Apply Class Extensions ░░░░░░░ ~
+    // #region ▮▮▮▮▮▮▮[Configuration] Apply Configuration Settings ▮▮▮▮▮▮▮
+    CONFIG.BETTERANGELS = BETTERANGELS;
+    // #endregion ▮▮▮▮[Configuration]▮▮▮▮
+
+    // #region ▮▮▮▮▮▮▮[Classes] Register & Apply Class Extensions ▮▮▮▮▮▮▮
     game.betterangels = {
         BetterAngelsActor,
         BetterAngelsItem
@@ -28,15 +31,18 @@ Hooks.once("init", async () => {
     Actors.unregisterSheet("core", ActorSheet);
     Actors.registerSheet("betterangels", BetterAngelsActorSheet, {makeDefault: true});
     Items.unregisterSheet("core", ItemSheet);
-    Items.registerSheet("betterangels", BetterAngelsItemSheet, {makeDefault: true});
-    // #endregion ░░░░[CLASSES]░░░░
+    Items.registerSheet("betterangels", BetterAngelsItemSheet, {makeDefault: true});    
+    // #endregion ▮▮▮▮[Classes]▮▮▮▮
 
-    return preloadHandlebarsTemplates(); // Preload Handlebars templates.
+    // #region ▮▮▮▮▮▮▮[Handlebar Templates] Preload Handlebars Templates ▮▮▮▮▮▮▮
+    return preloadHandlebarsTemplates();
+    // #endregion ▮▮▮▮[Handlebar Templates]▮▮▮▮
+
 });
 // #endregion ▄▄▄▄▄ ON INIT ▄▄▄▄▄
 // #region ████████ ON READY: On-Ready Hook ████████ ~
 Hooks.once("ready", async () => {
-
+ 
 });
 // #endregion ▄▄▄▄▄ ON READY ▄▄▄▄▄
 
