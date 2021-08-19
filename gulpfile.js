@@ -14,9 +14,9 @@ const BUILDMAP = { // Source and Destination globs defining files to build.
         "./dist/templates": []
     }
 };
-const REGEXPPATTERNS = { // [searchPattern, replacePattern] values to run against all files of given type.
+const REGEXPPATTERNS = { // [searchPattern, replacePattern = ""] params to run .replace() on all files of given type
     js: [
-        [
+        [                                       // Insert date and version info into file headers
             /^\|\* {5}▌█+v@@VERSION@@█+@@DATE@@█+.*?$/gmu,
             (match) => {
                 const subStrs = `|*     ▌██ v${currentVersionInfo.version} ██ ${currentVersionInfo.date} ██▐     *|`.split(/█/u);
@@ -26,19 +26,21 @@ const REGEXPPATTERNS = { // [searchPattern, replacePattern] values to run agains
                 [, subStrs[5]] = subStrs;
                 return subStrs.join("");
             }
-        ],                                          // Insert date and version info into file headers
-        [/\n?\s*\/\*(~|\*)(.|\n)*?\*\/\n?/gs, ""],  // Strip multi-line comments of forms '/*~ ... */' or '/** ... */'
-        [/\n? *\/\/~.*?\n/gs, "\n"],                  // Strip single-line comments of form '//~ ...'
-        [/\s*\/\/\s*eslint.*$/gm, ""],              // Strip single-line linting directives
-        [/\s*\/\*\s*eslint[^*]*\*\/\s*/g, ""],      // Strip multi-line linting directives
-        [/\s*\/\/ no default.*$/gm, ""],            // Strip '// no default'
-        [/\s*\/\/ falls through.*$/gm, ""],         // Strip '// falls through'
-        [/\s*~$/gm, ""],                            // Strip '~' from ends-of-lines (used for automatic region folding)
-        [/#reg.*? /gs, ""],                         // Convert 'region' headers to standard headers
-        [/^\s*\/\/\s*#endreg.*$/gm, "\n"],          // Convert region footers to blank lines
-        [/(^[ \t]*\r?\n[ \t]*$){2,}/gm, "\n"],      // Strip excess blank lines
-        [/\s*\n$/g, ""],                            // Trim whitespace from end of files
-        [/^\s*\n/g, ""]                             // Trim whitespace from start of files
+        ],
+        [/\n?\s*\/\*(~|\*)(.|\n)*?\*\/\n?/gs],          // Strip multi-line comments of forms '/*~ ... */' or '/** ... */'
+        [/\n?\s*\/\*DB\*\/(.|\n)*?\/\*!DB\*\/\n?/gs],   // Strip code between '/*DB*/' and '/*!DB*/' (i.e. debug code)
+        [/\n? *\/\/~.*?\n/gs, "\n"],                    // Strip single-line comments of form '//~ ...'
+        [/\s*\/\/\s*[a-z]*lint.*$/gm],          // Strip single-line linting directives
+        [/\s*\/\*\s*[a-z]*lint[^*]*\*\/\s*/g],  // Strip multi-line linting directives
+        [/\s*\/\/ no default.*$/gm],            // Strip '// no default' (used for linting validation)
+        [/\s*\/\/ falls through.*$/gm],         // Strip '// falls through' (used for linting validation)
+        [/\s*~$/gm],                            // Strip '~' from ends-of-lines (used for automatic region folding)
+        [/#reg.*? /gs],                         // Convert 'region' headers to standard headers
+        [/^\s*\/\/\s*#endreg.*$/gm, "\n"],      // Strip region footers
+        [/(^[ \t]*\r?\n[ \t]*$){2,}/gm, "\n"],  // Strip excess blank lines
+        [/\s+$/gm],                             // Trim whitespace from end of lines
+        [/\s*\n$/g],                            // Trim whitespace from end of files
+        [/^\s*\n/g]                             // Trim whitespace from start of files
     ]
 };
 // #endregion ▄▄▄▄▄ CONFIGURATION ▄▄▄▄▄
@@ -63,7 +65,7 @@ const BUILDFUNCS_JS = ((sourceDestGlobs) => {
         for (const sourceGlob of sourceGlobs) {
             console.log(`Compiling source: ${sourceGlob} to dest: ${destGlob}`);
             compiledJSFuncs.push(() => REGEXPPATTERNS.js
-                .reduce((gulper, replaceArgs) => gulper.pipe(replacer(...replaceArgs)), src(sourceGlob))
+                .reduce((gulper, [searchPat, replacePat = ""]) => gulper.pipe(replacer(searchPat, replacePat)), src(sourceGlob))
                 .pipe(dest(destGlob)));
         }
     }

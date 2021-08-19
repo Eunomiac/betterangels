@@ -22,10 +22,6 @@ import {MinorNPCSheet} from "./sheets/actor-minornpc-sheet.mjs";
 import {BetterAngelsItem} from "./documents/item.mjs";
 import {BetterAngelsItemSheet} from "./sheets/item-sheet.mjs";
 
-// ▮▮▮▮▮▮▮[Debug]▮▮▮▮▮▮▮
-import {BetterAngelsDebugger} from "./debug/debugger.mjs";
-
-console.log("STARTING BETTER ANGELS");
 // ████████ ON INIT: On-Initialization Hook ████████
 Hooks.once("init", async () => {
 
@@ -35,9 +31,7 @@ Hooks.once("init", async () => {
     // ▮▮▮▮▮▮▮[Classes] Register & Apply Class Extensions ▮▮▮▮▮▮▮
     game.betterangels = {
         BetterAngelsActor,
-        BetterAngelsItem,
-        "debug": true,
-        "debugger": BetterAngelsDebugger
+        BetterAngelsItem
     };
     CONFIG.Actor.documentClass = BetterAngelsActor;
     CONFIG.Item.documentClass = BetterAngelsItem;

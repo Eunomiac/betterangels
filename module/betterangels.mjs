@@ -22,11 +22,13 @@ import {MinorNPCSheet} from "./sheets/actor-minornpc-sheet.mjs";
 import {BetterAngelsItem} from "./documents/item.mjs";
 import {BetterAngelsItemSheet} from "./sheets/item-sheet.mjs";
 // #endregion ▮▮▮▮[Classes]▮▮▮▮
+/*DB*/
 // #region ▮▮▮▮▮▮▮[Debug]▮▮▮▮▮▮▮ ~
 import {BetterAngelsDebugger} from "./debug/debugger.mjs";
 // #endregion ▮▮▮▮[Debug]▮▮▮▮
 // #endregion ▄▄▄▄▄ IMPORTS ▄▄▄▄▄
 console.log("STARTING BETTER ANGELS");
+/*!DB*/
 // #region ████████ ON INIT: On-Initialization Hook ████████
 Hooks.once("init", async () => {
 
@@ -37,9 +39,9 @@ Hooks.once("init", async () => {
     // #region ▮▮▮▮▮▮▮[Classes] Register & Apply Class Extensions ▮▮▮▮▮▮▮
     game.betterangels = {
         BetterAngelsActor,
-        BetterAngelsItem,
+        BetterAngelsItem/*DB*/,
         "debug": true,
-        "debugger": BetterAngelsDebugger
+        "debugger": BetterAngelsDebugger/*!DB*/
     };
     CONFIG.Actor.documentClass = BetterAngelsActor;
     CONFIG.Item.documentClass = BetterAngelsItem;

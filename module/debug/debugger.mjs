@@ -7,7 +7,7 @@ export class BetterAngelsDebugger {
         width = 300
     } = {}) {
         const testApp = new Application({
-            popOut: false,
+            popOut: true,
             template: "systems/betterangels/templates/debug/renderObjectTest.html",
             classes: ["test-object"]
         });
