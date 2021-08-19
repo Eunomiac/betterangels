@@ -26,15 +26,14 @@ const REGEXPPATTERNS = { // [searchPattern, replacePattern] values to run agains
                 [, subStrs[5]] = subStrs;
                 return subStrs.join("");
             }
-        ],                                          // Insert date and version info into file headers.
-        [/\n?\s*\/\*~(.|\n)*?~\*\/\n?/gs, ""],      // Strip multi-line comments of form '/*~ ... ~*/'
-        [/\n?\s*\/\*\*(.|\n)*?\*\/\n?/gs, ""],      // Strip multi-line comments of form '/** ... */'
-        [/\n?\s*\/\/~.*?$/gm, ""],                  // Strip single-line comments of form '//~ ...'
+        ],                                          // Insert date and version info into file headers
+        [/\n?\s*\/\*(~|\*)(.|\n)*?\*\/\n?/gs, ""],  // Strip multi-line comments of forms '/*~ ... */' or '/** ... */'
+        [/\n? *\/\/~.*?\n/gs, "\n"],                  // Strip single-line comments of form '//~ ...'
         [/\s*\/\/\s*eslint.*$/gm, ""],              // Strip single-line linting directives
         [/\s*\/\*\s*eslint[^*]*\*\/\s*/g, ""],      // Strip multi-line linting directives
         [/\s*\/\/ no default.*$/gm, ""],            // Strip '// no default'
         [/\s*\/\/ falls through.*$/gm, ""],         // Strip '// falls through'
-        [/\s*~$/gm, ""],                            // Strip '~' from end-of-lines (used for automatic region folding)
+        [/\s*~$/gm, ""],                            // Strip '~' from ends-of-lines (used for automatic region folding)
         [/#reg.*? /gs, ""],                         // Convert 'region' headers to standard headers
         [/^\s*\/\/\s*#endreg.*$/gm, "\n"],          // Convert region footers to blank lines
         [/(^[ \t]*\r?\n[ \t]*$){2,}/gm, "\n"],      // Strip excess blank lines
@@ -62,6 +61,7 @@ const BUILDFUNCS_JS = ((sourceDestGlobs) => {
     const compiledJSFuncs = [];
     for (const [destGlob, sourceGlobs] of Object.entries(sourceDestGlobs)) {
         for (const sourceGlob of sourceGlobs) {
+            console.log(`Compiling source: ${sourceGlob} to dest: ${destGlob}`);
             compiledJSFuncs.push(() => REGEXPPATTERNS.js
                 .reduce((gulper, replaceArgs) => gulper.pipe(replacer(...replaceArgs)), src(sourceGlob))
                 .pipe(dest(destGlob)));
@@ -71,16 +71,16 @@ const BUILDFUNCS_JS = ((sourceDestGlobs) => {
 })(BUILDMAP.js);
 
 if (BUILDFUNCS_JS.length) {
-    const seriesFuncs = series(...BUILDFUNCS_JS);
-    BUILDFUNCS.push(seriesFuncs);
-    Object.values(BUILDMAP.js).forEach((sourceGlob) => WATCHFUNCS.push([sourceGlob, seriesFuncs]));
+    const buildFuncs = series(...BUILDFUNCS_JS);
+    BUILDFUNCS.push(buildFuncs);
+    Object.values(BUILDMAP.js).forEach((sourceGlob) => WATCHFUNCS.push([sourceGlob, buildFuncs]));
 }
 // #endregion ▄▄▄▄▄ JS ▄▄▄▄▄
 // #region ████████ CSS: Compiling CSS ████████ ~
 const BUILDFUNCS_CSS = ((sourceDestGlobs) => {
     const compiledCSSFuncs = [];
-    for (const [destGlob, sourceGlobs] of Object.entries(sourceDestGlobs)) { 
-        for (const sourceGlob of sourceGlobs) { 
+    for (const [destGlob, sourceGlobs] of Object.entries(sourceDestGlobs)) {
+        for (const sourceGlob of sourceGlobs) {
             compiledCSSFuncs.push(
                 () => src(sourceGlobs)
                     .pipe(sass({outputStyle: "expanded"})
@@ -94,9 +94,9 @@ const BUILDFUNCS_CSS = ((sourceDestGlobs) => {
 })(BUILDMAP.css);
 
 if (BUILDFUNCS_CSS.length) {
-    const seriesFuncs = series(...BUILDFUNCS_CSS);
-    BUILDFUNCS.push(seriesFuncs);
-    Object.values(BUILDMAP.css).forEach((sourceGlob) => WATCHFUNCS.push([sourceGlob, seriesFuncs]));
+    const buildFuncs = series(...BUILDFUNCS_CSS);
+    BUILDFUNCS.push(buildFuncs);
+    Object.values(BUILDMAP.css).forEach((sourceGlob) => WATCHFUNCS.push([sourceGlob, buildFuncs]));
 }
 // #endregion ▄▄▄▄▄ CSS ▄▄▄▄▄
 // #region ████████ HTML: Compiling HTML ████████ ~
@@ -115,9 +115,9 @@ const BUILDFUNCS_HTML = ((sourceDestGlobs) => {
 })(BUILDMAP.html);
 
 if (BUILDFUNCS_HTML.length) {
-    const seriesFuncs = series(...BUILDFUNCS_HTML);
-    BUILDFUNCS.push(seriesFuncs);
-    Object.values(BUILDMAP.html).forEach((sourceGlob) => WATCHFUNCS.push([sourceGlob, seriesFuncs]));
+    const buildFuncs = series(...BUILDFUNCS_HTML);
+    BUILDFUNCS.push(buildFuncs);
+    Object.values(BUILDMAP.html).forEach((sourceGlob) => WATCHFUNCS.push([sourceGlob, buildFuncs]));
 }
 // #endregion ▄▄▄▄▄ HTML ▄▄▄▄▄
 // #region ████████ WATCH: Watch Tasks to Fire On File Update ████████ ~
@@ -127,7 +127,7 @@ function watchUpdates() {
 // #endregion ▄▄▄▄▄ WATCH ▄▄▄▄▄
 
 // #region ▒░▒░▒░▒[EXPORTS]▒░▒░▒░▒ ~
-exports.default = series(parallel(...BUILDFUNCS), watchUpdates);
-exports.build = parallel(...BUILDFUNCS);
+exports.default = series(...BUILDFUNCS, watchUpdates);
+exports.build = series(...BUILDFUNCS);
 exports.watch = watchUpdates;
 // #endregion ▒▒▒▒[EXPORTS]▒▒▒▒

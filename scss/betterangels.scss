@@ -6,6 +6,7 @@
 @import 'utils/colors';
 @import 'utils/mixins';
 @import 'utils/variables';
+@import 'utils/debug';
 
 /* Global styles */
 @import 'global/window';
@@ -17,4 +18,8 @@
     @import 'components/forms';
     @import 'components/resource';
     @import 'components/items';
+
+    &.actor {
+        @import 'components/actor/actorsheet';
+    }
 }

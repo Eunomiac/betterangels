@@ -1,3 +1,9 @@
+/* ****▌████████████████████████████████████████████████████████████▐**** *\
+|*     ▌█░░░░      System Core: Initialization & Setup         ░░░░█▐     *|
+|*     ▌███████████████████v@@VERSION@@██@@DATE@@███████████████████▐     *|
+|*     ▌█████░░░░ https://github.com/Eunomiac/betterangels ░░░░█████▐     *|
+\* ****▌████████████████████████████████████████████████████████████▐**** */
+
 // #region ████████ IMPORTS: Importing Modules ████████ ~
 // #region ▮▮▮▮▮▮▮[Constants]▮▮▮▮▮▮▮ ~
 import {BETTERANGELS} from "./helpers/config.mjs";
@@ -7,12 +13,20 @@ import {preloadHandlebarsTemplates} from "./helpers/templates.mjs";
 // #endregion ▮▮▮▮[Utility]▮▮▮▮
 // #region ▮▮▮▮▮▮▮[Classes]▮▮▮▮▮▮▮ ~
 import {BetterAngelsActor} from "./documents/actor.mjs";
-import {BetterAngelsItem} from "./documents/item.mjs";
 import {BetterAngelsActorSheet} from "./sheets/actor-sheet.mjs";
+import {HellboundActorSheet} from "./sheets/actor-hellbound-sheet.mjs";
+import {DemonCompanionSheet} from "./sheets/actor-demon-sheet.mjs";
+import {MajorNPCSheet} from "./sheets/actor-majornpc-sheet.mjs";
+import {MinorNPCSheet} from "./sheets/actor-minornpc-sheet.mjs";
+
+import {BetterAngelsItem} from "./documents/item.mjs";
 import {BetterAngelsItemSheet} from "./sheets/item-sheet.mjs";
 // #endregion ▮▮▮▮[Classes]▮▮▮▮
+// #region ▮▮▮▮▮▮▮[Debug]▮▮▮▮▮▮▮ ~
+import {BetterAngelsDebugger} from "./debug/debugger.mjs";
+// #endregion ▮▮▮▮[Debug]▮▮▮▮
 // #endregion ▄▄▄▄▄ IMPORTS ▄▄▄▄▄
-
+console.log("STARTING BETTER ANGELS");
 // #region ████████ ON INIT: On-Initialization Hook ████████
 Hooks.once("init", async () => {
 
@@ -23,15 +37,21 @@ Hooks.once("init", async () => {
     // #region ▮▮▮▮▮▮▮[Classes] Register & Apply Class Extensions ▮▮▮▮▮▮▮
     game.betterangels = {
         BetterAngelsActor,
-        BetterAngelsItem
+        BetterAngelsItem,
+        "debug": true,
+        "debugger": BetterAngelsDebugger
     };
     CONFIG.Actor.documentClass = BetterAngelsActor;
     CONFIG.Item.documentClass = BetterAngelsItem;
 
     Actors.unregisterSheet("core", ActorSheet);
-    Actors.registerSheet("betterangels", BetterAngelsActorSheet, {makeDefault: true});
+    Actors.registerSheet("betterangels", HellboundActorSheet, {makeDefault: true, types: ["hellbound"], label: "ba.sheet.hellboundSheet"});
+    Actors.registerSheet("betterangels", DemonCompanionSheet, {makeDefault: false, types: ["hellbound"], label: "ba.sheet.demonSheet"});
+    Actors.registerSheet("betterangels", MajorNPCSheet, {makeDefault: false, types: ["majornpc"], label: "ba.sheet.majorNPCSheet"});
+    Actors.registerSheet("betterangels", MinorNPCSheet, {makeDefault: false, types: ["minornpc"], label: "ba.sheet.minorNPCSheet"});
+
     Items.unregisterSheet("core", ItemSheet);
-    Items.registerSheet("betterangels", BetterAngelsItemSheet, {makeDefault: true});    
+    Items.registerSheet("betterangels", BetterAngelsItemSheet, {makeDefault: true});
     // #endregion ▮▮▮▮[Classes]▮▮▮▮
 
     // #region ▮▮▮▮▮▮▮[Handlebar Templates] Preload Handlebars Templates ▮▮▮▮▮▮▮
@@ -42,7 +62,7 @@ Hooks.once("init", async () => {
 // #endregion ▄▄▄▄▄ ON INIT ▄▄▄▄▄
 // #region ████████ ON READY: On-Ready Hook ████████ ~
 Hooks.once("ready", async () => {
- 
+
 });
 // #endregion ▄▄▄▄▄ ON READY ▄▄▄▄▄
 

@@ -1,4 +1,4 @@
-export class BetterAngelsActorSheet extends ActorSheet {
+class HellboundActorSheet extends ActorSheet {
 
     static get defaultOptions() {
         return mergeObject(super.defaultOptions, {
@@ -73,7 +73,7 @@ export class BetterAngelsActorSheet extends ActorSheet {
 
         html.find(".rollable").click(this._onRoll.bind(this));
 
-        if (this.actor.isOwner) {
+        if (this.actor.owner) {
             const handler = (ev) => this._onDragStart(ev);
             html.find("li.item").each((i, li) => {
                 if (li.classList.contains("inventory-header")) { return }
@@ -125,3 +125,5 @@ export class BetterAngelsActorSheet extends ActorSheet {
     }
 
 }
+
+export {HellboundActorSheet};

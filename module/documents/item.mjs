@@ -63,4 +63,4 @@ class BetterAngelsItem extends Item {
     }
 }
 
-export {BetterAngelsItem as default};
+export {BetterAngelsItem};
