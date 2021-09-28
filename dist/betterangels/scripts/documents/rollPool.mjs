@@ -33,9 +33,9 @@ export default class extends Roll {
   // .appendTo(".vtt.game.system-betterangels")
   create({posX, posY}) {
     this._element = new Application({
-      popOut: true,
+      popOut: true
 
-    })
+    });
   }
 
 }

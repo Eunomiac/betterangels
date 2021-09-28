@@ -95,13 +95,22 @@ const REGEXPPATTERNS = {
     [/\s*~$/gm, ""], // Strip '~' from end-of-lines (used for automatic region folding)
     [/#reg.*? /gs, ""], // Convert region headers to standard headers
     [/^\s*\/\/ #endreg.*$/gm, "\n"], // Remove region footers
-    [/(\r?\n[ \t]*(?=\r?\n)){2,}/g, "\n"],  // Strip excess blank lines
+    [/(\r?\n[ \t]*(?=\r?\n)){2,}/g, "\n"], // Strip excess blank lines
     [/\s*\n$/g, ""], // Strip whitespace from end of files
     [/^\s*\n/g, ""] // Strip whitespace from start of files
   ],
   html: []
 };
 const PIPES = {
+  init: function initDist(done) {
+    try { cleaner.sync(["./dist/"]) } catch (err) { console.info("Dist folder already empty.") }
+    return done();
+  },
+  watch: function watchUpdates() {
+    for (const [type, globs] of Object.entries(BUILDFILES)) {
+      Object.values(globs ?? {}).forEach((glob) => watch(glob, BUILDFUNCS[type]));
+    }
+  },
   jsFull: (source, destination) => function pipeFullJS() {
     return REGEXPPATTERNS.js
       .reduce(
@@ -118,24 +127,24 @@ const PIPES = {
         src(source)
       )
       .pipe(renamer({suffix: ".min"}))
-      // .pipe(terser())
+      .pipe(terser())
       .pipe(header(BANNERS.js.min, {"package": packageJSON}))
       .pipe(dest(destination));
   },
   cssFull: (source, destination) => function pipeFullCSS() {
     return src(source)
-      .pipe(sass({outputStyle: "nested"}))
-      .pipe(postCSS([
-        autoprefixer({cascade: false})
+      .pipe(sasser({outputStyle: "nested"}))
+      .pipe(bundler([
+        prefixer({cascade: false})
       ]))
       .pipe(dest(destination));
   },
   cssMin: (source, destination) => function pipeMinCSS() {
     return src(source)
-      .pipe(sass({outputStyle: "compressed"}))
-      .pipe(postCSS([
-        autoprefixer({cascade: false}),
-        cssnano()
+      .pipe(sasser({outputStyle: "compressed"}))
+      .pipe(bundler([
+        prefixer({cascade: false}),
+        minifier()
       ]))
       .pipe(header(BANNERS.css.min, {"package": packageJSON}))
       .pipe(dest(destination));
@@ -164,10 +173,10 @@ const replacer = require("gulp-replace");
 
 const terser = require("gulp-terser");
 
-const sass = require("gulp-sass")(require("node-sass"));
-const postCSS = require("gulp-postcss");
-const autoprefixer = require("autoprefixer");
-const cssnano = require("cssnano");
+const sasser = require("gulp-sass")(require("node-sass"));
+const bundler = require("gulp-postcss");
+const prefixer = require("autoprefixer");
+const minifier = require("cssnano");
 
 const packageJSON = require("./package");
 
@@ -176,17 +185,8 @@ const BANNERS = {
   css: {...BANNERTEMPLATE}
 };
 
-const BUILDSERIES = [];
 const BUILDFUNCS = {};
-const PIPEFUNCS = [];
 // #endregion ▒▒▒▒[INITIALIZATION]▒▒▒▒
-
-// #region ████████ CLEAR DIST: Clear Out /dist Folder ████████ ~
-BUILDSERIES.push((done) => {
-  try { cleaner.sync(["./dist/"]) } catch (err) { /*~ Skip ~*/ }
-  return done();
-});
-// #endregion ▄▄▄▄▄ CLEAR DIST ▄▄▄▄▄
 
 // #region ████████ JS: Compiling Javascript ████████ ~
 BUILDFUNCS.js = parallel(...((buildFiles) => {
@@ -199,9 +199,6 @@ BUILDFUNCS.js = parallel(...((buildFiles) => {
   }
   return funcs;
 })(BUILDFILES.js));
-
-// BUILDFUNCS.js = parallel(...BUILDFUNCS_JS);
-// DEFAULTBUILDFUNCS.push(BUILDFUNCS.js);
 // #endregion ▄▄▄▄▄ JS ▄▄▄▄▄
 
 // #region ████████ CSS: Compiling CSS ████████ ~
@@ -214,12 +211,8 @@ BUILDFUNCS.css = parallel(...((sourceDestGlobs) => {
   }
   return funcs;
 })(BUILDFILES.css));
-
-// if (BUILDFUNCS_CSS.length) {
-//   BUILDFUNCS.css = parallel(...BUILDFUNCS_CSS);
-//   DEFAULTBUILDFUNCS.push(BUILDFUNCS.css);
-// }
 // #endregion ▄▄▄▄▄ CSS ▄▄▄▄▄
+
 // #region ████████ HTML: Compiling HTML ████████ ~
 BUILDFUNCS.html = parallel(...((sourceDestGlobs) => {
   const funcs = [];
@@ -230,12 +223,8 @@ BUILDFUNCS.html = parallel(...((sourceDestGlobs) => {
   }
   return funcs;
 })(BUILDFILES.html));
-
-// if (BUILDFUNCS_HTML.length) {
-//   BUILDFUNCS.html = series(cleanDestGlob("./dist/betterangels/templates"), parallel(...BUILDFUNCS_HTML));
-//   DEFAULTBUILDFUNCS.push(BUILDFUNCS.html);
-// }
 // #endregion ▄▄▄▄▄ HTML ▄▄▄▄▄
+
 // #region ████████ ASSETS: Copying Assets to Dist ████████ ~
 BUILDFUNCS.assets = parallel(...((sourceDestGlobs) => {
   const funcs = [];
@@ -244,28 +233,12 @@ BUILDFUNCS.assets = parallel(...((sourceDestGlobs) => {
   }
   return funcs;
 })(BUILDFILES.assets));
-
-// if (BUILDFUNCS_ASSETS.length) {
-//   BUILDFUNCS.assets = series(cleanDestGlob("./dist/betterangels/assets"), parallel(...BUILDFUNCS_ASSETS));
-//   DEFAULTBUILDFUNCS.push(BUILDFUNCS.assets);
-// }
 // #endregion ▄▄▄▄▄ ASSETS ▄▄▄▄▄
 
-// #region ████████ WATCH: Watch Tasks to Fire On File Update ████████ ~
-
-BUILDFUNCS.watch = function watchUpdates() {
-  for (const [type, globs] of Object.entries(BUILDFILES)) {
-    Object.values(globs ?? {}).forEach((glob) => watch(glob, BUILDFUNCS[type]));
-  }
-  // watch("scss/**/*.scss", WATCHFUNCS.css);
-};
-// DEFAULTBUILDFUNCS.push(watchUpdates);
-// #endregion ▄▄▄▄▄ WATCH ▄▄▄▄▄
-
 // #region ▒░▒░▒░▒[EXPORTS]▒░▒░▒░▒ ~
-BUILDSERIES.push(
+exports.default = series(
+  PIPES.init,
   parallel(...Object.values(BUILDFUNCS)),
-  BUILDFUNCS.watch
+  PIPES.watch
 );
-exports.default = series(...BUILDSERIES);
 // #endregion ▒▒▒▒[EXPORTS]▒▒▒▒

@@ -1,18 +1,20 @@
 {
   "name": "betterangels",
   "title": "Better Angels",
-  "description": "An implementation of the One Roll Engine by Greg Stolze: Play a supervillain compelled towards evil by a demon riding your soul!",
+  "description": "An implementation of the One Roll Engine by Greg Stolze: Play a supervillain compelled to do EEEEVIL by a demon riding your soul!",
   "version": "0.0.1-prealpha",
   "author": "Eunomiac",
   "minimumCoreVersion": "0.8",
   "compatibleCoreVersion": "~0.8",
   "esmodules": [
-    "scripts/betterangels.mjs",
-    "greensock/esm/index.js",
-    "greensock/esm/InertiaPlugin.js"
+    "scripts/betterangels.mjs"
   ],
   "styles": ["css/betterangels.css"],
   "scripts": [
+    "https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js",
+    "greensock/dist/gsap.min.js",
+    "greensock/dist/InertiaPlugin.min.js",
+    "greensock/dist/Draggable.min.js"
   ],
   "packs": [],
   "languages": [

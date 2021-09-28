@@ -12,17 +12,16 @@
 @import 'global/grid';
 @import 'global/flex';
 
+/* Styles for created DOM objects */
+@import 'components/roll/rollcircles';
+
 /* Styles limited to betterangels sheets */
 .betterangels {
-  @import 'components/forms'; 
+  @import 'components/forms';
   @import 'components/resource';
   @import 'components/items';
 
-    &.actor {
-        @import 'components/actor/actorsheet';
-    }
-
-    &.canvas-overlay {
-
-    }
+  &.actor {
+    @import 'components/actor/actorsheet';
+  }
 }

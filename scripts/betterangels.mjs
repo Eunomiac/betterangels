@@ -5,6 +5,7 @@ import BETTERANGELS from "./helpers/config.mjs";
 
 // #region ▮▮▮▮▮▮▮[Utility]▮▮▮▮▮▮▮ ~
 import preloadHandlebarsTemplates from "./helpers/templates.mjs";
+import testCircles from "./documents/dragCircle.mjs";
 // #endregion ▮▮▮▮[Utility]▮▮▮▮
 
 // #region ▮▮▮▮▮▮▮[Classes]▮▮▮▮▮▮▮ ~
@@ -24,29 +25,11 @@ import BARoll from "./documents/rollPool.mjs";
 
 // #region ████████ ON INIT: On-Initialization Hook ████████
 Hooks.once("init", async () => {
+  gsap.registerPlugin(InertiaPlugin);
 
   // #region ▮▮▮▮▮▮▮[Configuration] Apply Configuration Settings ▮▮▮▮▮▮▮
   CONFIG.BETTERANGELS = BETTERANGELS;
   // #endregion ▮▮▮▮[Configuration]▮▮▮▮
-
-
-
-
-const wiggle = (midPoint, range, paddingMult = 0) => {
-  const padding = paddingMult * range / 2;
-  return midPoint + (Math.random() - 0.5) * (range - padding * 2);
-};
-const [midPoint, range, paddingMult] = [100, 200, 0];
-const wiggles = [];
-let maxVal = -100000000;
-let minVal = 100000000;
-for (let i = 0; i < 10000; i++) {
-  const thisVal = wiggle(midPoint, range, paddingMult);
-  maxVal = Math.max(thisVal, maxVal);
-  minVal = Math.min(thisVal, minVal);
-};
-console.log(minVal, maxVal);
-
 
   // #region ▮▮▮▮▮▮▮[Classes] Register & Apply Class Extensions ▮▮▮▮▮▮▮
   game.betterangels = {
@@ -66,7 +49,7 @@ console.log(minVal, maxVal);
   Items.registerSheet("betterangels", BetterAngelsItemSheet, {makeDefault: true});
   // #endregion ▮▮▮▮[Classes]▮▮▮▮
 
-  /*DEVCODE*/ 
+  /*DEVCODE*/
   window.REF = game.betterangels;
   window.DB = {
     BetterAngelsActor,
@@ -77,7 +60,8 @@ console.log(minVal, maxVal);
     MinorNPCSheet,
     BetterAngelsItem,
     BetterAngelsItemSheet,
-    BARoll
+    BARoll,
+    testCircles
   };
   /*!DEVCODE*/
 
