@@ -101,9 +101,56 @@ const REGEXPPATTERNS = {
   ],
   html: []
 };
-const BANNERS = {
-  js: {...BANNERTEMPLATE},
-  css: {...BANNERTEMPLATE}
+const PIPES = {
+  jsFull: (source, destination) => function pipeFullJS() {
+    return REGEXPPATTERNS.js
+      .reduce(
+        (pipeline, replacerArgs) => pipeline.pipe(replacer(...replacerArgs)),
+        src(source)
+          .pipe(header(BANNERS.js.full, {"package": packageJSON}))
+      )
+      .pipe(dest(destination));
+  },
+  jsMin: (source, destination) => function pipeMinJS() {
+    return REGEXPPATTERNS.js
+      .reduce(
+        (pipeline, replacerArgs) => pipeline.pipe(replacer(...replacerArgs)),
+        src(source)
+      )
+      .pipe(renamer({suffix: ".min"}))
+      // .pipe(terser())
+      .pipe(header(BANNERS.js.min, {"package": packageJSON}))
+      .pipe(dest(destination));
+  },
+  cssFull: (source, destination) => function pipeFullCSS() {
+    return src(source)
+      .pipe(sass({outputStyle: "nested"}))
+      .pipe(postCSS([
+        autoprefixer({cascade: false})
+      ]))
+      .pipe(dest(destination));
+  },
+  cssMin: (source, destination) => function pipeMinCSS() {
+    return src(source)
+      .pipe(sass({outputStyle: "compressed"}))
+      .pipe(postCSS([
+        autoprefixer({cascade: false}),
+        cssnano()
+      ]))
+      .pipe(header(BANNERS.css.min, {"package": packageJSON}))
+      .pipe(dest(destination));
+  },
+  html: (source, destination) => function pipeHTML() {
+    return REGEXPPATTERNS.html
+      .reduce(
+        (pipeline, replacerArgs) => pipeline.pipe(replacer(...replacerArgs)),
+        src(source)
+      )
+      .pipe(dest(destination));
+  },
+  toDest: (source, destination) => function pipeToDest() {
+    return src(source).pipe(dest(destination));
+  }
 };
 // #endregion ▄▄▄▄▄ CONFIGURATION ▄▄▄▄▄
 
@@ -124,138 +171,101 @@ const cssnano = require("cssnano");
 
 const packageJSON = require("./package");
 
+const BANNERS = {
+  js: {...BANNERTEMPLATE},
+  css: {...BANNERTEMPLATE}
+};
+
+const BUILDSERIES = [];
 const BUILDFUNCS = {};
-const DEFAULTBUILDFUNCS = [];
+const PIPEFUNCS = [];
 // #endregion ▒▒▒▒[INITIALIZATION]▒▒▒▒
 
 // #region ████████ CLEAR DIST: Clear Out /dist Folder ████████ ~
-const cleanDest = (destGlob) => (done) => {
-  try {
-    cleaner.sync([destGlob]);
-  } catch (err) {
-    console.warn(`[GULP CLEAN] No such directory: ${destGlob}`);
-  }
+BUILDSERIES.push((done) => {
+  try { cleaner.sync(["./dist/"]) } catch (err) { /*~ Skip ~*/ }
   return done();
-};
-BUILDFUNCS.init = cleanDest("./dist/");
+});
 // #endregion ▄▄▄▄▄ CLEAR DIST ▄▄▄▄▄
 
 // #region ████████ JS: Compiling Javascript ████████ ~
-const BUILDFUNCS_JS = ((sourceDestGlobs) => {
-  const compiledJSFuncs = [];
-  for (const [destGlob, sourceGlobs] of Object.entries(sourceDestGlobs)) {
-    for (const sourceGlob of sourceGlobs) {
-      compiledJSFuncs.push(...(({full, min}) => [
-        () => full
-          .pipe(dest(destGlob)),
-        () => min
-          .pipe(renamer({suffix: ".min"}))
-          .pipe(terser())
-          .pipe(header(BANNERS.js.min, {"package": packageJSON}))
-          .pipe(dest(destGlob))
-      ])(
-        REGEXPPATTERNS.js
-          .reduce((streams, replacerArgs) => ({
-            full: streams.full.pipe(replacer(...replacerArgs)),
-            min: streams.min.pipe(replacer(...replacerArgs))
-          }), {
-            full: src(sourceGlob).pipe(header(BANNERS.js.full, {"package": packageJSON})),
-            min: src(sourceGlob)
-          })
-      ));
-    }
+BUILDFUNCS.js = parallel(...((buildFiles) => {
+  const funcs = [];
+  for (const [destGlob, sourceGlobs] of Object.entries(buildFiles)) {
+    sourceGlobs.forEach((sourceGlob) => {
+      funcs.push(PIPES.jsMin(sourceGlob, destGlob));
+      funcs.push(PIPES.jsFull(sourceGlob, destGlob));
+    });
   }
-  return compiledJSFuncs;
-})(BUILDFILES.js);
+  return funcs;
+})(BUILDFILES.js));
 
-if (BUILDFUNCS_JS.length) {
-  BUILDFUNCS.js = series(cleanDest("./dist/betterangels/scripts"), ...BUILDFUNCS_JS);
-  DEFAULTBUILDFUNCS.push(BUILDFUNCS.js);
-}
+// BUILDFUNCS.js = parallel(...BUILDFUNCS_JS);
+// DEFAULTBUILDFUNCS.push(BUILDFUNCS.js);
 // #endregion ▄▄▄▄▄ JS ▄▄▄▄▄
 
 // #region ████████ CSS: Compiling CSS ████████ ~
-const BUILDFUNCS_CSS = ((sourceDestGlobs) => {
-  const compiledCSSFuncs = [];
+BUILDFUNCS.css = parallel(...((sourceDestGlobs) => {
+  const funcs = [];
   for (const [destGlob, sourceGlobs] of Object.entries(sourceDestGlobs)) {
-    if (/dist/.test(destGlob)) {
-      compiledCSSFuncs.push(
-        () => src(sourceGlobs)
-          .pipe(sass({outputStyle: "compressed"}))
-          .pipe(postCSS([
-            autoprefixer({cascade: false}),
-            cssnano()
-          ]))
-          .pipe(header(BANNERS.css.min, {"package": packageJSON}))
-          .pipe(dest(destGlob))
-      );
-    } else {
-      compiledCSSFuncs.push(
-        () => src(sourceGlobs)
-          .pipe(sass({outputStyle: "nested"}))
-          .pipe(dest(destGlob))
-      );
-    }
+    sourceGlobs.forEach((sourceGlob) => {
+      funcs.push(PIPES[/dist/.test(destGlob) ? "cssMin" : "cssFull"](sourceGlob, destGlob));
+    });
   }
-  return compiledCSSFuncs;
-})(BUILDFILES.css);
+  return funcs;
+})(BUILDFILES.css));
 
-if (BUILDFUNCS_CSS.length) {
-  BUILDFUNCS.css = series(cleanDest("./dist/betterangels/css"), ...BUILDFUNCS_CSS);
-  DEFAULTBUILDFUNCS.push(BUILDFUNCS.css);
-}
+// if (BUILDFUNCS_CSS.length) {
+//   BUILDFUNCS.css = parallel(...BUILDFUNCS_CSS);
+//   DEFAULTBUILDFUNCS.push(BUILDFUNCS.css);
+// }
 // #endregion ▄▄▄▄▄ CSS ▄▄▄▄▄
 // #region ████████ HTML: Compiling HTML ████████ ~
-const BUILDFUNCS_HTML = ((sourceDestGlobs) => {
-  const compiledHTMLFuncs = [];
+BUILDFUNCS.html = parallel(...((sourceDestGlobs) => {
+  const funcs = [];
   for (const [destGlob, sourceGlobs] of Object.entries(sourceDestGlobs)) {
-    for (const sourceGlob of sourceGlobs) {
-      compiledHTMLFuncs.push(() => REGEXPPATTERNS.html
-        .reduce((gulper, replaceArgs) => gulper.pipe(replacer(...replaceArgs)), src(sourceGlob))
-        .pipe(dest(destGlob)));
-    }
+    sourceGlobs.forEach((sourceGlob) => {
+      funcs.push(PIPES.html(sourceGlob, destGlob));
+    });
   }
-  return compiledHTMLFuncs;
-})(BUILDFILES.html);
+  return funcs;
+})(BUILDFILES.html));
 
-if (BUILDFUNCS_HTML.length) {
-  BUILDFUNCS.html = series(cleanDest("./dist/betterangels/templates"), parallel(...BUILDFUNCS_HTML));
-  DEFAULTBUILDFUNCS.push(BUILDFUNCS.html);
-}
+// if (BUILDFUNCS_HTML.length) {
+//   BUILDFUNCS.html = series(cleanDestGlob("./dist/betterangels/templates"), parallel(...BUILDFUNCS_HTML));
+//   DEFAULTBUILDFUNCS.push(BUILDFUNCS.html);
+// }
 // #endregion ▄▄▄▄▄ HTML ▄▄▄▄▄
 // #region ████████ ASSETS: Copying Assets to Dist ████████ ~
-const BUILDFUNCS_ASSETS = ((sourceDestGlobs) => {
-  const compiledAssetFuncs = [];
+BUILDFUNCS.assets = parallel(...((sourceDestGlobs) => {
+  const funcs = [];
   for (const [destGlob, sourceGlobs] of Object.entries(sourceDestGlobs)) {
-    for (const sourceGlob of sourceGlobs) {
-      compiledAssetFuncs.push(
-        () => src(sourceGlobs)
-          .pipe(dest(destGlob))
-      );
-    }
+    sourceGlobs.forEach((sourceGlob) => funcs.push(PIPES.toDest(sourceGlob, destGlob)));
   }
-  return compiledAssetFuncs;
-})(BUILDFILES.assets);
+  return funcs;
+})(BUILDFILES.assets));
 
-if (BUILDFUNCS_ASSETS.length) {
-  BUILDFUNCS.assets = series(cleanDest("./dist/betterangels/assets"), parallel(...BUILDFUNCS_ASSETS));
-  DEFAULTBUILDFUNCS.push(BUILDFUNCS.assets);
-}
-// #endregion ▄▄▄▄▄ CSS ▄▄▄▄▄
+// if (BUILDFUNCS_ASSETS.length) {
+//   BUILDFUNCS.assets = series(cleanDestGlob("./dist/betterangels/assets"), parallel(...BUILDFUNCS_ASSETS));
+//   DEFAULTBUILDFUNCS.push(BUILDFUNCS.assets);
+// }
+// #endregion ▄▄▄▄▄ ASSETS ▄▄▄▄▄
 
 // #region ████████ WATCH: Watch Tasks to Fire On File Update ████████ ~
-function watchUpdates() {
-  for (const type of Object.keys(BUILDFUNCS)) {
-    Object.values(BUILDFILES[type] || {}).forEach((sourceGlob) => watch(sourceGlob, BUILDFUNCS[type]));
+
+BUILDFUNCS.watch = function watchUpdates() {
+  for (const [type, globs] of Object.entries(BUILDFILES)) {
+    Object.values(globs ?? {}).forEach((glob) => watch(glob, BUILDFUNCS[type]));
   }
-}
-BUILDFUNCS.watch = watchUpdates;
-DEFAULTBUILDFUNCS.push(watchUpdates);
+  // watch("scss/**/*.scss", WATCHFUNCS.css);
+};
+// DEFAULTBUILDFUNCS.push(watchUpdates);
 // #endregion ▄▄▄▄▄ WATCH ▄▄▄▄▄
 
 // #region ▒░▒░▒░▒[EXPORTS]▒░▒░▒░▒ ~
-exports.default = series(
-  BUILDFUNCS.init,
-  parallel(...DEFAULTBUILDFUNCS)
+BUILDSERIES.push(
+  parallel(...Object.values(BUILDFUNCS)),
+  BUILDFUNCS.watch
 );
+exports.default = series(...BUILDSERIES);
 // #endregion ▒▒▒▒[EXPORTS]▒▒▒▒

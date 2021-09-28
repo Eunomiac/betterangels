@@ -1,1 +1,3 @@
-/* ▌██░░ betterangels v0.0.1-prealpha (2021) ║ MIT License ║ https://github.com/Eunomiac/betterangels ░░██▐ */export const BETTERANGELS={};BETTERANGELS.foobar={bas:"BETTERANGELS.bas",bar:"BETTERANGELS.bar"};
+/* ▌██░░ betterangels v0.0.1-prealpha (2021) ║ MIT License ║ https://github.com/Eunomiac/betterangels ░░██▐ */export default {
+
+};

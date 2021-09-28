@@ -5,37 +5,17 @@
 |*     ▌████████░░░░░░░░ https://github.com/Eunomiac/betterangels ░░░░░░░░█████████▐     *|
 \* ****▌███████████████████████████████████████████████████████████████████████████▐**** */
 
-import BetterAngelsActorSheet from "./actor-sheet.mjs";
-
-export default class extends BetterAngelsActorSheet {
-
-  static get defaultOptions() {
-    return mergeObject(super.defaultOptions, {
-      classes: [...super.defaultOptions.classes, "hellbound"],
-      width: 400,
-      height: 700,
-      tabs: [{navSelector: ".sheet-tabs", contentSelector: ".sheet-body", initial: "strats&tacts"}]
-    });
-  }
-
-  getData() {
-    
-    const context = super.getData();
-    const thisActorData = context.actor.data;
-
-    return context;
-  }
-
-  _prepareCharacterData(context) {
-    super._prepareCharacterData(context);
-  }
-
-  _prepareItems(context) {
-    super._prepareItems(context);
-  }
-
-  activateListeners(html) {
-    super.activateListeners(html);
-  }
-
-}
+const wiggle = (midPoint, range, paddingMult = 0) => {
+  const padding = paddingMult * range / 2;
+  return midPoint + (Math.random() - 0.5) * (range - padding * 2);
+};
+const [midPoint, range, paddingMult] = [200, 100, 0.6];
+const wiggles = [];
+let maxVal = -100000000;
+let minVal = 100000000;
+for (let i = 0; i < 10000; i++) {
+  const thisVal = wiggle(midPoint, range, paddingMult);
+  maxVal = Math.max(thisVal, maxVal);
+  minVal = Math.min(thisVal, minVal);
+};
+console.log(minVal, maxVal);

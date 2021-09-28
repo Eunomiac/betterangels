@@ -126,36 +126,56 @@
 .flex-group-center,
 .flex-group-left,
 .flex-group-right {
+  -webkit-box-align: center;
+  -ms-flex-align: center;
   align-items: center;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
   justify-content: center;
   text-align: center; }
 
 .flex-group-left {
+  -webkit-box-pack: start;
+  -ms-flex-pack: start;
   justify-content: flex-start;
   text-align: left; }
 
 .flex-group-right {
+  -webkit-box-pack: end;
+  -ms-flex-pack: end;
   justify-content: flex-end;
   text-align: right; }
 
 .flexshrink {
+  -webkit-box-flex: 0;
+  -ms-flex: 0;
   flex: 0; }
 
 .flex-between {
+  -webkit-box-pack: justify;
+  -ms-flex-pack: justify;
   justify-content: space-between; }
 
 .flexlarge {
+  -webkit-box-flex: 2;
+  -ms-flex: 2;
   flex: 2; }
 
 .align-left {
+  -webkit-box-pack: start;
+  -ms-flex-pack: start;
   justify-content: flex-start;
   text-align: left; }
 
 .align-right {
+  -webkit-box-pack: end;
+  -ms-flex-pack: end;
   justify-content: flex-end;
   text-align: right; }
 
 .align-center {
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
   justify-content: center;
   text-align: center; }
 
@@ -168,18 +188,32 @@
   .betterangels .item-form {
     font-family: "Roboto", sans-serif; }
   .betterangels .sheet-header {
+    display: -webkit-box;
+    display: -ms-flexbox;
     display: flex;
+    -webkit-box-flex: 0;
+    -ms-flex: 0 auto;
     flex: 0 auto;
+    -webkit-box-orient: horizontal;
+    -webkit-box-direction: normal;
+    -ms-flex-direction: row;
     flex-direction: row;
+    -ms-flex-wrap: wrap;
     flex-wrap: wrap;
+    -webkit-box-pack: start;
+    -ms-flex-pack: start;
     justify-content: flex-start;
     margin-bottom: 10px;
     overflow: hidden; }
     .betterangels .sheet-header .profile-img {
+      -webkit-box-flex: 0;
+      -ms-flex: 0 0 100px;
       flex: 0 0 100px;
       height: 100px;
       margin-right: 10px; }
     .betterangels .sheet-header .header-fields {
+      -webkit-box-flex: 1;
+      -ms-flex: 1;
       flex: 1; }
     .betterangels .sheet-header .charname {
       height: 50px;
@@ -191,6 +225,8 @@
         height: 100%;
         margin: 0; }
   .betterangels .sheet-tabs {
+    -webkit-box-flex: 0;
+    -ms-flex: 0;
     flex: 0; }
   .betterangels .sheet-body,
   .betterangels .sheet-body .tab,
@@ -203,6 +239,8 @@
   .betterangels .resource-label {
     font-weight: bold; }
   .betterangels .items-header {
+    -webkit-box-align: center;
+    -ms-flex-align: center;
     align-items: center;
     height: 28px;
     padding: 0;
@@ -214,6 +252,8 @@
       font-size: 14px;
       text-align: center; }
     .betterangels .items-header .item-name {
+      display: -webkit-box;
+      display: -ms-flexbox;
       display: flex;
       padding-left: 5px;
       font-weight: bold;
@@ -230,8 +270,14 @@
       margin: 0;
       list-style: none; }
     .betterangels .items-list .item-name {
+      display: -webkit-box;
+      display: -ms-flexbox;
       display: flex;
+      -webkit-box-flex: 2;
+      -ms-flex: 2;
       flex: 2;
+      -webkit-box-align: center;
+      -ms-flex-align: center;
       align-items: center;
       margin: 0;
       overflow: hidden;
@@ -243,14 +289,22 @@
         overflow-x: hidden;
         white-space: nowrap; }
     .betterangels .items-list .item-controls {
+      display: -webkit-box;
+      display: -ms-flexbox;
       display: flex;
+      -webkit-box-flex: 0;
+      -ms-flex: 0 0 100px;
       flex: 0 0 100px;
+      -webkit-box-pack: end;
+      -ms-flex-pack: end;
       justify-content: flex-end; }
       .betterangels .items-list .item-controls a {
         margin: 0 6px;
         font-size: 12px;
         text-align: center; }
     .betterangels .items-list .item {
+      -webkit-box-align: center;
+      -ms-flex-align: center;
       align-items: center;
       padding: 0 2px; }
       .betterangels .items-list .item:not(:last-child) {
@@ -258,6 +312,8 @@
       .betterangels .items-list .item .item-name {
         color: #191813; }
         .betterangels .items-list .item .item-name .item-image {
+          -webkit-box-flex: 0;
+          -ms-flex: 0 0 30px;
           flex: 0 0 30px;
           height: 30px;
           margin-right: 5px;
@@ -268,6 +324,8 @@
       border-right: 1px solid #C9C7B8;
       border-left: 1px solid #C9C7B8; }
     .betterangels .items-list .items-header {
+      -webkit-box-align: center;
+      -ms-flex-align: center;
       align-items: center;
       height: 28px;
       padding: 0;
@@ -282,6 +340,8 @@
         padding-left: 5px;
         text-align: left; }
   .betterangels .item-formula {
+    -webkit-box-flex: 0;
+    -ms-flex: 0 0 200px;
     flex: 0 0 200px;
     padding: 0 8px; }
   .betterangels.actor .hellbound {

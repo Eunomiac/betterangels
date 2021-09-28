@@ -6,9 +6,14 @@
   "author": "Eunomiac",
   "minimumCoreVersion": "0.8",
   "compatibleCoreVersion": "~0.8",
-  "esmodules": ["scripts/betterangels.mjs"],
+  "esmodules": [
+    "scripts/betterangels.mjs",
+    "greensock/esm/index.js",
+    "greensock/esm/InertiaPlugin.js"
+  ],
   "styles": ["css/betterangels.css"],
-  "scripts": [],
+  "scripts": [
+  ],
   "packs": [],
   "languages": [
     {

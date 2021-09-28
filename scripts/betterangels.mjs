@@ -16,6 +16,7 @@ import MajorNPCSheet from "./sheets/actor-majornpc-sheet.mjs";
 import MinorNPCSheet from "./sheets/actor-minornpc-sheet.mjs";
 import BetterAngelsItem from "./documents/item.mjs";
 import BetterAngelsItemSheet from "./sheets/item-sheet.mjs";
+import BARoll from "./documents/rollPool.mjs";
 // #endregion ▮▮▮▮[Classes]▮▮▮▮
 // #endregion ▄▄▄▄▄ IMPORTS ▄▄▄▄▄
 
@@ -27,6 +28,25 @@ Hooks.once("init", async () => {
   // #region ▮▮▮▮▮▮▮[Configuration] Apply Configuration Settings ▮▮▮▮▮▮▮
   CONFIG.BETTERANGELS = BETTERANGELS;
   // #endregion ▮▮▮▮[Configuration]▮▮▮▮
+
+
+
+
+const wiggle = (midPoint, range, paddingMult = 0) => {
+  const padding = paddingMult * range / 2;
+  return midPoint + (Math.random() - 0.5) * (range - padding * 2);
+};
+const [midPoint, range, paddingMult] = [100, 200, 0];
+const wiggles = [];
+let maxVal = -100000000;
+let minVal = 100000000;
+for (let i = 0; i < 10000; i++) {
+  const thisVal = wiggle(midPoint, range, paddingMult);
+  maxVal = Math.max(thisVal, maxVal);
+  minVal = Math.min(thisVal, minVal);
+};
+console.log(minVal, maxVal);
+
 
   // #region ▮▮▮▮▮▮▮[Classes] Register & Apply Class Extensions ▮▮▮▮▮▮▮
   game.betterangels = {
@@ -46,9 +66,25 @@ Hooks.once("init", async () => {
   Items.registerSheet("betterangels", BetterAngelsItemSheet, {makeDefault: true});
   // #endregion ▮▮▮▮[Classes]▮▮▮▮
 
+  /*DEVCODE*/ 
+  window.REF = game.betterangels;
+  window.DB = {
+    BetterAngelsActor,
+    BetterAngelsActorSheet,
+    HellboundActorSheet,
+    DemonCompanionSheet,
+    MajorNPCSheet,
+    MinorNPCSheet,
+    BetterAngelsItem,
+    BetterAngelsItemSheet,
+    BARoll
+  };
+  /*!DEVCODE*/
+
   // #region ▮▮▮▮▮▮▮[Handlebar Templates] Preload Handlebars Templates ▮▮▮▮▮▮▮
   return preloadHandlebarsTemplates();
   // #endregion ▮▮▮▮[Handlebar Templates]▮▮▮▮
+
 });
 // #endregion ▄▄▄▄▄ ON INIT ▄▄▄▄▄
 

@@ -14,11 +14,15 @@
 
 /* Styles limited to betterangels sheets */
 .betterangels {
-    @import 'components/forms';
-    @import 'components/resource';
-    @import 'components/items';
+  @import 'components/forms'; 
+  @import 'components/resource';
+  @import 'components/items';
 
     &.actor {
         @import 'components/actor/actorsheet';
+    }
+
+    &.canvas-overlay {
+
     }
 }
