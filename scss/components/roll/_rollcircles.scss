@@ -1,26 +1,11 @@
 .roll-circle {
-  &.blue {
-    outline: 10px solid $c-blue;
-    opacity: 1;
-  }
+  outline: 0 solid transparent;
+  opacity: 0.5;
+}
 
-  &.red {
-    outline: 10px solid $c-red;
-    opacity: 0.1;
-  }
-
-  &.green {
-    outline: 40px solid $c-green;
-    opacity: 1;
-  }
-
-  &.grey {
-    outline: 10px solid $c-grey;
-    opacity: 0.5;
-  }
-
-  &.no-outline {
-    outline: 10px solid transparent;
-    opacity: 0.5;
-  }
+.roll-die {
+  font-size: 24px;
+  font-weight: bold;
+  text-align: center;
+  line-height: 40px;
 }

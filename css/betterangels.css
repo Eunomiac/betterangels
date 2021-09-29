@@ -180,25 +180,15 @@
   text-align: center; }
 
 /* Styles for created DOM objects */
-.roll-circle.blue {
-  outline: 10px solid #0000FF;
-  opacity: 1; }
-
-.roll-circle.red {
-  outline: 10px solid #FF0000;
-  opacity: 0.1; }
-
-.roll-circle.green {
-  outline: 40px solid #00FF00;
-  opacity: 1; }
-
-.roll-circle.grey {
-  outline: 10px solid #888888;
+.roll-circle {
+  outline: 0 solid transparent;
   opacity: 0.5; }
 
-.roll-circle.no-outline {
-  outline: 10px solid transparent;
-  opacity: 0.5; }
+.roll-die {
+  font-size: 24px;
+  font-weight: bold;
+  text-align: center;
+  line-height: 40px; }
 
 /* Styles limited to betterangels sheets */
 .betterangels {

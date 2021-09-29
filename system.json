@@ -7,14 +7,15 @@
   "minimumCoreVersion": "0.8",
   "compatibleCoreVersion": "~0.8",
   "esmodules": [
-    "scripts/betterangels.mjs"
+    "scripts/betterangels.mjs",
+    "greensock/esm/Draggable.js"
   ],
-  "styles": ["css/betterangels.css"],
+  "styles": [
+    "css/betterangels.css"
+  ],
   "scripts": [
-    "https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js",
     "greensock/dist/gsap.min.js",
-    "greensock/dist/InertiaPlugin.min.js",
-    "greensock/dist/Draggable.min.js"
+    "greensock/dist/InertiaPlugin.min.js"
   ],
   "packs": [],
   "languages": [

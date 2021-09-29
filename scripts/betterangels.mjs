@@ -25,6 +25,7 @@ import BARoll from "./documents/rollPool.mjs";
 
 // #region ████████ ON INIT: On-Initialization Hook ████████
 Hooks.once("init", async () => {
+  console.log("STARTING BETTER ANGELS");
   gsap.registerPlugin(InertiaPlugin);
 
   // #region ▮▮▮▮▮▮▮[Configuration] Apply Configuration Settings ▮▮▮▮▮▮▮
@@ -63,6 +64,7 @@ Hooks.once("init", async () => {
     BARoll,
     testCircles
   };
+  testCircles();
   /*!DEVCODE*/
 
   // #region ▮▮▮▮▮▮▮[Handlebar Templates] Preload Handlebars Templates ▮▮▮▮▮▮▮

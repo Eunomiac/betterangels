@@ -1,7 +1,7 @@
 /* ****▌███████████████████████████████████████████████████████████████████████████▐**** *\
 |*     ▌███████░░░░░░░░░░░░░░ Better Angels for Foundry VTT ░░░░░░░░░░░░░░░░███████▐     *|
 |*     ▌██████████████████░░░░░░░░░░░░░ by Eunomiac ░░░░░░░░░░░░░██████████████████▐     *|
-|*     ▌███████████████ MIT License █ v0.0.1-prealpha █ Sep 28 2021 ███████████████▐     *|
+|*     ▌███████████████ MIT License █ v0.0.1-prealpha █ Sep 29 2021 ███████████████▐     *|
 |*     ▌████████░░░░░░░░ https://github.com/Eunomiac/betterangels ░░░░░░░░█████████▐     *|
 \* ****▌███████████████████████████████████████████████████████████████████████████▐**** */
 
@@ -18,15 +18,29 @@
 // Can use this for separating sets as well!
 // Can have sets get pushed away from ball as it snaps free
 // Can have sets FIRST start to glow, then magnetically move towards ball as it approaches
-import GSDraggable from "/scripts/greensock/esm/Draggable.js";
+import GSDraggable from "../helpers/Draggable.js";
+import {CustomWiggle} from "../helpers/CustomWiggle.js";
+import {CustomEase} from "../helpers/CustomEase.js";
+
+gsap.registerPlugin(CustomEase, CustomWiggle);
 
 const NEARNESSTHRESHOLD = 100;
-const COLORCLASSES = ["blue", "red", "green", "grey", "no-outline"];
+const CIRCLESTATES = {
+  targeted: {size: 10, color: "rgba(0, 0, 255, 1)", opacity: 0.75, duration: 0.5},
+  invalid: {size: 10, color: "rgba(255, 0, 0, 1)", opacity: 0.1, duration: 0.5},
+  near: {size: 20, color: "rgba(0, 130, 0, 1)", opacity: 0.75, duration: 0.5},
+  inside: {size: 40, color: "rgba(0, 255, 0, 1)", opacity: 1, duration: 0.5},
+  none: {size: 0, color: "rgba(0, 0, 0, 0)", opacity: 0.5, duration: 0.5}
+};
+const EASECURVES = {
+  wiggle: CustomWiggle.create("wiggle", {wiggles: 10, type: "random"})
+};
 
 const CONTAINER = $(".vtt.game.system-betterangels");
 const CONTAINERPADDING = {left: 100, top: 50, bottom: 100, right: $("#sidebar").width() + 100};
 const CIRCLES = [];
 const DICE = [];
+const TIMELINES = {};
 
 const getElem = (elem) => {
   if (elem instanceof GSDraggable) {
@@ -81,6 +95,22 @@ const getPosData = (posRef) => {
     throw new Error(`Bad Position Object: ${JSON.stringify(elem)}`);
   }
 };
+const getCenterPoint = (elem) => {
+  elem = getElem(elem);
+  const [height, width] = [
+    elem.height(),
+    elem.width()
+  ];
+  [elem] = elem;
+  return {
+    x: gsap.getProperty(elem, "x") + 0.5 * width,
+    y: gsap.getProperty(elem, "y") + 0.5 * width
+  };
+};
+const getTopLeftPoint = ({x, y, height, width}) => ({
+  left: x - 0.5 * width,
+  top: y - 0.5 * height
+});
 
 const wiggle = (midPoint, range, paddingMult = 0) => {
   const padding = paddingMult * 0.5 * range;
@@ -122,58 +152,145 @@ const isInside = (dragElem, targetElem) => dragElem.hitTest(targetElem, "100%");
 const isTouching = (dragElem, targetElem) => dragElem.hitTest(targetElem);
 const isNear = (elem, targetElem) => getDistanceToElem(elem, targetElem) < (NEARNESSTHRESHOLD + ($(targetElem).width() * 0.5));
 
-const changeCircleColor = (elem, className) => {
-  [elem] = getElem(elem);
-  if (elem && className) {
-    elem.newColorClass = className;
-    if (!elem.isChangingColor) {
-      updateCircleColor(elem);
-    }
-  }
+const setDieStartPos = (dice, circle, buffer = 0.3) => {
+  const radius = (1 - buffer) * 0.5 * getElem(circle).width();
+  const {x: centerX, y: centerY} = getCenterPoint(circle);
+  const stepSize = 360 / (dice.length + 1);
+  let angle = 0;
+  const posData = dice.map((die) => {
+    angle += stepSize;
+    const {left, top} = getTopLeftPoint({
+      x: radius * Math.cos(angle * (Math.PI / 180)) + centerX, // (deg * Math.PI) / 180.0
+      y: radius * Math.sin(angle * (Math.PI / 180)) + centerY,
+      height: getElem(die).height(),
+      width: getElem(die).width()
+    });
+    gsap.set(getElem(die), {
+      x: left,
+      y: top
+    });
+    return {angle, stepSize, numDice: dice.length, left, top};
+  });
+  // debugger;
+
+  // dice.forEach((die) => {
+  //   angle += stepSize;
+  //   const {left, top} = getTopLeftPoint({
+  //     x: radius * Math.cos(angle) + centerX,
+  //     y: radius * Math.sin(angle) + centerY,
+  //     height: getElem(die).height(),
+  //     width: getElem(die).width()
+  //   });
+  //   gsap.set(getElem(die), {
+  //     x: radius * Math.cos(angle) + centerX - (0.5 * getElem(die).width()),
+  //     y: radius * Math.sin(angle) + centerY - (0.5 * getElem(die).height())
+  //   });
+  // });
 };
 
-const updateCircleColor = (elem) => {
-  [elem] = getElem(elem);
+gsap.registerEffect({
+  name: "pulse",
+  defaults: {
+    scaleSteps: [0.5, 2, 1],
+    durationSteps: [0.25, 0.25, 0.5],
+    easeSteps: ["power4.out", "power4.out", "sine.out"]
+  },
+  effect: (targets, config) => gsap.timeline()
+    .to(targets, {scale: config.scaleSteps[0], duration: config.durationSteps[0], ease: config.easeSteps[0]})
+    .to(targets, {scale: config.scaleSteps[1], duration: config.durationSteps[1], ease: config.easeSteps[1]})
+    .to(targets, {scale: config.scaleSteps[2], duration: config.durationSteps[2], ease: config.easeSteps[2]})
+});
+gsap.registerEffect({
+  name: "rotate",
+  defaults: {
+    duration: 400
+  },
+  effect: (targets, config) => {
+    gsap.to(targets, {
+      rotation: "+=360",
+      duration: config.duration,
+      ease: "wiggle",
+      repeat: -1,
+      get startAt() {
+        return {
+          rotation: gsap.utils.random(0, 360),
+          scale: gsap.utils.random(0.9, 1.1),
+          opacity: gsap.utils.random(0.25, 1)
+        };
+      },
+      yoyo: true
+    });
+    gsap.to(targets, {
+      keyframes: [
+        {scale: "-=0.1", duration: config.duration / 2},
+        {scale: "+=0.2", duration: config.duration / 2}
+      ],
+      ease: "wiggle",
+      repeat: -1,
+      yoyo: true
+    });
+    gsap.to(targets, {
+      keyframes: [
+        {opacity: "-=0.25", duration: config.duration / 2},
+        {opacity: "+=0.5", duration: config.duration / 2}
+      ],
+      ease: "wiggle",
+      repeat: -1,
+      yoyo: true
+    });
+    /* gsap.to(targets, {
+      keyframes: [
+        {y: "+=50", duration: config.duration / 2},
+        {y: "-=50", duration: config.duration / 2}
+      ],
+      ease: "wiggle",
+      repeat: -1,
+      get startAt() { return {y: `+=${gsap.utils.random(-50, 50)}`} },
+      yoyo: true
+    }); */
+  }
+});
+
+gsap.registerEffect({
+  name: "outline",
+  defaults: {
+    size: 10,
+    color: "rgba(255, 0, 0, 1)",
+    duration: 2
+  },
+  effect: (targets, config) => gsap.to(targets, {duration: config.duration, outlineColor: config.color, outlineWidth: config.size})
+});
+gsap.registerEffect({
+  name: "fade",
+  defaults: {
+    opacity: 0.5,
+    duration: 2
+  },
+  effect: (targets, config) => gsap.to(targets, {opacity: config.opacity, duration: config.duration})
+});
+
+const changeCircleState = (elem, state) => {
   if (elem) {
-    const [curColorClass] = Array.from(elem.classList).filter((cls) => COLORCLASSES.includes(cls));
-    elem.newColorClass = elem.newColorClass ?? "";
-    if (curColorClass === elem.newColorClass) {
-      elem.isChangingColor = false;
-    } else {
-      elem.isChangingColor = true;
-      $(elem).switchClass(
-        curColorClass,
-        elem.newColorClass,
-        {
-          duration: 300,
-          complete: () => {
-            elem.isChangingColor = false;
-            updateCircleColor(elem);
-          }
-        }
-      );
-    }
+    const {size, color, duration, opacity} = CIRCLESTATES[state];
+    gsap.effects.outline(elem, {size, color, duration});
+    gsap.effects.fade(elem, {opacity, duration});
   }
 };
-const pulseCircle = (circle) => {
-  if ("pulser" in circle) {
-    circle.pulser.restart();
-  }
-};
+const pulseCircle = (circle) => gsap.effects.pulse(circle);
 
 const createDie = ({circle, color}) => {
   const dieID = `die${DICE.length + 1}`;
   const [die] = GSDraggable.create(
-    $(`<div id="${dieID}" class="roll-die"/>`)
+    $(`<div id="${dieID}" class="roll-die">${DICE.length + 1}</div>`)
       .appendTo(".vtt.game.system-betterangels")
       .css({
         "position": "absolute",
         "background": `radial-gradient(ellipse, #FFFFFF, ${color} 90%)`,
-        "height": 20,
-        "width": 20,
-        "border-radius": 10,
-        "border": `3px solid ${color}`
-      }),      
+        "height": 40,
+        "width": 40,
+        "outline": "3px solid black",
+        "border-radius": 5
+      }),
     {
       dragResistance: 0,
       type: "x,y",
@@ -201,32 +318,43 @@ const createDie = ({circle, color}) => {
         const closestCircle = getClosestToElem(this.target, CIRCLES);
         if (isInside(this, closestCircle)) {
           this.startCircle = closestCircle;
-          changeCircleColor(this.startCircle, "green");
+          changeCircleState(this.startCircle, "inside");
         }
       },
       onDrag() {
         if (isInside(this, this.startCircle)) {
-          if (this.closestCircle) {
-            changeCircleColor(this.closestCircle, "no-outline");
+          if (this.closestCircle !== this.startCircle) {
+            changeCircleState(this.closestCircle, "none");
           }
-          changeCircleColor(this.startCircle, "green");
+          changeCircleState(this.startCircle, "inside");
         } else {
-          changeCircleColor(this.startCircle, "red");
+          changeCircleState(this.startCircle, "invalid");
           const closestCircle = getClosestToElem(this.target, CIRCLES, this.startCircle);
           if (closestCircle !== this.closestCircle) {
-            changeCircleColor(this.closestCircle, "no-outline");
-            this.closestCircle = closestCircle;
+            changeCircleState(this.closestCircle, "none");
           }
-          if (this.closestCircle !== this.startCircle) {
-            if (isNear(this.target, this.closestCircle)) {
-              changeCircleColor(this.closestCircle, "green");
-            } else {
-              changeCircleColor(this.closestCircle, "blue");
-            }
+          this.closestCircle = closestCircle;
+          if (isInside(this, this.closestCircle)) {
+            changeCircleState(this.closestCircle, "inside");
+          } else if (isNear(this, this.closestCircle)) {
+            changeCircleState(this.closestCircle, "near");
+          } else {
+            changeCircleState(this.closestCircle, "targeted");
           }
         }
+        /*
+          1) Separate out functions: "setClosestCircle(circle)", which also unsets the last closest circle.
+              Inside that function ...
+            a) Get positions of all dice currently snapped to that circle.
+            b) Add an invisible dummy die snap target to the circle, and animate the redistribution of dice to make room.
+            c) Also animate the rotation so the dummy die space faces the die being dragged
+              For the circle being turned off ...
+            a) Remove the dummy die space
+            b) Animate the redistribution of dice to close off the room that was made.
+            c) Animate a rapid "snap away" rotation, spinning the dice circle as if recoil.
+        */
       },
-      onRelease() {        
+      onRelease() {
         let targetCircle = getClosestToPoint({
           posX: this.endX,
           posY: this.endY
@@ -239,75 +367,87 @@ const createDie = ({circle, color}) => {
         }
         this.targetCircle = targetCircle;
         pulseCircle(this.targetCircle);
+        /*
+          1) Set snap target to position of dummy space created in rotating position ring
+        */
       },
       onThrowUpdate() {
         if (isInside(this, this.startCircle)) {
           if (this.closestCircle) {
-            changeCircleColor(this.closestCircle, "no-outline");
+            changeCircleState(this.closestCircle, "none");
           }
-          changeCircleColor(this.startCircle, "green");
+          changeCircleState(this.startCircle, "inside");
         } else {
-          changeCircleColor(this.startCircle, "red");
+          changeCircleState(this.startCircle, "invalid");
           const closestCircle = getClosestToElem(this.target, CIRCLES, this.startCircle);
           if (closestCircle !== this.closestCircle) {
-            changeCircleColor(this.closestCircle, "no-outline");
+            changeCircleState(this.closestCircle, "none");
             this.closestCircle = closestCircle;
           }
           if (this.closestCircle !== this.startCircle) {
             if (isNear(this.target, this.closestCircle)) {
-              changeCircleColor(this.closestCircle, "green");
+              changeCircleState(this.closestCircle, "near");
             } else {
-              changeCircleColor(this.closestCircle, "blue");
+              changeCircleState(this.closestCircle, "targeted");
             }
           }
         }
       },
       onThrowComplete() {
-        changeCircleColor(this.startCircle, "no-outline");
-        changeCircleColor(this.closestCircle, "no-outline");
+        changeCircleState(this.startCircle, "none");
+        changeCircleState(this.closestCircle, "none");
         this.startCircle = null;
         this.closestCircle = null;
       }
     }
   );
-  const {x, y, height, width} = getPosData($(circle));
-  gsap.set(`#${dieID}`, {
-    x: wiggle(x - (0.5 * $(die.target).width()), width, 0.6),
-    y: wiggle(y - (0.5 * $(die.target).height()), height, 0.6)
-  });
+  // const {x, y, height, width} = getPosData($(circle));
+  gsap.set(`#${dieID}`, {transformOrigin: "50% 50%"});
+  gsap.effects.rotate(die);
   DICE.push(die);
+  return die;
 };
 
-const createCircle = (numDice, color, {left, top, height, width}, css = {}) => {
+const createCircle = (numDice, {r, g, b}, {left, top, height, width}, css = {}) => {
+  const colors = {
+    inner: `rgb(${Math.max(r, 150)}, ${Math.max(g, 150)}, ${Math.max(b, 150)})`,
+    outer: `rgb(${r}, ${g}, ${b})`
+  };
   const styles = {
     height,
     width,
     "position": "absolute",
     "pointer-events": "none",
-    "background": `radial-gradient(ellipse, transparent, ${color} 70%)`,
+    "background": `radial-gradient(ellipse, ${colors.inner}, ${colors.outer} 70%)`,
     "border-radius": "50%",
+    "text-align": "center",
+    "font-size": 64,
+    "line-height": "200px",
+    "font-weight": "bold",
     ...css
   };
   const circleID = `rollCircle${CIRCLES.length + 1}`;
-  const rollCircle = $(`<div id="${circleID}" class="roll-circle"/>`)
+  const rollCircle = $(`<div id="${circleID}" class="roll-circle">${CIRCLES.length + 1}</div>`)
     .appendTo(".vtt.game.system-betterangels")
     .css(styles);
-  gsap.set(`#${circleID}`, {x: left, y: top});
-  changeCircleColor(rollCircle, "no-outline");
-  rollCircle.pulser = gsap.timeline({paused: true})
-    .to(rollCircle, {scale: 0.5, duration: 0.25, ease: "power4.out"})
-    .to(rollCircle, {scale: 2, duration: 0.25, ease: "power4.out"})
-    .to(rollCircle, {scale: 1, duration: 0.5, ease: "sine.out"});
+  gsap.set(`#${circleID}`, {
+    transformOrigin: "50% 50%",
+    x: left,
+    y: top});
+  changeCircleState(rollCircle, "none");
+  gsap.effects.rotate(rollCircle);
   CIRCLES.push(rollCircle);
+  const circleDice = [];
   for (let i = 0; i < numDice; i++) {
-    createDie({circle: rollCircle, color: "#00FF00"});
+    circleDice.push(createDie({circle: rollCircle, color: "#00FF00"}));
   }
+  setDieStartPos(circleDice, rollCircle);
 };
 
 export default () => {
   [
-    [6, "#FF00FF", getPosData({top: CONTAINERPADDING.top, left: CONTAINERPADDING.left, height: 200, width: 200})],
-    [6, "#FFFF00", getPosData({top: CONTAINERPADDING.top, left: CONTAINER.width() - 200 - CONTAINERPADDING.right, height: 200, width: 200})],
-    [6, "#00FFFF", getPosData({top: CONTAINER.height() - 200 - CONTAINERPADDING.bottom, left: (CONTAINER.width() - CONTAINERPADDING.right - 100) / 2, height: 200, width: 200})]
+    [3, {r: 255, g: 0, b: 255}, {top: CONTAINERPADDING.top, left: CONTAINERPADDING.left, height: 200, width: 200}],
+    [4, {r: 255, g: 255, b: 0}, {top: CONTAINERPADDING.top, left: CONTAINER.width() - 200 - CONTAINERPADDING.right, height: 200, width: 200}],
+    [5, {r: 0, g: 255, b: 255}, {top: CONTAINER.height() - 200 - CONTAINERPADDING.bottom, left: (CONTAINER.width() - CONTAINERPADDING.right - 100) / 2, height: 200, width: 200}]
   ].forEach((params) => createCircle(...params));
 };
