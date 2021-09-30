@@ -1,11 +1,23 @@
-.roll-circle {
-  outline: 0 solid transparent;
-  opacity: 0.5;
-}
+$circle-size: 200px;
+$die-size: 30px;
 
-.roll-die {
-  font-size: 24px;
-  font-weight: bold;
-  text-align: center;
-  line-height: 40px;
+#roller-container {
+  width: 100%;
+  height: 100%;
+  padding: 50px 100px 300px;
+
+  .roll-circle {
+    width: $circle-size;
+    height: $circle-size;
+    opacity: 0.5;
+  }
+
+  .roll-die {
+    width: $die-size;
+    height: $die-size;
+    font-size: 24px;
+    font-weight: bold;
+    line-height: 40px;
+    text-align: center;
+  }
 }

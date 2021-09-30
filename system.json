@@ -8,15 +8,12 @@
   "compatibleCoreVersion": "~0.8",
   "esmodules": [
     "scripts/betterangels.mjs",
-    "greensock/esm/Draggable.js"
+    "greensock/esm/all.js"
   ],
   "styles": [
     "css/betterangels.css"
   ],
-  "scripts": [
-    "greensock/dist/gsap.min.js",
-    "greensock/dist/InertiaPlugin.min.js"
-  ],
+  "scripts": [],
   "packs": [],
   "languages": [
     {

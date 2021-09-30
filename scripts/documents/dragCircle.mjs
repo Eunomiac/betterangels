@@ -1,3 +1,4 @@
+/* eslint-disable import/no-unresolved */
 // Can EASILY modify the snapping to first check if it has been moved a minimum distance
 // from its origin: If it has, exclude the origin from the list of circles to check for closest
 // distance to.
@@ -11,179 +12,98 @@
 // Can use this for separating sets as well!
 // Can have sets get pushed away from ball as it snaps free
 // Can have sets FIRST start to glow, then magnetically move towards ball as it approaches
-import GSDraggable from "../helpers/Draggable.js";
-import {CustomWiggle} from "../helpers/CustomWiggle.js";
-import {CustomEase} from "../helpers/CustomEase.js";
+// #region ████████ IMPORTS: Importing GreenSock & Registering Plugins ████████ ~
+import gsap, {
+  Draggable as GSDraggable,
+  InertiaPlugin,
+  CustomWiggle,
+  CustomEase
+} from "/scripts/greensock/esm/all.js";
 
-gsap.registerPlugin(CustomEase, CustomWiggle);
+gsap.registerPlugin(InertiaPlugin, CustomEase, CustomWiggle);
+// #endregion ▄▄▄▄▄ IMPORTS ▄▄▄▄▄
 
+// #region ████████ CONFIG: Configuration of Elements & Animations ████████ ~
 const NEARNESSTHRESHOLD = 100;
-const CIRCLESTATES = {
-  targeted: {size: 10, color: "rgba(0, 0, 255, 1)", opacity: 0.75, duration: 0.5},
-  invalid: {size: 10, color: "rgba(255, 0, 0, 1)", opacity: 0.1, duration: 0.5},
-  near: {size: 20, color: "rgba(0, 130, 0, 1)", opacity: 0.75, duration: 0.5},
-  inside: {size: 40, color: "rgba(0, 255, 0, 1)", opacity: 1, duration: 0.5},
-  none: {size: 0, color: "rgba(0, 0, 0, 0)", opacity: 0.5, duration: 0.5}
-};
+
+// #region ░░░░░░░[ANIMATIONS]░░░░ Reusable Configurations for GreenSock Animations ░░░░░░░ ~
+// #region ▮▮▮▮▮▮▮[EASE CURVES] Custom Ease Curves ▮▮▮▮▮▮▮ ~
 const EASECURVES = {
   wiggle: CustomWiggle.create("wiggle", {wiggles: 10, type: "random"})
 };
+// #endregion ▮▮▮▮[EASE CURVES]▮▮▮▮
+// #endregion ░░░░[ANIMATIONS]░░░░
 
-const CONTAINER = $(".vtt.game.system-betterangels");
-const CONTAINERPADDING = {left: 100, top: 50, bottom: 100, right: $("#sidebar").width() + 100};
-const CIRCLES = [];
-const DICE = [];
-const TIMELINES = {};
+// #endregion ▄▄▄▄▄ CONFIG ▄▄▄▄▄
 
-const getElem = (elem) => {
-  if (elem instanceof GSDraggable) {
-    return $(elem.target);
-  } else if (elem instanceof $) {
-    return elem;
-  } else if ($(elem)[0] instanceof HTMLElement) {
-    return $(elem);
-  } else {
-    return [false];
-  }
-};
-const getPosData = (posRef) => {
-  const elem = getElem(posRef);
-  if (elem[0]) {
-    const offset = elem.offset();
-    const posData = {
-      top: offset.top,
-      left: offset.left,
-      height: elem.height(),
-      width: elem.width()
-    };
-    return {
-      ...posData,
-      x: posData.left + 0.5 * posData.width,
-      y: posData.top + 0.5 * posData.height
-    };
-  } else if (/^\[object Object\]$/.test(String(posRef))) {
-    const posData = {};
-    if ("width" in posRef) {
-      posData.width = posRef.width;
-      if ("x" in posRef) {
-        posData.left = posRef.x - 0.5 * posRef.width;
-        posData.x = posRef.x;
-      } else if ("left" in posRef) {
-        posData.left = posRef.left;
-        posData.x = posRef.left + 0.5 * posRef.width;
-      }
-    }
-    if ("height" in posRef) {
-      posData.height = posRef.height;
-      if ("y" in posRef) {
-        posData.top = posRef.y - 0.5 * posRef.height;
-        posData.y = posRef.y;
-      } else if ("top" in posRef) {
-        posData.top = posRef.top;
-        posData.y = posRef.top + 0.5 * posRef.height;
-      }
-    }
-    return posData;
-  } else {
-    throw new Error(`Bad Position Object: ${JSON.stringify(elem)}`);
-  }
-};
-const getCenterPoint = (elem) => {
-  elem = getElem(elem);
-  const [height, width] = [
-    elem.height(),
-    elem.width()
-  ];
-  [elem] = elem;
-  return {
-    x: gsap.getProperty(elem, "x") + 0.5 * width,
-    y: gsap.getProperty(elem, "y") + 0.5 * width
-  };
-};
-const getTopLeftPoint = ({x, y, height, width}) => ({
-  left: x - 0.5 * width,
-  top: y - 0.5 * height
+// #region ████████ UTILITY: Utility Functions ████████ ~
+const {
+  getProperty,
+  utils: {random: getRandom},
+  set
+} = gsap;
+// #region ░░░░░░░[Position]░░░░ Getting & Setting Element Positions ░░░░░░░ ~
+const getCenter = (elem) => ({
+  x: getProperty(elem, "x") + 0.5 * getProperty(elem, "width"),
+  y: getProperty(elem, "y") + 0.5 * getProperty(elem, "height")
 });
+const setCenter = (elem, {x, y}) => {
+  x -= 0.5 * getProperty(elem, "width");
+  y -= 0.5 * getProperty(elem, "height");
+  set(elem, {x, y});
+};
+// #endregion ░░░░[Position]░░░░
 
-const wiggle = (midPoint, range, paddingMult = 0) => {
-  const padding = paddingMult * 0.5 * range;
-  return midPoint + (Math.random() - 0.5) * (range - padding * 2);
-};
-const getDistanceToPoint = ({posX, posY}, elem) => {
-  const {x, y} = getPosData(elem);
-  return Math.sqrt((posX - x) ** 2 + (posY - y) ** 2);
-};
-const getDistanceToElem = (elemA, elemB) => {
-  const {x, y} = getPosData(elemA);
-  return getDistanceToPoint({
-    posX: x,
-    posY: y
-  }, elemB);
-};
-const getClosestToPoint = ({posX, posY}, targetElems, startContainer = false) => {
+// #region ░░░░░░░[Distance]░░░░ Distance & Proximity Detection ░░░░░░░ ~
+const getDistance = ({x1, y1}, {x2, y2}) => Math.sqrt((x1 - x2) ** 2 + (y1 - y2) ** 2);
+const getDistanceBetween = (elem1, elem2) => getDistance(getCenter(elem1), getCenter(elem2));
+const getClosest = (elem, targetElems, excludeTargetElems = []) => {
   let closestDistance, closestTarget;
-  targetElems.forEach((target) => {
-    if (target !== startContainer) {
-      const distance = getDistanceToPoint({posX, posY}, target);
-      if (!closestDistance || distance < closestDistance) {
+  targetElems
+    .filter((target) => !excludeTargetElems.includes(target))
+    .forEach((target) => {
+      const distance = getDistanceBetween(elem, target);
+      if (distance < (closestDistance ?? Infinity)) {
         closestDistance = distance;
         closestTarget = target;
       }
-    }
-  });
+    });
   return closestTarget;
 };
-const getClosestToElem = (elem, targetElems, startContainer = false) => {
-  const {x, y} = getPosData(elem);
-  return getClosestToPoint({
-    posX: x,
-    posY: y
-  }, targetElems, startContainer);
-};
-
 const isInside = (dragElem, targetElem) => dragElem.hitTest(targetElem, "100%");
-const isTouching = (dragElem, targetElem) => dragElem.hitTest(targetElem);
-const isNear = (elem, targetElem) => getDistanceToElem(elem, targetElem) < (NEARNESSTHRESHOLD + ($(targetElem).width() * 0.5));
+const isNear = (elem, targetElem) => getDistanceBetween(elem, targetElem) < NEARNESSTHRESHOLD + (0.5 * getProp(targetElem, "width"));
+// #endregion ░░░░[Distance]░░░░
+// #endregion ▄▄▄▄▄ UTILITY ▄▄▄▄▄
 
-const setDieStartPos = (dice, circle, buffer = 0.3) => {
-  const radius = (1 - buffer) * 0.5 * getElem(circle).width();
-  const {x: centerX, y: centerY} = getCenterPoint(circle);
-  const stepSize = 360 / (dice.length + 1);
-  let angle = 0;
-  const posData = dice.map((die) => {
-    angle += stepSize;
-    const {left, top} = getTopLeftPoint({
-      x: radius * Math.cos(angle * (Math.PI / 180)) + centerX, // (deg * Math.PI) / 180.0
-      y: radius * Math.sin(angle * (Math.PI / 180)) + centerY,
-      height: getElem(die).height(),
-      width: getElem(die).width()
-    });
-    gsap.set(getElem(die), {
-      x: left,
-      y: top
-    });
-    return {angle, stepSize, numDice: dice.length, left, top};
-  });
-  // debugger;
+// #region ████████ INITIALIZATION: DOM Elements & Animation Effects ████████ ~
+// #region ░░░░░░░[ELEMENTS]░░░░ Creating Static DOM Elements & Registry for Dynamic Elements ░░░░░░░ ~
+const [CONTAINER] = $("<div id=\"roller-container\" />").appendTo(".vtt.game.system-betterangels");
+const [CIRCLES, DICE] = [[], []];
+// #endregion ░░░░[ELEMENTS]░░░░
+// #region ░░░░░░░[EFFECTS]░░░░ Registering GreenSock Effects ░░░░░░░ ~
 
-  // dice.forEach((die) => {
-  //   angle += stepSize;
-  //   const {left, top} = getTopLeftPoint({
-  //     x: radius * Math.cos(angle) + centerX,
-  //     y: radius * Math.sin(angle) + centerY,
-  //     height: getElem(die).height(),
-  //     width: getElem(die).width()
-  //   });
-  //   gsap.set(getElem(die), {
-  //     x: radius * Math.cos(angle) + centerX - (0.5 * getElem(die).width()),
-  //     y: radius * Math.sin(angle) + centerY - (0.5 * getElem(die).height())
-  //   });
-  // });
-};
+// #endregion ░░░░[EFFECTS]░░░░
 
+// #endregion ▄▄▄▄▄ INITIALIZATION ▄▄▄▄▄
+
+// #region ████████ ANIMATION EFFECTS: Defining & Registering Animation Effects  ████████ ~
 gsap.registerEffect({
-  name: "pulse",
+  name: "pulseRollCircle",
   defaults: {
+    minScale: 0.5,
+    maxScale: 2,
+    duration: 1
+  },
+  effect: (targets, config) => gsap.to(targets, {
+    keyframes: [
+      {scale: config.minScale, duration: 0.25 * config.duration},
+      {scale: config.maxScale, duration: 0.25 * config.duration},
+      {scale: 1, duration: 0.5 * config.duration}
+    ],
+    ease: "power4.out"
+    ease: "wiggle",
+    repeat: -1,
+    yoyo: true)
     scaleSteps: [0.5, 2, 1],
     durationSteps: [0.25, 0.25, 0.5],
     easeSteps: ["power4.out", "power4.out", "sine.out"]
@@ -195,9 +115,18 @@ gsap.registerEffect({
 });
 gsap.registerEffect({
   name: "rotate",
-  defaults: {
-    duration: 400
-  },
+  defaults: {duration: 200},
+  effect: (targets, config) => {
+    gsap.to(targets, {
+      rotation: "+=360",
+      duration: config.duration,
+      ease: "none",
+      repeat: -1,
+      get startAt() { return {rotation: }
+
+    })
+  }
+
   effect: (targets, config) => {
     gsap.to(targets, {
       rotation: "+=360",
@@ -261,6 +190,40 @@ gsap.registerEffect({
   },
   effect: (targets, config) => gsap.to(targets, {opacity: config.opacity, duration: config.duration})
 });
+// #endregion ▄▄▄▄▄ tag (for endregion) ▄▄▄▄▄
+
+
+
+
+
+const setDieStartPos = (dice, circle, buffer = 0.3) => {
+  const radius = (1 - buffer) * 0.5 * getElem(circle).width();
+  const {x: centerX, y: centerY} = getCenter(circle);
+  const stepSize = 360 / dice.length;
+  let angle = 0;
+  const posData = dice.map((die) => {
+    angle += stepSize;
+    const {left, top} = getTopLeftPoint({
+      x: radius * Math.cos(angle * (Math.PI / 180)) + centerX, // (deg * Math.PI) / 180.0
+      y: radius * Math.sin(angle * (Math.PI / 180)) + centerY,
+      height: getElem(die).height(),
+      width: getElem(die).width()
+    });
+    gsap.set(getElem(die), {
+      x: left,
+      y: top
+    });
+    return {angle, stepSize, numDice: dice.length, left, top};
+  });
+};
+
+const CIRCLESTATES = {
+  targeted: {size: 10, color: "rgba(0, 0, 255, 1)", opacity: 0.75, duration: 0.5},
+  invalid: {size: 10, color: "rgba(255, 0, 0, 1)", opacity: 0.1, duration: 0.5},
+  near: {size: 20, color: "rgba(0, 130, 0, 1)", opacity: 0.75, duration: 0.5},
+  inside: {size: 40, color: "rgba(0, 255, 0, 1)", opacity: 1, duration: 0.5},
+  none: {size: 0, color: "rgba(0, 0, 0, 0)", opacity: 0.5, duration: 0.5}
+};
 
 const changeCircleState = (elem, state) => {
   if (elem) {
@@ -279,9 +242,9 @@ const createDie = ({circle, color}) => {
       .css({
         "position": "absolute",
         "background": `radial-gradient(ellipse, #FFFFFF, ${color} 90%)`,
-        "height": 40,
-        "width": 40,
-        "outline": "3px solid black",
+        "height": DICEPARAMS.height,
+        "width": DICEPARAMS.width,
+        "outline": "3px solid #000000",
         "border-radius": 5
       }),
     {
@@ -302,8 +265,8 @@ const createDie = ({circle, color}) => {
           }
           const {x, y, width, height} = getPosData(closestCircle);
           return {
-            x: wiggle(x - (0.5 * $(this.target).width()), width, 0.6),
-            y: wiggle(y - (0.5 * $(this.target).height()), height, 0.6)
+            x: wiggle(x - (0.5 * getProp(this, "width")), width, 0.6),
+            y: wiggle(y - (0.5 * getProp(this, "height")), height, 0.6)
           };
         }
       },
@@ -313,6 +276,10 @@ const createDie = ({circle, color}) => {
           this.startCircle = closestCircle;
           changeCircleState(this.startCircle, "inside");
         }
+        /*
+          1) Detach the die from being a child of the circle
+          2) Set its position to absolute, without changing its actual position on screen
+        */
       },
       onDrag() {
         if (isInside(this, this.startCircle)) {
@@ -340,7 +307,7 @@ const createDie = ({circle, color}) => {
               Inside that function ...
             a) Get positions of all dice currently snapped to that circle.
             b) Add an invisible dummy die snap target to the circle, and animate the redistribution of dice to make room.
-            c) Also animate the rotation so the dummy die space faces the die being dragged
+            c) Also animate the rotation so the dummy die space faces the die being dragged (maybe use the SVGMotionPath plugin)
               For the circle being turned off ...
             a) Remove the dummy die space
             b) Animate the redistribution of dice to close off the room that was made.
@@ -391,10 +358,13 @@ const createDie = ({circle, color}) => {
         changeCircleState(this.closestCircle, "none");
         this.startCircle = null;
         this.closestCircle = null;
+        /*
+          1) Transfer the die object into being a child of the circle that grabbed it
+          2) Might have to set its position to relative and figure out other positioning shit here
+        */
       }
     }
   );
-  // const {x, y, height, width} = getPosData($(circle));
   gsap.set(`#${dieID}`, {transformOrigin: "50% 50%"});
   gsap.effects.rotate(die);
   DICE.push(die);
@@ -420,10 +390,10 @@ const createCircle = (numDice, {r, g, b}, {left, top, height, width}, css = {}) 
     ...css
   };
   const circleID = `rollCircle${CIRCLES.length + 1}`;
-  const rollCircle = $(`<div id="${circleID}" class="roll-circle">${CIRCLES.length + 1}</div>`)
+  const [rollCircle] = $(`<div id="${circleID}" class="roll-circle">${CIRCLES.length + 1}</div>`)
     .appendTo(".vtt.game.system-betterangels")
     .css(styles);
-  gsap.set(`#${circleID}`, {
+  gsap.set(rollCircle, {
     transformOrigin: "50% 50%",
     x: left,
     y: top});
@@ -437,10 +407,37 @@ const createCircle = (numDice, {r, g, b}, {left, top, height, width}, css = {}) 
   setDieStartPos(circleDice, rollCircle);
 };
 
+const testGrid = {
+  x: gsap.utils.distribute({
+    base: CONTAINERPADDING.left,
+    amount: getProp(CONTAINER, "width") - getProp("#sidebar", "width") - CONTAINERPADDING.left - CONTAINERPADDING.right,
+    from: "start",
+    grid: [2, 3],
+    axis: "x"
+  }),
+  y: gsap.utils.distribute({
+    base: CONTAINERPADDING.top,
+    amount: CONTAINER.get("height") - CONTAINERPADDING.top - CONTAINERPADDING.bottom,
+    from: "start",
+    grid: [2, 3],
+    axis: "y"
+  })
+};
+
 export default () => {
   [
-    [3, {r: 255, g: 0, b: 255}, {top: CONTAINERPADDING.top, left: CONTAINERPADDING.left, height: 200, width: 200}],
-    [4, {r: 255, g: 255, b: 0}, {top: CONTAINERPADDING.top, left: CONTAINER.width() - 200 - CONTAINERPADDING.right, height: 200, width: 200}],
-    [5, {r: 0, g: 255, b: 255}, {top: CONTAINER.height() - 200 - CONTAINERPADDING.bottom, left: (CONTAINER.width() - CONTAINERPADDING.right - 100) / 2, height: 200, width: 200}]
-  ].forEach((params) => createCircle(...params));
+    [3, {r: 255, g: 0, b: 255}],
+    [5, {r: 0, g: 255, b: 255}],
+    [7, {r: 255, g: 0, b: 0}],
+    [9, {r: 255, g: 255, b: 0}],
+    [11, {r: 0, g: 0, b: 255}],
+    [13, {r: 0, g: 255, b: 0}]
+  ]
+    .map((circParams, i, a) => [...circParams, {
+      left: testGrid.x(i, circParams, a),
+      top: testGrid.y(i, circParams, a),
+      height: 200,
+      width: 200
+    }])
+    .forEach((params) => createCircle(...params));
 };

@@ -18,11 +18,14 @@
 // Can use this for separating sets as well!
 // Can have sets get pushed away from ball as it snaps free
 // Can have sets FIRST start to glow, then magnetically move towards ball as it approaches
-import GSDraggable from "../helpers/Draggable.js";
-import {CustomWiggle} from "../helpers/CustomWiggle.js";
-import {CustomEase} from "../helpers/CustomEase.js";
+import gsap, {
+  Draggable as GSDraggable,
+  InertiaPlugin,
+  CustomWiggle,
+  CustomEase
+} from "/scripts/greensock/esm/all.js";
 
-gsap.registerPlugin(CustomEase, CustomWiggle);
+gsap.registerPlugin(InertiaPlugin, CustomEase, CustomWiggle);
 
 const NEARNESSTHRESHOLD = 100;
 const CIRCLESTATES = {
@@ -37,7 +40,9 @@ const EASECURVES = {
 };
 
 const CONTAINER = $(".vtt.game.system-betterangels");
-const CONTAINERPADDING = {left: 100, top: 50, bottom: 100, right: $("#sidebar").width() + 100};
+const CONTAINERPADDING = {left: 100, top: 50, bottom: 300, right: 300};
+const CIRCLEPARAMS = {height: 200, width: 200};
+const DICEPARAMS = {height: 30, width: 30};
 const CIRCLES = [];
 const DICE = [];
 const TIMELINES = {};
@@ -155,7 +160,7 @@ const isNear = (elem, targetElem) => getDistanceToElem(elem, targetElem) < (NEAR
 const setDieStartPos = (dice, circle, buffer = 0.3) => {
   const radius = (1 - buffer) * 0.5 * getElem(circle).width();
   const {x: centerX, y: centerY} = getCenterPoint(circle);
-  const stepSize = 360 / (dice.length + 1);
+  const stepSize = 360 / dice.length;
   let angle = 0;
   const posData = dice.map((die) => {
     angle += stepSize;
@@ -171,21 +176,6 @@ const setDieStartPos = (dice, circle, buffer = 0.3) => {
     });
     return {angle, stepSize, numDice: dice.length, left, top};
   });
-  // debugger;
-
-  // dice.forEach((die) => {
-  //   angle += stepSize;
-  //   const {left, top} = getTopLeftPoint({
-  //     x: radius * Math.cos(angle) + centerX,
-  //     y: radius * Math.sin(angle) + centerY,
-  //     height: getElem(die).height(),
-  //     width: getElem(die).width()
-  //   });
-  //   gsap.set(getElem(die), {
-  //     x: radius * Math.cos(angle) + centerX - (0.5 * getElem(die).width()),
-  //     y: radius * Math.sin(angle) + centerY - (0.5 * getElem(die).height())
-  //   });
-  // });
 };
 
 gsap.registerEffect({
@@ -286,9 +276,9 @@ const createDie = ({circle, color}) => {
       .css({
         "position": "absolute",
         "background": `radial-gradient(ellipse, #FFFFFF, ${color} 90%)`,
-        "height": 40,
-        "width": 40,
-        "outline": "3px solid black",
+        "height": DICEPARAMS.height,
+        "width": DICEPARAMS.width,
+        "outline": "3px solid #000000",
         "border-radius": 5
       }),
     {
@@ -320,6 +310,10 @@ const createDie = ({circle, color}) => {
           this.startCircle = closestCircle;
           changeCircleState(this.startCircle, "inside");
         }
+        /*
+          1) Detach the die from being a child of the circle
+          2) Set its position to absolute, without changing its actual position on screen
+        */
       },
       onDrag() {
         if (isInside(this, this.startCircle)) {
@@ -347,7 +341,7 @@ const createDie = ({circle, color}) => {
               Inside that function ...
             a) Get positions of all dice currently snapped to that circle.
             b) Add an invisible dummy die snap target to the circle, and animate the redistribution of dice to make room.
-            c) Also animate the rotation so the dummy die space faces the die being dragged
+            c) Also animate the rotation so the dummy die space faces the die being dragged (maybe use the SVGMotionPath plugin)
               For the circle being turned off ...
             a) Remove the dummy die space
             b) Animate the redistribution of dice to close off the room that was made.
@@ -398,6 +392,10 @@ const createDie = ({circle, color}) => {
         changeCircleState(this.closestCircle, "none");
         this.startCircle = null;
         this.closestCircle = null;
+        /*
+          1) Transfer the die object into being a child of the circle that grabbed it
+          2) Might have to set its position to relative and figure out other positioning shit here
+        */
       }
     }
   );
@@ -444,10 +442,37 @@ const createCircle = (numDice, {r, g, b}, {left, top, height, width}, css = {}) 
   setDieStartPos(circleDice, rollCircle);
 };
 
+const testGrid = {
+  x: gsap.utils.distribute({
+    base: CONTAINERPADDING.left,
+    amount: CONTAINER.width() - $("#sidebar").width() - CONTAINERPADDING.left - CONTAINERPADDING.right,
+    from: "start",
+    grid: [2, 3],
+    axis: "x"
+  }),
+  y: gsap.utils.distribute({
+    base: CONTAINERPADDING.top,
+    amount: CONTAINER.height() - CONTAINERPADDING.top - CONTAINERPADDING.bottom,
+    from: "start",
+    grid: [2, 3],
+    axis: "y"
+  })
+};
+
 export default () => {
   [
-    [3, {r: 255, g: 0, b: 255}, {top: CONTAINERPADDING.top, left: CONTAINERPADDING.left, height: 200, width: 200}],
-    [4, {r: 255, g: 255, b: 0}, {top: CONTAINERPADDING.top, left: CONTAINER.width() - 200 - CONTAINERPADDING.right, height: 200, width: 200}],
-    [5, {r: 0, g: 255, b: 255}, {top: CONTAINER.height() - 200 - CONTAINERPADDING.bottom, left: (CONTAINER.width() - CONTAINERPADDING.right - 100) / 2, height: 200, width: 200}]
-  ].forEach((params) => createCircle(...params));
+    [3, {r: 255, g: 0, b: 255}],
+    [5, {r: 0, g: 255, b: 255}],
+    [7, {r: 255, g: 0, b: 0}],
+    [9, {r: 255, g: 255, b: 0}],
+    [11, {r: 0, g: 0, b: 255}],
+    [13, {r: 0, g: 255, b: 0}]
+  ]
+    .map((circParams, i, a) => [...circParams, {
+      left: testGrid.x(i, circParams, a),
+      top: testGrid.y(i, circParams, a),
+      height: 200,
+      width: 200
+    }])
+    .forEach((params) => createCircle(...params));
 };

@@ -180,15 +180,21 @@
   text-align: center; }
 
 /* Styles for created DOM objects */
-.roll-circle {
-  outline: 0 solid transparent;
-  opacity: 0.5; }
-
-.roll-die {
-  font-size: 24px;
-  font-weight: bold;
-  text-align: center;
-  line-height: 40px; }
+#roller-container {
+  width: 100%;
+  height: 100%;
+  padding: 50px 100px 300px; }
+  #roller-container .roll-circle {
+    width: 200px;
+    height: 200px;
+    opacity: 0.5; }
+  #roller-container .roll-die {
+    width: 30px;
+    height: 30px;
+    font-size: 24px;
+    font-weight: bold;
+    line-height: 40px;
+    text-align: center; }
 
 /* Styles limited to betterangels sheets */
 .betterangels {
