@@ -180,21 +180,30 @@
   text-align: center; }
 
 /* Styles for created DOM objects */
-#roller-container {
-  width: 100%;
-  height: 100%;
-  padding: 50px 100px 300px; }
-  #roller-container .roll-circle {
+#roll-circle-container {
+  position: absolute;
+  top: 50px;
+  left: 100px;
+  width: calc(100% - 450px);
+  height: calc(100% - 150px);
+  outline: 3px solid #FF0000; }
+  #roll-circle-container .roll-circle {
+    position: absolute;
     width: 200px;
     height: 200px;
     opacity: 0.5; }
-  #roller-container .roll-die {
-    width: 30px;
-    height: 30px;
-    font-size: 24px;
-    font-weight: bold;
-    line-height: 40px;
-    text-align: center; }
+    #roll-circle-container .roll-circle .roll-die {
+      position: relative;
+      width: 30px;
+      height: 30px;
+      font-size: 24px;
+      font-weight: bold;
+      line-height: 40px;
+      text-align: center;
+      background: -o-radial-gradient(ellipse, #FFFFFF, #00FF00 90%);
+      background: radial-gradient(ellipse, #FFFFFF, #00FF00 90%);
+      border-radius: 5px;
+      outline: 3px solid #000000; }
 
 /* Styles limited to betterangels sheets */
 .betterangels {
