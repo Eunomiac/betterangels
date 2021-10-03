@@ -1,75 +1,91 @@
 /* ****▌███████████████████████████████████████████████████████████████████████████▐**** *\
 |*     ▌███████░░░░░░░░░░░░░░ Better Angels for Foundry VTT ░░░░░░░░░░░░░░░░███████▐     *|
 |*     ▌██████████████████░░░░░░░░░░░░░ by Eunomiac ░░░░░░░░░░░░░██████████████████▐     *|
-|*     ▌███████████████ MIT License █ v0.0.1-prealpha █ Sep 30 2021 ███████████████▐     *|
+|*     ▌███████████████ MIT License █ v0.0.1-prealpha █ Oct 03 2021 ███████████████▐     *|
 |*     ▌████████░░░░░░░░ https://github.com/Eunomiac/betterangels ░░░░░░░░█████████▐     *|
 \* ****▌███████████████████████████████████████████████████████████████████████████▐**** */
 
 // ████████ INITIALIZATION ████████
+import U from "../helpers/utilities.mjs";
 import gsap, {
-  Draggable as GSDraggable,
-  InertiaPlugin,
-  MotionPathPlugin,
-  CustomWiggle,
-  CustomEase
+  Draggable as Dragger,
+  InertiaPlugin as Inertia
 } from "/scripts/greensock/esm/all.js";
-const REGISTRY = {};
 
 // ████████ UTILITY FUNCTIONS ████████
-const {
-  getProperty: get,
-  utils: {random, distribute, splitColor, mapRange}
-} = gsap;
-
-const joinColor = (r, g, b, a = 1) => `rgba(${r}, ${g}, ${b}, ${a})`;
 
 // 1) Create Canvas DIV
-$("<div id=\"roll-circle-container\" />").appendTo(".vtt.game.system-betterangels");
 
 // 2) Create Classes
 class RollCircle {
-  static get REGISTRY() {
-    this._REGISTRY = this._REGISTRY ?? {};
-    return this._REGISTRY;
-  }
-  static RegisterCircle(circle) {
-    const circleNum = Object.keys(this.REGISTRY).length + 1;
-    circle.id = `rollCircle-${circleNum}`;
-    this.REGISTRY[circle.id] = circle;
-  }
-  constructor({x, y}, radius, color) {
-    this.x = x;
-    this.y = y;
-    this.radius = radius;
-    [this.r, this.g, this.b] = splitColor(color);
-    RollCircle.RegisterCircle(this);
-    this.draw();
+  // ████████ STATIC: Static Getters, Setters, Methods ████████
+  // ▮▮▮▮▮▮▮[Getters] Basic Data Retrieval ▮▮▮▮▮▮▮
+  static get REGISTRY() { return (this._REGISTRY = this._REGISTRY ?? {}) }
+  // ░░░░░░░[Enums]░░░░ Enumeration Objects ░░░░░░░
+  static get TYPES() {
+    return {
+      basic: "basic"
+    };
   }
 
-  get color() { return joinColor(this.r, this.g, this.b) }
+  // ░░░░░░░[Elements]░░░░ Element Retrieval ░░░░░░░
+  static get CONTAINER() { return (this._CONTAINER = [this._CONTAINER ?? "#rollCircleContainer" ?? this.CreateContainer()][0]) }
+  static Get(owner, type, num = 1) { return this.REGISTRY[`${owner}_${type}_${num}`] }
 
-  get id() { return this._id }
-  set id(v) {
-    this._id = v;
-    [this.index] = v.match(/\d+$/);
+  static CreateContainer() {
+    return $("<div id=\"rollCircleContainer\" />").appendTo(".vtt.game")[0];
+  }
+  static Register(circle) { this.REGISTRY[circle.name] = circle }
+
+  // ████████ CONSTRUCTOR ████████
+  constructor({x, y}, radius, cssClasses = [], {owner, type, dice: {num, types}} = {}) {
+    this._x = x;
+    this._y = y;
+    this._r = radius;
+    this._cssClasses = ["roll-circle", ...cssClasses];
+    this._owner = owner ?? U.GMID;
+    this._type = type ?? RollCircle.TYPES.basic;
+    this._name = `${this._owner}_${this._type}_${
+      Object.keys(RollCircle.REGISTRY)
+        .filter((key) => new RegExp(`${this._owner}_${this._type}_`).test(key))
+        .length + 1
+    }`;
+    RollCircle.Register(this);
+    this.create();
+    this.addDice(num, types);
   }
 
-  get index() { return this._index }
-  set index(v) { this._index = parseInt(v) }
+  get x() { return this._x }
+  get y() { return this._y }
+  get radius() { return this._r }
+  get height() { return this.radius * 2 }
+  get width() { return this.radius * 2 }
+  get cssClasses() { return this._cssClasses }
+  get owner() { return game.users.get(this._owner) }
+  get type() { return this._type }
+  get name() { return this._name }
+  get id() { return `rollCircle-${this.name}` }
+  get snapID() { return `snapCircle-${this.name}` }
 
-  get childDice() { return (this._childDice = this._childDice ?? []) }
+  get rollCircle() { return this._rollCircle }
+  get snapCircle() { return $(`#${this.id} .snap-circle`)[0] }
+  get diceElems() { return $(`#${this.id} .ore-die`) }
 
-  draw() {
-    [this.elem] = $(`<svg id="${this.id}" class="roll-circle" height="${2 * this.radius}" width="${2 * this.radius}">
-        <circle r="50%" stroke="none" fill="${this.color}" cx="50%" cy="50%" />
-       </svg>`)
-      .appendTo("#roll-circle-container");
-    gsap.set(`#${this.id}`, {xPercent: -50, yPercent: -50, x: this.x, y: this.y});
+  create() {
+    [this._rollCircle] = $(`
+    <div id="${this.id}" class="${this.cssClasses.join(" ")}" style="height: ${this.height}px; width: ${this.width}px;">
+      <svg height="100%" width="100%">
+        <circle cx="${this.radius}" cy="${this.radius}" r="${this.radius}" stroke="none" />
+        <circle class="snap-circle" cx="${this.radius}" cy="${this.radius}" r="${this.radius * 0.8}" fill="none" stroke="none" />
+      </svg>
+    </div>
+    `).appendTo(RollCircle.CONTAINER);
+    this.setCircle({xPercent: -50, yPercent: -50, x: this.x, y: this.y});
+    this.setSnapCircle({xPercent: -50, yPercent: -50});
   }
 
-  initDie() { this.childDice.push(new OREDie(this)) }
-  addDie(die) { this.childDice.push(die) }
-  remDie(die) { this._childDice = this.childDice.filter((child) => die !== child) }
+  setCircle(params) { U.set(this.rollCircle, params) }
+  setSnapCircle(params) { U.set(this.snapCircle, params) }
 
   distributeDice() {
     const radius = 0.8 * this.radius;
@@ -77,7 +93,7 @@ class RollCircle {
     let angle = 0;
     this.childDice.forEach((die) => {
       angle += stepSize;
-      gsap.set(die.elem, {
+      G.set(die.elem, {
         xPercent: -50,
         yPercent: -50,
         x: radius * Math.cos(angle * (Math.PI / 180)),
@@ -105,12 +121,12 @@ class OREDie {
 
   draw() {
     [this.elem] = $(`<circle id="${this.id}" r="30px" stroke="#FFFFFF" fill="lime">&nbsp;</circle>`).appendTo(this.homeCircle.elem);
-    gsap.set(this.elem, {xPercent: -50, yPercent: -50, transformOrigin: "50% 50%"});
+    G.set(this.elem, {xPercent: -50, yPercent: -50, transformOrigin: "50% 50%"});
   }
 }
 
 export default () => {
-  gsap.registerPlugin(GSDraggable, InertiaPlugin, MotionPathPlugin);
+  gsap.registerPlugin(Dragger, Inertia);
   [
     [{x: 100, y: 100}, 100, "lime"],
     [{x: 1100, y: 100}, 100, "cyan"],

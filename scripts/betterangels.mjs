@@ -6,6 +6,9 @@ import BETTERANGELS from "./helpers/config.mjs";
 // #region ▮▮▮▮▮▮▮[Utility]▮▮▮▮▮▮▮ ~
 import preloadHandlebarsTemplates from "./helpers/templates.mjs";
 import testCircles from "./documents/dragCircle.mjs";
+import U from "./helpers/utilities.mjs";
+
+U.init();
 // #endregion ▮▮▮▮[Utility]▮▮▮▮
 
 // #region ▮▮▮▮▮▮▮[Classes]▮▮▮▮▮▮▮ ~
@@ -63,6 +66,7 @@ Hooks.once("init", async () => {
     BARoll,
     testCircles
   };
+  window.U = U;
   testCircles();
   /*!DEVCODE*/
 

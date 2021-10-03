@@ -180,19 +180,22 @@
   text-align: center; }
 
 /* Styles for created DOM objects */
-#roll-circle-container {
+#rollCircleContainer {
   position: absolute;
   top: 50px;
   left: 100px;
   width: calc(100% - 450px);
   height: calc(100% - 150px);
   outline: 3px solid #FF0000; }
-  #roll-circle-container .roll-circle {
+  #rollCircleContainer .roll-circle {
     position: absolute;
     width: 200px;
     height: 200px;
-    opacity: 0.5; }
-    #roll-circle-container .roll-circle .roll-die {
+    opacity: 0.5;
+    -webkit-transform-origin: 50% 50%;
+    -ms-transform-origin: 50% 50%;
+    transform-origin: 50% 50%; }
+    #rollCircleContainer .roll-circle .roll-die {
       position: relative;
       width: 30px;
       height: 30px;
@@ -203,7 +206,14 @@
       background: -o-radial-gradient(ellipse, #FFFFFF, #00FF00 90%);
       background: radial-gradient(ellipse, #FFFFFF, #00FF00 90%);
       border-radius: 5px;
-      outline: 3px solid #000000; }
+      outline: 3px solid #000000;
+      -webkit-transform-origin: 50% 50%;
+      -ms-transform-origin: 50% 50%;
+      transform-origin: 50% 50%; }
+    #rollCircleContainer .roll-circle .snap-circle {
+      -webkit-transform-origin: 50% 50%;
+      -ms-transform-origin: 50% 50%;
+      transform-origin: 50% 50%; }
 
 /* Styles limited to betterangels sheets */
 .betterangels {

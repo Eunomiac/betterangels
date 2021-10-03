@@ -5,37 +5,27 @@
 |*     ▌████████░░░░░░░░ https://github.com/Eunomiac/betterangels ░░░░░░░░█████████▐     *|
 \* ****▌███████████████████████████████████████████████████████████████████████████▐**** */
 
-import HellboundActorSheet from "./actor-hellbound-sheet.mjs";
+import gsap, {MotionPathPlugin} from "/scripts/greensock/esm/all.js";
 
-export default class extends HellboundActorSheet {
+export default {
+  // ████████ GETTERS: Basic Data Retrieval ████████
+  get GMID() { return game.users.find((user) => user.isGM)?.id ?? false },
 
-  static get defaultOptions() {
-    return mergeObject(super.defaultOptions, {
-      classes: [...super.defaultOptions.classes, "demon", "companion"],
-      width: 400,
-      height: 700,
-      tabs: [{navSelector: ".sheet-tabs", contentSelector: ".sheet-body", initial: "strats&tacts"}]
-    });
-  }
+  // ████████ GSAP: GSAP Functions ████████
+  init() { gsap.registerPlugin(MotionPathPlugin) },
+  get(...args) { return gsap.getProperty(...args) },
+  set(...args) { return gsap.set(...args) },
 
-  getData() {
-    
-    const context = super.getData();
-    const thisActorData = context.actor.data;
+  // ▮▮▮▮▮▮▮[GSAP.UTILS]▮▮▮▮▮▮▮
+  random(...args) { return gsap.utils.random(...args) },
+  distribute(...args) { return gsap.utils.distribute(...args) },
+  splitColor(...args) { return gsap.utils.splitColor(...args) },
+  mapRange(...args) { return gsap.utils.mapRange(...args) },
 
-    return context;
-  }
+  // ▮▮▮▮▮▮▮[MOTIONPATH] MotionPathPlugin ▮▮▮▮▮▮▮
 
-  _prepareCharacterData(context) {
-    super._prepareCharacterData(context);
-  }
+  // ████████ STRINGS: String Parsing ████████
+  // ▮▮▮▮▮▮▮[COLORS] Color String Conversion & Manipulation ▮▮▮▮▮▮▮
+  joinColor: (r, g, b, a = 1) => `rgba(${r}, ${g}, ${b}, ${a})`
 
-  _prepareItems(context) {
-    super._prepareItems(context);
-  }
-
-  activateListeners(html) {
-    super.activateListeners(html);
-  }
-
-}
+};

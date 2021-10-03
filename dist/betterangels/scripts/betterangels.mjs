@@ -1,7 +1,7 @@
 /* ****▌███████████████████████████████████████████████████████████████████████████▐**** *\
 |*     ▌███████░░░░░░░░░░░░░░ Better Angels for Foundry VTT ░░░░░░░░░░░░░░░░███████▐     *|
 |*     ▌██████████████████░░░░░░░░░░░░░ by Eunomiac ░░░░░░░░░░░░░██████████████████▐     *|
-|*     ▌███████████████ MIT License █ v0.0.1-prealpha █ Sep 30 2021 ███████████████▐     *|
+|*     ▌███████████████ MIT License █ v0.0.1-prealpha █ Oct 03 2021 ███████████████▐     *|
 |*     ▌████████░░░░░░░░ https://github.com/Eunomiac/betterangels ░░░░░░░░█████████▐     *|
 \* ****▌███████████████████████████████████████████████████████████████████████████▐**** */
 
@@ -12,6 +12,9 @@ import BETTERANGELS from "./helpers/config.mjs";
 // ▮▮▮▮▮▮▮[Utility]▮▮▮▮▮▮▮
 import preloadHandlebarsTemplates from "./helpers/templates.mjs";
 import testCircles from "./documents/dragCircle.mjs";
+import U from "./helpers/utilities.mjs";
+
+U.init();
 
 // ▮▮▮▮▮▮▮[Classes]▮▮▮▮▮▮▮
 import BetterAngelsActor from "./documents/actor.mjs";
