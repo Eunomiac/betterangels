@@ -1,4 +1,4 @@
-import gsap, {MotionPathPlugin} from "/scripts/greensock/esm/all.js"; // eslint-disable-line import/no-unresolved
+import gsap from "/scripts/greensock/esm/all.js"; // eslint-disable-line import/no-unresolved
 
 export default {
   // #region ████████ GETTERS: Basic Data Retrieval ████████ ~
@@ -6,7 +6,6 @@ export default {
   // #endregion ▄▄▄▄▄ GETTERS ▄▄▄▄▄
 
   // #region ████████ GSAP: GSAP Functions ████████ ~
-  init() { gsap.registerPlugin(MotionPathPlugin) },
   get(...args) { return gsap.getProperty(...args) },
   set(...args) { return gsap.set(...args) },
 
@@ -16,11 +15,6 @@ export default {
   splitColor(...args) { return gsap.utils.splitColor(...args) },
   mapRange(...args) { return gsap.utils.mapRange(...args) },
   // #endregion ▮▮▮▮[GSAP.UTILS]▮▮▮▮
-
-  // #region ▮▮▮▮▮▮▮[MOTIONPATH] MotionPathPlugin ▮▮▮▮▮▮▮ ~
-
-  // #endregion ▮▮▮▮[MOTIONPATH]▮▮▮▮
-
   // #endregion ▄▄▄▄▄ GSAP ▄▄▄▄▄
 
   // #region ████████ STRINGS: String Parsing ████████ ~

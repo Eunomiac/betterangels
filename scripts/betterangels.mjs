@@ -7,8 +7,6 @@ import BETTERANGELS from "./helpers/config.mjs";
 import preloadHandlebarsTemplates from "./helpers/templates.mjs";
 import testCircles from "./documents/dragCircle.mjs";
 import U from "./helpers/utilities.mjs";
-
-U.init();
 // #endregion ▮▮▮▮[Utility]▮▮▮▮
 
 // #region ▮▮▮▮▮▮▮[Classes]▮▮▮▮▮▮▮ ~
@@ -52,7 +50,15 @@ Hooks.once("init", async () => {
   Items.registerSheet("betterangels", BetterAngelsItemSheet, {makeDefault: true});
   // #endregion ▮▮▮▮[Classes]▮▮▮▮
 
-  /*DEVCODE*/
+  // #region ▮▮▮▮▮▮▮[Handlebar Templates] Preload Handlebars Templates ▮▮▮▮▮▮▮
+  return preloadHandlebarsTemplates();
+  // #endregion ▮▮▮▮[Handlebar Templates]▮▮▮▮
+
+});
+// #endregion ▄▄▄▄▄ ON INIT ▄▄▄▄▄
+
+/*DEVCODE*/
+Hooks.once("ready", async () => {
   window.REF = game.betterangels;
   window.DB = {
     BetterAngelsActor,
@@ -67,16 +73,9 @@ Hooks.once("init", async () => {
     testCircles
   };
   window.U = U;
-  testCircles();
-  /*!DEVCODE*/
-
-  // #region ▮▮▮▮▮▮▮[Handlebar Templates] Preload Handlebars Templates ▮▮▮▮▮▮▮
-  return preloadHandlebarsTemplates();
-  // #endregion ▮▮▮▮[Handlebar Templates]▮▮▮▮
-
+  window.CIRCLES = testCircles();
 });
-// #endregion ▄▄▄▄▄ ON INIT ▄▄▄▄▄
-
+/*!DEVCODE*/
 /**
 // #region ████████ ON READY: On-Ready Hook ████████ ~
 Hooks.once("ready", async () => {

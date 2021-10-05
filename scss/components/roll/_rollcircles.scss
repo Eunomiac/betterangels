@@ -20,18 +20,32 @@ $padding-right: 350px;
     opacity: 0.5;
     transform-origin: 50% 50%;
 
-    .roll-die {
-      position: relative;
+    > svg { 
+      position: absolute;
+      margin-bottom: calc(-1 * #{$circle-size});
+    }
+
+    &.lime > svg > circle { fill: lime; }
+    &.pink > svg > circle { fill: pink; }
+    &.cyan > svg > circle { fill: cyan; }
+
+    .ore-die {
+      position: absolute;
       width: $die-size;
       height: $die-size;
-      font-size: 24px;
+      font-size: calc(#{$die-size} * 0.75);
       font-weight: bold;
-      line-height: 40px;
+      line-height: $die-size;
       text-align: center;
       background: radial-gradient(ellipse, #FFFFFF, #00FF00 90%);
-      border-radius: 5px;
-      outline: 3px solid #000000;
+      border-radius: calc(#{$die-size} * 0.2);
+      outline: calc(#{$die-size} * 0.1) solid #000000;
       transform-origin: 50% 50%;
+
+      &.ore-slot-space {
+        pointer-events: none;
+        opacity: 0;
+      }
     }
 
     .snap-circle {
