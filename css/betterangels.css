@@ -186,7 +186,14 @@
   left: 100px;
   width: calc(100% - 450px);
   height: calc(100% - 150px);
+  font-size: calc(30px * 0.75);
+  font-weight: bold;
+  line-height: 30px;
+  text-align: center;
   outline: 3px solid #FF0000; }
+  #rollCircleContainer * {
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box; }
   #rollCircleContainer .roll-circle {
     position: absolute;
     width: 200px;
@@ -195,8 +202,33 @@
     -webkit-transform-origin: 50% 50%;
     -ms-transform-origin: 50% 50%;
     transform-origin: 50% 50%; }
-    #rollCircleContainer .roll-circle > svg {
+    #rollCircleContainer .roll-circle .angle-marker {
       position: absolute;
+      width: 25px;
+      height: 25px;
+      font-family: sans-serif;
+      font-size: 12px;
+      font-weight: bold;
+      line-height: 12.5px;
+      background-color: orange;
+      opacity: 1;
+      -webkit-transform-origin: 50% 50%;
+      -ms-transform-origin: 50% 50%;
+      transform-origin: 50% 50%; }
+    #rollCircleContainer .roll-circle .path-marker {
+      position: absolute;
+      width: 20px;
+      height: 14px;
+      font-size: 12px;
+      line-height: 16px;
+      color: white;
+      background-color: red;
+      border-radius: 5px;
+      opacity: 1; }
+    #rollCircleContainer .roll-circle > svg {
+      --offset: calc(-0.5 * 200px);
+      position: absolute;
+      margin: 0 var(--offset) calc(2 * var(--offset)) var(--offset);
       margin-bottom: calc(-1 * 200px); }
     #rollCircleContainer .roll-circle.lime > svg > circle {
       fill: lime; }
@@ -204,28 +236,78 @@
       fill: pink; }
     #rollCircleContainer .roll-circle.cyan > svg > circle {
       fill: cyan; }
-    #rollCircleContainer .roll-circle .ore-die {
-      position: absolute;
-      width: 30px;
-      height: 30px;
-      font-size: calc(30px * 0.75);
-      font-weight: bold;
-      line-height: 30px;
-      text-align: center;
-      background: -o-radial-gradient(ellipse, #FFFFFF, #00FF00 90%);
-      background: radial-gradient(ellipse, #FFFFFF, #00FF00 90%);
-      border-radius: calc(30px * 0.2);
-      outline: calc(30px * 0.1) solid #000000;
-      -webkit-transform-origin: 50% 50%;
-      -ms-transform-origin: 50% 50%;
-      transform-origin: 50% 50%; }
-      #rollCircleContainer .roll-circle .ore-die.ore-slot-space {
-        pointer-events: none;
-        opacity: 0; }
+    #rollCircleContainer .roll-circle.yellow > svg > circle {
+      fill: yellow; }
     #rollCircleContainer .roll-circle .snap-circle {
       -webkit-transform-origin: 50% 50%;
       -ms-transform-origin: 50% 50%;
       transform-origin: 50% 50%; }
+  #rollCircleContainer .ore-die {
+    position: absolute;
+    width: 30px;
+    height: 30px;
+    font-size: calc(30px * 0.75);
+    font-weight: bold;
+    line-height: 30px;
+    text-align: center;
+    background: -o-radial-gradient(ellipse, #FFFFFF, #00FF00 90%);
+    background: radial-gradient(ellipse, #FFFFFF, #00FF00 90%);
+    border-radius: calc(30px * 0.2);
+    outline: calc(30px * 0.1) solid #000000;
+    -webkit-transform-origin: 50% 50%;
+    -ms-transform-origin: 50% 50%;
+    transform-origin: 50% 50%; }
+    #rollCircleContainer .ore-die.ore-slot-space {
+      pointer-events: none;
+      opacity: 0; }
+
+.db-display {
+  position: absolute;
+  width: calc(200px * 4);
+  height: auto;
+  font-family: 'Fira Code';
+  font-size: 14px;
+  line-height: 16px;
+  color: lime;
+  text-align: left;
+  background-color: rgba(0, 100, 0, 0.5);
+  -webkit-filter: drop-shadow(0, 0, 5px, lime);
+  filter: drop-shadow(0, 0, 5px, lime);
+  outline: 5px solid lime;
+  opacity: 1;
+  -webkit-transform-origin: 50% 50%;
+  -ms-transform-origin: 50% 50%;
+  transform-origin: 50% 50%; }
+  .db-display td {
+    width: 25%; }
+
+.rotation-display,
+.angle-display {
+  position: absolute;
+  width: 200px;
+  height: 32px;
+  font-family: sans-serif;
+  font-size: 14px;
+  font-weight: bold;
+  line-height: 32px;
+  background-color: lightblue;
+  opacity: 1;
+  -webkit-transform-origin: 50% 50%;
+  -ms-transform-origin: 50% 50%;
+  transform-origin: 50% 50%; }
+  .rotation-display.angle-display,
+  .angle-display.angle-display {
+    background-color: magenta; }
+
+#testObj {
+  position: absolute;
+  width: 50px;
+  min-width: 50px;
+  height: 50px;
+  min-height: 50px;
+  background-color: red;
+  border-radius: 25px;
+  outline: 3px solid black; }
 
 /* Styles limited to betterangels sheets */
 .betterangels {
