@@ -1,7 +1,7 @@
 /* ****▌███████████████████████████████████████████████████████████████████████████▐**** *\
 |*     ▌███████░░░░░░░░░░░░░░ Better Angels for Foundry VTT ░░░░░░░░░░░░░░░░███████▐     *|
 |*     ▌██████████████████░░░░░░░░░░░░░ by Eunomiac ░░░░░░░░░░░░░██████████████████▐     *|
-|*     ▌███████████████ MIT License █ v0.0.1-prealpha █ Oct 09 2021 ███████████████▐     *|
+|*     ▌███████████████ MIT License █ v0.0.1-prealpha █ Oct 11 2021 ███████████████▐     *|
 |*     ▌████████░░░░░░░░ https://github.com/Eunomiac/betterangels ░░░░░░░░█████████▐     *|
 \* ****▌███████████████████████████████████████████████████████████████████████████▐**** */
 
@@ -26,14 +26,22 @@ class RollCircle {
   static get SnapPoints() { return Object.values(this._SnapPoints ?? {}).flat() }
   static GetClosestTo(die) {
     let targetCircle, minDistance = Infinity;
-    this.ALL.forEach((circle) => {
+    return this.ALL.reduce((minCircle, circle) => {
       const thisDistance = circle._getDistanceTo(die);
       if (thisDistance < minDistance) {
-        targetCircle = circle;
         minDistance = thisDistance;
+        return circle;
       }
+      return minCircle ?? circle;
     });
-    return targetCircle;
+    // this.ALL.forEach((circle) => {
+    //   const thisDistance = circle._getDistanceTo(die);
+    //   if (thisDistance < minDistance) {
+    //     targetCircle = circle;
+    //     minDistance = thisDistance;
+    //   }
+    // });
+    // return targetCircle;
   }
   // ========== Enumeration Objects ===========
   static get TYPES() {
@@ -193,25 +201,30 @@ class RollCircle {
   _getAbsAngleTo({x, y}) { return U.getAngle({x: this.x, y: this.y}, {x, y}) }
   _getRelAngleTo({x, y}) { return U.cycle(this._getAbsAngleTo({x, y}) - this.rotation + 180, -180, 180) }
   _getDistanceTo({x, y}) { return U.getDistance({x: this.x, y: this.y}, {x, y}) }
+  _getNearestSlot({x, y}) {
+    if ([x, y].includes(undefined)) { return false }
+    const angle = this._getRelAngleTo({x, y});
+    const pathPos = gsap.utils.normalize(-180, 180, angle);
+    let slot = this.slots.findIndex((v, i, a) => i / a.length >= pathPos);
+    if (slot === -1) { slot = this.slots.length - 1 }
+    if (slot > 0
+      && ((slot / this.slots.length) - pathPos) > (pathPos - ((slot - 1) / this.slots.length))) {
+      slot--;
+    }
+    return slot;
+  }
   _getPosOnPath(pathPos) {
     const {x, y, angle} = MotionPathPlugin.getPositionOnPath(this.snap.path, pathPos, true);
     return {x, y, angle, pathPos};
   }
-  _getDieSlot(die, slots) {
+  _getDieSlot(die, slots, isSearching = true) {
     let slot = -1;
-    if (die instanceof OREDie) {
-      if (slots) {
-        slot = slots.findIndex((slotDie) => die.name === slotDie?.name);
-      } else {
-        const angle = this._getRelAngleTo(die);
-        const pathPos = gsap.utils.normalize(-180, 180, angle);
-        slot = this.slots.findIndex((v, i, a) => i / a.length >= pathPos);
-        if (slot === -1) { slot = this.slots.length - 1 }
-        if (slot > 0
-          && ((slot / this.slots.length) - pathPos) > (pathPos - ((slot - 1) / this.slots.length))) {
-          slot--;
-        }
-      }
+    if (slots) {
+      slot = slots.findIndex((slotDie) => (die instanceof OREDie
+        ? die.name === slotDie?.name
+        : die === slotDie));
+    } else if (isSearching) {
+      slot = this._getNearestSlot(die);
     }
     return slot >= 0 ? slot : false;
   }
@@ -243,14 +256,96 @@ class RollCircle {
       ...slots.slice(index)
     ];
   }
-  async _redistributeDice(newSlots, duration = 1) {
-    // newSlots = newSlots ?? this.slots; <-- Won't work unless _getDiePos can get actual path position
-    if (
-      newSlots.map((item) => (item instanceof OREDie ? item.name : item)).join("")
-      === this.slots.map((item) => (item instanceof OREDie ? item.name : item)).join("")
-    ) { return Promise.resolve() }
+  _compareSlots(oSlots, nSlots) {
+    oSlots = [...oSlots];
+    nSlots = [...nSlots];
+    function compareSlot(slot1, slot2) {
+      if (slot1 instanceof OREDie && slot2 instanceof OREDie) {
+        return slot1.name === slot2.name;
+      }
+      return slot1 === slot2;
+    }
+    function getNext(slot, slots) {
+      let slotIndex = slots.findIndex((s) => compareSlot(slot, s));
+      if (slotIndex === slots.length - 1) {
+        slotIndex = 0;
+      } else {
+        slotIndex++;
+      }
+      return slots[slotIndex];
+    }
+    if (oSlots.length !== nSlots.length) {
+      return {isEqual: false, isSameOrder: false};
+    }
+    if (oSlots.every((oSlot, i) => compareSlot(oSlot, nSlots[i]))) {
+      return {isEqual: true, isSameOrder: true};
+    }
+    const testResults = {isEqual: false, isSameOrder: true};
+    for (const slot of oSlots) {
+      if (!compareSlot(getNext(slot, oSlots), getNext(slot, nSlots))) {
+        testResults.isSameOrder = false;
+        break;
+      }
+    }
+    if (testResults.isSameOrder) {
+      if (compareSlot(oSlots[0], nSlots[1])) {
+        testResults.cycleSlot = 0;
+      } else if (compareSlot(oSlots[1], nSlots[0])) {
+        testResults.cycleSlot = oSlots.length - 1;
+      }
+    }
+    return testResults;
+  }
+  _checkSlots(item, slots) {
+    if (item instanceof OREDie) {
+      return slots.filter((slot) => slot instanceof OREDie && slot.name === item.name).length > 0;
+    }
+    return slots.includes(item);
+  }
+  _checkSnap(die, slots) {
+    slots = [...slots];
+    if (die instanceof OREDie) {
+      const snapPointName = `SNAP-${die.name}`;
+      const snapPointSlot = slots.findIndex((slot) => slot === snapPointName);
+      if (snapPointSlot >= 0) {
+        slots[snapPointSlot] = die;
+      }
+    }
+    return slots;
+  }
+  async pushClockwise(slotRef, numSlots = 1) {
+    const slot = this._getDieSlot(slotRef, this.slots, false);
+
+  } // Have some kind of throttling or queue here, but will be easier since only one other die should have to move
+  async pushCounterClockwise(slotRef, numSlots = 1) { }
+  async pushToSlot(slotRef, slotNum) { } // Finds the slotRef, then pushes it through the other dice to its new position using above functions. If no slotNum given, will try to use the slotRef to figure out the slotNum...?
+
+  /* For basic path positioning:  Give each item a weight -- dice are 1, snap points are 2, etc
+          Should have a "maximum absolute path share per item" before triggering the weighting, so circles with only a few dice and lots of room don't do it
+    Then just map the weighted positions of each item to the 0 - 1 pathPos
+    Can just call this function with no args after closing the snap point to redistribute all the dice with the proper positioning
+    Can probably make it a super safe function, too, since all it will ever do is look at the dice and adjust their weighted positions
+    Weights can even change dynamically based on, say, distance of dragged die to the snap point
+
+    DB TEST: On debug layer, generate a die image at the exact moment and position the snap point is determined */
+  async _redistributeDice(newSlots, duration = 1, isStartPosOK = false) {
 
     const oldSlots = [...this.slots];
+    newSlots = Array.isArray(newSlots)
+      ? newSlots
+      : this._checkSnap(newSlots, this.slots);
+    // const newSlotRecord = [...newSlots];
+
+    const slotCompare = this._compareSlots(newSlots, oldSlots);
+    if (slotCompare.isEqual) { return Promise.resolve() }
+    if (slotCompare.isSameOrder && "cycleSlot" in slotCompare) {
+      newSlots = [
+        oldSlots[oldSlots.length - 1],
+        ...oldSlots.slice(1, -1),
+        oldSlots[0]
+      ];
+    }
+
     this._slots = [...newSlots];
 
     const oldPositions = Object.fromEntries(this.dice.map((die) => [die.id, this._getDiePos(die, oldSlots)]));
@@ -260,21 +355,34 @@ class RollCircle {
 
     return Promise.allSettled(this.dice
       .map((die) => new Promise((resolve, reject) => {
-        const oldPathPos = oldPositions[die.id]?.pathPos ?? 0;
+        let oldPathPos = oldPositions[die.id]?.pathPos ?? 0;
         const newPathPos = newPositions[die.id].pathPos;
-        gsap.to(die.elem, {
+
+        // OLD: 0.9 to NEW: 0.1   --> startAt OLD--
+        // OLD: 0.1 to NEW: 0.9   --> startAt OLD++
+        if (circle._checkSlots(die, oldSlots) && Math.abs(oldPathPos - newPathPos) > 0.6) {
+          if (oldPathPos > newPathPos) {
+            oldPathPos--;
+          } else {
+            oldPathPos++;
+          }
+        }
+        console.log(gsap.to(die.elem, {
           motionPath: {
             path: circle.snap.elem,
             alignOrigin: [0.5, 0.5],
             start: oldPathPos,
             end: newPathPos,
-            fromCurrent: die.id in oldPositions
+            fromCurrent: true // die.id in oldPositions
           },
           duration,
           ease: "power4.out",
           onComplete: resolve,
+          onUpdate() {
+            die._pathPos = "?"
+          },
           onInterrupt: reject
-        });
+        }));
       })));
   }
   async _openSnapPoint(die) {
@@ -330,7 +438,7 @@ class RollCircle {
   }
   async pluckDie(die) {
     if (die instanceof OREDie && this.slots.includes(die)) {
-      await this._redistributeDice(this._getSlotsWithout(die));
+      this._redistributeDice(this._getSlotsWithout(die));
       this.readyDie(die);
     }
   }
@@ -383,48 +491,41 @@ class RollCircle {
       this._closeSnapPoint(die);
     }
   }
-
-  /* watchDie(die, snapSlot) {
-    if (die.name === this._watchDie?.name) { return }
-    this._toggleSlowRotate(false);
-    this._watchDie = die;
-    this._watchSlot = snapSlot;
-    this._watchAngle =
-    const circle = this;
-    let start, prevTime;
-    function step(timestamp) {
-      if (circle._watchDie?.isDragging) {
-        start = start ?? (timestamp - 1000);
-        const elapsed = timestamp - start;
-        if (prevTime !== timestamp && Math.floor(elapsed / 200)) {
-          const newRotation = circle._getAbsAngleTo(circle._watchDie);
-          const angleDelta = parseInt(U.getAngleDelta(circle.rotation, newRotation));
-          gsap.to(circle.elem, {
-            rotation: `${angleDelta < 0 ? "-" : "+"}=${Math.abs(angleDelta)}`,
-            duration: 1,
-            ease: "sine",
-            callbackScope: circle,
-            onUpdate() {
-              this.dice.forEach((_die) => _die.straighten());
-            }
-          });
-        }
-        prevTime = timestamp;
-        window.requestAnimationFrame(step);
-      }
-    }
-    window.requestAnimationFrame(step);
-  } */
-  catchDie(die) {
+  async distDice() {
+    // this.slots.forEach(())
+  }
+  async catchDie(die) {
     if (die.isThrowing) {
-      const {endX: x, endY: y} = die.dragger;
+      this._toggleSlowRotate(false);
 
-    }
+      // Use endX and endY to get exact position die will land as absolute angle
+      // Also get angle to where the die's current snap slot is
+      // Rotate during the tween so that the two line up
 
-    if (die.isThrowing) {
-      const {tween: throwTween, endX: x, endY: y} = die.dragger;
-      const duration = throwTween.duration() - throwTween.time();
-      const rotation = this._getAbsAngleTo({x, y});
+      const {tween, endX, endY} = die.dragger;
+      this.ping({x: endX, y: endY});
+      const angleToDie = this._getAbsAngleTo({x: endX, y: endY});
+      const snapPointName = `SNAP-${die.name}`;
+      const snapSlot = this.slots.findIndex((slot) => slot === snapPointName);
+      const {x, y} = this._getDiePos(snapPointName, this.slots);
+      const angleToSnap = this._getAbsAngleTo({x, y});
+      const angleDelta = U.getAngleDelta(angleToSnap, angleToDie);
+
+      console.log({
+        circle: this,
+        die,
+        diePos: {x: endX, y: endY, angle: parseInt(angleToDie)},
+        snapPos: {x, y, angle: parseInt(angleToSnap)},
+        circleAngle: this.rotation,
+        angleDelta
+      });
+
+      // const catchSlot = this._getNearestSlot({x: endX, y: endY});
+      // const catchSlotAngle = this._getAbsAngleTo({x, y});
+      // this._redistributeDice(this._getSlotsPlus(snapPointName, catchSlot, this._getSlotsWithout(snapPointName)), 0.25);
+      const duration = tween.duration() - tween.time();
+      const rotation = `${angleDelta > 0 ? "+" : "-"}=${Math.abs(parseInt(angleDelta))}`; /* 0; */ /* this._getAbsAngleTo({x, y}); */
+      console.log(rotation);
       gsap.to(this.elem, {
         rotation,
         duration,
@@ -433,9 +534,11 @@ class RollCircle {
         onUpdate() {
           this.dice.forEach((_die) => _die.straighten());
         },
-        onComplete() {
+        async onComplete() {
           die.circle = this;
           die.straighten();
+          this._toggleSlowRotate(true);
+          await this._redistributeDice(die);
           this.unreadyDie(die);
         }
       });
@@ -521,8 +624,8 @@ class OREDie {
   set parent(v) {
     const [elem] = $(`#${v?.id ?? "noElemFound"}`);
     if (elem) {
+      const {x, y} = MotionPathPlugin.convertCoordinates(this.parent?.elem ?? this.parent ?? this.elem, elem, {x: this.x, y: this.y});
       this._parent = v;
-      const {x, y} = MotionPathPlugin.convertCoordinates(this.elem, elem, {x: this.x, y: this.y});
       this.set({x, y});
       $(this.elem).appendTo(elem);
       this.straighten();
@@ -656,16 +759,16 @@ export default () => {
   const rollCircles = [];
   gsap.registerPlugin(Dragger, InertiaPlugin, MotionPathPlugin);
   [
-    // [3, 45, 100, 100, 100, {type: "lime"}],
-    // [7, -45, 1370, 100, 100, {type: "cyan"}],
-    // [11, 0, 100, 729, 100, {type: "pink"}],
-    // [15, 270, 1370, 729, 100, {type: "yellow"}],
+    [3, 45, 100, 100, 100, {type: "lime"}],
+    [7, -45, 1370, 100, 100, {type: "cyan"}],
+    [11, 0, 100, 729, 100, {type: "pink"}],
+    [15, 270, 1370, 729, 100, {type: "yellow"}],
     [15, 0, 635, 314, 100, {type: "purple"}]
   ].forEach(([numDice, startAngle, ...args]) => {
     const rollCircle = new RollCircle(...args);
     rollCircle.set({rotation: startAngle});
     rollCircle.addDice(numDice);
-    rollCircle.dbShow();
+    // rollCircle.dbShow();
     rollCircles.push(rollCircle);
   });
   return rollCircles;

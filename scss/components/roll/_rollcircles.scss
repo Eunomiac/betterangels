@@ -7,15 +7,25 @@ $padding-right: 350px;
 
 #debugContainerOverlay {
   position: absolute;
-  pointer-events: none;
   top: $padding-top;
   left: $padding-left;
+  z-index: 10000;
   width: calc(100% - #{$padding-left + $padding-right});
   height: calc(100% - #{$padding-top + $padding-bottom});
-  z-index: 10000;
+  pointer-events: none;
 
-  * { pointer-events: none; box-sizing: border-box }
-  > svg { position: absolute; top: 0; left: 0; }
+  * {
+    position: absolute;
+    box-sizing: border-box;
+    pointer-events: none;
+  }
+
+  > svg {
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+  }
 }
 
 #rollCircleContainer {

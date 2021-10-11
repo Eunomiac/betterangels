@@ -182,20 +182,22 @@
 /* Styles for created DOM objects */
 #debugContainerOverlay {
   position: absolute;
-  pointer-events: none;
   top: 50px;
   left: 100px;
+  z-index: 10000;
   width: calc(100% - 450px);
   height: calc(100% - 150px);
-  z-index: 10000; }
+  pointer-events: none; }
   #debugContainerOverlay * {
-    pointer-events: none;
-    -webkit-box-sizing: border-box;
-    box-sizing: border-box; }
-  #debugContainerOverlay > svg {
     position: absolute;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    pointer-events: none; }
+  #debugContainerOverlay > svg {
     top: 0;
-    left: 0; }
+    left: 0;
+    height: 100%;
+    width: 100%; }
 
 #rollCircleContainer {
   position: absolute;
