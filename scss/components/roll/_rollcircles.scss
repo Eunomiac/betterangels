@@ -5,6 +5,19 @@ $padding-bottom: 100px;
 $padding-left: 100px;
 $padding-right: 350px;
 
+#debugContainerOverlay {
+  position: absolute;
+  pointer-events: none;
+  top: $padding-top;
+  left: $padding-left;
+  width: calc(100% - #{$padding-left + $padding-right});
+  height: calc(100% - #{$padding-top + $padding-bottom});
+  z-index: 10000;
+
+  * { pointer-events: none; box-sizing: border-box }
+  > svg { position: absolute; top: 0; left: 0; }
+}
+
 #rollCircleContainer {
   position: absolute;
   top: $padding-top;
@@ -59,10 +72,11 @@ $padding-right: 350px;
       margin-bottom: calc(-1 * #{$circle-size});
     }
 
-    &.lime > svg > circle { fill: lime; }
-    &.pink > svg > circle { fill: pink; }
-    &.cyan > svg > circle { fill: cyan; }
-    &.yellow > svg > circle { fill: yellow; }
+    &.type-lime > svg > circle { fill: lime; }
+    &.type-pink > svg > circle { fill: pink; }
+    &.type-cyan > svg > circle { fill: cyan; }
+    &.type-yellow > svg > circle { fill: yellow; }
+    &.type-purple > svg > circle { fill: purple; }
 
     .snap-circle {
       transform-origin: 50% 50%;

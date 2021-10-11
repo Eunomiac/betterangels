@@ -180,6 +180,23 @@
   text-align: center; }
 
 /* Styles for created DOM objects */
+#debugContainerOverlay {
+  position: absolute;
+  pointer-events: none;
+  top: 50px;
+  left: 100px;
+  width: calc(100% - 450px);
+  height: calc(100% - 150px);
+  z-index: 10000; }
+  #debugContainerOverlay * {
+    pointer-events: none;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box; }
+  #debugContainerOverlay > svg {
+    position: absolute;
+    top: 0;
+    left: 0; }
+
 #rollCircleContainer {
   position: absolute;
   top: 50px;
@@ -230,14 +247,16 @@
       position: absolute;
       margin: 0 var(--offset) calc(2 * var(--offset)) var(--offset);
       margin-bottom: calc(-1 * 200px); }
-    #rollCircleContainer .roll-circle.lime > svg > circle {
+    #rollCircleContainer .roll-circle.type-lime > svg > circle {
       fill: lime; }
-    #rollCircleContainer .roll-circle.pink > svg > circle {
+    #rollCircleContainer .roll-circle.type-pink > svg > circle {
       fill: pink; }
-    #rollCircleContainer .roll-circle.cyan > svg > circle {
+    #rollCircleContainer .roll-circle.type-cyan > svg > circle {
       fill: cyan; }
-    #rollCircleContainer .roll-circle.yellow > svg > circle {
+    #rollCircleContainer .roll-circle.type-yellow > svg > circle {
       fill: yellow; }
+    #rollCircleContainer .roll-circle.type-purple > svg > circle {
+      fill: purple; }
     #rollCircleContainer .roll-circle .snap-circle {
       -webkit-transform-origin: 50% 50%;
       -ms-transform-origin: 50% 50%;

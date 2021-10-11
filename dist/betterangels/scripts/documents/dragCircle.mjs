@@ -1,7 +1,7 @@
 /* ****▌███████████████████████████████████████████████████████████████████████████▐**** *\
 |*     ▌███████░░░░░░░░░░░░░░ Better Angels for Foundry VTT ░░░░░░░░░░░░░░░░███████▐     *|
 |*     ▌██████████████████░░░░░░░░░░░░░ by Eunomiac ░░░░░░░░░░░░░██████████████████▐     *|
-|*     ▌███████████████ MIT License █ v0.0.1-prealpha █ Oct 07 2021 ███████████████▐     *|
+|*     ▌███████████████ MIT License █ v0.0.1-prealpha █ Oct 09 2021 ███████████████▐     *|
 |*     ▌████████░░░░░░░░ https://github.com/Eunomiac/betterangels ░░░░░░░░█████████▐     *|
 \* ****▌███████████████████████████████████████████████████████████████████████████▐**** */
 
@@ -22,11 +22,24 @@ class RollCircle {
   // ████████ STATIC ████████
   // ░░░░░░░[Getters]░░░░ Basic Data Retrieval ░░░░░░░
   static get REGISTRY() { return (this._REGISTRY = this._REGISTRY ?? {}) }
-
+  static get ALL() { return Object.values(this.REGISTRY) }
+  static get SnapPoints() { return Object.values(this._SnapPoints ?? {}).flat() }
+  static GetClosestTo(die) {
+    let targetCircle, minDistance = Infinity;
+    this.ALL.forEach((circle) => {
+      const thisDistance = circle._getDistanceTo(die);
+      if (thisDistance < minDistance) {
+        targetCircle = circle;
+        minDistance = thisDistance;
+      }
+    });
+    return targetCircle;
+  }
   // ========== Enumeration Objects ===========
   static get TYPES() {
     return {
-      basic: "basic"
+      basic: "basic",
+      purple: "purple"
     };
   }
 
@@ -34,10 +47,18 @@ class RollCircle {
   static get CONTAINER() { return (this._CONTAINER = this._CONTAINER ?? $("#rollCircleContainer")[0] ?? this.CreateContainer()) }
 
   // ░░░░░░░[Methods]░░░░ Static Methods ░░░░░░░
-  static CreateContainer() {
-    return $("<div id=\"rollCircleContainer\" />").appendTo(".vtt.game")[0];
+  static CreateContainer() { return $("<div id=\"rollCircleContainer\" />").appendTo(".vtt.game")[0] }
+  static NameCircle(circle) {
+    const nameTest = new RegExp(`${this._owner}_${this._type}_`);
+    const circleNum = parseInt(Object.keys(RollCircle.REGISTRY).filter((key) => nameTest.test(key)).pop()?.match(/_(\d+)$/)
+      ?.pop() ?? 0) + 1;
+    circle._name = `${circle._owner}_${circle._type}_${circleNum}`;
   }
-  static Register(circle) { this.REGISTRY[circle.name] = circle }
+  static Register(circle) {
+    this._SnapPoints = this._SnapPoints ?? {};
+    this._SnapPoints[circle.name] = circle.snap.points;
+    return (this.REGISTRY[circle.name] = circle);
+  }
   static Unregister(circle) { delete this.REGISTRY[circle.name] }
   static Kill(circle) {
     circle.killAll();
@@ -45,76 +66,87 @@ class RollCircle {
   }
 
   // ████████ CONSTRUCTOR ████████
-  constructor(x, y, radius, cssClasses = [], options) {
-    this._x = x;
-    this._y = y;
-    this._r = radius;
-    this._cssClasses = ["roll-circle", ...[cssClasses].flat()];
-
-    // Options
+  constructor(x, y, radius, options) {
     this._owner = options?.owner ?? U.GMID;
     this._type = options?.type ?? RollCircle.TYPES.basic;
 
-    const nameTest = new RegExp(`${this._owner}_${this._type}_`);
-    this._indexNum = Object.keys(RollCircle.REGISTRY).filter((key) => nameTest.test(key)).length + 1;
-    this._name = `${this._owner}_${this._type}_${this._indexNum}`;
-    this._shortName = `RC-${this.owner.name}-${this._type}_${this._indexNum}`;
+    RollCircle.NameCircle(this);
+
     this._id = `rollCircle-${this.name}`;
+    this._create(x, y, radius, ["roll-circle", `type-${this.type}`]);
 
     RollCircle.Register(this);
-    this._create();
   }
 
   // ████████ GETTERS & SETTERS ████████
   // ░░░░░░░ Read-Only ░░░░░░░
-  get x() { return this._x }
-  get y() { return this._y }
-  get radius() { return this._r }
-  get height() { return this.radius * 2 }
-  get width() { return this.radius * 2 }
-  get rotation() { return U.get(this.elem, "rotation") }
+  get x() { return U.get(this.elem, "x") }
+  get y() { return U.get(this.elem, "y") }
+  get height() { return U.get(this.elem, "height") }
+  get width() { return U.get(this.elem, "width") }
+  get radius() { return (this.height + this.width) / 4 }
   get type() { return this._type }
   get owner() { return game.users.get(this._owner) }
 
   get name() { return this._name }
-  get shortName() { return this._shortName }
   get id() { return this._id }
-  get sel() { return `#${this.id}` }
-  get elem() { return this._rollCircle }
+  get elem() { return (this._rollCircle = this._rollCircle ?? $(`#${this.id}`)?.[0]) }
 
   get snap() {
     const circle = this;
     return {
       get id() { return `${circle.id}-snap` },
-      get sel() { return `#${circle.id}` },
-      get elem() { return circle._snapCircle },
-      get path() { return circle._rawSnapPath },
-      get point() { return MotionPathPlugin.convertCoordinates(circle.elem, RollCircle.CONTAINER, MotionPathPlugin.getPositionOnPath(circle.snap.path, 0)) }
+      get elem() { return (circle._snapCircle = circle._snapCircle ?? $(`#${this.id}`)?.[0]) },
+      get path() {
+        if (!circle._rawSnapPath) {
+          circle._rawSnapPath = MotionPathPlugin.getRawPath(this.elem);
+          MotionPathPlugin.cacheRawPathMeasurements(circle._rawSnapPath);
+        }
+        return circle._rawSnapPath;
+      },
+      get points() {
+        return new Array(35).fill(null).map((_, i) => MotionPathPlugin.convertCoordinates(
+          circle.elem,
+          RollCircle.CONTAINER,
+          MotionPathPlugin.getPositionOnPath(
+            this.path,
+            gsap.utils.mapRange(0, 360, 0, 36, i)
+          )
+        ));
+      }
     };
   }
 
-  get diceLine() { return (this._childDice = this._childDice ?? []) }
-  get numSlots() { return this.diceLine.length }
-  get dice() { return this.diceLine.filter((die) => die instanceof OREDie && die.type !== OREDie.TYPES.openSpace) }
-  get numDice() { return this.dice.length }
-  get numBlanks() { return this.numSlots - this.numDice }
+  get slots() { return (this._slots = this._slots ?? []) }
+  get dice() { return this.slots.filter((die) => die instanceof OREDie) }
+  get readiedDice() { return (this._readiedDice = this._readiedDice ?? []) }
+
+  // ░░░░░░░ Writeable ░░░░░░░
+  get rotation() { return U.get(this.elem, "rotation") }
+  set rotation(v) {
+    if (/^[+-]=/.test(`${v}`)) {
+      v = this.rotation + parseFloat(`${v}`.replace(/=/g, ""));
+    }
+    U.set(this.elem, {rotation: v});
+  }
 
   // ████████ PRIVATE METHODS ████████
   // ░░░░░░░[Initializing]░░░░ Creating DOM Elements ░░░░░░░
-  _create() {
+  _create(x, y, radius, cssClasses = []) {
     [this._rollCircle] = $(`
-    <div id="${this.id}" class="${this._cssClasses.join(" ")}" style="height: ${this.height}px; width: ${this.width}px;">
+    <div id="${this.id}" class="${cssClasses.join(" ")}" style="height: ${2 * radius}px; width: ${2 * radius}px;">
       <svg height="100%" width="100%">
-        <circle cx="${this.radius}" cy="${this.radius}" r="${this.radius}" stroke="none" />
-        <circle id="${this.snap.id}" class="snap-circle" cx="${this.radius}" cy="${this.radius}" r="${this.radius * 0.8}" fill="none" stroke="none" />
+        <circle cx="${radius}" cy="${radius}" r="${radius}" stroke="none" />
+        <circle id="${this.snap.id}" class="snap-circle" cx="${radius}" cy="${radius}" r="${radius * 0.8}" fill="none" stroke="none" />
       </svg>
     </div>
     `).appendTo(RollCircle.CONTAINER);
-    MotionPathPlugin.convertToPath(this.snap.sel);
-    [this._snapCircle] = $(this.snap.sel);
-    this._rawSnapPath = MotionPathPlugin.getRawPath(this.snap.sel);
+    console.log(this);
+    MotionPathPlugin.convertToPath(`#${this.snap.id}`);
+    [this._snapCircle] = $(`#${this.snap.id}`);
+    this._rawSnapPath = MotionPathPlugin.getRawPath(this.snap.elem);
     MotionPathPlugin.cacheRawPathMeasurements(this.snap.path);
-    this._setCircle({xPercent: -50, yPercent: -50, x: this.x, y: this.y});
+    this._setCircle({xPercent: -50, yPercent: -50, x, y});
     this._setSnapCircle({xPercent: -50, yPercent: -50});
     this._toggleSlowRotate(true);
   }
@@ -124,139 +156,154 @@ class RollCircle {
   _setSnapCircle(params) { U.set(this.snap.elem, params) }
 
   // ░░░░░░░[Animation]░░░░ Animation Effects, Tweens, Timelines ░░░░░░░
+  _killTweens(types) {
+    if (types) {
+      [types].flat().forEach((type) => {
+        gsap.killTweensOf(this.elem, type);
+        if (type === "rotation") {
+          delete this._isSlowRotating;
+        }
+      });
+    } else {
+      gsap.killTweensOf(this.elem);
+      delete this._isSlowRotating;
+    }
+  }
   _toggleSlowRotate(isRotating) {
+    if ((isRotating && this._isSlowRotating)
+        || (!isRotating && !this._isSlowRotating)) { return }
     if (isRotating) {
-      gsap.to(this.sel, {
+      this._isSlowRotating = gsap.to(this.elem, {
         rotation: "+=360",
         duration: 100,
         repeat: -1,
         ease: "none",
         callbackScope: this,
         onUpdate() {
-          this.diceLine.forEach((die) => die.straighten());
+          this.dice.forEach((die) => die.straighten());
         }
       });
     } else {
-      gsap.killTweensOf(this.sel, "rotation");
+      this._isSlowRotating.kill();
+      delete this._isSlowRotating;
     }
   }
 
   // ░░░░░░░[Dice]░░░░ Managing Orbiting Dice ░░░░░░░
-  _getAngleToDie(die) {
-
-    return U.getAngle({x: this.x, y: this.y}, {x: die.x, y: die.y});
-  }
-
-  _addNewDie(die) {
-    if (die instanceof OREDie) {
-      // U.set(die.sel, {opacity: 0});
-      this._redistributeDice([...this.diceLine, die]);
-      this._childDice = [...this.diceLine, die];
-      gsap.to(die.sel, {
-        opacity: 1,
-        duration: 0.2,
-        delay: 0.2
-      });
-    }
-  }
-  _openSnapPoint() {
-    this._redistributeDice(["SNAPPOINT", ...this.diceLine]);
-  }
-
-  _closeSnapPoint() {
-    this._redistributeDice(this.diceLine, ["SNAPPOINT", ...this.diceLine]);
-  }
-
-  _catchThrownDie(die) {
-    if (die.isThrowing) {
-      const {tween: throwTween} = die.dragger;
-      const tweenDur = throwTween.duration();
-      const tweenTime = throwTween.time();
-      const timeLeft = tweenDur - tweenTime;
-    }
-  }
-
-  _pluckDie(die) {
-    const slotNum = this._getDieSlot(die);
-    const curPositions = [...this.diceLine];
-    if (slotNum) {
-      curPositions[slotNum] = "BLANK";
-    }
-    this._childDice = [...this.diceLine.filter((slotDie) => slotDie.name !== die.name)];
-    this._redistributeDice(this.diceLine, curPositions);
-  }
-
-  _deleteDie(die) {
-    this._pluckDie(die);
-    die.kill();
-  }
-
-  _getDieSlot(die, diceLine) {
-    diceLine = diceLine ?? this.diceLine;
-    let dieSlot;
-    if (die instanceof OREDie) {
-      dieSlot = diceLine.findIndex((slotDie) => die.name === slotDie.name);
-    } else if (diceLine.filter((slotDie) => slotDie === die).length <= 1) {
-      dieSlot = diceLine.findIndex((slotDie) => slotDie === die);
-    } else {
-      throw new Error(`[${this.shortName}] Multiple '${die?.name ?? die}' in '[${diceLine.map((slotDie) => slotDie?.name ?? slotDie).join(" ")}'`);
-    }
-
-    if (dieSlot >= 0) {
-      return dieSlot;
-    } else {
-      return false;
-    }
-  }
-
+  _getAbsAngleTo({x, y}) { return U.getAngle({x: this.x, y: this.y}, {x, y}) }
+  _getRelAngleTo({x, y}) { return U.cycle(this._getAbsAngleTo({x, y}) - this.rotation + 180, -180, 180) }
+  _getDistanceTo({x, y}) { return U.getDistance({x: this.x, y: this.y}, {x, y}) }
   _getPosOnPath(pathPos) {
     const {x, y, angle} = MotionPathPlugin.getPositionOnPath(this.snap.path, pathPos, true);
     return {x, y, angle, pathPos};
   }
-
-  _getDiePos(die, diceLine) {
-    // Returns the position (0 - 1) along the path the die is currently claiming, or,
-    // if an array showing the new positions of all dice in a new diceLine is given,
-    // the position of the die in that diceLine.
-    diceLine = diceLine ?? this.diceLine;
-    const slotNum = this._getDieSlot(die, diceLine);
+  _getDieSlot(die, slots) {
+    let slot = -1;
+    if (die instanceof OREDie) {
+      if (slots) {
+        slot = slots.findIndex((slotDie) => die.name === slotDie?.name);
+      } else {
+        const angle = this._getRelAngleTo(die);
+        const pathPos = gsap.utils.normalize(-180, 180, angle);
+        slot = this.slots.findIndex((v, i, a) => i / a.length >= pathPos);
+        if (slot === -1) { slot = this.slots.length - 1 }
+        if (slot > 0
+          && ((slot / this.slots.length) - pathPos) > (pathPos - ((slot - 1) / this.slots.length))) {
+          slot--;
+        }
+      }
+    }
+    return slot >= 0 ? slot : false;
+  }
+  _getDiePos(die, slots) {
+    const slotNum = this._getDieSlot(die, slots);
     if (slotNum !== false) {
-      const {x, y, angle, pathPos} = this._getPosOnPath(slotNum / diceLine.length);
+      const {x, y, angle, pathPos} = this._getPosOnPath(slotNum / slots.length);
       return {x, y, angle, pathPos, slot: slotNum};
     } else {
       return false;
-      // throw new Error(`[${this.shortName}] No '${die?.name ?? die}' in '[${diceLine.map((die) => die?.name ?? die).join(" ")}'`);
     }
   }
-
-  _initDiePos(die) {
-    const {x, y, slot} = this._getDiePos(die);
-    die.set({x, y});
+  _getSlotsWithout(ref, slots) {
+    slots = slots ?? [...this.slots];
+    if (Number.isInteger(parseInt(ref))) {
+      return slots.filter((slot, i) => i !== parseInt(ref));
+    } else if (ref instanceof OREDie) {
+      return slots.filter((slot) => !(slot instanceof OREDie)
+                                    || slot.name !== ref.name);
+    }
+    return this.slots.filter((slot) => slot !== ref);
   }
+  _getSlotsPlus(items, index, slots) {
+    slots = slots ?? [...this.slots];
+    index = index ?? slots.length;
+    return [
+      ...slots.slice(0, index),
+      ...[items].flat(),
+      ...slots.slice(index)
+    ];
+  }
+  async _redistributeDice(newSlots, duration = 1) {
+    // newSlots = newSlots ?? this.slots; <-- Won't work unless _getDiePos can get actual path position
+    if (
+      newSlots.map((item) => (item instanceof OREDie ? item.name : item)).join("")
+      === this.slots.map((item) => (item instanceof OREDie ? item.name : item)).join("")
+    ) { return Promise.resolve() }
 
-  _redistributeDice(newDiceline, oldDiceline) {
-    // Submit an empty array to oldDiceLine to have all dice initialized at path position 0.
-    oldDiceline = oldDiceline ?? this.diceLine;
-    newDiceline = newDiceline ?? this.diceLine;
-    const oldPositions = Object.fromEntries(oldDiceline.map((die) => [die.id, this._getDiePos(die, oldDiceline)]));
-    const newPositions = Object.fromEntries(newDiceline.map((die) => [die.id, this._getDiePos(die, newDiceline)]));
-    newDiceline.forEach((die) => {
-      if (die instanceof OREDie) {
+    const oldSlots = [...this.slots];
+    this._slots = [...newSlots];
+
+    const oldPositions = Object.fromEntries(this.dice.map((die) => [die.id, this._getDiePos(die, oldSlots)]));
+    const newPositions = Object.fromEntries(this.dice.map((die) => [die.id, this._getDiePos(die, this.slots)]));
+
+    const circle = this;
+
+    return Promise.allSettled(this.dice
+      .map((die) => new Promise((resolve, reject) => {
         const oldPathPos = oldPositions[die.id]?.pathPos ?? 0;
         const newPathPos = newPositions[die.id].pathPos;
-        gsap.to(die.sel, {
+        gsap.to(die.elem, {
           motionPath: {
-            path: this.snap.sel,
+            path: circle.snap.elem,
             alignOrigin: [0.5, 0.5],
             start: oldPathPos,
             end: newPathPos,
             fromCurrent: die.id in oldPositions
           },
-          duration: 0.2,
-          ease: "power4.inOut"
+          duration,
+          ease: "power4.out",
+          onComplete: resolve,
+          onInterrupt: reject
         });
+      })));
+  }
+  async _openSnapPoint(die) {
+    if (die instanceof OREDie) {
+      const snapPointName = `SNAP-${die.name}`;
+      const snapSlot = this._getDieSlot(die);
+      if (this.slots[snapSlot] === snapPointName) { return Promise.resolve() }
+
+      if (this.slots.includes(snapPointName)) {
+        await this._closeSnapPoint(die);
+        return this._openSnapPoint(die);
       }
-    });
+
+      return this._redistributeDice(this._getSlotsPlus(snapPointName, snapSlot));
+    }
+    return Promise.reject();
+  }
+  async _closeSnapPoint(snapPointName) {
+    if (snapPointName === "ALL") {
+      return this._redistributeDice(this.dice);
+    }
+    if (snapPointName instanceof OREDie) {
+      snapPointName = `SNAP-${snapPointName.name}`;
+    }
+    if (!this.slots.includes(snapPointName)) {
+      return Promise.resolve();
+    }
+
+    return this._redistributeDice(this._getSlotsWithout(snapPointName));
   }
 
   // ████████ PUBLIC METHODS ████████
@@ -266,70 +313,133 @@ class RollCircle {
   set(params) { this._setCircle(params) }
 
   // ░░░░░░░[Dice]░░░░ Adding & Removing OREDice ░░░░░░░
-  addDie(die) {
-    if (die instanceof OREDie) {
-      // Adding an already-existing Die
-      // Should be able to assume that it's already snapped to a blank-space die in orbit
-      // Just need to kill the blank-space die after parenting the new die
-    } else {
-      this._addNewDie(new OREDie(this, die));
+
+  killDie(die) {
+    this._redistributeDice(this._getSlotsWithout(die));
+    die.kill();
+  }
+  killAll() {
+    this.dice.forEach(this.killDie);
+    delete this._slots;
+  }
+
+  async addDice(numDice = 1) {
+    const circle = this;
+    const newDice = new Array(numDice).fill(null).map(() => new OREDie(circle));
+    return this._redistributeDice(this._getSlotsPlus(newDice));
+  }
+  async pluckDie(die) {
+    if (die instanceof OREDie && this.slots.includes(die)) {
+      await this._redistributeDice(this._getSlotsWithout(die));
+      this.readyDie(die);
     }
   }
-  pluckDie(die) {
-    if (this.diceLine.includes(die)) {
-      const oldPositions = this.diceLine.map((slotDie) => (slotDie.name === die.name ? "BLANK" : slotDie));
-      const newPositions = ["OPEN", ...this.diceLine.filter((slotDie) => slotDie.name !== die.name)];
-      this._redistributeDice(newPositions, oldPositions);
-      this._watchDie(die);
-    }
+  async readyDie(die) {
+    console.log(`Readying ${die.name}`);
+    if (this.readiedDice.filter((rDie) => die.name === rDie.name).length) { return }
+    this.readiedDice.push(die);
+    console.log("... Readied, Starting Watch");
+    this.watchDice();
   }
-  readyForDie(die) {
-    if (this._readyDie?.name === die.name) { return }
-    this._readyDie = die;
-    // 1) Animate redistribution of dice so there's a spot at the zero point.
-  }
-  unreadyForDie() {
-
-  }
-  watchDie(die) {
-    // If asked to watch a die that's already being watched, ignore the call.
-    if (die.name === this._watchDie?.name) { console.log(`Already Watching ${die.name}`); return }
-    this._watchDie = die;
-
-    function trackDie() {
-      const circle = this;
-      let start, isFirstRun, prevTime;
-
-      function step(timestamp) {
-        if (circle._watchDie?.isDragging) {
-          isFirstRun = !start;
-          start = start ?? timestamp;
-          const elapsed = timestamp - start;
-          if (isFirstRun || (prevTime !== timestamp && Math.floor(elapsed / 100))) {
-            const newRotation = circle._getAngleToDie(circle._watchDie);
-            const angleDelta = parseInt(U.getAngleDelta(circle.rotation, newRotation));
-            gsap.to(circle.sel, {
-              rotation: `${angleDelta < 0 ? "-" : "+"}=${Math.abs(angleDelta)}`,
-              duration: 0.2,
-              ease: "none"
-            });
+  async watchDice() {
+    console.log("Watching ...");
+    if (this._isWatching) { return }
+    this._isWatching = this.readiedDice.length > 0;
+    const circle = this;
+    let start, prevTime;
+    async function step(timestamp) {
+      if (circle._isWatching && circle.readiedDice.length > 0) {
+        start = start ?? (timestamp - 1000);
+        const elapsed = timestamp - start;
+        if (prevTime !== timestamp && Math.floor(elapsed / 200)) {
+          let newSlots = [...circle.slots],
+              isChangingSlots = false;
+          circle.readiedDice.forEach((die) => {
+            const snapPointName = `SNAP-${die.name}`;
+            const newSlot = circle._getDieSlot(die);
+            const oldSlot = newSlots.findIndex((slot) => slot === snapPointName);
+            if (newSlot !== oldSlot) {
+              isChangingSlots = true;
+              newSlots = circle._getSlotsPlus(snapPointName, newSlot, circle._getSlotsWithout(snapPointName, newSlots));
+            }
+          });
+          if (isChangingSlots) {
+            circle._redistributeDice(newSlots, 0.25);
           }
-          prevTime = timestamp;
-          window.requestAnimationFrame(step);
         }
+        prevTime = timestamp;
+        window.requestAnimationFrame(step);
+      } else {
+        console.log("No dice to watch.");
+        circle._isWatching = false;
       }
+    }
+    console.log(`... ${this.readiedDice.length} Dice.`);
+    window.requestAnimationFrame(step);
+  }
+  unreadyDie(die) {
+    if (die instanceof OREDie) {
+      this._readiedDice = this._readiedDice.filter((rDie) => rDie.name !== die.name);
+      this._closeSnapPoint(die);
+    }
+  }
 
-      window.requestAnimationFrame(step);
+  /* watchDie(die, snapSlot) {
+    if (die.name === this._watchDie?.name) { return }
+    this._toggleSlowRotate(false);
+    this._watchDie = die;
+    this._watchSlot = snapSlot;
+    this._watchAngle =
+    const circle = this;
+    let start, prevTime;
+    function step(timestamp) {
+      if (circle._watchDie?.isDragging) {
+        start = start ?? (timestamp - 1000);
+        const elapsed = timestamp - start;
+        if (prevTime !== timestamp && Math.floor(elapsed / 200)) {
+          const newRotation = circle._getAbsAngleTo(circle._watchDie);
+          const angleDelta = parseInt(U.getAngleDelta(circle.rotation, newRotation));
+          gsap.to(circle.elem, {
+            rotation: `${angleDelta < 0 ? "-" : "+"}=${Math.abs(angleDelta)}`,
+            duration: 1,
+            ease: "sine",
+            callbackScope: circle,
+            onUpdate() {
+              this.dice.forEach((_die) => _die.straighten());
+            }
+          });
+        }
+        prevTime = timestamp;
+        window.requestAnimationFrame(step);
+      }
+    }
+    window.requestAnimationFrame(step);
+  } */
+  catchDie(die) {
+    if (die.isThrowing) {
+      const {endX: x, endY: y} = die.dragger;
+
     }
 
-    // Tween to face the die, then start tracking it until it isn't being dragged.
-    gsap.to(this.sel, {
-      rotation: this._getAngleToDie(this._watchDie),
-      duration: 0.25,
-      ease: "power4.out",
-      onComplete: trackDie,
-      callbackScope: this
-    });
+    if (die.isThrowing) {
+      const {tween: throwTween, endX: x, endY: y} = die.dragger;
+      const duration = throwTween.duration() - throwTween.time();
+      const rotation = this._getAbsAngleTo({x, y});
+      gsap.to(this.elem, {
+        rotation,
+        duration,
+        ease: "power4.out",
+        callbackScope: this,
+        onUpdate() {
+          this.dice.forEach((_die) => _die.straighten());
+        },
+        onComplete() {
+          die.circle = this;
+          die.straighten();
+          this.unreadyDie(die);
+        }
+      });
+    }
   }
   /*
 .tween : Tween
@@ -391,7 +501,7 @@ class OREDie {
     this._name = `${this._owner}_${this._type}_${Object.keys(OREDie.REGISTRY).filter((key) => nameTest.test(key)).length + 1}`;
     OREDie.Register(this);
     this._create();
-    this.reparent(homeCircle);
+    this.circle = homeCircle;
     this._createDragger();
   }
 
@@ -407,16 +517,40 @@ class OREDie {
   get elem() { return this._elem }
   get sel() { return `#${this.id}` }
 
-  get parent() {
+  get parent() { return this._parent }
+  set parent(v) {
+    const [elem] = $(`#${v?.id ?? "noElemFound"}`);
+    if (elem) {
+      this._parent = v;
+      const {x, y} = MotionPathPlugin.convertCoordinates(this.elem, elem, {x: this.x, y: this.y});
+      this.set({x, y});
+      $(this.elem).appendTo(elem);
+      this.straighten();
+      if (this.dragger) {
+        this.dragger.update(false, this.isDragging);
+      }
+    }
+  }
+
+  get circle() { return this.parent instanceof RollCircle ? this.parent : undefined }
+  set circle(v) {
+    if (v instanceof RollCircle) {
+      this.parent = v;
+    } else {
+      throw new Error(`'${v}' is not a RollCircle`);
+    }
+  }
+  get snapPoints() { return this.circle?.snap.points }
+  /*
     this._parent = this._parent ?? {};
     const die = this;
     return {
       get id() { return die._parent.id },
       get elem() { return die._parent.elem },
-      get sel() { return die._parent.sel }
+      get circle() { return die._parent.circle },
     };
   }
-
+  */
   get dragger() { return this._dragger }
   get isThrowing() { return this.dragger?.isThrowing }
   get isDragging() { return this._isDragging && !this.isThrowing }
@@ -442,107 +576,53 @@ class OREDie {
   _createDragger() {
     const die = this;
     [this._dragger] = Dragger.create(
-      die.sel,
+      this.elem,
       {
         type: "x,y",
         inertia: true,
         callbackScope: this,
+        minDuration: 2,
+        throwResistance: 100,
         onDragStart() {
           this._isDragging = true;
-          this.closestCircle = this.homeCircle;
-          this.reparent(RollCircle.CONTAINER);
-          this.closestCircle.watchDie(this); /*
-          $(this.target).appendTo("#container");
-          this.update(false, true);
-
-          // Log the closest circle to the die (i.e. the circle it's starting from)
-          this.closestCircle = getClosest(this, "onDragStart");
-
-          // Stop the nearest circle's rotation
-          gsap.killTweensOf(this.closestCircle, "rotation");
-          dragDice.forEach((die) => die.update());
-
-          // Stop the die's counter-rotation, since it doesn't need it to cancel out the larger circle's rotation anymore
-          gsap.killTweensOf(this.target, "rotation");
-          gsap.set(this.target, {rotation: 0}); */
-
+          this.closestCircle = this.circle ?? RollCircle.GetClosestTo(this);
+          this.parent = RollCircle.CONTAINER;
+          this.closestCircle.pluckDie(this);
         },
         onDrag() {
-          // die.dbCircle.faceDie(die);
-          /*
-          // Constantly update the closest circle to the die as it's moving, rotating it to follow the cursor
-          const closestCircle = getClosest(this, "onDrag");
-          if (this.closestCircle !== closestCircle) {
-            redistributeDice(this.closestCircle, 0);
-            // gsap.to(this.closestCircle, {rotation: "+=360", duration: 100, repeat: -1});
-            gsap.killTweensOf(closestCircle, "rotation");
-            redistributeDice(closestCircle, 1);
+          const closestCircle = RollCircle.GetClosestTo(this);
+          if (closestCircle?.name !== this.closestCircle?.name) {
+            this.closestCircle.unreadyDie(this);
             this.closestCircle = closestCircle;
-          } */
+            this.closestCircle.readyDie(this);
+          }
+        },
+        snap: {
+          get points() {
+            // const closestCircle = RollCircle.GetClosestTo({x: die.dragger.endX, y: die.dragger.endY});
+            /* console.log([
+              "SNAP",
+              closestCircle.type,
+              closestCircle.snap.points[0],
+              {x: die.x, y: die.y},
+              {endX: die.dragger.endX, endY: die.dragger.endY}
+            ]); */
+            /* if (closestCircle?.name !== die.closestCircle?.name) {
+              die.closestCircle = closestCircle;
+            } */
+            return RollCircle.SnapPoints;
+          }
         },
         onDragEnd() {
           this._isDragging = false;
-        },
-        snap: {
-          points(point) { /*
-            // Get the closest circle. (I realize that, by calculating the closest circle in every event listener, I'm obviating the need to log it... but I suspect that something about the way snapping works means I need to log it at some point and not calculate it again here...?)
-            this.closestCircle = getClosest(point, "snap");
-
-            // Get the raw path of the closest circle's "snap-circle" (the inner circle with the dashed stroke). It was cached when it was created in the initialization section above, so no need to cache it again.
-            const rawPath = MotionPathPlugin.getRawPath(`#snap-circle-${this.closestCircle.id.slice(-1)}`);
-            MotionPathPlugin.cacheRawPathMeasurements(rawPath);
-
-            // Get a point on that snap-circle to snap to (I'm just using '0.5' for this demo, but the real logic will figure out the nearest spot between the dice already in orbit, then animate those dice to new positions on the path to create a space for the new die to snap to. You can probably expect another forum post when I inevitably struggle to get that working ;) )
-            const snapPoint = MotionPathPlugin.getPositionOnPath(rawPath, this.closestCircle.blankPathPos);
-            snapPoint.y += 19;
-
-            this.snapPoint = snapPoint;
-
-            // Convert the snap point to the #container coordinate space, where the dragged die is currently
-            const convSnapPoint = MotionPathPlugin.convertCoordinates($(`#${this.closestCircle.id}`)[0], $("#container")[0], snapPoint);
-
-            this.convSnapPoint = convSnapPoint;
-
-            CALLLOG.push(`SNAP --> Path: ${parseInt(snapPoint.x)}, ${parseInt(snapPoint.y)} ... Converted: ${parseInt(convSnapPoint.x)}, ${parseInt(convSnapPoint.y)}`);
-            CALLLOG.push(`... Blank Path Pos: ${this.closestCircle.blankPathPos}`);
-
-            return convSnapPoint; */
-            return point;
-          }
-        },
-        onThrowUpdate() { /*
-          // Continue to update the closest circle to the die as it's moving. (I tried using 'endX'/'endY' here, but it didn't work --- I think 'endX'/'endY' are being calculated after the snapping has been applied, but I need to figure out the circle *to* snap to at this point.)
-          const closestCircle = getClosest(this, "onDrag");
-          if (this.closestCircle !== closestCircle) {
-            redistributeDice(this.closestCircle, 0);
-            // gsap.to(this.closestCircle, {rotation: "+=360", duration: 100, repeat: -1});
-            gsap.killTweensOf(closestCircle, "rotation");
-            redistributeDice(closestCircle, 1);
+          const closestCircle = RollCircle.GetClosestTo({x: this.dragger.endX, y: this.dragger.endY});
+          if (closestCircle?.name !== this.closestCircle?.name) {
+            this.closestCircle.unreadyDie(this);
             this.closestCircle = closestCircle;
+            this.closestCircle.readyDie(this);
           }
-          // this.closestCircle = getClosest(point, "onThrowUpdate"); */
-        },
-        onThrowComplete(point) {
-          // die.faceCircle.hideAngle();
-          /*
-          // Convert the die's current location to the coordinate space of its new home circle
-          const convertCoords = MotionPathPlugin.convertCoordinates($("#container")[0], $(`#${this.closestCircle.id}`)[0], this);
-
-          // Reparent the die to its new home circle
-          $(this.target).appendTo(`#${this.closestCircle.id}`);
-          this.update();
-
-          // Set the die's position to the converted coordinates of its new parent circle
-          gsap.set(this.target, {x: this.snapPoint.x, y: this.snapPoint.y});
-          this.update();
-          // gsap.fromTo(this.target, {x: logCVs.target.x, y: logCVs.target.y}, {x: this.snapPoint.x, y: this.snapPoint.y});
-
-          // Restart the die's counter-rotation, now that it's in a rotating circle again. (Though, instead of '0', I think I need to start it at a negative offset rotation from wherever the circle has rotated to, for it to land in the correct orientation --- I'll worry about that later!)
-          // gsap.to(this.closestCircle, {rotation: "+=360", duration: 100, repeat: -1});
-          // gsap.to(this.target, {rotation: "+=360", duration: 100, repeat: -1, runBackwards: true, startAt: {rotation: -1 * gsap.getProperty(`#${this.closestCircle.id}`, "rotation")}});
-
-          delete this.closestCircle.numBlanks;
-          redistributeDice(this.closestCircle, 0); */
+          this.closestCircle.catchDie(this);
+          
         }
       }
     );
@@ -553,38 +633,18 @@ class OREDie {
   // ░░░░░░░[Animation]░░░░ Animation Effects, Tweens, Timelines ░░░░░░░
 
   // ████████ PUBLIC METHODS ████████
-  set(params) { U.set(this.sel, params) }
+  set(params) { U.set(this.elem, params) }
 
   kill() {
     OREDie.Unregister(this);
-    $(this.sel).remove();
+    $(`#${this.id}`).remove();
   }
   // ░░░░░░░ Animation ░░░░░░░
-  straighten() { U.set(this.sel, {rotation: -1 * U.get(this.parent.sel, "rotation")}) }
-  reparent(newParent) {
-    if (newParent instanceof RollCircle) {
-      this._parent = {
-        id: newParent.id,
-        elem: newParent.elem,
-        sel: newParent.sel,
-        circle: newParent
-      };
-      this._homeCircle = newParent;
+  straighten() {
+    if (this.circle) {
+      U.set(this.elem, {rotation: -1 * this.circle.rotation});
     } else {
-      this._parent = {
-        id: newParent.id,
-        elem: newParent,
-        sel: `#${newParent.id}`
-      };
-      delete this._homeCircle;
-    }
-    const {x, y} = this;
-    const convertCoords = MotionPathPlugin.convertCoordinates(this.elem, this.parent.elem, {x, y});
-    $(this.elem).appendTo(this.parent.elem);
-    this.set({x: convertCoords.x, y: convertCoords.y});
-    this.straighten();
-    if (this.dragger) {
-      this.dragger.update(false, this.isDragging);
+      U.set(this.elem, {rotation: 0});
     }
   }
 
@@ -596,22 +656,16 @@ export default () => {
   const rollCircles = [];
   gsap.registerPlugin(Dragger, InertiaPlugin, MotionPathPlugin);
   [
-    // [3, 45, 100, 100, 100, "lime"],
-    // [7, -45, 1370, 100, 100, "cyan"],
-    // [11, 0, 100, 729, 100, "pink"],
-    // [15, 270, 1370, 729, 100, "yellow"],
-    [15, 0, 635, 314, 100, "lime"]
-  ].forEach((params) => {
-    const numDice = params.shift();
-    const startAngle = params.shift();
-    const rollCircle = new RollCircle(...params);
+    // [3, 45, 100, 100, 100, {type: "lime"}],
+    // [7, -45, 1370, 100, 100, {type: "cyan"}],
+    // [11, 0, 100, 729, 100, {type: "pink"}],
+    // [15, 270, 1370, 729, 100, {type: "yellow"}],
+    [15, 0, 635, 314, 100, {type: "purple"}]
+  ].forEach(([numDice, startAngle, ...args]) => {
+    const rollCircle = new RollCircle(...args);
     rollCircle.set({rotation: startAngle});
-    rollCircle.dice.forEach((die) => die.straighten());
-    for (let i = 0; i < numDice; i++) {
-      rollCircle.addDie();
-    }
+    rollCircle.addDice(numDice);
     rollCircle.dbShow();
-    rollCircle.testTweenTiming();
     rollCircles.push(rollCircle);
   });
   return rollCircles;

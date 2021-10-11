@@ -1,7 +1,7 @@
 /* ****▌███████████████████████████████████████████████████████████████████████████▐**** *\
 |*     ▌███████░░░░░░░░░░░░░░ Better Angels for Foundry VTT ░░░░░░░░░░░░░░░░███████▐     *|
 |*     ▌██████████████████░░░░░░░░░░░░░ by Eunomiac ░░░░░░░░░░░░░██████████████████▐     *|
-|*     ▌███████████████ MIT License █ v0.0.1-prealpha █ Oct 07 2021 ███████████████▐     *|
+|*     ▌███████████████ MIT License █ v0.0.1-prealpha █ Oct 09 2021 ███████████████▐     *|
 |*     ▌████████░░░░░░░░ https://github.com/Eunomiac/betterangels ░░░░░░░░█████████▐     *|
 \* ****▌███████████████████████████████████████████████████████████████████████████▐**** */
 
@@ -13,6 +13,15 @@ const pad = (num, minLength = 0) => {
     numString = ` ${numString}`;
   }
   return numString;
+};
+const cycle = (num, min = 0, max = num) => {
+  while (num > max) {
+    num -= max - min;
+  }
+  while (num <= min) {
+    num += max - min;
+  }
+  return num;
 };
 const sign = (num) => `${num >= 0 ? "+" : ""}${num}`;
 const round = (num, sigDigits = 0) => Math.round(num * (10 ** sigDigits)) / (10 ** sigDigits);
@@ -28,18 +37,19 @@ const degToRad = (deg, isConstrained = true) => {
   return deg;
 };
 const getAngle = ({x: x0, y: y0}, {x: xT, y: yT}) => radToDeg(Math.atan2(yT - y0, xT - x0)); // range (-180, 180]
-const getAngleDelta = (angleStart, angleEnd) => {
-  const delta = Math.round(angleEnd - angleStart);
-  if (delta > 180) {
-    return delta - 360;
+const getAngleDelta = (angleStart, angleEnd) => cycle(Math.round(angleEnd - angleStart), -180, 180);
+
+// ████████ ARRAYS: Managing Arrays ████████
+/* const remove = (arr, filterFunc) => {
+  if (typeof filterFunc === "function") {
+    return arr.filter(filterFunc);
+  } else {
+    return arr.fil
   }
-  if (delta <= -180) {
-    return delta + 360;
-  }
-  return delta;
-};
+} */
 
 export default {
+  gsap,
   // ████████ GETTERS: Basic Data Retrieval ████████
   get GMID() { return game.users.find((user) => user.isGM)?.id ?? false },
 
@@ -54,6 +64,7 @@ export default {
   mapRange(...args) { return gsap.utils.mapRange(...args) },
 
   // ████████ MATH ████████
+  cycle,
   pad,
   sign,
   round,
