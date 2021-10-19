@@ -73,6 +73,9 @@ export default {
 
   // #endregion ▄▄▄▄▄ DOM ▄▄▄▄▄
   // #region ████████ STRINGS: String Parsing ████████ ~
+  // #region ▮▮▮▮▮▮▮[FORMATS] Conversion Between Various String Formats ▮▮▮▮▮▮▮ ~
+  formatAsClass: (str) => `${str}`.replace(/([A-Z])|\s/g, "-$1").replace(/^-/, "").trim().toLowerCase(),
+  // #endregion ▮▮▮▮[FORMATS]▮▮▮▮
   // #region ▮▮▮▮▮▮▮[COLORS] Color String Conversion & Manipulation ▮▮▮▮▮▮▮ ~
   joinColor: (r, g, b, a = 1) => `rgba(${r}, ${g}, ${b}, ${a})`
   // #endregion ▮▮▮▮[COLORS]▮▮▮▮

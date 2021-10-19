@@ -1,7 +1,7 @@
 /* ****▌███████████████████████████████████████████████████████████████████████████▐**** *\
 |*     ▌███████░░░░░░░░░░░░░░ Better Angels for Foundry VTT ░░░░░░░░░░░░░░░░███████▐     *|
 |*     ▌██████████████████░░░░░░░░░░░░░ by Eunomiac ░░░░░░░░░░░░░██████████████████▐     *|
-|*     ▌███████████████ MIT License █ v0.0.1-prealpha █ Oct 11 2021 ███████████████▐     *|
+|*     ▌███████████████ MIT License █ v0.0.1-prealpha █ Oct 13 2021 ███████████████▐     *|
 |*     ▌████████░░░░░░░░ https://github.com/Eunomiac/betterangels ░░░░░░░░█████████▐     *|
 \* ****▌███████████████████████████████████████████████████████████████████████████▐**** */
 
@@ -135,7 +135,7 @@ class RollCircle {
     if (/^[+-]=/.test(`${v}`)) {
       v = this.rotation + parseFloat(`${v}`.replace(/=/g, ""));
     }
-    U.set(this.elem, {rotation: v});
+    gsap.set(this.elem, {rotation: v});
   }
 
   // ████████ PRIVATE METHODS ████████
@@ -160,8 +160,8 @@ class RollCircle {
   }
 
   // ░░░░░░░[Elements]░░░░ Managing Core Circle Elements ░░░░░░░
-  _setCircle(params) { U.set(this.elem, params) }
-  _setSnapCircle(params) { U.set(this.snap.elem, params) }
+  _setCircle(params) { gsap.set(this.elem, params) }
+  _setSnapCircle(params) { gsap.set(this.snap.elem, params) }
 
   // ░░░░░░░[Animation]░░░░ Animation Effects, Tweens, Timelines ░░░░░░░
   _killTweens(types) {
@@ -379,7 +379,8 @@ class RollCircle {
           ease: "power4.out",
           onComplete: resolve,
           onUpdate() {
-            die._pathPos = "?"
+            // const {onUpdate, ...theRest} = this;
+            // die._pathPos = JSON.parse(JSON.stringify(theRest));
           },
           onInterrupt: reject
         }));
@@ -736,7 +737,7 @@ class OREDie {
   // ░░░░░░░[Animation]░░░░ Animation Effects, Tweens, Timelines ░░░░░░░
 
   // ████████ PUBLIC METHODS ████████
-  set(params) { U.set(this.elem, params) }
+  set(params) { gsap.set(this.elem, params) }
 
   kill() {
     OREDie.Unregister(this);
@@ -745,9 +746,9 @@ class OREDie {
   // ░░░░░░░ Animation ░░░░░░░
   straighten() {
     if (this.circle) {
-      U.set(this.elem, {rotation: -1 * this.circle.rotation});
+      gsap.set(this.elem, {rotation: -1 * this.circle.rotation});
     } else {
-      U.set(this.elem, {rotation: 0});
+      gsap.set(this.elem, {rotation: 0});
     }
   }
 
