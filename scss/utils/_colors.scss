@@ -1,14 +1,38 @@
-$c-dark: #191813;
-$c-faint: #C9C7B8;
-$c-beige: #B5B3A4;
-$c-tan: #444444;
+// White, Black, Greys
+$c-white: rgb(255, 255, 255);
+$c-grey9: rgb(230, 230, 230);
+$c-grey8: rgb(204, 204, 204);
+$c-grey7: rgb(179, 179, 179);
+$c-grey6: rgb(153, 153, 153);
+$c-grey5: rgb(128, 128, 128);
+$c-grey4: rgb(102, 102, 102);
+$c-grey3: rgb(77, 77, 77);
+$c-grey2: rgb(51, 51, 51);
+$c-grey1: rgb(26, 26, 26);
+$c-black: rgb(0, 0, 0);
 
-$c-white: #FFFFFF;
-$c-grey: #888888;
-$c-black: #000000;
+// Red
+$c-red: rgb(255, 0, 0);
 
-$c-blue: #0000FF;
+// Magenta, Pink
+$c-magenta: rgb(255, 0, 255);
+$c-pink: rgb(255, 192, 203);
 
-$c-red: #FF0000;
+// Orange, Gold
+$c-orange: rgb(255, 166, 0);
 
-$c-green: #00FF00;
+// Brown, Tan
+
+// Yellow
+$c-yellow: rgb(255, 255, 0);
+
+// Green
+$c-lime: rgb(0, 255, 0);
+
+// Blue, Cyan
+$c-cyan: rgb(0, 255, 255);
+
+$c-darkblue: rgb(0, 0, 255);
+
+// Purple
+$c-purple: rgb(128, 0, 128);

@@ -32,7 +32,7 @@
     padding: 0;
     margin: 0;
     overflow-y: auto;
-    color: $c-tan;
+    // color: $c-tan;
     list-style: none;
     scrollbar-width: thin;
 
@@ -78,10 +78,10 @@
     .item {
         align-items: center;
         padding: 0 2px; // to align with the header border
-        &:not(:last-child) { border-bottom: 1px solid $c-faint; }
+        &:not(:last-child) { border-bottom: 1px solid $c-grey8; /* $c-faint; */ }
 
         .item-name {
-            color: $c-dark;
+            color: $c-black;
 
             .item-image {
                 flex: 0 0 30px;

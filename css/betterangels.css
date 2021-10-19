@@ -180,155 +180,57 @@
   text-align: center; }
 
 /* Styles for created DOM objects */
-#debugContainerOverlay {
+#xContainer {
   position: absolute;
   top: 50px;
   left: 100px;
-  z-index: 10000;
   width: calc(100% - 450px);
-  height: calc(100% - 150px);
-  pointer-events: none; }
-  #debugContainerOverlay * {
+  height: calc(100% - 150px); }
+  #xContainer * {
     position: absolute;
     -webkit-box-sizing: border-box;
     box-sizing: border-box;
-    pointer-events: none; }
-  #debugContainerOverlay > svg {
-    top: 0;
-    left: 0;
-    height: 100%;
-    width: 100%; }
-
-#rollCircleContainer {
-  position: absolute;
-  top: 50px;
-  left: 100px;
-  width: calc(100% - 450px);
-  height: calc(100% - 150px);
-  font-size: calc(30px * 0.75);
-  font-weight: bold;
-  line-height: 30px;
-  text-align: center;
-  outline: 3px solid #FF0000; }
-  #rollCircleContainer * {
-    -webkit-box-sizing: border-box;
-    box-sizing: border-box; }
-  #rollCircleContainer .roll-circle {
-    position: absolute;
-    width: 200px;
-    height: 200px;
-    opacity: 0.5;
     -webkit-transform-origin: 50% 50%;
     -ms-transform-origin: 50% 50%;
     transform-origin: 50% 50%; }
-    #rollCircleContainer .roll-circle .angle-marker {
-      position: absolute;
-      width: 25px;
-      height: 25px;
-      font-family: sans-serif;
-      font-size: 12px;
-      font-weight: bold;
-      line-height: 12.5px;
-      background-color: orange;
-      opacity: 1;
-      -webkit-transform-origin: 50% 50%;
-      -ms-transform-origin: 50% 50%;
-      transform-origin: 50% 50%; }
-    #rollCircleContainer .roll-circle .path-marker {
-      position: absolute;
-      width: 20px;
-      height: 14px;
-      font-size: 12px;
-      line-height: 16px;
-      color: white;
-      background-color: red;
-      border-radius: 5px;
-      opacity: 1; }
-    #rollCircleContainer .roll-circle > svg {
+  #xContainer .x-circle {
+    width: 200px;
+    height: 200px;
+    opacity: 0.5; }
+    #xContainer .x-circle > svg {
       --offset: calc(-0.5 * 200px);
       position: absolute;
       margin: 0 var(--offset) calc(2 * var(--offset)) var(--offset);
       margin-bottom: calc(-1 * 200px); }
-    #rollCircleContainer .roll-circle.type-lime > svg > circle {
-      fill: lime; }
-    #rollCircleContainer .roll-circle.type-pink > svg > circle {
-      fill: pink; }
-    #rollCircleContainer .roll-circle.type-cyan > svg > circle {
-      fill: cyan; }
-    #rollCircleContainer .roll-circle.type-yellow > svg > circle {
-      fill: yellow; }
-    #rollCircleContainer .roll-circle.type-purple > svg > circle {
-      fill: purple; }
-    #rollCircleContainer .roll-circle .snap-circle {
-      -webkit-transform-origin: 50% 50%;
-      -ms-transform-origin: 50% 50%;
-      transform-origin: 50% 50%; }
-  #rollCircleContainer .ore-die {
-    position: absolute;
+      #xContainer .x-circle > svg > circle {
+        fill: var(--circleColor); }
+    #xContainer .x-circle.x-circle-basic {
+      --circleColor: lime; }
+    #xContainer .x-circle.x-circle-pink {
+      --circleColor: pink; }
+    #xContainer .x-circle.x-circle-cyan {
+      --circleColor: cyan; }
+    #xContainer .x-circle.x-circle-yellow {
+      --circleColor: yellow; }
+    #xContainer .x-circle.x-circle-purple {
+      --circleColor: purple; }
+  #xContainer .x-item.x-die {
     width: 30px;
     height: 30px;
-    font-size: calc(30px * 0.75);
-    font-weight: bold;
     line-height: 30px;
     text-align: center;
-    background: -o-radial-gradient(ellipse, #FFFFFF, #00FF00 90%);
-    background: radial-gradient(ellipse, #FFFFFF, #00FF00 90%);
+    background: -o-radial-gradient(ellipse, white, var(--dieColor) 90%);
+    background: radial-gradient(ellipse, white, var(--dieColor) 90%);
     border-radius: calc(30px * 0.2);
-    outline: calc(30px * 0.1) solid #000000;
-    -webkit-transform-origin: 50% 50%;
-    -ms-transform-origin: 50% 50%;
-    transform-origin: 50% 50%; }
-    #rollCircleContainer .ore-die.ore-slot-space {
-      pointer-events: none;
-      opacity: 0; }
-
-.db-display {
-  position: absolute;
-  width: calc(200px * 4);
-  height: auto;
-  font-family: 'Fira Code';
-  font-size: 14px;
-  line-height: 16px;
-  color: lime;
-  text-align: left;
-  background-color: rgba(0, 100, 0, 0.5);
-  -webkit-filter: drop-shadow(0, 0, 5px, lime);
-  filter: drop-shadow(0, 0, 5px, lime);
-  outline: 5px solid lime;
-  opacity: 1;
-  -webkit-transform-origin: 50% 50%;
-  -ms-transform-origin: 50% 50%;
-  transform-origin: 50% 50%; }
-  .db-display td {
-    width: 25%; }
-
-.rotation-display,
-.angle-display {
-  position: absolute;
-  width: 200px;
-  height: 32px;
-  font-family: sans-serif;
-  font-size: 14px;
-  font-weight: bold;
-  line-height: 32px;
-  background-color: lightblue;
-  opacity: 1;
-  -webkit-transform-origin: 50% 50%;
-  -ms-transform-origin: 50% 50%;
-  transform-origin: 50% 50%; }
-  .rotation-display.angle-display,
-  .angle-display.angle-display {
-    background-color: magenta; }
-
-#testObj {
-  position: absolute;
-  width: 50px;
-  min-width: 50px;
-  height: 50px;
-  min-height: 50px;
-  background-color: red;
-  border-radius: 25px;
-  outline: 3px solid black; }
+    outline: calc(30px * 0.1) solid black;
+    font-size: calc(30px * 0.75);
+    font-weight: bold;
+    font-family: sans-serif; }
+    #xContainer .x-item.x-die.x-die-basic {
+      --dieColor: lime ; }
+  #xContainer .x-item.x-snap {
+    pointer-events: none;
+    opacity: 0; }
 
 /* Styles limited to betterangels sheets */
 .betterangels {
@@ -384,7 +286,7 @@
   .betterangels .sheet-body .tab .editor {
     height: 100%; }
   .betterangels .tox .tox-editor-container {
-    background: #FFFFFF; }
+    background: white; }
   .betterangels .tox .tox-edit-area {
     padding: 0 8px; }
   .betterangels .resource-label {
@@ -413,7 +315,6 @@
     padding: 0;
     margin: 0;
     overflow-y: auto;
-    color: #444444;
     list-style: none;
     scrollbar-width: thin; }
     .betterangels .items-list .item-list {
@@ -459,9 +360,10 @@
       align-items: center;
       padding: 0 2px; }
       .betterangels .items-list .item:not(:last-child) {
-        border-bottom: 1px solid #C9C7B8; }
+        border-bottom: 1px solid #cccccc;
+        /* $c-faint; */ }
       .betterangels .items-list .item .item-name {
-        color: #191813; }
+        color: black; }
         .betterangels .items-list .item .item-name .item-image {
           -webkit-box-flex: 0;
           -ms-flex: 0 0 30px;
@@ -497,3 +399,103 @@
     padding: 0 8px; }
   .betterangels.actor .hellbound {
     max-height: calc(100% - 2px); }
+
+/* Debugging styles */
+.db {
+  pointer-events: none; }
+
+#debugContainerOverlay {
+  position: absolute;
+  top: 50px;
+  left: 100px;
+  z-index: 10000;
+  width: calc(100% - 450px);
+  height: calc(100% - 150px);
+  pointer-events: none; }
+  #debugContainerOverlay * {
+    position: absolute;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    pointer-events: none; }
+  #debugContainerOverlay > svg {
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%; }
+
+#xContainer {
+  font-size: calc(30px * 0.75);
+  font-weight: bold;
+  line-height: 30px;
+  text-align: center;
+  outline: 3px solid red; }
+  #xContainer .x-circle .angle-marker {
+    width: 25px;
+    height: 25px;
+    font-family: sans-serif;
+    font-size: 10px;
+    font-weight: bold;
+    line-height: 10px;
+    color: #ffa600;
+    text-shadow: 0 0 2px black, 0 0 2px black, 0 0 2px black;
+    opacity: 1;
+    -webkit-transform-origin: 50% 50%;
+    -ms-transform-origin: 50% 50%;
+    transform-origin: 50% 50%; }
+  #xContainer .x-circle .path-marker {
+    width: 20px;
+    height: 14px;
+    font-size: 12px;
+    line-height: 16px;
+    color: white;
+    background-color: red;
+    border-radius: 5px;
+    opacity: 1; }
+
+.db-display {
+  position: absolute;
+  width: calc(200px * 4);
+  height: auto;
+  font-family: 'Fira Code', sans-serif;
+  font-size: 14px;
+  line-height: 16px;
+  color: lime;
+  text-align: left;
+  background-color: rgba(0, 100, 0, 0.5);
+  -webkit-filter: drop-shadow(0, 0, 5px, lime);
+  filter: drop-shadow(0, 0, 5px, lime);
+  outline: 5px solid lime;
+  opacity: 1;
+  -webkit-transform-origin: 50% 50%;
+  -ms-transform-origin: 50% 50%;
+  transform-origin: 50% 50%; }
+  .db-display td {
+    width: 25%; }
+
+.rotation-display,
+.angle-display {
+  position: absolute;
+  width: 200px;
+  height: 32px;
+  font-family: sans-serif;
+  font-size: 14px;
+  font-weight: bold;
+  line-height: 32px;
+  background-color: lightblue;
+  opacity: 1;
+  -webkit-transform-origin: 50% 50%;
+  -ms-transform-origin: 50% 50%;
+  transform-origin: 50% 50%; }
+  .rotation-display.angle-display,
+  .angle-display.angle-display {
+    background-color: magenta; }
+
+#testObj {
+  position: absolute;
+  width: 50px;
+  min-width: 50px;
+  height: 50px;
+  min-height: 50px;
+  background-color: red;
+  border-radius: 25px;
+  outline: 3px solid black; }

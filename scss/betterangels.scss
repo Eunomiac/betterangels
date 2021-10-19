@@ -13,7 +13,7 @@
 @import 'global/flex';
 
 /* Styles for created DOM objects */
-@import 'components/roll/rollcircles';
+@import 'components/xcircles/xcircles';
 
 /* Styles limited to betterangels sheets */
 .betterangels {
@@ -25,3 +25,6 @@
     @import 'components/actor/actorsheet';
   }
 }
+
+/* Debugging styles */
+@import 'utils/debug';

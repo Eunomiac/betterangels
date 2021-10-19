@@ -1,0 +1,66 @@
+$circle-size: 200px;
+$die-size: 30px;
+$padding-top: 50px;
+$padding-bottom: 100px;
+$padding-left: 100px;
+$padding-right: 350px;
+
+#xContainer {
+  position: absolute;
+  top: $padding-top;
+  left: $padding-left;
+  width: calc(100% - #{$padding-left + $padding-right});
+  height: calc(100% - #{$padding-top + $padding-bottom});
+
+  * {
+    position: absolute;
+    box-sizing: border-box;
+    transform-origin: 50% 50%;
+  }
+
+  .x-circle {
+    width: $circle-size;
+    height: $circle-size;
+    opacity: 0.5;
+
+    > svg {
+      --offset: calc(-0.5 * #{$circle-size});
+
+      position: absolute;
+      margin: 0 var(--offset) calc(2 * var(--offset)) var(--offset);
+      margin-bottom: calc(-1 * #{$circle-size});
+
+      > circle { fill: var(--circleColor) }
+    }
+
+    &.x-circle-basic { --circleColor: #{$c-lime}; }
+    &.x-circle-pink { --circleColor: #{$c-pink}; }
+    &.x-circle-cyan { --circleColor: #{$c-cyan}; }
+    &.x-circle-yellow { --circleColor: #{$c-yellow}; }
+    &.x-circle-purple { --circleColor: #{$c-purple}; }
+  }
+
+  .x-item {
+    &.x-die {
+      width: $die-size;
+      height: $die-size;
+      line-height: $die-size;
+      text-align: center;
+      background: radial-gradient(ellipse, $c-white, var(--dieColor) 90%);
+      border-radius: calc(#{$die-size} * 0.2);
+      outline: calc(#{$die-size} * 0.1) solid $c-black;
+      font: {
+        size: calc(#{$die-size} * 0.75);
+        weight: bold;
+        family: sans-serif;
+      }
+
+      &.x-die-basic { --dieColor: #{$c-lime} }
+    }
+
+    &.x-snap {
+      pointer-events: none;
+      opacity: 0;
+    }
+  }
+}

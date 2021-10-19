@@ -1,29 +1,40 @@
 /* ****▌███████████████████████████████████████████████████████████████████████████▐**** *\
 |*     ▌███████░░░░░░░░░░░░░░ Better Angels for Foundry VTT ░░░░░░░░░░░░░░░░███████▐     *|
 |*     ▌██████████████████░░░░░░░░░░░░░ by Eunomiac ░░░░░░░░░░░░░██████████████████▐     *|
-|*     ▌███████████████ MIT License █ v0.0.1-prealpha █ Oct 13 2021 ███████████████▐     *|
+|*     ▌███████████████ MIT License █ v0.0.1-prealpha █ Oct 19 2021 ███████████████▐     *|
 |*     ▌████████░░░░░░░░ https://github.com/Eunomiac/betterangels ░░░░░░░░█████████▐     *|
 \* ****▌███████████████████████████████████████████████████████████████████████████▐**** */
 
-// ████████ IMPORTS: Importing Modules ████████
+// ████████ IMPORTS ████████
+// ▮▮▮▮▮▮▮ GreenSock ▮▮▮▮▮▮▮
+import gsap, {
+  Draggable as Dragger,
+  InertiaPlugin,
+  MotionPathPlugin
+} from "/scripts/greensock/esm/all.js";
+
+import {
 // ▮▮▮▮▮▮▮[Constants]▮▮▮▮▮▮▮
-import BETTERANGELS from "./helpers/config.mjs";
+  BETTERANGELS,
 
-// ▮▮▮▮▮▮▮[Utility]▮▮▮▮▮▮▮
-import preloadHandlebarsTemplates from "./helpers/templates.mjs";
-import testCircles from "./documents/dragCircle.mjs";
-import U from "./helpers/utilities.mjs";
+  // ▮▮▮▮▮▮▮[Utility]▮▮▮▮▮▮▮
+  preloadTemplates, U,
 
-// ▮▮▮▮▮▮▮[Classes]▮▮▮▮▮▮▮
-import BetterAngelsActor from "./documents/actor.mjs";
-import BetterAngelsActorSheet from "./sheets/actor-sheet.mjs";
-import HellboundActorSheet from "./sheets/actor-hellbound-sheet.mjs";
-import DemonCompanionSheet from "./sheets/actor-demon-sheet.mjs";
-import MajorNPCSheet from "./sheets/actor-majornpc-sheet.mjs";
-import MinorNPCSheet from "./sheets/actor-minornpc-sheet.mjs";
-import BetterAngelsItem from "./documents/item.mjs";
-import BetterAngelsItemSheet from "./sheets/item-sheet.mjs";
-import BARoll from "./documents/rollPool.mjs";
+  // ▮▮▮▮▮▮▮[Actors]▮▮▮▮▮▮▮
+  BetterAngelsActor,
+  BetterAngelsActorSheet, HellboundActorSheet, DemonCompanionSheet, MajorNPCSheet, MinorNPCSheet,
+
+  // ▮▮▮▮▮▮▮[Items]▮▮▮▮▮▮▮
+  BetterAngelsItem,
+  BetterAngelsItemSheet,
+
+  // ▮▮▮▮▮▮▮[XCircles]▮▮▮▮▮▮▮
+  XCircle,
+  XItem, XDie, XSnap
+
+} from "./helpers/bundler.mjs";
+
+gsap.registerPlugin(Dragger, InertiaPlugin, MotionPathPlugin);
 
 // ████████ ON INIT: On-Initialization Hook ████████
 Hooks.once("init", async () => {
@@ -50,6 +61,6 @@ Hooks.once("init", async () => {
   Items.registerSheet("betterangels", BetterAngelsItemSheet, {makeDefault: true});
 
   // ▮▮▮▮▮▮▮[Handlebar Templates] Preload Handlebars Templates ▮▮▮▮▮▮▮
-  return preloadHandlebarsTemplates();
+  return preloadTemplates();
 
 });

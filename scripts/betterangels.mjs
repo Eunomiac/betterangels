@@ -1,25 +1,33 @@
-// #region ████████ IMPORTS: Importing Modules ████████ ~
+// #region ████████ IMPORTS ████████ ~
+// #region ▮▮▮▮▮▮▮ GreenSock ▮▮▮▮▮▮▮ ~
+import gsap, {
+  Draggable as Dragger,
+  InertiaPlugin,
+  MotionPathPlugin
+} from "/scripts/greensock/esm/all.js"; // eslint-disable-line import/no-unresolved
+// #endregion ▮▮▮▮[GreenSock]▮▮▮▮
+import {
 // #region ▮▮▮▮▮▮▮[Constants]▮▮▮▮▮▮▮ ~
-import BETTERANGELS from "./helpers/config.mjs";
-// #endregion ▮▮▮▮[Constants]▮▮▮▮
+  BETTERANGELS,
+  // #endregion ▮▮▮▮[Constants]▮▮▮▮
+  // #region ▮▮▮▮▮▮▮[Utility]▮▮▮▮▮▮▮ ~
+  preloadTemplates, U,
+  // #endregion ▮▮▮▮[Utility]▮▮▮▮
+  // #region ▮▮▮▮▮▮▮[Actors]▮▮▮▮▮▮▮ ~
+  BetterAngelsActor,
+  BetterAngelsActorSheet, HellboundActorSheet, DemonCompanionSheet, MajorNPCSheet, MinorNPCSheet,
+  // #endregion ▮▮▮▮[Actors]▮▮▮▮
+  // #region ▮▮▮▮▮▮▮[Items]▮▮▮▮▮▮▮ ~
+  BetterAngelsItem,
+  BetterAngelsItemSheet,
+  // #endregion ▮▮▮▮[Items]▮▮▮▮
+  // #region ▮▮▮▮▮▮▮[XCircles]▮▮▮▮▮▮▮ ~
+  XCircle,
+  XItem, XDie, XSnap
+  // #endregion ▮▮▮▮[XCircles]▮▮▮▮
+} from "./helpers/bundler.mjs";
 
-// #region ▮▮▮▮▮▮▮[Utility]▮▮▮▮▮▮▮ ~
-import preloadHandlebarsTemplates from "./helpers/templates.mjs";
-import testCircles from "./documents/dragCircle.mjs";
-import U from "./helpers/utilities.mjs";
-// #endregion ▮▮▮▮[Utility]▮▮▮▮
-
-// #region ▮▮▮▮▮▮▮[Classes]▮▮▮▮▮▮▮ ~
-import BetterAngelsActor from "./documents/actor.mjs";
-import BetterAngelsActorSheet from "./sheets/actor-sheet.mjs";
-import HellboundActorSheet from "./sheets/actor-hellbound-sheet.mjs";
-import DemonCompanionSheet from "./sheets/actor-demon-sheet.mjs";
-import MajorNPCSheet from "./sheets/actor-majornpc-sheet.mjs";
-import MinorNPCSheet from "./sheets/actor-minornpc-sheet.mjs";
-import BetterAngelsItem from "./documents/item.mjs";
-import BetterAngelsItemSheet from "./sheets/item-sheet.mjs";
-import BARoll from "./documents/rollPool.mjs";
-// #endregion ▮▮▮▮[Classes]▮▮▮▮
+gsap.registerPlugin(Dragger, InertiaPlugin, MotionPathPlugin);
 // #endregion ▄▄▄▄▄ IMPORTS ▄▄▄▄▄
 
 /*DEVCODE*/console.log("STARTING BETTER ANGELS");/*!DEVCODE*/
@@ -51,13 +59,30 @@ Hooks.once("init", async () => {
   // #endregion ▮▮▮▮[Classes]▮▮▮▮
 
   // #region ▮▮▮▮▮▮▮[Handlebar Templates] Preload Handlebars Templates ▮▮▮▮▮▮▮
-  return preloadHandlebarsTemplates();
+  return preloadTemplates();
   // #endregion ▮▮▮▮[Handlebar Templates]▮▮▮▮
 
 });
 // #endregion ▄▄▄▄▄ ON INIT ▄▄▄▄▄
 
 /*DEVCODE*/
+const GenerateCircles = (circles = {center: 0}) => {
+  window.CIRCLES = window.CIRCLES ?? [];
+  const circleParams = {
+    center: [635, 314, 100, {type: "purple"}],
+    topLeft: [100, 100, 100, {type: "basic"}],
+    topRight: [1370, 100, 100, {type: "cyan"}],
+    botLeft: [100, 729, 100, {type: "pink"}],
+    botRight: [1370, 729, 100, {type: "yellow"}]
+  };
+  for (const [circlePos, numDice] of Object.entries(circles)) {
+    const [x, y, radius, options] = circleParams[circlePos];
+    const xCircle = new XCircle(x, y, radius, options);
+    xCircle.addDice(numDice);
+    window.CIRCLES.push(xCircle);
+  }
+};
+
 Hooks.once("ready", async () => {
   window.REF = game.betterangels;
   window.DB = {
@@ -69,11 +94,18 @@ Hooks.once("ready", async () => {
     MinorNPCSheet,
     BetterAngelsItem,
     BetterAngelsItemSheet,
-    BARoll,
-    testCircles
+    XCircle,
+    XItem,
+    XDie,
+    XSnap,
+    gsap,
+    MotionPathPlugin
   };
   window.U = U;
-  window.CIRCLES = testCircles();
+  window.GenerateCircles = GenerateCircles;
+
+  GenerateCircles({center: 5});
+  window.CIRCLES[0].showAngles(10, true);
 });
 /*!DEVCODE*/
 /**
