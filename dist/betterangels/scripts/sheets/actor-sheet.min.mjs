@@ -1,1 +1,134 @@
-/* ▌██░░ betterangels v0.0.1-prealpha (2021) ║ MIT License ║ https://github.com/Eunomiac/betterangels ░░██▐ */export default class extends ActorSheet{static get defaultOptions(){return mergeObject(super.defaultOptions,{classes:["betterangels","sheet","actor"],template:"systems/betterangels/templates/actor/actor-sheet.html",width:400,height:700,tabs:[{navSelector:".sheet-tabs",contentSelector:".sheet-body",initial:"features"}]})}get template(){return`systems/betterangels/templates/actor/actor-${this.actor.data.type}-sheet.html`}getData(){const t=super.getData(),e=t.actor.data;return t.data=e.data,t.flags=e.flags,"character"===e.type&&(this._prepareItems(t),this._prepareCharacterData(t)),t.rollData=t.actor.getRollData(),t}_prepareCharacterData(t){}_prepareItems(t){const e=[],a=[];for(const r of t.items)r.img=r.img||DEFAULT_TOKEN,"item"===r.type?e.push(r):"feature"===r.type&&a.push(r);t.gear=e,t.features=a}activateListeners(t){if(super.activateListeners(t),t.find(".item-edit").click((t=>{const e=$(t.currentTarget).parents(".item");this.actor.items.get(e.data("itemId")).sheet.render(!0)})),this.isEditable&&(t.find(".item-create").click(this._onItemCreate.bind(this)),t.find(".item-delete").click((t=>{const e=$(t.currentTarget).parents(".item");this.actor.items.get(e.data("itemId")).delete(),e.slideUp(200,(()=>this.render(!1)))})),t.find(".rollable").click(this._onRoll.bind(this)),this.actor.isOwner)){const e=t=>this._onDragStart(t);t.find("li.item").each(((t,a)=>{a.classList.contains("inventory-header")||(a.setAttribute("draggable",!0),a.addEventListener("dragstart",e,!1))}))}}async _onItemCreate(t){t.preventDefault();const e=t.currentTarget,{type:a}=e.dataset,r=duplicate(e.dataset),s={name:`New ${a.capitalize()}`,type:a,data:r};return delete s.data.type,await Item.create(s,{parent:this.actor})}_onRoll(t){t.preventDefault();const e=t.currentTarget,{dataset:a}=e;if(a.rollType&&"item"===a.rollType){const{itemId:t}=e.closest(".item").dataset,a=this.actor.items.get(t);if(a)return a.roll()}if(a.roll){const t=a.label?`[roll] ${a.label}`:"",e=new Roll(a.roll,this.actor.getRollData()).roll();return e.toMessage({speaker:ChatMessage.getSpeaker({actor:this.actor}),flavor:t,rollMode:game.settings.get("core","rollMode")}),e}return!1}}
+/* ▌██░░ betterangels v0.0.1-prealpha (2021) ║ MIT License ║ https://github.com/Eunomiac/betterangels ░░██▐ */export default class extends ActorSheet {
+
+  static get defaultOptions() {
+    return mergeObject(super.defaultOptions, {
+      classes: ["betterangels", "sheet", "actor"],
+      template: "systems/betterangels/templates/actor/actor-sheet.html",
+      width: 400,
+      height: 700,
+      tabs: [{navSelector: ".sheet-tabs", contentSelector: ".sheet-body", initial: "features"}]
+    });
+  }
+
+  get template() { return `systems/betterangels/templates/actor/actor-${this.actor.data.type}-sheet.html` }
+
+  getData() {
+
+    const context = super.getData();
+
+    const actorData = context.actor.data;
+
+    context.data = actorData.data;
+    context.flags = actorData.flags;
+
+    if (actorData.type === "character") {
+      this._prepareItems(context);
+      this._prepareCharacterData(context);
+    }
+
+    context.rollData = context.actor.getRollData();
+
+    return context;
+  }
+
+  _prepareCharacterData(context) { }
+
+  _prepareItems(context) {
+
+    const gear = [];
+    const features = [];
+
+    for (const i of context.items) {
+      i.img = i.img || DEFAULT_TOKEN;
+      if (i.type === "item") {
+        // Append to gear.
+        gear.push(i);
+      } else if (i.type === "feature") {
+        // Append to features.
+        features.push(i);
+      }
+    }
+
+    context.gear = gear;
+    context.features = features;
+  }
+
+  activateListeners(html) {
+    super.activateListeners(html);
+
+    html.find(".item-edit").click((ev) => {
+      const li = $(ev.currentTarget).parents(".item");
+      const item = this.actor.items.get(li.data("itemId"));
+      item.sheet.render(true);
+    });
+
+    if (!this.isEditable) { return }
+
+    html.find(".item-create").click(this._onItemCreate.bind(this));
+
+    html.find(".item-delete").click((ev) => {
+      const li = $(ev.currentTarget).parents(".item");
+      const item = this.actor.items.get(li.data("itemId"));
+      item.delete();
+      li.slideUp(200, () => this.render(false));
+    });
+
+    html.find(".rollable").click(this._onRoll.bind(this));
+
+    if (this.actor.isOwner) {
+      const handler = (ev) => this._onDragStart(ev);
+      html.find("li.item").each((i, li) => {
+        if (li.classList.contains("inventory-header")) { return }
+        li.setAttribute("draggable", true);
+        li.addEventListener("dragstart", handler, false);
+      });
+    }
+  }
+
+  async _onItemCreate(event) {
+    event.preventDefault();
+    const header = event.currentTarget;
+
+    const {type} = header.dataset;
+
+    const data = duplicate(header.dataset);
+
+    const name = `New ${type.capitalize()}`;
+
+    const itemData = {name, type, data};
+
+    delete itemData.data.type;
+
+    return await Item.create(itemData, {parent: this.actor});
+  }
+
+  _onRoll(event) {
+    event.preventDefault();
+    const element = event.currentTarget;
+    const {dataset} = element;
+
+    if (dataset.rollType) {
+      if (dataset.rollType === "item") {
+        const {itemId} = element.closest(".item").dataset;
+        const item = this.actor.items.get(itemId);
+        if (item) {
+          return item.roll();
+        }
+      }
+    }
+
+    if (dataset.roll) {
+      const label = dataset.label ? `[roll] ${dataset.label}` : "";
+      const roll = new Roll(dataset.roll, this.actor.getRollData()).roll();
+      roll.toMessage({
+        speaker: ChatMessage.getSpeaker({actor: this.actor}),
+        flavor: label,
+        rollMode: game.settings.get("core", "rollMode")
+      });
+      return roll;
+    }
+
+    return false;
+  }
+
+}

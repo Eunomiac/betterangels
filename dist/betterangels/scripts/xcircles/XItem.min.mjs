@@ -1,1 +1,202 @@
-/* ▌██░░ betterangels v0.0.1-prealpha (2021) ║ MIT License ║ https://github.com/Eunomiac/betterangels ░░██▐ */import gsap,{Draggable as Dragger,InertiaPlugin,MotionPathPlugin}from"/scripts/greensock/esm/all.js";import{U,XCircle,MIX,IsDraggable}from"../helpers/bundler.mjs";class XItem{static get REGISTRY(){return this._REGISTRY=this._REGISTRY??{}}static get ALL(){return Object.values(this.REGISTRY).filter((t=>t instanceof this.constructor))}static get TYPES(){return{}}static get CLASSES(){return["x-item"]}static get PREFIX(){return"xItem"}static NameItem(t){const e=new RegExp(`${t._owner}_${t._type}_`),s=parseInt(Object.keys(this.REGISTRY).filter((t=>e.test(t))).pop()?.match(/_(\d+)$/)?.pop()??0)+1;t._name=`${t._owner}_${t._type}_${s}`}static Register(t){return this.REGISTRY[t.name]=t,t}static Kill(t){t.killAll(),delete this.REGISTRY[t.name]}constructor({circle:t,type:e,...s}={}){if(t&&!(t instanceof XCircle))throw new Error(`[new XItem] '${t.name}' is not a valid Circle.`);this._type=this._checkType(e),this._owner=s?.owner?.id??s?.owner??t?.owner?.id??U.GMID,this.constructor.NameItem(this),this._create(t),this.constructor.Register(this)}get x(){return gsap.getProperty(this.elem,"x")}get y(){return gsap.getProperty(this.elem,"y")}get height(){return gsap.getProperty(this.elem,"height")}get width(){return gsap.getProperty(this.elem,"width")}get radius(){return(this.height+this.width)/4}get owner(){return game.users.get(this._owner)}get name(){return this._name}get id(){return this._id=this._id??`${this.constructor.PREFIX}-${this.name}`}get elem(){return this._elem=this._elem??$(`#${this.id}`)?.[0]}get $(){return $(this.elem)}get defaultClasses(){return[...this.constructor.CLASSES,U.formatAsClass(`${this.constructor.PREFIX}-${this.type}`)]}get classes(){return this.elem.classList}set classes(t){const e=[...this.defaultClasses,...Array.from([t]).flat().join(" ").trim().split(" ")];this.classes.forEach((t=>{e.includes(t)||this.classes.remove(t)})),t.forEach((t=>this.classes.add(t)))}get type(){return this._type}set type(t){this._type=this._checkType(t),this.classes=[]}get parent(){return this._parent}set parent(t){const[e]=$(`#${t?.id??"noElemFound"}`);if(!e)throw new Error(`[XItem.parent] No element found for '${t}'`);{const{x:s,y:i}=MotionPathPlugin.convertCoordinates(this.parent?.elem??this.parent??this.elem,e,{x:this.x,y:this.y});this._parent=t,this.set({x:s,y:i}),$(this.elem).appendTo(e)}}get circle(){return this.parent instanceof XCircle?this.parent:void 0}set circle(t){if(!(t instanceof XCircle))throw new Error(`[XItem.parent] '${t}' is not an XCircle`);this.parent=t}get closestCircle(){return this._closestCircle=this.circle??this._closestCircle??XCircle.GetClosestTo(this)}set closestCircle(t){this._closestCircle=t}get pathWeight(){return this._pathWeight=this._pathWeight??1}set pathWeight(t){this._pathWeight=t}get isMoving(){return this._isMoving}set isMoving(t){this._isMoving=Boolean(t)}get rotation(){return gsap.getProperty(this.elem,"rotation")}set rotation(t){/^[+-]=/.test(`${t}`)&&(t=this.rotation+parseFloat(`${t}`.replace(/=/g,""))),gsap.set(this.elem,{rotation:t})}_create(t){[this._elem]=$(`<div id="${this.id}" class="${this.defaultClasses.join(" ")}" />`).appendTo(XCircle.CONTAINER),this.set({xPercent:-50,yPercent:-50}),t?this.circle=t:this._parent=XCircle.CONTAINER}_checkType(t){const e=this.constructor.TYPES[t]??t;if(Object.values(this.constructor.TYPES).includes(e))return e;throw new Error(`Invalid Item Type: ${t}`)}_updateClosestCircle({x:t,y:e}={}){if(t=t??this.x,e=e??this.y,this.circle)this.closestCircle?.unwatchItem(this),delete this._closestCircle;else{const s=XCircle.GetClosestTo({x:t,y:e});s.name!==this.closestCircle?.name&&(this.closestCircle?.name!==this._snapCircle?.name&&this.closestCircle?.unwatchItem(this),this.closestCircle=s,this.closestCircle.name!==this._snapCircle?.name&&this.closestCircle.watchItem(this))}}straighten(){gsap.set(this.elem,{rotation:-1*this.parent?.rotation??0})}set(t){gsap.set(this.elem,t)}kill(){this.constructor.Unregister(this),this.$.remove()}get pathPos(){return this._pathPos}set pathPos(t){}async _distItems(t,e=1,s=!1){const i=[...this.slots];t=Array.isArray(t)?t:this._checkSnap(t,this.slots);const r=this._compareSlots(t,i);if(r.isEqual)return Promise.resolve();r.isSameOrder&&"cycleSlot"in r&&(t=[i[i.length-1],...i.slice(1,-1),i[0]]),this._slots=[...t];const n=Object.fromEntries(this.dice.map((t=>[t.id,this._getItemPos(t,i)]))),a=Object.fromEntries(this.dice.map((t=>[t.id,this._getItemPos(t,this.slots)]))),h=this;return Promise.allSettled(this.dice.map((t=>new Promise(((s,r)=>{let o=n[t.id]?.pathPos??0;const c=a[t.id].pathPos;h._checkSlots(t,i)&&Math.abs(o-c)>.6&&(o>c?o--:o++),console.log(gsap.to(t.elem,{motionPath:{path:h.snap.elem,alignOrigin:[.5,.5],start:o,end:c,fromCurrent:!0},duration:e,ease:"power4.out",onComplete:s,onUpdate(){},onInterrupt:r}))})))))}}class XDie extends(MIX(XItem).with(IsDraggable)){static get TYPES(){return{basic:"basic"}}static get CLASSES(){return[...super.CLASSES,"x-die"]}static get PREFIX(){return"xDie"}constructor(t={}){t.pathWeight=t.pathWeight??1,t.type=XDie.TYPES[t.type]??t.type??XDie.TYPES.basic,super(t)}get parent(){return super.parent}set parent(t){super.parent=t,this.straighten()}get pathPos(){return this._pathPos}set pathPos(t){}}class XSnap extends XItem{static get TYPES(){return{die:"die"}}static get CLASSES(){return[...super.CLASSES,"x-snap"]}static get PREFIX(){return"xSnap"}constructor(t,e={}){e.pathWeight=e.pathWeight??2,e.type=XSnap.TYPES[e.type]??e.type??XSnap.TYPES.die,super(e),this._name=`SNAP-${this.name}`,this._snapTarget=t}}export{XItem,XDie,XSnap};
+/* ▌██░░ betterangels v0.0.1-prealpha (2021) ║ MIT License ║ https://github.com/Eunomiac/betterangels ░░██▐ */// ████████ IMPORTS ████████
+// ▮▮▮▮▮▮▮ GreenSock ▮▮▮▮▮▮▮
+import gsap, {
+  Draggable as Dragger,
+  InertiaPlugin,
+  MotionPathPlugin
+} from "/scripts/greensock/esm/all.js";
+import {
+  // ▮▮▮▮▮▮▮[Utility]▮▮▮▮▮▮▮
+  U,
+  // ▮▮▮▮▮▮▮[XCircles]▮▮▮▮▮▮▮
+  XCircle,
+  // ▮▮▮▮▮▮▮[Mixins]▮▮▮▮▮▮▮
+  MIX, HasDOMElem, SnapsToCircle
+} from "../helpers/bundler.mjs";
+
+class XItem extends MIX().with(HasDOMElem) {
+  // ████████ STATIC: Static Getters, Setters, Methods ████████
+  // ░░░░░░░[Getters]░░░░ Registry, Enumerables, Constants ░░░░░░░
+  static get REGISTRY() { return (this._REGISTRY = this._REGISTRY ?? {}) }
+  static get ALL() {
+    return Object.values(this.REGISTRY)
+      .filter((item) => item instanceof this.constructor);
+  }
+  static get TYPES() { return { } }
+  static get CLASSES() { return ["x-item"] }
+  static get PREFIX() { return "xItem" }
+  // ░░░░░░░[Methods]░░░░ Static Methods ░░░░░░░
+  static NameItem(item) {
+    if (item._options.name) {
+      item._name = item._options.name;
+    } else {
+      const namePrefix = `${item._owner}_${item._type}`;
+      const nameTest = new RegExp(`^${namePrefix}_`);
+      const itemNum = parseInt(Object.keys(this.REGISTRY)
+        .filter((key) => nameTest.test(key)).pop()?.match(/_(\d+)$/)
+        ?.pop() ?? 0) + 1;
+      item._name = `${namePrefix}_${itemNum}`;
+      item._id = `${item.constructor.PREFIX}-${item.name}`;
+    }
+  }
+  static Register(item) {
+    this.REGISTRY[item.name] = item;
+    return item;
+  }
+  static Unregister(item) {
+    delete this.REGISTRY[item.name];
+  }
+
+  // ████████ CONSTRUCTOR ████████
+  constructor(options = {}) {
+    super();
+    this._options = options;
+
+    this.type = options.type;
+    this._owner = options.owner?.id ?? options.owner ?? options.circle?.owner?.id ?? U.GMID;
+
+    this.constructor.NameItem(this);
+    this._create(options.circle);
+    this.constructor.Register(this);
+  }
+
+  // ████████ GETTERS & SETTERS ████████
+  // ░░░░░░░ Read-Only ░░░░░░░
+  get owner() { return game.users.get(this._owner) }
+  get name() { return this._name }
+
+  get slot() {
+    const {slot} = this.circle?._getSlotItemPos(this) ?? {};
+    return slot;
+  }
+  get slotAbsAngle() {
+    const {angle} = this.circle?._getSlotItemPos(this) ?? {};
+    return angle;
+  }
+
+  // ░░░░░░░ Writeable ░░░░░░░
+  get type() { return this._type }
+  set type(v) {
+    const checkedType = this.constructor.TYPES[v] ?? v ?? this.constructor.DEFAULTTYPE;
+    if (Object.values(this.constructor.TYPES).includes(checkedType)) {
+      this._type = checkedType;
+      this.classes = [];
+    } else {
+      throw new Error(`Invalid ${this.constructor.name} Type: ${v}`);
+    }
+  }
+
+  get circle() { return this.parent instanceof XCircle ? this.parent : undefined }
+  set circle(v) {
+    if (v instanceof XCircle) {
+      this.parent = v;
+    } else {
+      throw new Error(`[${this.constructor.name}.parent] '${v}' is not an XCircle`);
+    }
+  }
+
+  get isMoving() { return this._isMoving }
+  set isMoving(v) { this._isMoving = Boolean(v) }
+
+  get closestCircle() { return (this._closestCircle = this.circle ?? this._closestCircle ?? XCircle.GetClosestTo(this)) }
+  set closestCircle(v) { this._closestCircle = v }
+
+  get pathPos() { return (this._pathPos = this.circle ? this._pathPos ?? 0 : false) }
+  set pathPos(v) { this._pathPos = this.circle ? v : false }
+
+  get pathWeight() { return (this._pathWeight = this._pathWeight ?? 1) }
+  set pathWeight(v) { this._pathWeight = v }
+
+  get pathRepositionTime() { return (this._pathRepositionTime = this._pathRepositionTime ?? 0.5) }
+  set pathRepositionTime(v) { this._pathRepositionTime = v }
+
+  get targetPathPos() { return (this._targetPathPos = this.circle ? this._targetPathPos ?? 0 : false) }
+  set targetPathPos(v) {
+    if (this.circle) {
+      const item = this;
+      let [start, end] = [this.pathPos, v];
+      if (this.circle && v !== this._targetPathPos) {
+        if (start && Math.abs(start - end) > 0.6) {
+          start += start > end ? -1 : 1;
+        }
+        this._targetPathPos = v;
+        this._repoTween = gsap.to(this.elem, {
+          motionPath: {
+            path: this.circle.snap.elem,
+            alignOrigin: [0.5, 0.5],
+            start,
+            end,
+            fromCurrent: true
+          },
+          duration: this.pathRepositionTime,
+          ease: "power4.out",
+          onStart() { item.isMoving = true },
+          onComplete() {
+            item.pathPos = end;
+            item.isMoving = false;
+          },
+          onUpdate() {
+            if (!item.circle) {
+              this.kill();
+            } else {
+              item.pathPos = start + this.ratio * (end - start);
+            }
+          }
+        });
+      }
+    }
+  }
+
+  // ████████ PRIVATE METHODS ████████
+  // ░░░░░░░[Initializing]░░░░ Creating DOM Elements ░░░░░░░
+  _create(startCircle) {
+    [this._elem] = $(`<div id="${this.id}" class="${this.defaultClasses.join(" ")}" />`);
+    this[startCircle ? "circle" : "parent"] = startCircle ?? XCircle.CONTAINER;
+    this.set({xPercent: -50, yPercent: -50, rotation: 0, ...this._startPos.x ? this._startPos : {}});
+  }
+
+  // ░░░░░░░[Animation]░░░░ Animation Effects, Tweens, Timelines ░░░░░░░
+  straighten() { this.set({rotation: -1 * (this.parent?.rotation ?? 0)}) }
+
+}
+
+class XDie extends MIX(XItem).with(SnapsToCircle) {
+  // ████████ STATIC: Static Getters, Setters, Methods ████████
+  // ░░░░░░░[Getters]░░░░ Enumerables, Constants ░░░░░░░
+  static get TYPES() { return {basic: "basic"} }
+  static get DEFAULTTYPE() { return this.TYPES.basic }
+  static get CLASSES() { return [...super.CLASSES, "x-die"] }
+  static get PREFIX() { return "xDie" }
+
+}
+
+class XSnap extends XItem {
+  // ████████ STATIC: Static Getters, Setters, Methods ████████
+  // ░░░░░░░[Getters]░░░░ Enumerables, Constants ░░░░░░░
+  static get TYPES() { return {die: "die"} }
+  static get DEFAULTTYPE() { return this.TYPES.die }
+  static get CLASSES() { return [...super.CLASSES, "x-snap"] }
+  static get PREFIX() { return "xSnap" }
+
+  // ████████ CONSTRU
+  CTOR ████████
+  constructor(snapTarget, options = {}) {
+    options.pathWeight = options.pathWeight ?? 2;
+    options.name = `S:${snapTarget.name}`;
+    super(options);
+    this._snapTarget = snapTarget;
+    this._startPos = options.alignTo
+      ? {x: options.alignTo.x, y: options.alignTo.y}
+      : {x: options.x, y: options.y};
+  }
+
+  // ████████ GETTERS & SETTERS ████████
+
+  // ░░░░░░░ Writeable ░░░░░░░
+  get snapTarget() { return this._snapTarget }
+  set snapTarget(v) { this._snapTarget = v }
+
+}
+
+// ████████ EXPORTS ████████
+export {XItem, XDie, XSnap};

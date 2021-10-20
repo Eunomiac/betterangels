@@ -1,7 +1,7 @@
 /* ****▌███████████████████████████████████████████████████████████████████████████▐**** *\
 |*     ▌███████░░░░░░░░░░░░░░ Better Angels for Foundry VTT ░░░░░░░░░░░░░░░░███████▐     *|
 |*     ▌██████████████████░░░░░░░░░░░░░ by Eunomiac ░░░░░░░░░░░░░██████████████████▐     *|
-|*     ▌███████████████ MIT License █ v0.0.1-prealpha █ Oct 19 2021 ███████████████▐     *|
+|*     ▌███████████████ MIT License █ v0.0.1-prealpha █ Oct 20 2021 ███████████████▐     *|
 |*     ▌████████░░░░░░░░ https://github.com/Eunomiac/betterangels ░░░░░░░░█████████▐     *|
 \* ****▌███████████████████████████████████████████████████████████████████████████▐**** */
 
@@ -18,17 +18,22 @@ export default class extends ItemSheet {
 
   get template() {
     const path = "systems/betterangels/templates/item";
+
     return `${path}/item-${this.item.data.type}-sheet.html`;
   }
 
   getData() {
+
     const context = super.getData();
+
     const itemData = context.item.data;
+
     context.rollData = {};
     const actor = this.object?.parent ?? null;
     if (actor) {
       context.rollData = actor.getRollData();
     }
+
     context.data = itemData.data;
     context.flags = itemData.flags;
 
@@ -37,7 +42,9 @@ export default class extends ItemSheet {
 
   activateListeners(html) {
     super.activateListeners(html);
+
     if (this.isEditable) { return }
+
   }
 
 }

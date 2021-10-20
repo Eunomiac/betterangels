@@ -1,7 +1,7 @@
 /* ****▌███████████████████████████████████████████████████████████████████████████▐**** *\
 |*     ▌███████░░░░░░░░░░░░░░ Better Angels for Foundry VTT ░░░░░░░░░░░░░░░░███████▐     *|
 |*     ▌██████████████████░░░░░░░░░░░░░ by Eunomiac ░░░░░░░░░░░░░██████████████████▐     *|
-|*     ▌███████████████ MIT License █ v0.0.1-prealpha █ Oct 19 2021 ███████████████▐     *|
+|*     ▌███████████████ MIT License █ v0.0.1-prealpha █ Oct 20 2021 ███████████████▐     *|
 |*     ▌████████░░░░░░░░ https://github.com/Eunomiac/betterangels ░░░░░░░░█████████▐     *|
 \* ****▌███████████████████████████████████████████████████████████████████████████▐**** */
 
@@ -22,27 +22,34 @@ export default class extends Actor {
   }
 
   prepareDerivedData() {
-    
+
     const actorData = this.data;
     const {data} = actorData;
     const flags = actorData.flags.betterangels || {};
+
     this._prepareCharacterData(actorData);
   }
 
   _prepareCharacterData(actorData) {
+
     if (actorData.type !== "character") { return }
+
     const {data} = actorData;
   }
 
   getRollData() {
+
     const data = super.getRollData();
+
     this._getCharacterRollData(data);
 
     return data;
   }
 
   _getCharacterRollData(data) {
+
     if (this.data.type !== "character") { return }
+
     if (data.attributes.level) {
       data.lvl = data.attributes.level.value ?? 0;
     }

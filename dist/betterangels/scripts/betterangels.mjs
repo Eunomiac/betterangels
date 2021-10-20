@@ -1,7 +1,7 @@
 /* ****▌███████████████████████████████████████████████████████████████████████████▐**** *\
 |*     ▌███████░░░░░░░░░░░░░░ Better Angels for Foundry VTT ░░░░░░░░░░░░░░░░███████▐     *|
 |*     ▌██████████████████░░░░░░░░░░░░░ by Eunomiac ░░░░░░░░░░░░░██████████████████▐     *|
-|*     ▌███████████████ MIT License █ v0.0.1-prealpha █ Oct 19 2021 ███████████████▐     *|
+|*     ▌███████████████ MIT License █ v0.0.1-prealpha █ Oct 20 2021 ███████████████▐     *|
 |*     ▌████████░░░░░░░░ https://github.com/Eunomiac/betterangels ░░░░░░░░█████████▐     *|
 \* ****▌███████████████████████████████████████████████████████████████████████████▐**** */
 
@@ -12,26 +12,20 @@ import gsap, {
   InertiaPlugin,
   MotionPathPlugin
 } from "/scripts/greensock/esm/all.js";
-
 import {
 // ▮▮▮▮▮▮▮[Constants]▮▮▮▮▮▮▮
   BETTERANGELS,
-
   // ▮▮▮▮▮▮▮[Utility]▮▮▮▮▮▮▮
   preloadTemplates, U,
-
   // ▮▮▮▮▮▮▮[Actors]▮▮▮▮▮▮▮
   BetterAngelsActor,
   BetterAngelsActorSheet, HellboundActorSheet, DemonCompanionSheet, MajorNPCSheet, MinorNPCSheet,
-
   // ▮▮▮▮▮▮▮[Items]▮▮▮▮▮▮▮
   BetterAngelsItem,
   BetterAngelsItemSheet,
-
   // ▮▮▮▮▮▮▮[XCircles]▮▮▮▮▮▮▮
   XCircle,
   XItem, XDie, XSnap
-
 } from "./helpers/bundler.mjs";
 
 gsap.registerPlugin(Dragger, InertiaPlugin, MotionPathPlugin);

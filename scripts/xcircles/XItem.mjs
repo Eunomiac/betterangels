@@ -14,12 +14,12 @@ import {
   XCircle,
   // #endregion ▮▮▮▮[XCircles]▮▮▮▮
   // #region ▮▮▮▮▮▮▮[Mixins]▮▮▮▮▮▮▮ ~
-  MIX, IsDraggable
+  MIX, HasDOMElem, SnapsToCircle
   // #endregion ▮▮▮▮[Mixins]▮▮▮▮
 } from "../helpers/bundler.mjs";
 // #endregion ▄▄▄▄▄ IMPORTS ▄▄▄▄▄
 
-class XItem {
+class XItem extends MIX().with(HasDOMElem) {
   // #region ████████ STATIC: Static Getters, Setters, Methods ████████ ~
   // #region ░░░░░░░[Getters]░░░░ Registry, Enumerables, Constants ░░░░░░░ ~
   static get REGISTRY() { return (this._REGISTRY = this._REGISTRY ?? {}) }
@@ -33,120 +33,128 @@ class XItem {
   // #endregion ░░░░[Getters]░░░░
   // #region ░░░░░░░[Methods]░░░░ Static Methods ░░░░░░░ ~
   static NameItem(item) {
-    const nameTest = new RegExp(`${item._owner}_${item._type}_`);
-    const itemNum = parseInt(Object.keys(this.REGISTRY)
-      .filter((key) => nameTest.test(key)).pop()?.match(/_(\d+)$/)
-      ?.pop() ?? 0) + 1;
-    item._name = `${item._owner}_${item._type}_${itemNum}`;
+    if (item._options.name) {
+      item._name = item._options.name;
+    } else {
+      const namePrefix = `${item._owner}_${item._type}`;
+      const nameTest = new RegExp(`^${namePrefix}_`);
+      const itemNum = parseInt(Object.keys(this.REGISTRY)
+        .filter((key) => nameTest.test(key)).pop()?.match(/_(\d+)$/)
+        ?.pop() ?? 0) + 1;
+      item._name = `${namePrefix}_${itemNum}`;
+      item._id = `${item.constructor.PREFIX}-${item.name}`;
+    }
   }
   static Register(item) {
     this.REGISTRY[item.name] = item;
     return item;
   }
-  static Kill(item) {
-    item.killAll();
+  static Unregister(item) {
     delete this.REGISTRY[item.name];
   }
   // #endregion ░░░░[Methods]░░░░
   // #endregion ▄▄▄▄▄ STATIC ▄▄▄▄▄
 
   // #region ████████ CONSTRUCTOR ████████ ~
-  constructor({circle, type, ...options} = {}) {
-    if (circle && !(circle instanceof XCircle)) {
-      throw new Error(`[new XItem] '${circle.name}' is not a valid Circle.`);
-    }
+  constructor(options = {}) {
+    super();
+    this._options = options;
 
-    this._type = this._checkType(type);
-    this._owner = options?.owner?.id ?? options?.owner ?? circle?.owner?.id ?? U.GMID;
+    this.type = options.type;
+    this._owner = options.owner?.id ?? options.owner ?? options.circle?.owner?.id ?? U.GMID;
 
     this.constructor.NameItem(this);
-    this._create(circle);
+    this._create(options.circle);
     this.constructor.Register(this);
   }
   // #endregion ▄▄▄▄▄ CONSTRUCTOR ▄▄▄▄▄
 
   // #region ████████ GETTERS & SETTERS ████████ ~
   // #region ░░░░░░░ Read-Only ░░░░░░░ ~
-  get x() { return gsap.getProperty(this.elem, "x") }
-  get y() { return gsap.getProperty(this.elem, "y") }
-  get height() { return gsap.getProperty(this.elem, "height") }
-  get width() { return gsap.getProperty(this.elem, "width") }
-  get radius() { return (this.height + this.width) / 4 }
   get owner() { return game.users.get(this._owner) }
-
   get name() { return this._name }
-  get id() { return (this._id = this._id ?? `${this.constructor.PREFIX}-${this.name}`) }
-  get elem() { return (this._elem = this._elem ?? $(`#${this.id}`)?.[0]) }
-  get $() { return $(this.elem) }
-  get defaultClasses() {
-    return [
-      ...this.constructor.CLASSES,
-      U.formatAsClass(`${this.constructor.PREFIX}-${this.type}`)
-    ];
+
+  get slot() {
+    const {slot} = this.circle?._getSlotItemPos(this) ?? {};
+    return slot;
+  }
+  get slotAbsAngle() {
+    const {angle} = this.circle?._getSlotItemPos(this) ?? {};
+    return angle;
   }
   // #endregion ░░░░[Read-Only]░░░░
 
   // #region ░░░░░░░ Writeable ░░░░░░░ ~
-  get classes() { return this.elem.classList }
-  set classes(v) {
-    const newClassList = [
-      ...this.defaultClasses,
-      ...Array.from([v])
-        .flat()
-        .join(" ")
-        .trim()
-        .split(" ")
-    ];
-    this.classes.forEach((c) => { if (!newClassList.includes(c)) { this.classes.remove(c) } });
-    v.forEach((c) => this.classes.add(c));
-  }
-
   get type() { return this._type }
   set type(v) {
-    this._type = this._checkType(v);
-    this.classes = [];
-  }
-
-  get parent() { return this._parent }
-  set parent(v) {
-    const [elem] = $(`#${v?.id ?? "noElemFound"}`);
-    if (elem) {
-      const {x, y} = MotionPathPlugin.convertCoordinates(
-        this.parent?.elem ?? this.parent ?? this.elem,
-        elem,
-        {x: this.x, y: this.y}
-      );
-      this._parent = v;
-      this.set({x, y});
-      $(this.elem).appendTo(elem);
+    const checkedType = this.constructor.TYPES[v] ?? v ?? this.constructor.DEFAULTTYPE;
+    if (Object.values(this.constructor.TYPES).includes(checkedType)) {
+      this._type = checkedType;
+      this.classes = [];
     } else {
-      throw new Error(`[XItem.parent] No element found for '${v}'`);
+      throw new Error(`Invalid ${this.constructor.name} Type: ${v}`);
     }
   }
+
   get circle() { return this.parent instanceof XCircle ? this.parent : undefined }
   set circle(v) {
     if (v instanceof XCircle) {
       this.parent = v;
     } else {
-      throw new Error(`[XItem.parent] '${v}' is not an XCircle`);
+      throw new Error(`[${this.constructor.name}.parent] '${v}' is not an XCircle`);
     }
   }
-
-  get closestCircle() { return (this._closestCircle = this.circle ?? this._closestCircle ?? XCircle.GetClosestTo(this)) }
-  set closestCircle(v) { this._closestCircle = v }
-
-  get pathWeight() { return (this._pathWeight = this._pathWeight ?? 1) }
-  set pathWeight(v) { this._pathWeight = v }
 
   get isMoving() { return this._isMoving }
   set isMoving(v) { this._isMoving = Boolean(v) }
 
-  get rotation() { return gsap.getProperty(this.elem, "rotation") }
-  set rotation(v) {
-    if (/^[+-]=/.test(`${v}`)) {
-      v = this.rotation + parseFloat(`${v}`.replace(/=/g, ""));
+  get closestCircle() { return (this._closestCircle = this.circle ?? this._closestCircle ?? XCircle.GetClosestTo(this)) }
+  set closestCircle(v) { this._closestCircle = v }
+
+  get pathPos() { return (this._pathPos = this.circle ? this._pathPos ?? 0 : false) }
+  set pathPos(v) { this._pathPos = this.circle ? v : false }
+
+  get pathWeight() { return (this._pathWeight = this._pathWeight ?? 1) }
+  set pathWeight(v) { this._pathWeight = v }
+
+  get pathRepositionTime() { return (this._pathRepositionTime = this._pathRepositionTime ?? 0.5) }
+  set pathRepositionTime(v) { this._pathRepositionTime = v }
+
+  get targetPathPos() { return (this._targetPathPos = this.circle ? this._targetPathPos ?? 0 : false) }
+  set targetPathPos(v) {
+    if (this.circle) {
+      const item = this;
+      let [start, end] = [this.pathPos, v];
+      if (this.circle && v !== this._targetPathPos) {
+        if (start && Math.abs(start - end) > 0.6) {
+          start += start > end ? -1 : 1;
+        }
+        this._targetPathPos = v;
+        this._repoTween = gsap.to(this.elem, {
+          motionPath: {
+            path: this.circle.snap.elem,
+            alignOrigin: [0.5, 0.5],
+            start,
+            end,
+            fromCurrent: true
+          },
+          duration: this.pathRepositionTime,
+          ease: "power4.out",
+          onStart() { item.isMoving = true },
+          onComplete() {
+            item.pathPos = end;
+            item.isMoving = false;
+          },
+          onUpdate() {
+            if (!item.circle) {
+              this.kill();
+            } else {
+              item.pathPos = start + this.ratio * (end - start);
+            }
+          }
+        });
+      }
     }
-    gsap.set(this.elem, {rotation: v});
   }
   // #endregion ░░░░[Writeable]░░░░
   // #endregion ▄▄▄▄▄ GETTERS & SETTERS ▄▄▄▄▄
@@ -154,213 +162,88 @@ class XItem {
   // #region ████████ PRIVATE METHODS ████████ ~
   // #region ░░░░░░░[Initializing]░░░░ Creating DOM Elements ░░░░░░░ ~
   _create(startCircle) {
-    [this._elem] = $(`<div id="${this.id}" class="${this.defaultClasses.join(" ")}" />`).appendTo(XCircle.CONTAINER);
-    this.set({xPercent: -50, yPercent: -50});
-    if (startCircle) {
-      this.circle = startCircle;
-    } else {
-      this._parent = XCircle.CONTAINER;
-    }
+    [this._elem] = $(`<div id="${this.id}" class="${this.defaultClasses.join(" ")}" />`);
+    this[startCircle ? "circle" : "parent"] = startCircle ?? XCircle.CONTAINER;
+    this.set({xPercent: -50, yPercent: -50, rotation: 0, ...this._startPos.x ? this._startPos : {}});
   }
   // #endregion ░░░░[Initializing]░░░░
-
-  // #region ░░░░░░░[Elements]░░░░ Managing Item Element ░░░░░░░ ~
-  _checkType(type) {
-    const checkedType = this.constructor.TYPES[type] ?? type;
-    if (Object.values(this.constructor.TYPES).includes(checkedType)) {
-      return checkedType;
-    }
-    throw new Error(`Invalid Item Type: ${type}`);
-  }
-  _updateClosestCircle({x, y} = {}) {
-    x = x ?? this.x;
-    y = y ?? this.y;
-    if (this.circle) {
-      this.closestCircle?.unwatchItem(this);
-      delete this._closestCircle;
-    } else {
-      const closestCircle = XCircle.GetClosestTo({x, y});
-      if (closestCircle.name !== this.closestCircle?.name) {
-        if (this.closestCircle?.name !== this._snapCircle?.name) {
-          this.closestCircle?.unwatchItem(this);
-        }
-        this.closestCircle = closestCircle;
-        if (this.closestCircle.name !== this._snapCircle?.name) {
-          this.closestCircle.watchItem(this);
-        }
-      }
-    }
-  }
-  // #endregion ░░░░[Elements]░░░░
-
+  //~ # region ░░░░░░░[Elements]░░░░ Managing Item Element ░░░░░░░ ~// # endregion ░░░░[Elements]░░░░
   // #region ░░░░░░░[Animation]░░░░ Animation Effects, Tweens, Timelines ░░░░░░░ ~
-  straighten() { gsap.set(this.elem, {rotation: -1 * this.parent?.rotation ?? 0}) }
+  straighten() { this.set({rotation: -1 * (this.parent?.rotation ?? 0)}) }
   // #endregion ░░░░[Animation]░░░░
   // #endregion ▄▄▄▄▄ PRIVATE METHODS ▄▄▄▄▄
 
-  // #region ████████ PUBLIC METHODS ████████ ~
-  set(params) { gsap.set(this.elem, params) }
-  kill() {
-    this.constructor.Unregister(this);
-    this.$.remove();
-  }
-  // #region ░░░░░░░ Animation ░░░░░░░ ~
-  // get slot() { return this.circle
-  //   ? this.circle._}
-  // set slot(v) {
-  //   if (!this.circle) { throw new Error(`[XItem.slot] '${this.name}' is not parented to a circle.`) }
-
-  // }
-  get pathPos() { return this._pathPos }
-  set pathPos(v) {
-
-  }
-  async _distItems(newSlots, duration = 1, isStartPosOK = false) {
-
-    const oldSlots = [...this.slots];
-    newSlots = Array.isArray(newSlots)
-      ? newSlots
-      : this._checkSnap(newSlots, this.slots);
-    // const newSlotRecord = [...newSlots];
-
-    const slotCompare = this._compareSlots(newSlots, oldSlots);
-    if (slotCompare.isEqual) { return Promise.resolve() }
-    if (slotCompare.isSameOrder && "cycleSlot" in slotCompare) {
-      newSlots = [
-        oldSlots[oldSlots.length - 1],
-        ...oldSlots.slice(1, -1),
-        oldSlots[0]
-      ];
-    }
-
-    this._slots = [...newSlots];
-
-    const oldPositions = Object.fromEntries(this.dice.map((item) => [item.id, this._getItemPos(item, oldSlots)]));
-    const newPositions = Object.fromEntries(this.dice.map((item) => [item.id, this._getItemPos(item, this.slots)]));
-
-    const circle = this;
-
-    return Promise.allSettled(this.dice
-      .map((item) => new Promise((resolve, reject) => {
-        let oldPathPos = oldPositions[item.id]?.pathPos ?? 0;
-        const newPathPos = newPositions[item.id].pathPos;
-
-        // OLD: 0.9 to NEW: 0.1   --> startAt OLD--
-        // OLD: 0.1 to NEW: 0.9   --> startAt OLD++
-        if (circle._checkSlots(item, oldSlots) && Math.abs(oldPathPos - newPathPos) > 0.6) {
-          if (oldPathPos > newPathPos) {
-            oldPathPos--;
-          } else {
-            oldPathPos++;
-          }
-        }
-        /*DEVCODE*/
-        if (item.elem.innerText === "X") {
-          item.set({innerText: `${newPositions[item.id].slot}`});
-        }
-        /*!DEVCODE*/
-        console.log(gsap.to(item.elem, {
-          motionPath: {
-            path: circle.snap.elem,
-            alignOrigin: [0.5, 0.5],
-            start: oldPathPos,
-            end: newPathPos,
-            fromCurrent: true // item.id in oldPositions
-          },
-          duration,
-          ease: "power4.out",
-          onComplete: resolve,
-          onUpdate() {
-            // const {onUpdate, ...theRest} = this;
-            // item._pathPos = JSON.parse(JSON.stringify(theRest));
-          },
-          onInterrupt: reject
-        }));
-      })));
-  }
-  // #endregion ░░░░ Animation ░░░░
-  // #endregion ▄▄▄▄▄ PUBLIC METHODS ▄▄▄▄▄
+  //~ # region ████████ PUBLIC METHODS ████████ ~// # endregion ▄▄▄▄▄ PUBLIC METHODS ▄▄▄▄▄
+  //~ # region ░░░░░░░[Elements]░░░░ Managing Core DOM Elements ░░░░░░░ ~// #endregion ░░░░[Elements]░░░░
 }
 
-class XDie extends MIX(XItem).with(IsDraggable) {
+class XDie extends MIX(XItem).with(SnapsToCircle) {
   // #region ████████ STATIC: Static Getters, Setters, Methods ████████ ~
   // #region ░░░░░░░[Getters]░░░░ Enumerables, Constants ░░░░░░░ ~
   static get TYPES() { return {basic: "basic"} }
+  static get DEFAULTTYPE() { return this.TYPES.basic }
   static get CLASSES() { return [...super.CLASSES, "x-die"] }
   static get PREFIX() { return "xDie" }
   // #endregion ░░░░[Getters]░░░░
   //~ # region ░░░░░░░[Methods]░░░░ Static Methods ░░░░░░░ ~// # endregion ░░░░[Methods]░░░░
   // #endregion ▄▄▄▄▄ STATIC ▄▄▄▄▄
 
+  /*DEVCODE*/
   // #region ████████ CONSTRUCTOR ████████ ~
   constructor(options = {}) {
-    options.pathWeight = options.pathWeight ?? 1;
-    options.type = XDie.TYPES[options.type] ?? options.type ?? XDie.TYPES.basic;
     super(options);
+    setTimeout(() => (this.elem.innerText = this.slot), 500);
   }
   // #endregion ▄▄▄▄▄ CONSTRUCTOR ▄▄▄▄▄
+  /*!DEVCODE*/
 
-  // #region ████████ GETTERS & SETTERS ████████ ~
+  //~ # region ████████ GETTERS & SETTERS ████████ ~// # endregion ▄▄▄▄▄ GETTERS & SETTERS ▄▄▄▄▄
   //~ # region ░░░░░░░ Read-Only ░░░░░░░ ~// # endregion ░░░░[Read-Only]░░░░
+  //~ # region ░░░░░░░ Writeable ░░░░░░░ ~// # endregion ░░░░[Writeable]░░░░
+  //~ # region ████████ PRIVATE METHODS ████████ ~// # endregion ▄▄▄▄▄ PRIVATE METHODS ▄▄▄▄▄
+  //~ # region ░░░░░░░[Initializing]░░░░ Creating DOM Elements ░░░░░░░ ~// # endregion ░░░░[Initializing]░░░░
+  //~ # region ░░░░░░░[Elements]░░░░ Managing Item Element ░░░░░░░ ~// # endregion ░░░░[Elements]░░░░
+  //~ # region ░░░░░░░[Animation]░░░░ Animation Effects, Tweens, Timelines ░░░░░░░ ~// # endregion ░░░░[Animation]░░░░
 
-  // #region ░░░░░░░ Writeable ░░░░░░░ ~
-  get parent() { return super.parent }
-  set parent(v) {
-    super.parent = v;
-    this.straighten();
-  }
-  // #endregion ░░░░[Writeable]░░░░
-  // #endregion ▄▄▄▄▄ GETTERS & SETTERS ▄▄▄▄▄
-
-  // # region ████████ PRIVATE METHODS ████████ ~ // # endregion ▄▄▄▄▄ PRIVATE METHODS ▄▄▄▄▄
-  // # region ░░░░░░░[Initializing]░░░░ Creating DOM Elements ░░░░░░░ ~ // # endregion ░░░░[Initializing]░░░░
-  // # region ░░░░░░░[Elements]░░░░ Managing Item Element ░░░░░░░ ~ // # endregion ░░░░[Elements]░░░░
-  // # region ░░░░░░░[Animation]░░░░ Animation Effects, Tweens, Timelines ░░░░░░░ ~ // # endregion ░░░░[Animation]░░░░
-
-  // #region ████████ PUBLIC METHODS ████████ ~
-  // #region ░░░░░░░ Animation ░░░░░░░ ~
-  // get slot() { return this.circle
-  //   ? this.circle._}
-  // set slot(v) {
-  //   if (!this.circle) { throw new Error(`[XItem.slot] '${this.name}' is not parented to a circle.`) }
-  // }
-  get pathPos() { return this._pathPos }
-  set pathPos(v) {
-
-  }
-  // #endregion ░░░░ Animation ░░░░
-  // #endregion ▄▄▄▄▄ PUBLIC METHODS ▄▄▄▄▄
+  //~ # region ████████ PUBLIC METHODS ████████ ~// # endregion ▄▄▄▄▄ PUBLIC METHODS ▄▄▄▄▄
 }
 
 class XSnap extends XItem {
   // #region ████████ STATIC: Static Getters, Setters, Methods ████████ ~
   // #region ░░░░░░░[Getters]░░░░ Enumerables, Constants ░░░░░░░ ~
   static get TYPES() { return {die: "die"} }
+  static get DEFAULTTYPE() { return this.TYPES.die }
   static get CLASSES() { return [...super.CLASSES, "x-snap"] }
   static get PREFIX() { return "xSnap" }
   // #endregion ░░░░[Getters]░░░░
   //~ # region ░░░░░░░[Methods]░░░░ Static Methods ░░░░░░░ ~// # endregion ░░░░[Methods]░░░░
   // #endregion ▄▄▄▄▄ STATIC ▄▄▄▄▄
 
-  // #region ████████ CONSTRUCTOR ████████ ~
+  // #region ████████ CONSTRU
+  CTOR ████████ ~
   constructor(snapTarget, options = {}) {
     options.pathWeight = options.pathWeight ?? 2;
-    options.type = XSnap.TYPES[options.type] ?? options.type ?? XSnap.TYPES.die;
+    options.name = `S:${snapTarget.name}`;
     super(options);
-    this._name = `SNAP-${this.name}`;
     this._snapTarget = snapTarget;
+    this._startPos = options.alignTo
+      ? {x: options.alignTo.x, y: options.alignTo.y}
+      : {x: options.x, y: options.y};
   }
   // #endregion ▄▄▄▄▄ CONSTRUCTOR ▄▄▄▄▄
 
-  //~ # region ████████ GETTERS & SETTERS ████████ ~// # endregion ▄▄▄▄▄ GETTERS & SETTERS ▄▄▄▄▄
+  // #region ████████ GETTERS & SETTERS ████████ ~
   //~ # region ░░░░░░░ Read-Only ░░░░░░░ ~// # endregion ░░░░[Read-Only]░░░░
-  //~ # region ░░░░░░░ Writeable ░░░░░░░ ~// # endregion ░░░░[Writeable]░░░░
+  // #region ░░░░░░░ Writeable ░░░░░░░ ~
+  get snapTarget() { return this._snapTarget }
+  set snapTarget(v) { this._snapTarget = v }
+  // #endregion ░░░░[Writeable]░░░░
+  // #endregion ▄▄▄▄▄ GETTERS & SETTERS ▄▄▄▄▄
 
-  // #region ████████ PRIVATE METHODS ████████ ~
+  //~ # region ████████ PRIVATE METHODS ████████ ~// # endregion ▄▄▄▄▄ PRIVATE METHODS ▄▄▄▄▄
   //~ # region ░░░░░░░[Initializing]░░░░ Creating DOM Elements ░░░░░░░ ~// # endregion ░░░░[Initializing]░░░░
   //~ # region ░░░░░░░[Elements]░░░░ Managing Item Element ░░░░░░░ ~// # endregion ░░░░[Elements]░░░░
   //~ # region ░░░░░░░[Animation]░░░░ Animation Effects, Tweens, Timelines ░░░░░░░ ~// # endregion ░░░░[Animation]░░░░
-  // #endregion ▄▄▄▄▄ PRIVATE METHODS ▄▄▄▄▄
 
   //~ # region ████████ PUBLIC METHODS ████████ ~// # endregion ▄▄▄▄▄ PUBLIC METHODS ▄▄▄▄▄
   //~ # region ░░░░░░░ Animation ░░░░░░░ ~// # endregion ░░░░ Animation ░░░░

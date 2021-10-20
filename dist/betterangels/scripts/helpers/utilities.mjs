@@ -1,7 +1,7 @@
 /* ****▌███████████████████████████████████████████████████████████████████████████▐**** *\
 |*     ▌███████░░░░░░░░░░░░░░ Better Angels for Foundry VTT ░░░░░░░░░░░░░░░░███████▐     *|
 |*     ▌██████████████████░░░░░░░░░░░░░ by Eunomiac ░░░░░░░░░░░░░██████████████████▐     *|
-|*     ▌███████████████ MIT License █ v0.0.1-prealpha █ Oct 19 2021 ███████████████▐     *|
+|*     ▌███████████████ MIT License █ v0.0.1-prealpha █ Oct 20 2021 ███████████████▐     *|
 |*     ▌████████░░░░░░░░ https://github.com/Eunomiac/betterangels ░░░░░░░░█████████▐     *|
 \* ****▌███████████████████████████████████████████████████████████████████████████▐**** */
 
@@ -47,7 +47,6 @@ const getAngleDelta = (angleStart, angleEnd) => cycle(Math.round(angleEnd - angl
     return arr.fil
   }
 } */
-
 export default {
   gsap,
   // ████████ GETTERS: Basic Data Retrieval ████████
@@ -72,13 +71,11 @@ export default {
   getDistance,
   getAngle,
   getAngleDelta,
-
   // ████████ DOM: DOM Elements ████████
 
   // ████████ STRINGS: String Parsing ████████
   // ▮▮▮▮▮▮▮[FORMATS] Conversion Between Various String Formats ▮▮▮▮▮▮▮
   formatAsClass: (str) => `${str}`.replace(/([A-Z])|\s/g, "-$1").replace(/^-/, "").trim().toLowerCase(),
-
   // ▮▮▮▮▮▮▮[COLORS] Color String Conversion & Manipulation ▮▮▮▮▮▮▮
   joinColor: (r, g, b, a = 1) => `rgba(${r}, ${g}, ${b}, ${a})`
 

@@ -104,8 +104,8 @@ Hooks.once("ready", async () => {
   window.U = U;
   window.GenerateCircles = GenerateCircles;
 
-  GenerateCircles({center: 5});
-  window.CIRCLES[0].showAngles(10, true);
+  GenerateCircles({center: 8});
+  window.CIRCLES[0].showAngles(16, true);
 });
 /*!DEVCODE*/
 /**

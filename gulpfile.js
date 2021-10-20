@@ -84,20 +84,20 @@ const BUILDFILES = {
 };
 const REGEXPPATTERNS = {
   js: [
-    [/\n?\s*\/\*DEVCODE\*\/(.|\n)*?\/\*!DEVCODE\*\/\n?/gs, ""], // Strip developer code
+    [/(\r?\n?)[ \t]*\/\*DEVCODE\*\/(?:.|\r?\n)*?\/\*!DEVCODE\*\/(\r?\n?)/gs, "$1$2"], // Strip developer code
     [/\/\* \*{4}▌.*?▐\*{4} \*\//s, padHeaderLines], // Pad header lines to same length
-    [/\/\*[*~](.|\n|\r)*?\*\//g, ""], // Strip multi-line comments beginning with '/*~' or '/**'
-    [/\n?\s*\/\/~.*?$/gm, ""], // Strip single-line comments beginning with '//~'
-    [/\s*\/\/\s*eslint.*$/gm, ""], // Strip eslint enable/disable single-line comments
-    [/\s*\/\*\s*eslint[^*]*\*\/\s*/g, ""], // Strip eslint enable/disable mult-line comments
-    [/\s*\/\/ no default.*$/gm, ""], // Strip '// no default'
-    [/\s*\/\/ falls through.*$/gm, ""], // Strip '// falls through'
-    [/\s*~$/gm, ""], // Strip '~' from end-of-lines (used for automatic region folding)
+    [/(\r?\n?)[ \t]*\/\*[*~](?:.|\r?\n|\r)*?\*\/[ \t]*(\r?\n?)/g, "$1$2"], // Strip multi-line comments beginning with '/*~' or '/**'
+    [/(\r?\n?)[ \t]*\/\/~.*?$/gm, "$1"], // Strip single-line comments beginning with '//~'
+    [/[ \t]*\/\/[ \t]*eslint.*$/gm, ""], // Strip eslint enable/disable single-line comments
+    [/[ \t]*\/\*[ \t]*eslint[^*]*\*\/[ \t]*/g, ""], // Strip eslint enable/disable mult-line comments
+    [/[ \t]*\/\/ no default.*$/gm, ""], // Strip '// no default'
+    [/[ \t]*\/\/ falls through.*$/gm, ""], // Strip '// falls through'
+    [/[ \t]*~$/gm, ""], // Strip '~' from end-of-lines (used for automatic region folding)
     [/#reg.*? /gs, ""], // Convert region headers to standard headers
-    [/^\s*\/\/ #endreg.*$/gm, "\n"], // Remove region footers
-    [/(\r?\n[ \t]*(?=\r?\n)){2,}/g, "\n"], // Strip excess blank lines
-    [/\s*\n$/g, ""], // Strip whitespace from end of files
-    [/^\s*\n/g, ""] // Strip whitespace from start of files
+    [/(\r?\n?)[ \t]*\/\/ #endreg.*[ \t]*\r?\n?/g, "\r\n"], // Remove region footers
+    [/(\r?\n[ \t]*(?=\r?\n)){2,}/g, "\r\n"], // Strip excess blank lines
+    [/[ \t]*\r?\n$/g, ""], // Strip whitespace from end of files
+    [/^[ \t]*\r?\n/g, ""] // Strip whitespace from start of files
   ],
   html: []
 };
@@ -127,7 +127,7 @@ const PIPES = {
         src(source)
       )
       .pipe(renamer({suffix: ".min"}))
-      .pipe(terser())
+      // .pipe(terser())
       .pipe(header(BANNERS.js.min, {"package": packageJSON}))
       .pipe(dest(destination));
   },

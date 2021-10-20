@@ -1,1 +1,75 @@
-/* ▌██░░ betterangels v0.0.1-prealpha (2021) ║ MIT License ║ https://github.com/Eunomiac/betterangels ░░██▐ */import gsap from"/scripts/greensock/esm/all.js";const pad=(e,t=0)=>{let a=`${e}`;for(;a.length<t;)a=` ${a}`;return a},cycle=(e,t=0,a=e)=>{for(;e>a;)e-=a-t;for(;e<=t;)e+=a-t;return e},sign=e=>`${e>=0?"+":""}${e}`,round=(e,t=0)=>Math.round(e*10**t)/10**t,getDistance=({x:e,y:t},{x:a,y:g})=>((e-a)**2+(t-g)**2)**.5,radToDeg=(e,t=!0)=>(e=t?e%(2*Math.PI):e,e*=180/Math.PI),degToRad=(e,t=!0)=>(e=t?e%360:e,e*=Math.PI/180),getAngle=({x:e,y:t},{x:a,y:g})=>radToDeg(Math.atan2(g-t,a-e)),getAngleDelta=(e,t)=>cycle(Math.round(t-e),-180,180);export default{gsap:gsap,get GMID(){return game.users.find((e=>e.isGM))?.id??!1},get:(...e)=>gsap.getProperty(...e),set:(...e)=>gsap.set(...e),random:(...e)=>gsap.utils.random(...e),distribute:(...e)=>gsap.utils.distribute(...e),splitColor:(...e)=>gsap.utils.splitColor(...e),mapRange:(...e)=>gsap.utils.mapRange(...e),cycle:cycle,pad:pad,sign:sign,round:round,radToDeg:radToDeg,getDistance:getDistance,getAngle:getAngle,getAngleDelta:getAngleDelta,formatAsClass:e=>`${e}`.replace(/([A-Z])|\s/g,"-$1").replace(/^-/,"").trim().toLowerCase(),joinColor:(e,t,a,g=1)=>`rgba(${e}, ${t}, ${a}, ${g})`};
+/* ▌██░░ betterangels v0.0.1-prealpha (2021) ║ MIT License ║ https://github.com/Eunomiac/betterangels ░░██▐ */import gsap from "/scripts/greensock/esm/all.js";
+
+const pad = (num, minLength = 0) => {
+  let numString = `${num}`;
+  while (numString.length < minLength) {
+    numString = ` ${numString}`;
+  }
+  return numString;
+};
+const cycle = (num, min = 0, max = num) => {
+  while (num > max) {
+    num -= max - min;
+  }
+  while (num <= min) {
+    num += max - min;
+  }
+  return num;
+};
+const sign = (num) => `${num >= 0 ? "+" : ""}${num}`;
+const round = (num, sigDigits = 0) => Math.round(num * (10 ** sigDigits)) / (10 ** sigDigits);
+const getDistance = ({x: x1, y: y1}, {x: x2, y: y2}) => ((x1 - x2) ** 2 + (y1 - y2) ** 2) ** 0.5;
+const radToDeg = (rad, isConstrained = true) => {
+  rad = isConstrained ? rad % (2 * Math.PI) : rad;
+  rad *= 180 / Math.PI;
+  return rad;
+};
+const degToRad = (deg, isConstrained = true) => {
+  deg = isConstrained ? deg % 360 : deg;
+  deg *= Math.PI / 180;
+  return deg;
+};
+const getAngle = ({x: x0, y: y0}, {x: xT, y: yT}) => radToDeg(Math.atan2(yT - y0, xT - x0)); // range (-180, 180]
+const getAngleDelta = (angleStart, angleEnd) => cycle(Math.round(angleEnd - angleStart), -180, 180);
+
+// ████████ ARRAYS: Managing Arrays ████████
+/* const remove = (arr, filterFunc) => {
+  if (typeof filterFunc === "function") {
+    return arr.filter(filterFunc);
+  } else {
+    return arr.fil
+  }
+} */
+export default {
+  gsap,
+  // ████████ GETTERS: Basic Data Retrieval ████████
+  get GMID() { return game.users.find((user) => user.isGM)?.id ?? false },
+
+  // ████████ GSAP: GSAP Functions ████████
+  get(...args) { return gsap.getProperty(...args) },
+  set(...args) { return gsap.set(...args) },
+
+  // ▮▮▮▮▮▮▮[GSAP.UTILS]▮▮▮▮▮▮▮
+  random(...args) { return gsap.utils.random(...args) },
+  distribute(...args) { return gsap.utils.distribute(...args) },
+  splitColor(...args) { return gsap.utils.splitColor(...args) },
+  mapRange(...args) { return gsap.utils.mapRange(...args) },
+
+  // ████████ MATH ████████
+  cycle,
+  pad,
+  sign,
+  round,
+  radToDeg,
+  getDistance,
+  getAngle,
+  getAngleDelta,
+  // ████████ DOM: DOM Elements ████████
+
+  // ████████ STRINGS: String Parsing ████████
+  // ▮▮▮▮▮▮▮[FORMATS] Conversion Between Various String Formats ▮▮▮▮▮▮▮
+  formatAsClass: (str) => `${str}`.replace(/([A-Z])|\s/g, "-$1").replace(/^-/, "").trim().toLowerCase(),
+  // ▮▮▮▮▮▮▮[COLORS] Color String Conversion & Manipulation ▮▮▮▮▮▮▮
+  joinColor: (r, g, b, a = 1) => `rgba(${r}, ${g}, ${b}, ${a})`
+
+};
