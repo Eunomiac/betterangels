@@ -1,7 +1,7 @@
 /* ****▌███████████████████████████████████████████████████████████████████████████▐**** *\
 |*     ▌███████░░░░░░░░░░░░░░ Better Angels for Foundry VTT ░░░░░░░░░░░░░░░░███████▐     *|
 |*     ▌██████████████████░░░░░░░░░░░░░ by Eunomiac ░░░░░░░░░░░░░██████████████████▐     *|
-|*     ▌███████████████ MIT License █ v0.0.1-prealpha █ Oct 20 2021 ███████████████▐     *|
+|*     ▌███████████████ MIT License █ v0.0.1-prealpha █ Oct 22 2021 ███████████████▐     *|
 |*     ▌████████░░░░░░░░ https://github.com/Eunomiac/betterangels ░░░░░░░░█████████▐     *|
 \* ****▌███████████████████████████████████████████████████████████████████████████▐**** */
 
@@ -13,6 +13,16 @@ const pad = (num, minLength = 0) => {
     numString = ` ${numString}`;
   }
   return numString;
+};
+const makeCycler = (array, index = 0) => {
+  const wrapper = gsap.utils.wrap(array);
+  index--;
+  return (function* cycler() {
+    while (true) {
+      index++;
+      yield wrapper(index);
+    }
+  }());
 };
 const cycle = (num, min = 0, max = num) => {
   while (num > max) {
@@ -77,6 +87,8 @@ export default {
   // ▮▮▮▮▮▮▮[FORMATS] Conversion Between Various String Formats ▮▮▮▮▮▮▮
   formatAsClass: (str) => `${str}`.replace(/([A-Z])|\s/g, "-$1").replace(/^-/, "").trim().toLowerCase(),
   // ▮▮▮▮▮▮▮[COLORS] Color String Conversion & Manipulation ▮▮▮▮▮▮▮
-  joinColor: (r, g, b, a = 1) => `rgba(${r}, ${g}, ${b}, ${a})`
+  joinColor: (r, g, b, a = 1) => `rgba(${r}, ${g}, ${b}, ${a})`,
 
+  // ████████ ARRAYS: Array Manipulation ████████
+  makeCycler
 };

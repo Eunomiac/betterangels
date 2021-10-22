@@ -49,5 +49,4 @@ Hooks.once("init", async () => {
 
   // ▮▮▮▮▮▮▮[Handlebar Templates] Preload Handlebars Templates ▮▮▮▮▮▮▮
   return preloadTemplates();
-
 });

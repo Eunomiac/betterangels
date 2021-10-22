@@ -7,6 +7,16 @@ const pad = (num, minLength = 0) => {
   }
   return numString;
 };
+const makeCycler = (array, index = 0) => {
+  const wrapper = gsap.utils.wrap(array);
+  index--;
+  return (function* cycler() {
+    while (true) {
+      index++;
+      yield wrapper(index);
+    }
+  }());
+};
 const cycle = (num, min = 0, max = num) => {
   while (num > max) {
     num -= max - min;
@@ -77,7 +87,10 @@ export default {
   formatAsClass: (str) => `${str}`.replace(/([A-Z])|\s/g, "-$1").replace(/^-/, "").trim().toLowerCase(),
   // #endregion ▮▮▮▮[FORMATS]▮▮▮▮
   // #region ▮▮▮▮▮▮▮[COLORS] Color String Conversion & Manipulation ▮▮▮▮▮▮▮ ~
-  joinColor: (r, g, b, a = 1) => `rgba(${r}, ${g}, ${b}, ${a})`
+  joinColor: (r, g, b, a = 1) => `rgba(${r}, ${g}, ${b}, ${a})`,
   // #endregion ▮▮▮▮[COLORS]▮▮▮▮
   // #endregion ▄▄▄▄▄ STRINGS ▄▄▄▄▄
+  // #region ████████ ARRAYS: Array Manipulation ████████ ~
+  makeCycler
+  // #endregion ▄▄▄▄▄ ARRAYS ▄▄▄▄▄
 };

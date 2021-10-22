@@ -61,7 +61,6 @@ Hooks.once("init", async () => {
   // #region ▮▮▮▮▮▮▮[Handlebar Templates] Preload Handlebars Templates ▮▮▮▮▮▮▮
   return preloadTemplates();
   // #endregion ▮▮▮▮[Handlebar Templates]▮▮▮▮
-
 });
 // #endregion ▄▄▄▄▄ ON INIT ▄▄▄▄▄
 
@@ -69,21 +68,23 @@ Hooks.once("init", async () => {
 const GenerateCircles = (circles = {center: 0}) => {
   window.CIRCLES = window.CIRCLES ?? [];
   const circleParams = {
-    center: [635, 314, 100, {type: "purple"}],
-    topLeft: [100, 100, 100, {type: "basic"}],
-    topRight: [1370, 100, 100, {type: "cyan"}],
-    botLeft: [100, 729, 100, {type: "pink"}],
-    botRight: [1370, 729, 100, {type: "yellow"}]
+    center: [635, 414],
+    topLeft: [100, 100],
+    topRight: [100, 1370],
+    left: [100, 414],
+    right: [1370, 414],
+    botLeft: [100, 729],
+    botRight: [1370, 729]
   };
+  const circleTyper = U.makeCycler(Object.values(XCircle.TYPES));
+  const newCircles = [];
   for (const [circlePos, numDice] of Object.entries(circles)) {
-    const [x, y, radius, options] = circleParams[circlePos];
-    const xCircle = new XCircle(x, y, radius, options);
-    xCircle.addDice(numDice);
-    window.CIRCLES.push(xCircle);
+    window.CIRCLES.unshift(new XCircle(...circleParams[circlePos], 100, {type: circleTyper.next().value}));
+    window.CIRCLES[0].addDice(numDice);
   }
 };
 
-Hooks.once("ready", async () => {
+Hooks.once("ready", () => {
   window.REF = game.betterangels;
   window.DB = {
     BetterAngelsActor,
@@ -103,8 +104,7 @@ Hooks.once("ready", async () => {
   };
   window.U = U;
   window.GenerateCircles = GenerateCircles;
-
-  GenerateCircles({center: 8});
+  GenerateCircles({topLeft: 2, left: 8, botLeft: 5});
   window.CIRCLES[0].showAngles(16, true);
 });
 /*!DEVCODE*/

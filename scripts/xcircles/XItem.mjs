@@ -14,7 +14,7 @@ import {
   XCircle,
   // #endregion ▮▮▮▮[XCircles]▮▮▮▮
   // #region ▮▮▮▮▮▮▮[Mixins]▮▮▮▮▮▮▮ ~
-  MIX, HasDOMElem, SnapsToCircle
+  MIX, HasDOMElem, IsDraggable, SnapsToCircle
   // #endregion ▮▮▮▮[Mixins]▮▮▮▮
 } from "../helpers/bundler.mjs";
 // #endregion ▄▄▄▄▄ IMPORTS ▄▄▄▄▄
@@ -23,15 +23,13 @@ class XItem extends MIX().with(HasDOMElem) {
   // #region ████████ STATIC: Static Getters, Setters, Methods ████████ ~
   // #region ░░░░░░░[Getters]░░░░ Registry, Enumerables, Constants ░░░░░░░ ~
   static get REGISTRY() { return (this._REGISTRY = this._REGISTRY ?? {}) }
-  static get ALL() {
-    return Object.values(this.REGISTRY)
-      .filter((item) => item instanceof this.constructor);
-  }
+  static get ALL() { return Object.values(this.REGISTRY) }
   static get TYPES() { return { } }
   static get CLASSES() { return ["x-item"] }
   static get PREFIX() { return "xItem" }
   // #endregion ░░░░[Getters]░░░░
   // #region ░░░░░░░[Methods]░░░░ Static Methods ░░░░░░░ ~
+  // #region ========== Registration: Item Naming & Registration =========== ~
   static NameItem(item) {
     if (item._options.name) {
       item._name = item._options.name;
@@ -47,11 +45,16 @@ class XItem extends MIX().with(HasDOMElem) {
   }
   static Register(item) {
     this.REGISTRY[item.name] = item;
+    this.IsTicking = true;
     return item;
   }
   static Unregister(item) {
     delete this.REGISTRY[item.name];
+    if (this.ALL.length === 0) {
+      this.IsTicking = false;
+    }
   }
+  // #endregion _______ Registration _______
   // #endregion ░░░░[Methods]░░░░
   // #endregion ▄▄▄▄▄ STATIC ▄▄▄▄▄
 
@@ -82,6 +85,9 @@ class XItem extends MIX().with(HasDOMElem) {
     const {angle} = this.circle?._getSlotItemPos(this) ?? {};
     return angle;
   }
+  get watchFuncName() {
+    return `watchItem-${this.name}`;
+  }
   // #endregion ░░░░[Read-Only]░░░░
 
   // #region ░░░░░░░ Writeable ░░░░░░░ ~
@@ -108,54 +114,6 @@ class XItem extends MIX().with(HasDOMElem) {
   get isMoving() { return this._isMoving }
   set isMoving(v) { this._isMoving = Boolean(v) }
 
-  get closestCircle() { return (this._closestCircle = this.circle ?? this._closestCircle ?? XCircle.GetClosestTo(this)) }
-  set closestCircle(v) { this._closestCircle = v }
-
-  get pathPos() { return (this._pathPos = this.circle ? this._pathPos ?? 0 : false) }
-  set pathPos(v) { this._pathPos = this.circle ? v : false }
-
-  get pathWeight() { return (this._pathWeight = this._pathWeight ?? 1) }
-  set pathWeight(v) { this._pathWeight = v }
-
-  get pathRepositionTime() { return (this._pathRepositionTime = this._pathRepositionTime ?? 0.5) }
-  set pathRepositionTime(v) { this._pathRepositionTime = v }
-
-  get targetPathPos() { return (this._targetPathPos = this.circle ? this._targetPathPos ?? 0 : false) }
-  set targetPathPos(v) {
-    if (this.circle) {
-      const item = this;
-      let [start, end] = [this.pathPos, v];
-      if (this.circle && v !== this._targetPathPos) {
-        if (start && Math.abs(start - end) > 0.6) {
-          start += start > end ? -1 : 1;
-        }
-        this._targetPathPos = v;
-        this._repoTween = gsap.to(this.elem, {
-          motionPath: {
-            path: this.circle.snap.elem,
-            alignOrigin: [0.5, 0.5],
-            start,
-            end,
-            fromCurrent: true
-          },
-          duration: this.pathRepositionTime,
-          ease: "power4.out",
-          onStart() { item.isMoving = true },
-          onComplete() {
-            item.pathPos = end;
-            item.isMoving = false;
-          },
-          onUpdate() {
-            if (!item.circle) {
-              this.kill();
-            } else {
-              item.pathPos = start + this.ratio * (end - start);
-            }
-          }
-        });
-      }
-    }
-  }
   // #endregion ░░░░[Writeable]░░░░
   // #endregion ▄▄▄▄▄ GETTERS & SETTERS ▄▄▄▄▄
 
@@ -164,7 +122,7 @@ class XItem extends MIX().with(HasDOMElem) {
   _create(startCircle) {
     [this._elem] = $(`<div id="${this.id}" class="${this.defaultClasses.join(" ")}" />`);
     this[startCircle ? "circle" : "parent"] = startCircle ?? XCircle.CONTAINER;
-    this.set({xPercent: -50, yPercent: -50, rotation: 0, ...this._startPos.x ? this._startPos : {}});
+    this.set({xPercent: -50, yPercent: -50, rotation: 0, ...this._startPos?.x ? this._startPos : {}});
   }
   // #endregion ░░░░[Initializing]░░░░
   //~ # region ░░░░░░░[Elements]░░░░ Managing Item Element ░░░░░░░ ~// # endregion ░░░░[Elements]░░░░
@@ -177,7 +135,7 @@ class XItem extends MIX().with(HasDOMElem) {
   //~ # region ░░░░░░░[Elements]░░░░ Managing Core DOM Elements ░░░░░░░ ~// #endregion ░░░░[Elements]░░░░
 }
 
-class XDie extends MIX(XItem).with(SnapsToCircle) {
+class XDie extends MIX(XItem).with(IsDraggable, SnapsToCircle) {
   // #region ████████ STATIC: Static Getters, Setters, Methods ████████ ~
   // #region ░░░░░░░[Getters]░░░░ Enumerables, Constants ░░░░░░░ ~
   static get TYPES() { return {basic: "basic"} }
@@ -208,7 +166,7 @@ class XDie extends MIX(XItem).with(SnapsToCircle) {
   //~ # region ████████ PUBLIC METHODS ████████ ~// # endregion ▄▄▄▄▄ PUBLIC METHODS ▄▄▄▄▄
 }
 
-class XSnap extends XItem {
+class XSnap extends MIX(XItem).with(SnapsToCircle) {
   // #region ████████ STATIC: Static Getters, Setters, Methods ████████ ~
   // #region ░░░░░░░[Getters]░░░░ Enumerables, Constants ░░░░░░░ ~
   static get TYPES() { return {die: "die"} }
@@ -219,8 +177,7 @@ class XSnap extends XItem {
   //~ # region ░░░░░░░[Methods]░░░░ Static Methods ░░░░░░░ ~// # endregion ░░░░[Methods]░░░░
   // #endregion ▄▄▄▄▄ STATIC ▄▄▄▄▄
 
-  // #region ████████ CONSTRU
-  CTOR ████████ ~
+  // #region ████████ CONSTRUCTOR ████████ ~
   constructor(snapTarget, options = {}) {
     options.pathWeight = options.pathWeight ?? 2;
     options.name = `S:${snapTarget.name}`;
