@@ -12,7 +12,7 @@
   "license": "MIT",
   "private": true,
   "dependencies": {
-    "nodejs-web-scraper": "^6.0.2",
+    "hyphen": "^1.6.4",
     "underscore": "^1.13"
   },
   "devDependencies": {

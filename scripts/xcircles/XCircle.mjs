@@ -11,6 +11,7 @@ import {
   U,
   // #endregion ▮▮▮▮[Utility]▮▮▮▮
   // #region ▮▮▮▮▮▮▮[XCircles]▮▮▮▮▮▮▮ ~
+  XElem,
   XItem, XDie, XSnap,
   // #endregion ▮▮▮▮[XCircles]▮▮▮▮
   // #region ▮▮▮▮▮▮▮[Mixins]▮▮▮▮▮▮▮ ~
@@ -19,7 +20,7 @@ import {
 } from "../helpers/bundler.mjs";
 // #endregion ▄▄▄▄▄ IMPORTS ▄▄▄▄▄
 
-export default class XCircle extends MIX().with(HasDOMElem, HasSnapPath) {
+export default class XCircle extends MIX(XElem).with(HasSnapPath) {
   // #region ████████ STATIC: Static Getters, Setters, Methods ████████ ~
   // #region ░░░░░░░[Getters]░░░░ Registry, Enumerables, Constants ░░░░░░░ ~
   static get REGISTRY() { return (this._REGISTRY = this._REGISTRY ?? {}) }
@@ -538,8 +539,8 @@ export default class XCircle extends MIX().with(HasDOMElem, HasSnapPath) {
   // #region ░░░░░░░[INITIALIZATION]░░░░ DB Container, Hiding & Showing Debug Data ░░░░░░░ ~
   static get DBCONTAINER() {
     return (this._DBCONTAINER = this._DBCONTAINER
-      ?? $("#debugContainerOverlay")[0]
-      ?? $("<div id=\"debugContainerOverlay\" class=\"db\" />").appendTo(".vtt.game")[0]);
+      ?? $("#dbContainer")[0]
+      ?? $("<div id=\"dbContainer\" class=\"db x-container\" />").appendTo(".vtt.game")[0]);
   }
   dbShow() {
     this.showAngles();
@@ -548,7 +549,6 @@ export default class XCircle extends MIX().with(HasDOMElem, HasSnapPath) {
   dbHide() {
     this.hideAngles();
     this._isDBActive = false;
-    $(`#${this.id} .db-display`).remove();
   }
   // #endregion ░░░░[INITIALIZATION]░░░░
   // #region ░░░░░░░ PING ░░░░░░░ ~
@@ -585,42 +585,12 @@ export default class XCircle extends MIX().with(HasDOMElem, HasSnapPath) {
   }
   get ping() { return this.constructor.PING }
   // #endregion ░░░░[PING]░░░░
-  // #region ▮▮▮▮▮▮▮[UPDATE] Update Functions on Animation Frame ▮▮▮▮▮▮▮ ~
-  dbUpdate() {
-    if (this._isDBActive) { return }
-    this._dbDiceArms = this._dbDiceArms ?? {};
-    if (!this._dbDiceArmFrame) {
-      this._dbDiceArmFrame = $("").appendTo(XCircle.CONTAINER);
-    }
-    const dbTickerFunc = (time, deltaTime) => {
-      this._isDBActive = this.isDBActive ?? true;
-      this._testData = this._testData ?? {};
-      if (this._isDBActive) {
-        // this.readiedItems.forEach((item) => {
-        //   if (!this._dbDiceArms[item.name]) {
-        //     $(`<svg id="${item.name}-FRAME" class="db diceArmFrame" height="100%" width="100%">
-        //     <line id="${item.name}-ARM" class="db diceArm" fill="none" stroke="blue" stroke-width="2" x1="${this.x}" y1="${this.y}" x2="${item.x}" y2="${item.y}"></line>
-        //     </svg>`).appendTo(XCircle.DBCONTAINER);
-        //     [this._dbDiceArms[item.name]] = $(`#${item.name}-ARM`);
-        //   } else {
-        //     this._dbDiceArms[item.name].setAttribute("x2", item.x);
-        //     this._dbDiceArms[item.name].setAttribute("y2", item.y);
-        //   }
-        // });
-      } else {
-        delete this._isDBActive;
-        gsap.ticker.remove(dbTickerFunc);
-      }
-    };
-    gsap.ticker.add(dbTickerFunc);
-  }
-  // #endregion ▮▮▮▮[UPDATE]▮▮▮▮
   // #region ░░░░░░░[ANGLE DISPLAY]░░░░ Display Angle & Path Position on Circle ░░░░░░░ ~
   get angleGuide() { return (this._angleGuide = this._angleGuide ?? {}) }
   showAngles(numGuides = 4, isShowingAll = false) {
     [this._dbAngleContainer] = $(`
     <svg height="100%" width="100%">
-      <circle id="db-${this.id}" class="snap-circle" cx="${this.radius}" cy="${this.radius}" r="${this.radius * 1.25}" fill="none" stroke="none" />
+      <circle id="db-${this.id}" class="db snap-circle" cx="${this.radius}" cy="${this.radius}" r="${this.radius * 1.25}" fill="none" stroke="none" />
     </svg>
     `).appendTo(XCircle.DBCONTAINER);
     gsap.set(this._dbAngleContainer, {xPercent: -50, yPercent: -50, x: this.x, y: this.y});

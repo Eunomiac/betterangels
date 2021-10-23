@@ -1,7 +1,7 @@
 /* ****▌███████████████████████████████████████████████████████████████████████████▐**** *\
 |*     ▌███████░░░░░░░░░░░░░░ Better Angels for Foundry VTT ░░░░░░░░░░░░░░░░███████▐     *|
 |*     ▌██████████████████░░░░░░░░░░░░░ by Eunomiac ░░░░░░░░░░░░░██████████████████▐     *|
-|*     ▌███████████████ MIT License █ v0.0.1-prealpha █ Oct 22 2021 ███████████████▐     *|
+|*     ▌███████████████ MIT License █ v0.0.1-prealpha █ Oct 23 2021 ███████████████▐     *|
 |*     ▌████████░░░░░░░░ https://github.com/Eunomiac/betterangels ░░░░░░░░█████████▐     *|
 \* ****▌███████████████████████████████████████████████████████████████████████████▐**** */
 
@@ -16,12 +16,13 @@ import {
   // ▮▮▮▮▮▮▮[Utility]▮▮▮▮▮▮▮
   U,
   // ▮▮▮▮▮▮▮[XCircles]▮▮▮▮▮▮▮
+  XElem,
   XItem, XDie, XSnap,
   // ▮▮▮▮▮▮▮[Mixins]▮▮▮▮▮▮▮
   MIX, HasDOMElem, HasMotionPath, HasSnapPath
 } from "../helpers/bundler.mjs";
 
-export default class XCircle extends MIX().with(HasDOMElem, HasSnapPath) {
+export default class XCircle extends MIX(XElem).with(HasSnapPath) {
   // ████████ STATIC: Static Getters, Setters, Methods ████████
   // ░░░░░░░[Getters]░░░░ Registry, Enumerables, Constants ░░░░░░░
   static get REGISTRY() { return (this._REGISTRY = this._REGISTRY ?? {}) }

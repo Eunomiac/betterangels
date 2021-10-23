@@ -9,12 +9,13 @@ import {
   // ▮▮▮▮▮▮▮[Utility]▮▮▮▮▮▮▮
   U,
   // ▮▮▮▮▮▮▮[XCircles]▮▮▮▮▮▮▮
+  XElem,
   XItem, XDie, XSnap,
   // ▮▮▮▮▮▮▮[Mixins]▮▮▮▮▮▮▮
   MIX, HasDOMElem, HasMotionPath, HasSnapPath
 } from "../helpers/bundler.mjs";
 
-export default class XCircle extends MIX().with(HasDOMElem, HasSnapPath) {
+export default class XCircle extends MIX(XElem).with(HasSnapPath) {
   // ████████ STATIC: Static Getters, Setters, Methods ████████
   // ░░░░░░░[Getters]░░░░ Registry, Enumerables, Constants ░░░░░░░
   static get REGISTRY() { return (this._REGISTRY = this._REGISTRY ?? {}) }

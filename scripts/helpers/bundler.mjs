@@ -13,5 +13,6 @@ export {default as MinorNPCSheet} from "../sheets/actor-minornpc-sheet.mjs";
 export {default as BetterAngelsItem} from "../documents/item.mjs";
 export {default as BetterAngelsItemSheet} from "../sheets/item-sheet.mjs";
 
+export {default as XElem} from "../xcircles/XElem.mjs";
 export {default as XCircle} from "../xcircles/XCircle.mjs";
 export * from "../xcircles/XItem.mjs";

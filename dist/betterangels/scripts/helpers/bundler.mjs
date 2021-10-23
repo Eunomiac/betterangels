@@ -1,7 +1,7 @@
 /* ****▌███████████████████████████████████████████████████████████████████████████▐**** *\
 |*     ▌███████░░░░░░░░░░░░░░ Better Angels for Foundry VTT ░░░░░░░░░░░░░░░░███████▐     *|
 |*     ▌██████████████████░░░░░░░░░░░░░ by Eunomiac ░░░░░░░░░░░░░██████████████████▐     *|
-|*     ▌███████████████ MIT License █ v0.0.1-prealpha █ Oct 22 2021 ███████████████▐     *|
+|*     ▌███████████████ MIT License █ v0.0.1-prealpha █ Oct 23 2021 ███████████████▐     *|
 |*     ▌████████░░░░░░░░ https://github.com/Eunomiac/betterangels ░░░░░░░░█████████▐     *|
 \* ****▌███████████████████████████████████████████████████████████████████████████▐**** */
 
@@ -20,5 +20,6 @@ export {default as MinorNPCSheet} from "../sheets/actor-minornpc-sheet.mjs";
 export {default as BetterAngelsItem} from "../documents/item.mjs";
 export {default as BetterAngelsItemSheet} from "../sheets/item-sheet.mjs";
 
+export {default as XElem} from "../xcircles/XElem.mjs";
 export {default as XCircle} from "../xcircles/XCircle.mjs";
 export * from "../xcircles/XItem.mjs";
