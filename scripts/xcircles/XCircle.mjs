@@ -128,7 +128,7 @@ export default class XCircle extends MIX(XElem).with(HasSnapPath) {
     this._options = options;
 
     this.type = options.type;
-    this._owner = options.owner?.id ?? options.owner ?? U.GMID;
+    this._owner = options.owner?.id ?? options.owner ?? U.GMID();
 
     this.constructor.NameCircle(this);
     this._create(x, y, radius);

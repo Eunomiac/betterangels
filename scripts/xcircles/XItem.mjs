@@ -64,7 +64,7 @@ class XItem extends MIX().with(HasDOMElem) {
     this._options = options;
 
     this.type = options.type;
-    this._owner = options.owner?.id ?? options.owner ?? options.circle?.owner?.id ?? U.GMID;
+    this._owner = options.owner?.id ?? options.owner ?? options.circle?.owner?.id ?? U.GMID();
 
     this.constructor.NameItem(this);
     this._create(options.circle);

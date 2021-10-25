@@ -1,7 +1,7 @@
 /* ****▌███████████████████████████████████████████████████████████████████████████▐**** *\
 |*     ▌███████░░░░░░░░░░░░░░ Better Angels for Foundry VTT ░░░░░░░░░░░░░░░░███████▐     *|
 |*     ▌██████████████████░░░░░░░░░░░░░ by Eunomiac ░░░░░░░░░░░░░██████████████████▐     *|
-|*     ▌███████████████ MIT License █ v0.0.1-prealpha █ Oct 23 2021 ███████████████▐     *|
+|*     ▌███████████████ MIT License █ v0.0.1-prealpha █ Oct 25 2021 ███████████████▐     *|
 |*     ▌████████░░░░░░░░ https://github.com/Eunomiac/betterangels ░░░░░░░░█████████▐     *|
 \* ****▌███████████████████████████████████████████████████████████████████████████▐**** */
 
@@ -12,16 +12,16 @@ import {
   hyphenateHTMLSync as hyph
 } from "hyphen/en/index.js";
 
-// ▮▮▮▮▮▮▮[DATA] Data & References Used by Utility Functions ▮▮▮▮▮▮▮
+// ▮▮▮▮▮▮▮[HELPERS] Internal Functions, Data & References Used by Utility Functions ▮▮▮▮▮▮▮
 
-const noCapWords = [ // Regexp tests that should not be capitalized when converting to title case.
+const _noCapWords = [ // Regexp tests that should not be capitalized when converting to title case.
   "above", "after", "at", "below", "by", "down", "for", "from", "in", "onto", "of", "off", "on", "out",
   "to", "under", "up", "with", "for", "and", "nor", "but", "or", "yet", "so", "the", "an", "a"
 ].map((word) => new RegExp(`\\b${word}\\b`, "gui"));
-const capWords = [ // Words that should always be capitalized when converting to sentence case.
+const _capWords = [ // Words that should always be capitalized when converting to sentence case.
   "I", /[^a-z]{3,}|[\.0-9]/gu
 ].map((word) => (getType(word) === "regexp" ? word : new RegExp(`\\b${word}\\b`, "gui")));
-const loremIpsumText = `Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse ultricies 
+const _loremIpsumText = `Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse ultricies 
 nibh sed massa euismod lacinia. Aliquam nec est ac nunc ultricies scelerisque porta vulputate odio. 
 Integer gravida mattis odio, semper volutpat tellus. Ut elit leo, auctor eget fermentum hendrerit, 
 aliquet ac nunc. Suspendisse porta turpis vitae mi posuere molestie. Cras lectus lacus, vulputate a 
@@ -35,7 +35,7 @@ sollicitudin interdum. Sed id lacus porttitor nisi vestibulum tincidunt. Nulla f
 feugiat finibus magna in pretium. Proin consectetur lectus nisi, non commodo lectus tempor et. Cras 
 viverra, mi in consequat aliquet, justo mauris fringilla tellus, at accumsan magna metus in eros. Sed 
 vehicula, diam ut sagittis semper, purus massa mattis dolor, in posuere.`;
-const randomWords = [ // A collection of random words for various debugging purposes.
+const _randomWords = [ // A collection of random words for various debugging purposes.
   "aboveboard", "account", "achiever", "acoustics", "act", "action", "activity", "actor", "addition", "adjustment",
   "advertisement", "advice", "afterglow", "afterimage", "afterlife", "aftermath", "afternoon", "afterthought",
   "agreement", "air", "aircraft", "airfield", "airlift", "airline", "airmen", "airplane", "airport", "airtime", "alarm",
@@ -178,7 +178,7 @@ const randomWords = [ // A collection of random words for various debugging purp
   "without", "woman", "women", "wood", "woodshop", "wool", "word", "work", "worm", "wound", "wren", "wrench", "wrist",
   "writer", "writing", "yak", "yam", "yard", "yarn", "year", "yoke", "zebra", "zephyr", "zinc", "zipper", "zoo"
 ];
-const numberWords = {
+const _numberWords = {
   ones: [
     "zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine",
     "ten", "eleven", "twelve", "thirteen", "fourteen", "fifteen", "sixteen", "seventeen", "eighteen", "nineteen",
@@ -191,11 +191,11 @@ const numberWords = {
   bigSuffixes: ["", "dec", "vigint", "trigint", "quadragint", "quinquagint", "sexagint", "septuagint", "octogint", "nonagint", "cent"]
     .map((prefix) => (prefix ? `${prefix}illion` : ""))
 };
-const ordinals = {
+const _ordinals = {
   zero: "zeroeth", one: "first", two: "second", three: "third", four: "fourth", five: "fifth", eight: "eighth", nine: "ninth", twelve: "twelfth",
   twenty: "twentieth", thirty: "thirtieth", forty: "fortieth", fifty: "fiftieth", sixty: "sixtieth", seventy: "seventieth", eighty: "eightieth", ninety: "ninetieth"
 };
-const romanNumerals = {
+const _romanNumerals = {
   grouped: [
     ["", "Ⅰ", "Ⅱ", "Ⅲ", "Ⅳ", "Ⅴ", "Ⅵ", "Ⅶ", "Ⅷ", "Ⅸ"],
     ["", "Ⅹ", "ⅩⅩ", "ⅩⅩⅩ", "ⅩⅬ", "Ⅼ", "ⅬⅩ", "ⅬⅩⅩ", "ⅬⅩⅩⅩ", "ⅩⅭ"],
@@ -213,6 +213,37 @@ const romanNumerals = {
     ["", "ↈ", "ↈↈ", "ↈↈↈ"]
   ]
 };
+const _parseSearchFunc = (obj, searchFunc) => {
+  // Transforms a variety of values into a search/test function for use with utility object and array functions.
+  // Can include regexp patterns, element indices, key names, functions, or the strings "first", "last" and "random".
+  const [objType, funcType] = [obj, searchFunc].map(getType);
+  if (["list", "array"].includes(objType)) {
+    if (funcType === "function") { return searchFunc }
+    if (objType === "list" && searchFunc in obj) { return ([key]) => key === searchFunc }
+    if (funcType === "regexp") {
+      if (objType === "list") { return ([, val]) => searchFunc.test(val) }
+      return (val) => searchFunc.test(val);
+    }
+    if (funcType === "int") {
+      if (objType === "list") { return ([, val]) => val === Object.values(obj)[pInt(searchFunc)] }
+      return (elem, i) => (i = pInt(searchFunc));
+    }
+    if (["first", "last", "random"].includes(searchFunc)) {
+      return _parseSearchFunc(obj, {
+        first: 0,
+        last: Object.values(obj).length - 1,
+        random: Math.floor(Math.random() * Object.values(obj).length)
+      }[searchFunc]);
+    }
+    searchFunc = JSON.stringify(searchFunc);
+    if (objType === "list") { return ([, val]) => JSON.stringify(val) === searchFunc }
+    return (val) => JSON.stringify(val) === searchFunc;
+  }
+  return searchFunc;
+};
+
+// ████████ GETTERS: Basic Data Lookup & Retrieval ████████
+const GMID = () => game.users.find((user) => user.isGM)?.id ?? false;
 
 // ████████ TYPES: Type Checking, Validation, Conversion, Casting ████████
 
@@ -276,7 +307,6 @@ const areEqual = (...refs) => {
   }
   return true;
 };
-
 const pFloat = (ref, sigDigits, isStrict = false) => {
   ref = parseFloat(ref);
   sigDigits = parseInt(sigDigits);
@@ -289,6 +319,16 @@ const pFloat = (ref, sigDigits, isStrict = false) => {
 const pInt = (ref, isStrict = false) => {
   ref = pFloat(ref, 0, isStrict);
   return isNaN(ref) ? NaN : Math.round(ref);
+};
+const radToDeg = (rad, isConstrained = true) => {
+  rad = isConstrained ? rad % (2 * Math.PI) : rad;
+  rad *= 180 / Math.PI;
+  return rad;
+};
+const degToRad = (deg, isConstrained = true) => {
+  deg = isConstrained ? deg % 360 : deg;
+  deg *= Math.PI / 180;
+  return deg;
 };
 
 // ████████ REGEXP: Regular Expressions, Replacing, Matching ████████
@@ -310,14 +350,14 @@ const uCase = (str) => `${str}`.toUpperCase();
 const lCase = (str) => `${str}`.toLowerCase();
 const sCase = (str) => {
   let [first, ...rest] = `${str}`.split(/\s+/);
-  first = testRegExp(first, capWords) ? first : `${uCase(first.charAt(0))}${lCase(first.slice(1))}`;
+  first = testRegExp(first, _capWords) ? first : `${uCase(first.charAt(0))}${lCase(first.slice(1))}`;
   if (hasItems(rest)) {
-    rest = rest.map((word) => (testRegExp(word, capWords) ? word : lCase(word)));
+    rest = rest.map((word) => (testRegExp(word, _capWords) ? word : lCase(word)));
   }
   return [first, ...rest].join(" ").trim();
 };
 const tCase = (str) => `${str}`.split(/\s/)
-  .map((word, i) => (i && testRegExp(word, noCapWords) ? lCase(word) : sCase(word)))
+  .map((word, i) => (i && testRegExp(word, _noCapWords) ? lCase(word) : sCase(word)))
   .join(" ").trim();
 // ░░░░░░░[Formatting]░░░░ Hyphenation, Pluralization, "a"/"an" Fixing ░░░░░░░
 const hyphenate = (str, hyphenChar = "\u00AD") => hyph(str, {hyphenChar});
@@ -385,12 +425,12 @@ const stringifyNum = (num) => {
 const verbalizeNum = (num) => {
   num = stringifyNum(num);
   const getTier = (trioNum) => {
-    if (trioNum < numberWords.tiers.length) {
-      return numberWords.tiers[trioNum];
+    if (trioNum < _numberWords.tiers.length) {
+      return _numberWords.tiers[trioNum];
     }
     return [
-      numberWords.bigPrefixes[(trioNum % 10) - 1],
-      numberWords.bigSuffixes[Math.floor(trioNum / 10)]
+      _numberWords.bigPrefixes[(trioNum % 10) - 1],
+      _numberWords.bigSuffixes[Math.floor(trioNum / 10)]
     ].join("");
   };
   const parseThreeDigits = (trio, tierNum) => {
@@ -399,15 +439,15 @@ const verbalizeNum = (num) => {
     let result = "";
     if (digits.length === 3) {
       const hundreds = digits.shift();
-      result += hundreds > 0 ? `${numberWords.ones[hundreds]} hundred` : "";
+      result += hundreds > 0 ? `${_numberWords.ones[hundreds]} hundred` : "";
       if (hundreds && (digits[0] || digits[1])) {
         result += " and ";
       }
     }
-    if (pInt(digits.join("")) <= numberWords.ones.length) {
-      result += numberWords.ones[pInt(digits.join(""))];
+    if (pInt(digits.join("")) <= _numberWords.ones.length) {
+      result += _numberWords.ones[pInt(digits.join(""))];
     } else {
-      result += `${numberWords.tens[pInt(digits.shift())]}${pInt(digits[0]) > 0 ? `-${numberWords.ones[pInt(digits[0])]}` : ""}`;
+      result += `${_numberWords.tens[pInt(digits.shift())]}${pInt(digits[0]) > 0 ? `-${_numberWords.ones[pInt(digits[0])]}` : ""}`;
     }
     return result;
   };
@@ -433,7 +473,7 @@ const verbalizeNum = (num) => {
     }
     numWords.push("point");
     for (const digit of decimals.split("")) {
-      numWords.push(numberWords.ones[pInt(digit)]);
+      numWords.push(_numberWords.ones[pInt(digit)]);
     }
   }
   return numWords.join(" ");
@@ -443,7 +483,7 @@ const ordinalizeNum = (num, isReturningWords = false) => {
     const [numText, suffix] = lCase(verbalizeNum(num)).match(/.*?[-|\s]?(\w*?)$/);
     return numText.replace(
       new RegExp(`${suffix}$`),
-      ordinals[suffix] || `${suffix}th`
+      _ordinals[suffix] || `${suffix}th`
     );
   }
   const tNum = pInt(num) - 100 * Math.floor(pInt(num) / 100);
@@ -460,7 +500,7 @@ const romanizeNum = (num, isUsingGroupedChars = true) => {
   if (getType(num) === "float") { throw new Error(`Error: Can't Romanize Floats (${num})`) }
   if (num >= 400000) { throw new Error(`Error: Can't Romanize >= 400,000 (${num})`) }
   if (num <= 0) { throw new Error(`Error: Can't Romanize <= 0 (${num})`) }
-  const romanRef = romanNumerals[isUsingGroupedChars ? "grouped" : "ungrouped"];
+  const romanRef = _romanNumerals[isUsingGroupedChars ? "grouped" : "ungrouped"];
   const romanNum = stringifyNum(num)
     .split("")
     .reverse()
@@ -474,7 +514,7 @@ const romanizeNum = (num, isUsingGroupedChars = true) => {
 
 // ░░░░░░░[Content]░░░░ Lorem Ipsum, Random Content Generation ░░░░░░░
 const loremIpsum = (numWords = 200) => {
-  const lrWordList = loremIpsumText.split(/\n?\s+/g);
+  const lrWordList = _loremIpsumText.split(/\n?\s+/g);
   const words = [...lrWordList[randNum(0, lrWordList.length - 1)]];
   while (words.length < numWords) {
     words.push(...lrWordList);
@@ -482,7 +522,7 @@ const loremIpsum = (numWords = 200) => {
   words.length = numWords;
   return `${sCase(words.join(" ")).trim().replace(/[^a-z\s]*$/ui, "")}.`;
 };
-const randWord = (numWords = 1, wordList = randomWords) => new Array(numWords).fill(null).map(() => randElem(wordList)).join(" ");
+const randWord = (numWords = 1, wordList = _randomWords) => new Array(numWords).fill(null).map(() => randElem(wordList)).join(" ");
 // ░░░░░░░[Localization]░░░░ Simplified Localization Functionality ░░░░░░░
 /* const Loc = (locRef, formatDict = {}) => {
   if (/^"?scion\./u.test(JSON.stringify(locRef)) && typeof game.i18n.localize(locRef) === "string") {
@@ -497,27 +537,17 @@ const randWord = (numWords = 1, wordList = randomWords) => new Array(numWords).f
 // ████████ NUMBERS: Number Casting, Mathematics, Conversion ████████
 const randNum = (min, max, snap = 0) => gsap.utils.random(min, max, snap);
 const randInt = (min, max) => randNum(min, max, 1);
+const coinFlip = () => randNum(0, 1, 1) === 1;
 const cycleNum = (num, [min = 0, max = Infinity] = []) => gsap.utils.wrap(min, max, num);
-// ░░░░░░░[Angles]░░░░ Angles, Trigonometry ░░░░░░░
-const radToDeg = (rad, isConstrained = true) => {
-  rad = isConstrained ? rad % (2 * Math.PI) : rad;
-  rad *= 180 / Math.PI;
-  return rad;
-};
-const degToRad = (deg, isConstrained = true) => {
-  deg = isConstrained ? deg % 360 : deg;
-  deg *= Math.PI / 180;
-  return deg;
-};
-const getAngleDelta = (angleStart, angleEnd) => cycleNum(Math.round(angleEnd - angleStart), [-180, 180]);
+const roundNum = (num, sigDigits = 0) => (sigDigits === 0 ? pInt(num) : pFloat(num, sigDigits));
 // ░░░░░░░[Positioning]░░░░ Relationships On 2D Cartesian Plane ░░░░░░░
 const getDistance = ({x: x1, y: y1}, {x: x2, y: y2}) => ((x1 - x2) ** 2 + (y1 - y2) ** 2) ** 0.5;
-const getAngle = ({x: x0, y: y0}, {x: xT, y: yT}) => radToDeg(Math.atan2(yT - y0, xT - x0)); // range (-180, 180]
+const getAngle = ({x: x0, y: y0}, {x: xT, y: yT}) => radToDeg(Math.atan2(yT - y0, xT - x0));
+const getAngleDelta = (angleStart, angleEnd) => cycleNum(angleEnd - angleStart, [-180, 180]);
 
 // ████████ ARRAYS: Array Manipulation ████████
 const randElem = (array) => gsap.utils.random(array);
 const randIndex = (array) => randInt(0, array.length - 1);
-
 const makeCycler = (array, index = 0) => {
   // Given an array and a starting index, returns a generator function that can be used
   // to iterate over the array indefinitely, or wrap out-of-bounds index values
@@ -538,72 +568,43 @@ const partition = (obj, predicate = (v, k) => true) => [
   Object.fromEntries(Object.entries(obj).filter(([key, val]) => predicate(val, key))),
   Object.fromEntries(Object.entries(obj).filter(([key, val]) => !predicate(val, key)))
 ];
-
-// ████████ FUNCTIONS: Function Wrapping, Queuing, Manipulation ████████
-
-// ████████ HTML: Parsing HTML Code, Manipulating DOM Objects ████████
-
-// ░░░░░░░[Arrays & Objects] Array & Object Processing ░░░░░░░
-// Arrayify: Ensures value returns as an array containing only truthy objects.
-//     Useful when iterating over a map to functions that return falsy values on failure
-const Arrayify = (x) => [x].flat().filter((xx) => xx === "" || xx === 0 || Boolean(xx));
-const KVPMap = (obj, keyFunc, valFunc) => {
-
+const objMap = (obj, keyFunc, valFunc) => {
+  // An object-equivalent Array.map() function, which accepts mapping functions to transform both keys and values.
+  // If only one function is provided, it's assumed to be mapping the values and will receive (v, k) args.
   [valFunc, keyFunc] = [valFunc, keyFunc].filter((x) => ["function", "boolean"].includes(typeof x));
   keyFunc = keyFunc || ((k) => k);
   valFunc = valFunc || ((v) => v);
   return Object.fromEntries(Object.entries(obj).map(([key, val]) => [keyFunc(key, val), valFunc(val, key)]));
 };
-const KVPFilter = (obj, keyTestFunc, valTestFunc) => {
+const objFilter = (obj, keyTestFunc, valTestFunc) => {
+  // An object-equivalent Array.filter() function, which accepts filter functions for both keys and/or values.
+  // If only one function is provided, it's assumed to be mapping the values and will receive (v, k) args.
   [valTestFunc, keyTestFunc] = [valTestFunc, keyTestFunc].filter((x) => ["function", "boolean"].includes(typeof x));
   keyTestFunc = keyTestFunc || (() => true);
   valTestFunc = valTestFunc || (() => true);
   return Object.fromEntries(Object.entries(obj).filter(([key, val]) => keyTestFunc(key) && valTestFunc(val)));
 };
-const KVPForEach = (obj, func) => Object.entries(obj).forEach(([key, val]) => func(val, key));
-const parseSearchFunc = (qObj, searchFunc) => {
-  const [objType, funcType] = [qObj, searchFunc].map(getType);
-  if (["list", "array"].includes(objType)) {
-    if (funcType === "function") { return searchFunc }
-    if (objType === "list" && searchFunc in qObj) { return ([key]) => key === searchFunc }
-    if (funcType === "regexp") {
-      if (objType === "list") { return ([, val]) => searchFunc.test(val) }
-      return (val) => searchFunc.test(val);
-    }
-    if (funcType === "int") {
-      if (objType === "list") { return ([, val]) => val === Object.values(qObj)[pInt(searchFunc)] }
-      return (elem, i) => (i = pInt(searchFunc));
-    }
-    if (["first", "last", "random"].includes(searchFunc)) {
-      return parseSearchFunc(qObj, {
-        first: 0,
-        last: Object.values(qObj).length - 1,
-        random: Math.floor(Math.random() * Object.values(qObj).length)
-      }[searchFunc]);
-    }
-    searchFunc = JSON.stringify(searchFunc);
-    if (objType === "list") { return ([, val]) => JSON.stringify(val) === searchFunc }
-    return (val) => JSON.stringify(val) === searchFunc;
-  }
-  return searchFunc;
-};
-const Remove = (qObj, searchFunc) => {
-  if (getType(qObj) === "list") {
-    const remKey = Object.entries(qObj).find(parseSearchFunc(qObj, searchFunc));
+// An object-equivalent Array.forEach() function, which accepts one function(val, key) to perform for each member.
+const objForEach = (obj, func) => Object.entries(obj).forEach(([key, val]) => func(val, key));
+
+const remove = (obj, searchFunc) => {
+  // Given an array or list and a search function, will remove the first matching element and return it.
+  if (getType(obj) === "list") {
+    const remKey = Object.entries(obj).find(_parseSearchFunc(obj, searchFunc));
     if (remKey) {
-      const {[remKey]: remVal} = qObj;
-      delete qObj[remKey];
+      const {[remKey]: remVal} = obj;
+      delete obj[remKey];
       return remVal;
     }
-  } else if (getType(qObj) === "array") {
-    const index = qObj.findIndex(parseSearchFunc(qObj, searchFunc));
+  } else if (getType(obj) === "array") {
+    const index = obj.findIndex(_parseSearchFunc(obj, searchFunc));
     if (index >= 0) {
       let remVal;
-      for (let i = 0; i <= qObj.length; i++) {
+      for (let i = 0; i <= obj.length; i++) {
         if (i === index) {
-          remVal = qObj.shift();
+          remVal = obj.shift();
         } else {
-          qObj.push(qObj.shift());
+          obj.push(obj.shift());
         }
       }
       return remVal;
@@ -611,33 +612,87 @@ const Remove = (qObj, searchFunc) => {
   }
   return false;
 };
-const Replace = (qObj, searchFunc, repVal) => {
-  const qType = getType(qObj);
+const replace = (obj, searchFunc, repVal) => {
+  // As remove, except instead replaces the element with the provided value.
+  // Returns true/false to indicate whether the replace action succeeded.
+  const objType = getType(obj);
   let repKey;
-  if (qType === "list") {
-    [repKey] = Object.entries(qObj).find(parseSearchFunc(qObj, searchFunc)) || [false];
+  if (objType === "list") {
+    [repKey] = Object.entries(obj).find(_parseSearchFunc(obj, searchFunc)) || [false];
     if (repKey === false) { return false }
-  } else if (qType === "array") {
-    repKey = qObj.findIndex(parseSearchFunc(qObj, searchFunc));
+  } else if (objType === "array") {
+    repKey = obj.findIndex(_parseSearchFunc(obj, searchFunc));
     if (repKey === -1) { return false }
   }
   if (getType(repVal) === "function") {
-    qObj[repKey] = repVal(qObj[repKey], repKey);
+    obj[repKey] = repVal(obj[repKey], repKey);
   } else {
-    qObj[repKey] = repVal;
+    obj[repKey] = repVal;
   }
   return true;
 };
 
-export default {
-  gsap
-  // // ████████ GETTERS: Basic Data Retrieval ████████
-  // get GMID() { return game.users.find((user) => user.isGM)?.id ?? false },
-  //
+// ████████ FUNCTIONS: Function Wrapping, Queuing, Manipulation ████████
 
-  // // ████████ GSAP: GSAP Functions ████████
-  // get(...args) { return gsap.getProperty(...args) },
-  // set(...args) { return gsap.set(...args) },
+// ████████ HTML: Parsing HTML Code, Manipulating DOM Objects ████████
+// ░░░░░░░[GreenSock]░░░░ Wrappers for GreenSock Functions ░░░░░░░
+const get = (...args) => gsap.getProperty(...args);
+const set = (...args) => gsap.set(...args);
+
+// ░░░░░░░[Positioning]░░░░ Positioning of DOM Elements ░░░░░░░
+const getGSAngleDelta = (startAngle, endAngle) => signNum(roundNum(getAngleDelta(startAngle, endAngle), 2)).replace(/^(.)/, "$1=");
+
+// ████████ EXPORTS ████████
+
+export default {
+  // ████████ GETTERS: Basic Data Lookup & Retrieval ████████
+  GMID,
+
+  // ████████ TYPES: Type Checking, Validation, Conversion, Casting ████████
+  getType,
+  isNumber, isPosInt, isIterable, hasItems,
+  areEqual,
+  pFloat, pInt, radToDeg, degToRad,
+
+  // ████████ REGEXP: Regular Expressions, Replacing, Matching ████████
+  testRegExp,
+  regExtract,
+
+  // ████████ STRINGS: String Parsing, Manipulation, Conversion ████████
+  // ░░░░░░░ Case Conversion ░░░░░░░
+  uCase, lCase, sCase, tCase,
+  // ░░░░░░░ Formatting ░░░░░░░
+  hyphenate, pluralize, oxfordize,
+  parseArticles,
+  signNum, padNum, stringifyNum, verbalizeNum, ordinalizeNum, romanizeNum,
+  // ░░░░░░░ Content ░░░░░░░
+  loremIpsum, randWord,
+  // ░░░░░░░ Localization ░░░░░░░
+
+  // ████████ NUMBERS: Number Casting, Mathematics, Conversion ████████
+  randNum, randInt,
+  coinFlip,
+  cycleNum, roundNum,
+  // ░░░░░░░ Positioning ░░░░░░░
+  getDistance,
+  getAngle, getAngleDelta,
+
+  // ████████ ARRAYS: Array Manipulation ████████
+  randElem, randIndex,
+  makeCycler,
+
+  // ████████ OBJECTS: Manipulation of Simple Key/Val Objects ████████
+  partition,
+  objMap, objFilter, objForEach,
+  remove, replace,
+
+  // ████████ HTML: Parsing HTML Code, Manipulating DOM Objects ████████
+  // ▮▮▮▮▮▮▮[GreenSock] Re-Exports of GreenSock Functions ▮▮▮▮▮▮▮
+  gsap, get, set
+
+  // // ████████ GETTERS: Basic Data Retrieval ████████
+  // 
+  //
 
   // // ▮▮▮▮▮▮▮[GSAP.UTILS]▮▮▮▮▮▮▮
   // random(...args) { return gsap.utils.random(...args) },
@@ -674,8 +729,8 @@ export default {
 };
 
 // // NUMBER FUNCTIONS: Parsing
-// export const  pInt = (num) => parseInt(`${Math.round(parseFloat(`${num}`) || 0)}`);
-// export const  pFloat = (num, sigDigits = 2) => Math.round((parseFloat(`${num}`) || 0) * 10 ** sigDigits) / 10 ** sigDigits;
+// export  pInt = (num) => parseInt(`${Math.round(parseFloat(`${num}`) || 0)}`);
+// export  pFloat = (num, sigDigits = 2) => Math.round((parseFloat(`${num}`) || 0) * 10 ** sigDigits) / 10 ** sigDigits;
 // export const Rand = (n1, n2) => Math.round(Math.random() * (Math.max( pInt(n2),  pInt(n1)) - Math.min( pInt(n2),  pInt(n1)))) + Math.min( pInt(n2),  pInt(n1));
 //
 

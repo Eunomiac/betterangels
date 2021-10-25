@@ -31,7 +31,7 @@ export default class XElem {
 
   _parsePropVals(propVals = {}) {
     let [propsToTweak, props] = U.partition(propVals, (v, k) => k in this.propTweaks);
-    propsToTweak = U.mapObject(propsToTweak, (v, k) => this.propTweaks[k](v));
+    propsToTweak = U.objMap(propsToTweak, (v, k) => this.propTweaks[k](v));
     
     
 
@@ -187,7 +187,7 @@ export default class XElem {
   // #region ████████ PRIVATE METHODS ████████ ~
   // #region ░░░░░░░[Position Getters]░░░░ Angles & Distances to Other Elements ░░░░░░░ ~
   _getAbsAngleTo({x, y}) { return U.getAngle(this, {x, y}) }
-  _getRelAngleTo({x, y}) { return U.cycle(this._getAbsAngleTo({x, y}) - this.rotation + 180, -180, 180) }
+  _getRelAngleTo({x, y}) { return U.cycleNum(this._getAbsAngleTo({x, y}) - this.rotation + 180, -180, 180) }
   _getDistanceTo({x, y}) { return U.getDistance(this, {x, y}) }
   // #endregion ░░░░[Position Getters]░░░░
   // #endregion ▄▄▄▄▄ PRIVATE METHODS ▄▄▄▄▄

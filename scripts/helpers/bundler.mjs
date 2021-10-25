@@ -1,5 +1,8 @@
 export {default as BETTERANGELS} from "./config.mjs";
 
+export {default as FuzzySet} from "../externals/fuzzyset.mjs";
+export {default as Hyphenator} from "../externals/Hyphenator.mjs";
+
 export {default as U} from "./utilities.mjs";
 export * from "./mixins.mjs";
 

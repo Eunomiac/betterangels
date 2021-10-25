@@ -127,7 +127,18 @@ const PIPES = {
         src(source)
       )
       .pipe(renamer({suffix: ".min"}))
-      // .pipe(terser())
+      .pipe(terser({
+        parse: {},
+        compress: {},
+        mangle: {
+          properties: {}
+        },
+        format: {},
+        sourceMap: {},
+        ecma: 2019,
+
+        module: true
+      }))
       .pipe(header(BANNERS.js.min, {"package": packageJSON}))
       .pipe(dest(destination));
   },
@@ -165,6 +176,7 @@ const PIPES = {
 
 // #region ▒░▒░▒░▒[INITIALIZATION]▒░▒░▒░▒ ~
 const {src, dest, watch, series, parallel} = require("gulp");
+const plumber = require("gulp-plumber");
 
 const cleaner = require("del");
 const renamer = require("gulp-rename");
