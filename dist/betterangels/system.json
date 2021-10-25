@@ -8,7 +8,10 @@
   "compatibleCoreVersion": "~0.8",
   "esmodules": [
     "scripts/betterangels.mjs",
-    "greensock/esm/all.js"
+    "greensock/esm/all.js",
+    "underscore/underscore.esm.min.js",
+    "fuse.js/dist/fuse.esm.js",
+    "hyphenopoly/min/Hyphenopoly.js"
   ],
   "styles": [
     "css/betterangels.css"

@@ -1,9 +1,57 @@
 // #region ████████ IMPORTS ████████ ~
 import gsap from "/scripts/greensock/esm/all.js"; // eslint-disable-line import/no-unresolved
-import _ from "underscore";
-import {
-  hyphenateHTMLSync as hyph
-} from "hyphen/en/index.js";
+
+// const _ = require("underscore");
+// const Fuse = require("fuse.js");
+// const Hyphenopoly = require("hyphenopoly");
+// import _ from "underscore";
+// import Fuse from "/scripts/fuse.js"; // https://fusejs.io/api/options.html
+// import Hyphenopoly from "/scripts/hyphenopoly"; // https://github.com/mnater/Hyphenopoly/blob/master/docs/Node-Module.md
+
+// #region ▮▮▮▮▮▮▮[IMPORT CONFIG] Initialization Function for Imports ▮▮▮▮▮▮▮ ~
+const _hyph = (str) => str; /* Hyphenopoly.config(
+  {
+    require: ["en-us"],
+    // loader: "fs", // Whether to load using node's fs or https (default: fs)
+    sync: true, // Whether hyphenator should work synchronously (default: false)
+    paths: {},
+    setup: {
+      defaultLanguage: "en-us",
+      // "compound": "hyphen", // hyphenate hyphenated words (e.g. 'computer-aided') at the hyphen only (default: hyphen)
+      // "hyphen": String.fromCharCode(173), // = default: &shy; | \u00AD
+      leftmin: 2, // minimum size of beginning component of hyphenated word (default: 0)
+      rightmin: 2, // minimum size of ending component of hyphenated word (default: 0)
+      minWordLength: 4, // minimum length of a word for it to be hyphenated (default: 6)
+      // "mixedCase": true, // allow hyphenating mixed-case words (default: true)
+      orphanControl: 3, // don't hyphenate last word AND keep it on the same line as the previous word (default: 1)
+      hide: "text", // hide text (by setting it transparent) before hyphenator has finished (default: "all")
+      // "timeout": 1000, // failure timeout in ms for hyphenation before text is unhidden (default: 1000)
+      dontHyphenateClass: "no-hyphen", // elements with this class will not have their content hyphenated
+      dontHyphenate: Object.fromEntries("video|audio|script|code|pre|img|br|samp|kbd|var|abbr|acronym|sub|sup|button|option|label|textarea|input|math|svg|style"
+        .split(/\|/)
+        .map((item) => [item, ![
+          "textarea" // Add elements from above that SHOULD be hyphenated.
+        ].includes(item)])),
+      keepAlive: true, // whether to keep hyphenator loaded after initialization (default: false)
+      // "normalize": false, // whether to resolve compound characters into precomposed characters (default: false)
+      // "processShadows": false, // whether to search outside window.document for elements to hyphenate (default: false)
+      // "safeCopy": true, // whether to remove soft hyphens when text is copied to clipboard (default: true)
+      substitute: { // mapping out-of-language characters to in-language characters for hyphenating
+        "en-us": {
+          ...Object.fromEntries("àáâãäå".forEach((char) => [char, "a"])),
+          ...Object.fromEntries("èéêë".forEach((char) => [char, "e"])),
+          ...Object.fromEntries("ìíîï".forEach((char) => [char, "i"])),
+          ...Object.fromEntries("òóôõö".forEach((char) => [char, "o"])),
+          ...Object.fromEntries("ùúûü".forEach((char) => [char, "u"])),
+          æ: "a",
+          ç: "s",
+          ñ: "n"
+        }
+      }
+    }
+  }
+).get("en-us"); */
+// #endregion ▮▮▮▮[IMPORT CONFIG]▮▮▮▮
 // #endregion ▄▄▄▄▄ IMPORTS ▄▄▄▄▄
 
 // #region ▮▮▮▮▮▮▮[HELPERS] Internal Functions, Data & References Used by Utility Functions ▮▮▮▮▮▮▮ ~
@@ -14,7 +62,7 @@ const _noCapWords = [ // Regexp tests that should not be capitalized when conver
 ].map((word) => new RegExp(`\\b${word}\\b`, "gui"));
 const _capWords = [ // Words that should always be capitalized when converting to sentence case.
   "I", /[^a-z]{3,}|[\.0-9]/gu
-].map((word) => (getType(word) === "regexp" ? word : new RegExp(`\\b${word}\\b`, "gui")));
+].map((word) => (/RegExp/.test(Object.prototype.toString.call(word)) ? word : new RegExp(`\\b${word}\\b`, "gui")));
 const _loremIpsumText = `Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse ultricies 
 nibh sed massa euismod lacinia. Aliquam nec est ac nunc ultricies scelerisque porta vulputate odio. 
 Integer gravida mattis odio, semper volutpat tellus. Ut elit leo, auctor eget fermentum hendrerit, 
@@ -309,9 +357,10 @@ const getType = (ref) => {
   }
   return baseType;
 };
-const isNumber = (ref) => ["int", "float"].includes(getType(ref));
+const isNumber = (ref, isStringOk = false) => ["int", "float"].includes(getType(isStringOk ? parseFloat(ref) : ref));
 const isPosInt = (ref) => getType(ref) === "int" && ref >= 0;
 const isIterable = (ref) => !["null", "undefined"].includes(getType(ref)) && typeof ref[Symbol.iterator] === "function";
+const isUndefined = (ref) => getType(ref) === "undefined";
 const hasItems = (ref) => {
   ref = getType(ref) === "list" ? Object.keys(ref) : ref;
   return isIterable(ref) && Array.from(ref).length > 0;
@@ -324,9 +373,9 @@ const areEqual = (...refs) => {
         case "null": case "string": case "number": case "boolean": {
           return ref1 === ref2;
         }
-        case "array": case "set": case "list": {
-          return _.isEqual(ref1, ref2);
-        }
+        // case "array": case "set": case "list": {
+        //   return _.isEqual(ref1, ref2);
+        // }
         default: {
           try {
             return JSON.stringify(ref1) === JSON.stringify(ref2);
@@ -373,22 +422,8 @@ const degToRad = (deg, isConstrained = true) => {
 };
 // #endregion ▄▄▄▄▄ TYPES ▄▄▄▄▄
 
-// #region ████████ REGEXP: Regular Expressions, Replacing, Matching ████████ ~
-const testRegExp = (str, patterns = [], flags = "gui", isTestingAll = false) => patterns.map(
-  (pattern) => (getType(pattern) === "regexp"
-    ? pattern
-    : new RegExp(`\\b${pattern}\\b`, flags))
-)[isTestingAll ? "every" : "some"]((pattern) => pattern.test(str));
-const regExtract = (ref, pattern, flags = "u") => {
-  pattern = new RegExp(pattern, flags.replace(/g/g, ""));
-  const isGrouping = /[)(]/.test(pattern.toString());
-  const matches = ref.match(pattern) || [];
-  return isGrouping ? matches.slice(1) : matches.pop();
-};
-// #endregion ▄▄▄▄▄ REGEXP ▄▄▄▄▄
-
-// #region ████████ STRINGS: String Parsing, Manipulation, Conversion ████████ ~
-// #region ░░░░░░░ Case Conversion ░░░░░░░ ~
+// #region ████████ STRINGS: String Parsing, Manipulation, Conversion, Regular Expressions ████████ ~
+// #region ░░░░░░░[Case Conversion]░░░░ Upper, Lower, Sentence & Title Case ░░░░░░░ ~
 const uCase = (str) => `${str}`.toUpperCase();
 const lCase = (str) => `${str}`.toLowerCase();
 const sCase = (str) => {
@@ -403,8 +438,22 @@ const tCase = (str) => `${str}`.split(/\s/)
   .map((word, i) => (i && testRegExp(word, _noCapWords) ? lCase(word) : sCase(word)))
   .join(" ").trim();
 // #endregion ░░░░[Case Conversion]░░░░
+// #region ░░░░░░░[RegExp]░░░░ Regular Expressions ░░░░░░░ ~
+const testRegExp = (str, patterns = [], flags = "gui", isTestingAll = false) => patterns.map(
+  (pattern) => (getType(pattern) === "regexp"
+    ? pattern
+    : new RegExp(`\\b${pattern}\\b`, flags))
+)[isTestingAll ? "every" : "some"]((pattern) => pattern.test(str));
+const regExtract = (ref, pattern, flags = "u") => {
+  pattern = new RegExp(pattern, flags.replace(/g/g, ""));
+  const isGrouping = /[)(]/.test(pattern.toString());
+  const matches = ref.match(pattern) || [];
+  return isGrouping ? matches.slice(1) : matches.pop();
+};
+// #endregion ░░░░[REGEXP]░░░░
 // #region ░░░░░░░[Formatting]░░░░ Hyphenation, Pluralization, "a"/"an" Fixing ░░░░░░░ ~
-const hyphenate = (str, hyphenChar = "\u00AD") => hyph(str, {hyphenChar});
+const hyphenate = (string) => (/^<|\u00AD|\u200B/.test(string) ? string : _hyph(string));
+const unhyphenate = (string) => string.replace(/\u00AD|\u200B/gu, "");
 const parseArticles = (str) => `${str}`.replace(/\b(a|A)\s([aeiouAEIOU])/gu, "$1n $2");
 const pluralize = (singular, num, plural) => {
   if (pFloat(num) === 1) { return singular }
@@ -419,6 +468,7 @@ const oxfordize = (items, useOxfordComma = true) => {
     lastItem
   ].join("");
 };
+const ellipsize = (text, maxLength) => (`${text}`.length > maxLength ? `${text.slice(0, maxLength - 3)}…` : text);
 // #region ========== Numbers: Formatting Numbers Into Strings =========== ~
 const signNum = (num, delim = "") => `${pFloat(num) < 0 ? "-" : "+"}${delim}${Math.abs(pFloat(num))}`;
 const padNum = (num, numDecDigits) => {
@@ -582,6 +632,61 @@ const randWord = (numWords = 1, wordList = _randomWords) => new Array(numWords).
 // #endregion ░░░░[Localization]░░░░
 // #endregion ▄▄▄▄▄ STRINGS ▄▄▄▄▄
 
+// #region ████████ SEARCHING: Searching Various Data Types w/ Fuzzy Matching ████████ ~
+const isIn = (needle, haystack = [], fuzziness = 0) => {
+  // Looks for needle in haystack using fuzzy matching, then returns value as it appears in haystack.
+
+  // STEP ONE: POPULATE SEARCH TESTS ACCORDING TO FUZZINESS SETTING
+  const SearchTests = [
+    (ndl, item) => new RegExp(`^${ndl}$`, "gu").test(item),
+    (ndl, item) => new RegExp(`^${ndl}$`, "gui").test(item)
+  ];
+  if (fuzziness >= 1) {
+    const fuzzyTests = [
+      (ndl, item) => new RegExp(`^${ndl}`, "gui").test(item),
+      (ndl, item) => new RegExp(`${ndl}$`, "gui").test(item),
+      (ndl, item) => new RegExp(`${ndl}`, "gui").test(item),
+      (ndl, item) => new RegExp(`${item}`, "gui").test(ndl)
+    ];
+    SearchTests.push(...fuzzyTests);
+    if (fuzziness >= 2) {
+      SearchTests.push(...fuzzyTests
+        .map((func) => (ndl, item) => func(ndl.replace(/\W/gu), item.replace(/\W/gu))));
+      if (fuzziness >= 3) {
+        SearchTests.push((ndl) => false); // Have to implement Fuse matching
+      }
+    }
+  }
+
+  // STEP TWO: PARSE NEEDLE & CONSTRUCT SEARCHABLE HAYSTACK.
+  const stackType = getType(haystack);
+  const searchNeedle = `${needle}`;
+  const searchStack = (() => {
+    switch (stackType) {
+      case "array": return [...haystack];
+      case "list": return Object.keys(haystack);
+      default: {
+        try {
+          return Array.from(haystack);
+        } catch {
+          throw new Error(`Haystack type must be [list, array], not ${getType(haystack)}: ${JSON.stringify(haystack)}`);
+        }
+      }
+    }
+  })();
+
+  // STEP THREE: SEARCH HAY FOR NEEDLE USING PROGRESSIVELY MORE FUZZY SEARCH TESTS
+  let matchIndex;
+  while (!isPosInt(matchIndex)) {
+    if (SearchTests.length === 0) { return false }
+    const testFunc = SearchTests.shift();
+    matchIndex = searchStack.findIndex((item) => testFunc(searchNeedle, item));
+  }
+  return stackType === "list" ? haystack[searchStack[matchIndex]] : haystack[matchIndex];
+};
+const isInExact = (needle, haystack) => isIn(needle, haystack, 0);
+// #endregion ▄▄▄▄▄ SEARCHING ▄▄▄▄▄
+
 // #region ████████ NUMBERS: Number Casting, Mathematics, Conversion ████████ ~
 const randNum = (min, max, snap = 0) => gsap.utils.random(min, max, snap);
 const randInt = (min, max) => randNum(min, max, 1);
@@ -610,6 +715,37 @@ const makeCycler = (array, index = 0) => {
     }
   }());
 };
+const getLast = (array) => (array.length ? array[array.length - 1] : null);
+/*~ #region TO PROCESS: ARRAY FUNCTIONS: Last, Flip, Insert, Change, Remove
+export const Last = (arr) => (Array.isArray(arr) && arr.length ? arr[arr.length - 1] : undefined);
+export const Flip = (arr) => Clone(arr).reverse();
+export const Insert = (arr, val, index) => { // MUTATOR
+  arr[ pInt(index)] = val;
+  return arr;
+};
+export const Change = (arr, findFunc = (e, i, a) => true, changeFunc = (e, i, a) => e) => { // MUTATOR
+  const index = arr.findIndex(findFunc);
+  if (index >= 0) {
+    arr[index] = changeFunc(arr[index], index, arr);
+    return arr;
+  } else {
+    return false;
+  }
+};
+export const Remove = (arr, findFunc = (e, i, a) => true) => {
+  const index = arr.findIndex(findFunc);
+  if (index >= 0) {
+    const elem = arr[index];
+    delete arr[index];
+    for (let i = index; i < arr.length - 1; i++) {
+      arr[i] = arr[i + 1];
+    }
+    arr.length -= 1;
+    return elem;
+  }
+  return false;
+};
+// #endregion ~*/
 // #endregion ▄▄▄▄▄ ARRAYS ▄▄▄▄▄
 
 // #region ████████ OBJECTS: Manipulation of Simple Key/Val Objects ████████ ~
@@ -682,6 +818,124 @@ const replace = (obj, searchFunc, repVal) => {
   }
   return true;
 };
+/*~ #region TO PROCESS: RemoveFirst, PullElement, PullIndex, Clone, Merge, Expand, Flatten, SumVals, MakeDict, NestedValues
+const removeFirst = (array, element) => array.splice(array.findIndex((v) => v === element));
+const pullElement = (array, checkFunc = (_v = true, _i = 0, _a = []) => { checkFunc(_v, _i, _a) }) => {
+  const index = array.findIndex((v, i, a) => checkFunc(v, i, a));
+  return index !== -1 && array.splice(index, 1).pop();
+};
+const pullIndex = (array, index) => pullElement(array, (v, i) => i === index);
+export const Clone = (obj) => {
+  let cloneObj;
+  try {
+    cloneObj = JSON.parse(JSON.stringify(obj));
+  } catch (err) {
+    // THROW({obj, err}, "ERROR: U.Clone()");
+    cloneObj = {...obj};
+  }
+  return cloneObj;
+};
+export const Merge = (target, source, {isMergingArrays = true, isOverwritingArrays = true} = {}) => {
+  target = Clone(target);
+  const isObject = (obj) => obj && typeof obj === "object";
+
+  if (!isObject(target) || !isObject(source)) {
+    return source;
+  }
+
+  Object.keys(source).forEach((key) => {
+    const targetValue = target[key];
+    const sourceValue = source[key];
+
+    if (Array.isArray(targetValue) && Array.isArray(sourceValue)) {
+      if (isOverwritingArrays) {
+        target[key] = sourceValue;
+      } else if (isMergingArrays) {
+        target[key] = targetValue.map((x, i) => (sourceValue.length <= i ? x : Merge(x, sourceValue[i], {isMergingArrays, isOverwritingArrays})));
+        if (sourceValue.length > targetValue.length) {
+          target[key] = target[key].concat(sourceValue.slice(targetValue.length));
+        }
+      } else {
+        target[key] = targetValue.concat(sourceValue);
+      }
+    } else if (isObject(targetValue) && isObject(sourceValue)) {
+      target[key] = Merge({...targetValue}, sourceValue, {isMergingArrays, isOverwritingArrays});
+    } else {
+      target[key] = sourceValue;
+    }
+  });
+
+  return target;
+};
+export const Expand = (obj) => {
+  const expObj = {};
+  for (let [key, val] of Object.entries(obj)) {
+    if (getType(val) === "Object") {
+      val = Expand(val);
+    }
+    setProperty(expObj, key, val);
+  }
+  return expObj;
+};
+export const Flatten = (obj) => {
+  const flatObj = {};
+  for (const [key, val] of Object.entries(obj)) {
+    if (getType(val) === "Object") {
+      if (isObjectEmpty(val)) {
+        flatObj[key] = val;
+      } else {
+        for (const [subKey, subVal] of Object.entries(Flatten(val))) {
+          flatObj[`${key}.${subKey}`] = subVal;
+        }
+      }
+    } else {
+      flatObj[key] = val;
+    }
+  }
+  return flatObj;
+};
+export const SumVals = (...objs) => {
+  const valKey = objs.pop();
+  if (typeof valKey === "object") {
+    objs.push(valKey);
+  }
+  return objs.reduce(
+    (tot, obj) => tot + Object.values(obj).reduce((subTot, val) => subTot + (typeof val === "object" && valKey in val ? val[valKey] : val), 0),
+    0
+  );
+};
+export const MakeDict = (objRef, valFunc = (v) => v, keyFunc = (k) => k) => {
+  const newDict = {};
+  for (const key of Object.keys(objRef)) {
+    const val = objRef[key];
+    const newKey = keyFunc(key, val);
+    let newVal = valFunc(val, key);
+    if (typeof newVal === "object" && !Array.isArray(newVal)) {
+      const newValProp = ((nVal) => ["label", "name", "value"].find((x) => x in nVal))(newVal);
+      newVal = newValProp && newVal[newValProp];
+    }
+    if (["string", "number"].includes(typeof newVal)) {
+      newDict[newKey] = Loc(newVal);
+    }
+  }
+  return newDict;
+};
+
+export const NestedValues = (obj, flatVals = []) => {
+  if (obj && typeof obj === "object") {
+    for (const key of Object.keys(obj)) {
+      const val = obj[key];
+      if (val && typeof val === "object") {
+        flatVals.push(...NestedValues(val));
+      } else {
+        flatVals.push(val);
+      }
+    }
+    return flatVals;
+  }
+  return [obj].flat();
+};
+#endregion ~*/
 // #endregion ▄▄▄▄▄ OBJECTS ▄▄▄▄▄
 
 // #region ████████ FUNCTIONS: Function Wrapping, Queuing, Manipulation ████████ ~
@@ -693,11 +947,12 @@ const replace = (obj, searchFunc, repVal) => {
 const get = (...args) => gsap.getProperty(...args);
 const set = (...args) => gsap.set(...args);
 // #endregion ░░░░[GreenSock]░░░░
-
+// #region ░░░░░░░[CSS]░░░░ CSS Styles Parsing ░░░░░░░ ~
+const formatAsClass = (str) => `${str}`.replace(/([A-Z])|\s/g, "-$1").replace(/^-/, "").trim().toLowerCase();
+// #endregion ░░░░[CSS]░░░░
 // #region ░░░░░░░[Positioning]░░░░ Positioning of DOM Elements ░░░░░░░ ~
 const getGSAngleDelta = (startAngle, endAngle) => signNum(roundNum(getAngleDelta(startAngle, endAngle), 2)).replace(/^(.)/, "$1=");
 // #endregion ░░░░[Positioning]░░░░
-
 // #endregion ▄▄▄▄▄ HTML ▄▄▄▄▄
 
 // #region ████████ EXPORTS ████████ ~
@@ -720,13 +975,16 @@ export default {
   // ░░░░░░░ Case Conversion ░░░░░░░
   uCase, lCase, sCase, tCase,
   // ░░░░░░░ Formatting ░░░░░░░
-  hyphenate, pluralize, oxfordize,
+  hyphenate, pluralize, oxfordize, ellipsize,
   parseArticles,
   signNum, padNum, stringifyNum, verbalizeNum, ordinalizeNum, romanizeNum,
   // ░░░░░░░ Content ░░░░░░░
   loremIpsum, randWord,
   // ░░░░░░░ Localization ░░░░░░░
   //~ loc,
+
+  // ████████ SEARCHING: Searching Various Data Types w/ Fuzzy Matching ████████
+  isIn, isInExact,
 
   // ████████ NUMBERS: Number Casting, Mathematics, Conversion ████████
   randNum, randInt,
@@ -746,455 +1004,11 @@ export default {
   remove, replace,
 
   // ████████ HTML: Parsing HTML Code, Manipulating DOM Objects ████████
-  // ▮▮▮▮▮▮▮[GreenSock] Re-Exports of GreenSock Functions ▮▮▮▮▮▮▮
-  gsap, get, set
-  
-
-  // // ████████ GETTERS: Basic Data Retrieval ████████ ~
-  // 
-  // // #endregion ▄▄▄▄▄ GETTERS ▄▄▄▄▄
-
-
-  // // #region ▮▮▮▮▮▮▮[GSAP.UTILS]▮▮▮▮▮▮▮ ~
-  // random(...args) { return gsap.utils.random(...args) },
-  // distribute(...args) { return gsap.utils.distribute(...args) },
-  // splitColor(...args) { return gsap.utils.splitColor(...args) },
-  // mapRange(...args) { return gsap.utils.mapRange(...args) },
-  // // #endregion ▮▮▮▮[GSAP.UTILS]▮▮▮▮
-  // // #endregion ▄▄▄▄▄ GSAP ▄▄▄▄▄
-
-  // // #region ████████ MATH ████████ ~
-  // cycle,
-  // pad,
-  // sign,
-  // round,
-  // radToDeg,
-  // getDistance,
-  // getAngle,
-  // getAngleDelta,
-  // // #endregion ▄▄▄▄▄ MATH ▄▄▄▄▄
-  // // #region ████████ DOM: DOM Elements ████████ ~
-
-  // // #endregion ▄▄▄▄▄ DOM ▄▄▄▄▄
-  // // #region ████████ STRINGS: String Parsing ████████ ~
-  // // #region ▮▮▮▮▮▮▮[FORMATS] Conversion Between Various String Formats ▮▮▮▮▮▮▮ ~
-  // formatAsClass: (str) => `${str}`.replace(/([A-Z])|\s/g, "-$1").replace(/^-/, "").trim().toLowerCase(),
-  // // #endregion ▮▮▮▮[FORMATS]▮▮▮▮
-  // // #region ▮▮▮▮▮▮▮[COLORS] Color String Conversion & Manipulation ▮▮▮▮▮▮▮ ~
-  // joinColor: (r, g, b, a = 1) => `rgba(${r}, ${g}, ${b}, ${a})`,
-  // // #endregion ▮▮▮▮[COLORS]▮▮▮▮
-  // // #endregion ▄▄▄▄▄ STRINGS ▄▄▄▄▄
-  // // #region ████████ ARRAYS: Array Manipulation ████████ ~
-  // makeCycler
-  // // #endregion ▄▄▄▄▄ ARRAYS ▄▄▄▄▄
+  // ░░░░░░░ GreenSock ░░░░░░░
+  gsap, get, set,
+  // ░░░░░░░ CSS ░░░░░░░
+  formatAsClass,
+  // ░░░░░░░ Positioning ░░░░░░░
+  getGSAngleDelta
 };
 // #endregion ▄▄▄▄▄ EXPORTS ▄▄▄▄▄
-
-// // #region NUMBER FUNCTIONS: Parsing
-// export  pInt = (num) => parseInt(`${Math.round(parseFloat(`${num}`) || 0)}`);
-// export  pFloat = (num, sigDigits = 2) => Math.round((parseFloat(`${num}`) || 0) * 10 ** sigDigits) / 10 ** sigDigits;
-// export const Rand = (n1, n2) => Math.round(Math.random() * (Math.max( pInt(n2),  pInt(n1)) - Math.min( pInt(n2),  pInt(n1)))) + Math.min( pInt(n2),  pInt(n1));
-// // #endregion
-
-// // #region ARRAY FUNCTIONS: Last
-// export const Last = (arr) => (Array.isArray(arr) && arr.length ? arr[arr.length - 1] : undefined);
-// export const Flip = (arr) => Clone(arr).reverse();
-// /* MUTATOR */ export const Insert = (arr, val, index) => {
-//   arr[ pInt(index)] = val;
-//   return arr;
-// };
-// /* MUTATOR */ export const Change = (arr, findFunc = (e, i, a) => true, changeFunc = (e, i, a) => e) => {
-//   const index = arr.findIndex(findFunc);
-//   if (index >= 0) {
-//     arr[index] = changeFunc(arr[index], index, arr);
-//     return arr;
-//   } else {
-//     return false;
-//   }
-// };
-// export const Remove = (arr, findFunc = (e, i, a) => true) => {
-//   const index = arr.findIndex(findFunc);
-//   if (index >= 0) {
-//     const elem = arr[index];
-//     delete arr[index];
-//     for (let i = index; i < arr.length - 1; i++) {
-//       arr[i] = arr[i + 1];
-//     }
-//     arr.length -= 1;
-//     return elem;
-//   }
-//   return false;
-// };
-
-// // const testArray = [0, 1, 2, 3, 4, 5];
-// // const findFunc = (e, i) => i > 3;
-// // const changeFunc = (e) => e + 3;
-// // console.log(Remove(testArray, findFunc, changeFunc));
-// // console.log(testArray);
-// // #endregion
-
-// // #region OBJECT FUNCTIONS: Dot Notation, MapObject, MakeDictionary
-// export const KeyMapObj = (obj, keyFunc = (x) => x, valFunc = undefined) => {
-//   /*
-//    * An object-equivalent Array.map() function, which accepts mapping functions to transform both keys and values.
-//    *      If only one function is provided, it's assumed to be mapping the values and will receive (v, k) args.
-//    */
-//   [valFunc, keyFunc] = [valFunc, keyFunc].filter((x) => typeof x === "function" || typeof x === "boolean");
-//   keyFunc = keyFunc || ((k) => k);
-//   valFunc = valFunc || ((v) => v);
-//   const newObj = {};
-//   Object.entries(obj).forEach(([key, val]) => {
-//     newObj[keyFunc(key, val)] = valFunc(val, key);
-//   });
-//   return newObj;
-// };
-// export const Clone = (obj) => {
-//   let cloneObj;
-//   try {
-//     cloneObj = JSON.parse(JSON.stringify(obj));
-//   } catch (err) {
-//     // THROW({obj, err}, "ERROR: U.Clone()");
-//     cloneObj = {...obj};
-//   }
-//   return cloneObj;
-// };
-// export const Merge = (target, source, {isMergingArrays = true, isOverwritingArrays = true} = {}) => {
-//   target = Clone(target);
-//   const isObject = (obj) => obj && typeof obj === "object";
-
-//   if (!isObject(target) || !isObject(source)) {
-//     return source;
-//   }
-
-//   Object.keys(source).forEach((key) => {
-//     const targetValue = target[key];
-//     const sourceValue = source[key];
-
-//     if (Array.isArray(targetValue) && Array.isArray(sourceValue)) {
-//       if (isOverwritingArrays) {
-//         target[key] = sourceValue;
-//       } else if (isMergingArrays) {
-//         target[key] = targetValue.map((x, i) => (sourceValue.length <= i ? x : Merge(x, sourceValue[i], {isMergingArrays, isOverwritingArrays})));
-//         if (sourceValue.length > targetValue.length) {
-//           target[key] = target[key].concat(sourceValue.slice(targetValue.length));
-//         }
-//       } else {
-//         target[key] = targetValue.concat(sourceValue);
-//       }
-//     } else if (isObject(targetValue) && isObject(sourceValue)) {
-//       target[key] = Merge({...targetValue}, sourceValue, {isMergingArrays, isOverwritingArrays});
-//     } else {
-//       target[key] = sourceValue;
-//     }
-//   });
-
-//   return target;
-// };
-// export const Filter = (obj, testFunc = (v, k) => true) => Object.keys(obj).reduce((newObj, key) => Object.assign(newObj, testFunc(obj[key], key) ? {[key]: obj[key]} : {}), {});
-// export const Expand = (obj) => {
-//   const expObj = {};
-//   for (let [key, val] of Object.entries(obj)) {
-//     if (getType(val) === "Object") {
-//       val = Expand(val);
-//     }
-//     setProperty(expObj, key, val);
-//   }
-//   return expObj;
-// };
-// export const Flatten = (obj) => {
-//   const flatObj = {};
-//   for (const [key, val] of Object.entries(obj)) {
-//     if (getType(val) === "Object") {
-//       if (isObjectEmpty(val)) {
-//         flatObj[key] = val;
-//       } else {
-//         for (const [subKey, subVal] of Object.entries(Flatten(val))) {
-//           flatObj[`${key}.${subKey}`] = subVal;
-//         }
-//       }
-//     } else {
-//       flatObj[key] = val;
-//     }
-//   }
-//   return flatObj;
-// };
-// export const SumVals = (...objs) => {
-//   const valKey = objs.pop();
-//   if (typeof valKey === "object") {
-//     objs.push(valKey);
-//   }
-//   return objs.reduce(
-//     (tot, obj) => tot + Object.values(obj).reduce((subTot, val) => subTot + (typeof val === "object" && valKey in val ? val[valKey] : val), 0),
-//     0
-//   );
-// };
-// export const MakeDict = (objRef, valFunc = (v) => v, keyFunc = (k) => k) => {
-//   const newDict = {};
-//   for (const key of Object.keys(objRef)) {
-//     const val = objRef[key];
-//     const newKey = keyFunc(key, val);
-//     let newVal = valFunc(val, key);
-//     if (typeof newVal === "object" && !Array.isArray(newVal)) {
-//       const newValProp = ((nVal) => ["label", "name", "value"].find((x) => x in nVal))(newVal);
-//       newVal = newValProp && newVal[newValProp];
-//     }
-//     if (["string", "number"].includes(typeof newVal)) {
-//       newDict[newKey] = Loc(newVal);
-//     }
-//   }
-//   return newDict;
-// };
-
-// export const NestedValues = (obj, flatVals = []) => {
-//   if (obj && typeof obj === "object") {
-//     for (const key of Object.keys(obj)) {
-//       const val = obj[key];
-//       if (val && typeof val === "object") {
-//         flatVals.push(...NestedValues(val));
-//       } else {
-//         flatVals.push(val);
-//       }
-//     }
-//     return flatVals;
-//   }
-//   return [obj].flat();
-// };
-// // #endregion
-
-// const numToText = (num, isTitleCase = false) => {
-//   const numString = `${num}`;
-//   const parseThreeDigits = (v) => {
-//     const digits = _.map(v.toString().split(""), (vv) => parseInt(vv));
-//     let result = "";
-//     if (digits.length === 3) {
-//       const hundreds = digits.shift();
-//       result += hundreds > 0 ? `${numberWords.low[hundreds]} hundred` : "";
-//       if (digits[0] + digits[1] > 0) { result += " and " } else { return result.toLowerCase() }
-//     }
-//     if (parseInt(digits.join("")) <= numberWords.low.length) { result += numberWords.low[parseInt(digits.join(""))] } else { result += numberWords.tens[parseInt(digits.shift())] + (parseInt(digits[0]) > 0 ? `-${numberWords.low[parseInt(digits[0])]}` : "") }
-//     return result.toLowerCase();
-//   };
-//   const isNegative = numString.charAt(0) === "-";
-//   const [integers, decimals] = numString.replace(/[,|\s|-]/gu, "").split(".");
-//   const intArray = _.map(
-//     integers
-//       .split("")
-//       .reverse()
-//       .join("")
-//       .match(/.{1,3}/g),
-//     (v) => v
-//       .split("")
-//       .reverse()
-//       .join("")
-//   ).reverse();
-//   const [intStrings, decStrings] = [[], []];
-//   while (intArray.length) { intStrings.push(`${parseThreeDigits(intArray.shift())} ${numberWords.tiers[intArray.length]}`.toLowerCase().trim()) }
-//   if (VAL({number: decimals})) {
-//     decStrings.push(" point");
-//     for (const digit of decimals.split("")) { decStrings.push(numberWords.low[parseInt(digit)]) }
-//   }
-//   const numText = (isNegative ? "negative " : "") + intStrings.join(", ") + decStrings.join(" ");
-//   return isTitleCase ? tCase(numText) : sCase(numText);
-// };
-// const textToNum = (num) => {
-//   const [tenText, oneText] = num.split("-");
-//   if (VAL({string: tenText}, "textToNum")) {
-//     return Math.max(
-//       0,
-//       _.indexOf(
-//         _.map(numberWords.tens, (v) => v.toLowerCase()),
-//         tenText.toLowerCase()
-//       ) * 10,
-//       _.indexOf(
-//         _.map(numberWords.low, (v) => v.toLowerCase()),
-//         tenText.toLowerCase()
-//       )
-//     ) + VAL({string: oneText})
-//       ? Math.max(
-//         0,
-//         _.indexOf(
-//           _.map(numberWords.low, (v) => v.toLowerCase()),
-//           oneText.toLowerCase()
-//         )
-//       )
-//       : 0;
-//   }
-//   return 0;
-// };
-// const ellipsisText = (text, maxLength) => {
-//   if (`${text}`.length > maxLength) { return `${text.slice(0, maxLength - 3)}…` }
-//   return text;
-// };
-// const numToRomanNum = (num, isGroupingSymbols = true) => {
-//   if (isNaN(num)) { return NaN }
-//   const digits = String(pInt(num)).split("");
-//   const key = romanNumerals[isGroupingSymbols ? "grouped" : "ungrouped"];
-//   let roman = "",
-//       i = 3;
-//   while (i--) { roman = (key[pInt(digits.pop()) + i * 10] || "") + roman }
-//   return isGroupingSymbols
-//     ? (Array(pInt(digits.join("")) + 1).join("M") + roman).replace(/ⅩⅠ/gu, "Ⅺ").replace(/ⅩⅡ/gu, "Ⅻ")
-//     : Array(pInt(digits.join("")) + 1).join("M") + roman;
-// };
-// const ordinal = (num, isFullText = false) => {
-//   /* Converts any number by adding its appropriate ordinal ("2nd", "3rd", etc.) */
-//   if (isFullText) {
-//     const [numText, suffix] = numToText(num).match(/.*?[-|\s](\w*?)$/u);
-//     return numText.replace(new RegExp(`${suffix}$`, "u"), "") + ordinals[suffix] || `${suffix}th`;
-//   }
-//   const tNum = parseInt(num) - 100 * Math.floor(parseInt(num) / 100);
-//   if ([11, 12, 13].includes(tNum)) { return `${num}th` }
-
-//   return `${num}${["th", "st", "nd", "rd", "th", "th", "th", "th", "th", "th"][num % 10]}`;
-// };
-
-// // #region OBJECT MANIPULATION: Manipulating arrays, mapping objects
-// const kvpMap = (obj, kFunc, vFunc) => {
-//   const newObj = {};
-//   _.each(obj, (v, k) => {
-//     newObj[kFunc ? kFunc(k, v) : k] = vFunc ? vFunc(v, k) : v;
-//   });
-//   return newObj;
-// };
-// const removeFirst = (array, element) => array.splice(array.findIndex((v) => v === element));
-// const pullElement = (array, checkFunc = (_v = true, _i = 0, _a = []) => { checkFunc(_v, _i, _a) }) => {
-//   const index = array.findIndex((v, i, a) => checkFunc(v, i, a));
-//   return index !== -1 && array.splice(index, 1).pop();
-// };
-// const pullIndex = (array, index) => pullElement(array, (v, i) => i === index);
-// const parseToObj = (val, delim = ",", keyValDelim = ":") => {
-//   /* Converts an array or comma-delimited string of parameters ("key:val, key:val, key:val") into an object. */
-//   const [obj, args] = [{}, []];
-//   if (VAL({string: val})) { args.push(...val.split(delim)) } else if (VAL({array: val})) { args.push(...val) } else { return THROW(`Cannot parse value '${jStrC(val)}' to object.`, "parseToObj") }
-//   for (const kvp of _.map(args, (v) => v.split(new RegExp(`\\s*${keyValDelim}\\s*(?!\\/)`, "u")))) { obj[kvp[0].toString().trim()] = parseInt(kvp[1]) || kvp[1] }
-//   return obj;
-// };
-// const classToObject = (classRef, {
-//   pick = undefined,
-//   omit = [],
-//   excludeUndefined = true,
-//   excludeFunctions = true
-// } = {}) => {
-//   const originalClass = classRef || {};
-//   const keys = Object.getOwnPropertyNames(Object.getPrototypeOf(originalClass));
-//   return keys.reduce((classAsObj, key) => {
-//     if ((!excludeUndefined || originalClass[key] !== undefined)
-//        && (!excludeFunctions || typeof originalClass[key] !== "function")
-//        && (pick === undefined || [pick].flat().includes(key))
-//        && !omit.includes(key)) { classAsObj[key] = originalClass[key] }
-//     return classAsObj;
-//   }, {});
-// };
-// const getLast = (array) => (array.length ? array[array.length - 1] : null);
-// // #endregion
-
-// // #region SEARCH & VALIDATION: Match checking, Set membership checking, type validation.
-// const looseMatch = (first, second) => {
-//   if (VAL({string: [first, second]}, "looseMatch", true)) { return first.toLowerCase() === second.toLowerCase() }
-//   return false;
-// };
-// const fuzzyMatch = (first, second) => {
-//   if (VAL({string: [first, second]}, "fuzzyMatch", true)) {
-//     return (
-//       first
-//         .toLowerCase()
-//         .replace(/\W+/gu, "")
-//         .includes(second.toLowerCase().replace(/\W+/gu, ""))
-//           || second
-//             .toLowerCase()
-//             .replace(/\W+/gu, "")
-//             .includes(first.toLowerCase().replace(/\W+/gu, ""))
-//     );
-//   }
-//   return false;
-// };
-// const isInExact = (needle, haystack = ALLSTATS) => {
-//   // D.Alert(JSON.stringify(haystack))
-//   // Looks for needle in haystack using fuzzy matching, then returns value as it appears in haystack.
-//   try {
-//     // STEP ZERO: VALIDATE NEEDLE & HAYSTACK
-//     // NEEDLE --> Must be STRING
-//     // HAYSTACK --> Can be ARRAY, LIST or STRING
-//     if (VAL({string: needle}) || VAL({number: needle})) {
-//       // STEP ONE: BUILD HAYSTACK.
-//       // HAYSTACK = ARRAY? --> HAY = ARRAY
-//       // HAYSTACK = LIST? ---> HAY = ARRAY (Object.keys(H))
-//       // HAYSTACK = STRING? -> HAY = H
-
-//       if (haystack && haystack.gramSizeLower) { return isIn(needle, haystack) }
-//       const hayType = (VAL({array: haystack}) && "array") || (VAL({list: haystack}) && "list") || (VAL({string: haystack}) && "string");
-//       let ndl = needle.toString(),
-//           hay,
-//           match;
-//       switch (hayType) {
-//         case "array":
-//           hay = [...haystack];
-//           break;
-//         case "list":
-//           hay = Object.keys(haystack);
-//           break;
-//         case "string":
-//           hay = haystack;
-//           break;
-//         default:
-//           return THROW(`Haystack must be a string, a list or an array (${typeof haystack}): ${JSON.stringify(haystack)}`, "IsIn");
-//       }
-//       // STEP TWO: SEARCH HAY FOR NEEDLE USING PROGRESSIVELY MORE FUZZY MATCHING. SKIP "*" STEPS IF ISFUZZYMATCHING IS FALSE.
-//       // STRICT: Search for exact match, case sensitive.
-//       // LOOSE: Search for exact match, case insensitive.
-//       // *START: Search for match with start of haystack strings, case insensitive.
-//       // *END: Search for match with end of haystack strings, case insensitive.
-//       // *INCLUDE: Search for match of needle anywhere in haystack strings, case insensitive.
-//       // *REVERSE INCLUDE: Search for match of HAYSTACK strings inside needle, case insensitive.
-//       // FUZZY: Start again after stripping all non-word characters.
-//       if (hayType === "array" || hayType === "list") {
-//         for (let i = 0; i <= 1; i++) {
-//           let thisNeedle = ndl,
-//               thisHay = hay;
-//           match = _.findIndex(thisHay, (v) => thisNeedle === v) + 1; // Adding 1 means "!match" passes on failure return of -1.
-//           if (match) { break }
-//           thisHay = _.map(
-//             thisHay,
-//             (v) => ((v || v === 0) && (VAL({string: v}) || VAL({number: v}) ? v.toString().toLowerCase() : v)) || "§¥£"
-//           );
-//           thisNeedle = thisNeedle.toString().toLowerCase();
-//           match = _.findIndex(thisHay, (v) => thisNeedle === v) + 1;
-//           if (match) { break }
-//           // Now strip all non-word characters and try again from the top.
-//           ndl = ndl.replace(/\W+/gu, "");
-//           hay = _.map(hay, (v) => (VAL({string: v}) || VAL({number: v}) ? v.toString().replace(/\W+/gu, "") : v));
-//         }
-//         return match && hayType === "array" ? haystack[match - 1] : haystack[Object.keys(haystack)[match - 1]];
-//       } else {
-//         for (let i = 0; i <= 1; i++) {
-//           match = hay === ndl && ["", hay];
-//           if (match) { break }
-//           const thisNeedleRegExp = new RegExp(`^(${ndl})$`, "iu");
-//           match = hay.match(thisNeedleRegExp);
-//           if (match) { break }
-//           // Now strip all non-word characters and try again from the top.
-//           ndl = ndl.replace(/\W+/gu, "");
-//           hay = hay.replace(/\W+/gu, "");
-//         }
-//         return match && match[1];
-//       }
-//     }
-//     return THROW(`Needle must be a string: ${D.JSL(needle)}`, "isIn");
-//   } catch (errObj) {
-//     return THROW(`Error locating '${D.JSL(needle)}' in ${D.JSL(haystack)}'`, "isIn", errObj);
-//   }
-// };
-// const isIn = (needle, haystack, isExact = false) => {
-//   let dict;
-//   if (isExact) { return isInExact(needle, haystack) }
-//   if (!haystack) {
-//     dict = STATE.REF.STATSDICT;
-//   } else if (haystack.add) {
-//     dict = haystack;
-//   } else {
-//     dict = Fuzzy.Fix();
-//     for (const str of haystack) { dict.add(str) }
-//   }
-//   const result = dict.get(needle);
-//   return result && result[0][1];
-// };

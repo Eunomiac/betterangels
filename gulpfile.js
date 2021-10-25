@@ -68,7 +68,7 @@ const BANNERTEMPLATE = {
 };
 const BUILDFILES = {
   js: {
-    "./dist/betterangels/scripts/": ["scripts/**/*.mjs"]
+    "./dist/betterangels/scripts/": ["scripts/**/*.mjs", "scripts/**/*.js"]
   },
   css: {
     "./dist/betterangels/css/": ["scss/**/*.scss"],
@@ -116,6 +116,11 @@ const PIPES = {
       .reduce(
         (pipeline, replacerArgs) => pipeline.pipe(replacer(...replacerArgs)),
         src(source)
+          .pipe(plumber(function reportError(err) {
+            console.log("*** GULP TASK ERROR ***");
+            console.log(err);
+            this.emit("end");
+          }))
           .pipe(header(BANNERS.js.full, {"package": packageJSON}))
       )
       .pipe(dest(destination));
@@ -124,26 +129,35 @@ const PIPES = {
     return REGEXPPATTERNS.js
       .reduce(
         (pipeline, replacerArgs) => pipeline.pipe(replacer(...replacerArgs)),
-        src(source)
+        src(source).pipe(plumber(function reportError(err) {
+          console.log("*** GULP TASK ERROR ***");
+          console.log(err);
+          this.emit("end");
+        }))
       )
       .pipe(renamer({suffix: ".min"}))
-      .pipe(terser({
-        parse: {},
-        compress: {},
-        mangle: {
-          properties: {}
-        },
-        format: {},
-        sourceMap: {},
-        ecma: 2019,
+      // .pipe(terser({
+      //   parse: {},
+      //   compress: {},
+      //   mangle: {
+      //     properties: {}
+      //   },
+      //   format: {},
+      //   sourceMap: {},
+      //   ecma: 2019,
 
-        module: true
-      }))
+      //   module: true
+      // }))
       .pipe(header(BANNERS.js.min, {"package": packageJSON}))
       .pipe(dest(destination));
   },
   cssFull: (source, destination) => function pipeFullCSS() {
     return src(source)
+      // .pipe(plumber(function reportError(err) {
+      //   console.log("*** GULP TASK ERROR ***");
+      //   console.log(err);
+      //   this.emit("end");
+      // }))
       .pipe(sasser({outputStyle: "nested"}))
       .pipe(bundler([
         prefixer({cascade: false})
@@ -152,6 +166,11 @@ const PIPES = {
   },
   cssMin: (source, destination) => function pipeMinCSS() {
     return src(source)
+      // .pipe(plumber(function reportError(err) {
+      //   console.log("*** GULP TASK ERROR ***");
+      //   console.log(err);
+      //   this.emit("end");
+      // }))
       .pipe(sasser({outputStyle: "compressed"}))
       .pipe(bundler([
         prefixer({cascade: false}),

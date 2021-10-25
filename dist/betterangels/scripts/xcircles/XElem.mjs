@@ -1,15 +1,19 @@
-// #region ████████ IMPORTS ████████ ~
+/* ****▌███████████████████████████████████████████████████████████████████████████▐**** *\
+|*     ▌███████░░░░░░░░░░░░░░ Better Angels for Foundry VTT ░░░░░░░░░░░░░░░░███████▐     *|
+|*     ▌██████████████████░░░░░░░░░░░░░ by Eunomiac ░░░░░░░░░░░░░██████████████████▐     *|
+|*     ▌███████████████ MIT License █ v0.0.1-prealpha █ Oct 25 2021 ███████████████▐     *|
+|*     ▌████████░░░░░░░░ https://github.com/Eunomiac/betterangels ░░░░░░░░█████████▐     *|
+\* ****▌███████████████████████████████████████████████████████████████████████████▐**** */
+
+// ████████ IMPORTS ████████
 import {
-  // #region ▮▮▮▮▮▮▮[External Libraries]▮▮▮▮▮▮▮ ~
+  // ▮▮▮▮▮▮▮[External Libraries]▮▮▮▮▮▮▮
   gsap, Dragger, InertiaPlugin, MotionPathPlugin, // GreenSock Animation Platform
-  // #endregion ▮▮▮▮[External Libraries]▮▮▮▮
-  // #region ▮▮▮▮▮▮▮[Utility]▮▮▮▮▮▮▮ ~
+  // ▮▮▮▮▮▮▮[Utility]▮▮▮▮▮▮▮
   U
-  // #endregion ▮▮▮▮[Utility]▮▮▮▮
 } from "../helpers/bundler.mjs";
-// #endregion ▄▄▄▄▄ IMPORTS ▄▄▄▄▄
 export default class XElem {
-  // #region ████████ STATIC ████████ ~
+  // ████████ STATIC ████████
   static get CONTAINER() {
     return (this._CONTAINER = this._CONTAINER
       ?? $("#xContainer")[0]
@@ -19,30 +23,26 @@ export default class XElem {
   static get STANDARDSETTINGS() {
     return {position: "absolute", xPercent: -50, yPercent: -50, transformOrigin: "50% 50%"};
   }
-  // #endregion ▄▄▄▄▄ STATIC ▄▄▄▄▄
 
-  // #region ▮▮▮▮▮▮▮[GSAP INTEGRATION] Ensuring Properties Set Using GSAP ▮▮▮▮▮▮▮ ~
+  // ▮▮▮▮▮▮▮[GSAP INTEGRATION] Ensuring Properties Set Using GSAP ▮▮▮▮▮▮▮
   get(prop) { return gsap.getProperty(this.elem, prop) }
   set(propVals = {}) { gsap.set(this.elem, propVals) }
-  // #endregion ▮▮▮▮[GSAP INTEGRATION]▮▮▮▮
 
-  // #region ████████ CONSTRUCTOR ████████ ~
+  // ████████ CONSTRUCTOR ████████
   constructor(htmlCode, {properties = {}, parent = XElem.CONTAINER} = {}) {
     this._$ = $(htmlCode);
     this.$.appendTo(parent);
     this.set({...this.constructor.STANDARDSETTINGS, ...properties});
   }
-  // #endregion ▄▄▄▄▄ CONSTRUCTOR ▄▄▄▄▄
 
-  // #region ████████ DOM: Basic DOM Properties ████████ ~
+  // ████████ DOM: Basic DOM Properties ████████
   get $() { return this._$ }
   get elem() { return (this._elem = this._elem ?? this.$[0]) }
   get id() { return (this._id = this._id ?? this.elem.id) }
   get sel() { return (this._sel = this._sel ?? `#${this.id}`) }
   get selector() { return (this._selector = this._selector ?? gsap.utils.selector(this.elem)) }
-  // #endregion ▄▄▄▄▄ DOM ▄▄▄▄▄
 
-  // #region ████████ POSITION: Getting & Setting Relative/Absolute Positions, Reparenting ████████ ~
+  // ████████ POSITION: Getting & Setting Relative/Absolute Positions, Reparenting ████████
   get x() { return this.get("x") } set x(v) { this.set({x: v}) }
   get y() { return this.get("y") } set y(v) { this.set({y: v}) }
   get height() { return this.get("height") } set height(v) { this.set({height: v}) }
@@ -107,9 +107,8 @@ export default class XElem {
       throw new Error(`[${this.constructor.name}.parent] No element found for '${v}'`);
     }
   }
-  // #endregion ▄▄▄▄▄ POSITION ▄▄▄▄▄
 
-  // #region ████████ STYLES: CSS Style Management ████████ ~
+  // ████████ STYLES: CSS Style Management ████████
   get defaultClasses() {
     return [
       ...this.constructor.CLASSES ?? [],
@@ -132,27 +131,22 @@ export default class XElem {
       v.forEach((c) => this.classes.add(c));
     }
   }
-  // #endregion ▄▄▄▄▄ STYLES ▄▄▄▄▄
 
-  // #region ████████ CONTENT: Getting & Setting Element Data & Content ████████ ~
+  // ████████ CONTENT: Getting & Setting Element Data & Content ████████
   get text() { return this.get("innerText") }
   set text(v) { this.set({innerText: v}) }
 
   get html() { return this.get("innerHTML") }
   set html(v) { this.set({innerHTML: v}) }
-  // #endregion ▄▄▄▄▄ CONTENT ▄▄▄▄▄
 
-  // #region ████████ PRIVATE METHODS ████████ ~
-  // #region ░░░░░░░[Position Getters]░░░░ Angles & Distances to Other Elements ░░░░░░░ ~
+  // ████████ PRIVATE METHODS ████████
+  // ░░░░░░░[Position Getters]░░░░ Angles & Distances to Other Elements ░░░░░░░
   _getAbsAngleTo({x, y}) { return U.getAngle(this, {x, y}) }
   _getRelAngleTo({x, y}) { return U.cycleNum(this._getAbsAngleTo({x, y}) - this.rotation + 180, -180, 180) }
   _getDistanceTo({x, y}) { return U.getDistance(this, {x, y}) }
-  // #endregion ░░░░[Position Getters]░░░░
-  // #endregion ▄▄▄▄▄ PRIVATE METHODS ▄▄▄▄▄
 
-  // #region ████████ PUBLIC METHODS ████████ ~
-  // #region ░░░░░░░[Elements]░░░░ Managing DOM Elements ░░░░░░░ ~
+  // ████████ PUBLIC METHODS ████████
+  // ░░░░░░░[Elements]░░░░ Managing DOM Elements ░░░░░░░
   kill() { this.$.remove() }
-  // #endregion ░░░░[Elements]░░░░
-  // #endregion ▄▄▄▄▄ PUBLIC METHODS ▄▄▄▄▄
+
 }

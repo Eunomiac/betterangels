@@ -6,15 +6,11 @@
 \* ****▌███████████████████████████████████████████████████████████████████████████▐**** */
 
 // ████████ IMPORTS ████████
-// ▮▮▮▮▮▮▮ GreenSock ▮▮▮▮▮▮▮
-import gsap, {
-  Draggable as Dragger,
-  InertiaPlugin,
-  MotionPathPlugin
-} from "/scripts/greensock/esm/all.js";
 import {
-// ▮▮▮▮▮▮▮[Constants]▮▮▮▮▮▮▮
+  // ▮▮▮▮▮▮▮[Constants]▮▮▮▮▮▮▮
   BETTERANGELS,
+  // ▮▮▮▮▮▮▮[External Libraries]▮▮▮▮▮▮▮
+  gsap, Dragger, InertiaPlugin, MotionPathPlugin, // GreenSock Animation Platform
   // ▮▮▮▮▮▮▮[Utility]▮▮▮▮▮▮▮
   preloadTemplates, U,
   // ▮▮▮▮▮▮▮[Actors]▮▮▮▮▮▮▮

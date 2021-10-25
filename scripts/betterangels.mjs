@@ -1,15 +1,11 @@
 // #region ████████ IMPORTS ████████ ~
-// #region ▮▮▮▮▮▮▮ GreenSock ▮▮▮▮▮▮▮ ~
-import gsap, {
-  Draggable as Dragger,
-  InertiaPlugin,
-  MotionPathPlugin
-} from "/scripts/greensock/esm/all.js"; // eslint-disable-line import/no-unresolved
-// #endregion ▮▮▮▮[GreenSock]▮▮▮▮
 import {
-// #region ▮▮▮▮▮▮▮[Constants]▮▮▮▮▮▮▮ ~
+  // #region ▮▮▮▮▮▮▮[Constants]▮▮▮▮▮▮▮ ~
   BETTERANGELS,
   // #endregion ▮▮▮▮[Constants]▮▮▮▮
+  // #region ▮▮▮▮▮▮▮[External Libraries]▮▮▮▮▮▮▮ ~
+  gsap, Dragger, InertiaPlugin, MotionPathPlugin, // GreenSock Animation Platform
+  // #endregion ▮▮▮▮[External Libraries]▮▮▮▮
   // #region ▮▮▮▮▮▮▮[Utility]▮▮▮▮▮▮▮ ~
   preloadTemplates, U,
   // #endregion ▮▮▮▮[Utility]▮▮▮▮

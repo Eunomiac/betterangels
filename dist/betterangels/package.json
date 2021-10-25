@@ -12,8 +12,9 @@
   "license": "MIT",
   "private": true,
   "dependencies": {
-    "hyphen": "^1.6.4",
-    "underscore": "^1.13"
+    "fuse.js": "^6.4.6",
+    "hyphenopoly": "^5.0.0-beta.1",
+    "underscore": "^1.13.1"
   },
   "devDependencies": {
     "autoprefixer": "^10.3.6",
@@ -25,6 +26,7 @@
     "gulp": "^4",
     "gulp-header": "^2.0.9",
     "gulp-optimize-js": "^1.1.0",
+    "gulp-plumber": "^1.2.1",
     "gulp-postcss": "^9.0.1",
     "gulp-rename": "^2.0.0",
     "gulp-replace": "^1.1.3",

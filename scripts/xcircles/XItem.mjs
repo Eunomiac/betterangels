@@ -1,25 +1,21 @@
 // #region ████████ IMPORTS ████████ ~
-// #region ▮▮▮▮▮▮▮ GreenSock ▮▮▮▮▮▮▮ ~
-import gsap, {
-  Draggable as Dragger,
-  InertiaPlugin,
-  MotionPathPlugin
-} from "/scripts/greensock/esm/all.js"; // eslint-disable-line import/no-unresolved
-// #endregion ▮▮▮▮[GreenSock]▮▮▮▮
 import {
+  // #region ▮▮▮▮▮▮▮[External Libraries]▮▮▮▮▮▮▮ ~
+  gsap, Dragger, InertiaPlugin, MotionPathPlugin, // GreenSock Animation Platform
+  // #endregion ▮▮▮▮[External Libraries]▮▮▮▮
   // #region ▮▮▮▮▮▮▮[Utility]▮▮▮▮▮▮▮ ~
   U,
   // #endregion ▮▮▮▮[Utility]▮▮▮▮
   // #region ▮▮▮▮▮▮▮[XCircles]▮▮▮▮▮▮▮ ~
-  XCircle,
+  XElem, XCircle,
   // #endregion ▮▮▮▮[XCircles]▮▮▮▮
   // #region ▮▮▮▮▮▮▮[Mixins]▮▮▮▮▮▮▮ ~
-  MIX, HasDOMElem, IsDraggable, SnapsToCircle
+  MIX, IsDraggable, SnapsToCircle
   // #endregion ▮▮▮▮[Mixins]▮▮▮▮
 } from "../helpers/bundler.mjs";
 // #endregion ▄▄▄▄▄ IMPORTS ▄▄▄▄▄
 
-class XItem extends MIX().with(HasDOMElem) {
+class XItem extends XElem {
   // #region ████████ STATIC: Static Getters, Setters, Methods ████████ ~
   // #region ░░░░░░░[Getters]░░░░ Registry, Enumerables, Constants ░░░░░░░ ~
   static get REGISTRY() { return (this._REGISTRY = this._REGISTRY ?? {}) }
