@@ -1,4 +1,118 @@
-// #region ▮▮▮▮▮▮▮[UTILITY] Utility Functions for File Parsing ▮▮▮▮▮▮▮ ~
+/* eslint-disable sort-keys */
+// #region ▮▮▮▮▮▮▮ IMPORTS ▮▮▮▮▮▮▮ ~
+const {src, dest, watch, series, parallel} = require("gulp");
+const plumber = require("lazypipe");
+const plunger = require("gulp-plumber");
+const logger = require("fancy-log");
+const debug = require("gulp-debug");
+
+const cleaner = require("del");
+const renamer = require("gulp-rename");
+const header = require("gulp-header");
+const replacer = require("gulp-replace");
+
+const terser = require("gulp-terser");
+
+const sasser = require("gulp-sass")(require("node-sass"));
+const bundler = require("gulp-postcss");
+const prefixer = require("autoprefixer");
+const minifier = require("cssnano");
+
+const packageJSON = require("./package");
+// #endregion ▮▮▮▮[IMPORTS]▮▮▮▮
+// #region ▮▮▮▮▮▮▮[UTILITY] Data References & Utility Functions for File Parsing ▮▮▮▮▮▮▮ ~
+const ANSICOLORS = {
+  // RESET
+  x: "\u001b[0m",
+
+  // Standard Colors
+  black: "\u001b[30m",
+  grey: "\u001b[30;1m",
+  red: "\u001b[31m",
+  green: "\u001b[32m",
+  yellow: "\u001b[33m",
+  blue: "\u001b[34m",
+  magenta: "\u001b[35m",
+  cyan: "\u001b[36m",
+  white: "\u001b[37m",
+
+  // Bright Colors
+  bred: "\u001b[31;1m",
+  bgreen: "\u001b[32;1m",
+  byellow: "\u001b[33;1m",
+  bblue: "\u001b[34;1m",
+  bmagenta: "\u001b[35;1m",
+  bcyan: "\u001b[36;1m",
+  bwhite: "\u001b[37;1m",
+
+  // Standard Background Colors
+  bgblack: "\u001b[40m",
+  bggrey: "\u001b[40;1m",
+  bgred: "\u001b[41m",
+  bggreen: "\u001b[42m",
+  bgyellow: "\u001b[43m",
+  bgblue: "\u001b[44m",
+  bgmagenta: "\u001b[45m",
+  bgcyan: "\u001b[46m",
+  bgwhite: "\u001b[47m",
+
+  // Bright Background Colors
+  bgbred: "\u001b[41;1m",
+  bgbgreen: "\u001b[42;1m",
+  bgbyellow: "\u001b[43;1m",
+  bgbblue: "\u001b[44;1m",
+  bgbmagenta: "\u001b[45;1m",
+  bgbcyan: "\u001b[46;1m",
+  bgbwhite: "\u001b[47;1m",
+
+  // Styles
+  none: "",
+  bold: "\u001b[1m",
+  underline: "\u001b[4m",
+  invert: "\u001b[7m"
+};
+const STREAMSTYLES = {
+  gulp: ["grey", "█", "(gulp)"],
+  jsFull: ["bmagenta", "█", " JS "],
+  jsMin: ["magenta", "░", " js "],
+  cssFull: ["byellow", "█", " SCSS "],
+  cssMin: ["yellow", "░", " scss "],
+  html: ["bblue", "█", " HTML "],
+  toDest: ["bgreen", "█", " ASSETS "]
+};
+const ansi = (str, {fg, bg, style} = {}) => {
+  fg = ANSICOLORS[fg ?? "white"];
+  bg = ANSICOLORS[`bg${bg ?? "black"}`.replace(/^bg+/, "bg")];
+  style = ANSICOLORS[style ?? "none"];
+  return [bg, fg, style, str, ANSICOLORS.x].join("");
+};
+const toBright = (color) => (`b${color}` in ANSICOLORS ? `b${color}` : color);
+const toDim = (color) => (color.slice(1) in ANSICOLORS ? color.slice(1) : color);
+const toBg = (color) => `bg${color}`.replace(/^(bg)+/, "");
+const logParts = {
+  tag: (tag = "gulp", color = "white", padChar = "█") => ansi(`▌${centerString(tag, 10, padChar)}▐`, {fg: color}),
+  error: (tag, message) => [
+    ansi(`[ERROR: ${tag}]`, {fg: "white", bg: "red", style: "bold"}),
+    ansi(message, {fg: "red"})
+  ].join(" "),
+  finish: function alertFinish(title = "gulp", source, destination) {
+    const [color, padChar, tag] = STREAMSTYLES[title];
+    return [
+      this.tag(tag, color, padChar),
+      " ",
+      ansi(source, {fg: toBright(color), style: "underline"}),
+      ansi(" successfully piped to ", {fg: toDim(color), style: "none"}),
+      ansi(destination, {fg: toBright(color), style: "underline"})
+    ].join("");
+  }
+};
+const centerString = (str, width, padChar = " ") => {
+  let padString = `${str}`;
+  while (padString.length < width) {
+    padString = `${padChar}${padString}${padChar}`;
+  }
+  return padString.length > width ? padString.slice(1) : padString;
+};
 const padHeaderLines = (match) => {
   const padLine = (line, length) => {
     const padLength = length - line.length;
@@ -83,7 +197,7 @@ const BUILDFILES = {
   }
 };
 const REGEXPPATTERNS = {
-  js: [
+  js: new Map([
     [/(\r?\n?)[ \t]*\/\*DEVCODE\*\/(?:.|\r?\n)*?\/\*!DEVCODE\*\/(\r?\n?)/gs, "$1$2"], // Strip developer code
     [/\/\* \*{4}▌.*?▐\*{4} \*\//s, padHeaderLines], // Pad header lines to same length
     [/(\r?\n?)[ \t]*\/\*[*~](?:.|\r?\n|\r)*?\*\/[ \t]*(\r?\n?)/g, "$1$2"], // Strip multi-line comments beginning with '/*~' or '/**'
@@ -98,12 +212,58 @@ const REGEXPPATTERNS = {
     [/(\r?\n[ \t]*(?=\r?\n)){2,}/g, "\r\n"], // Strip excess blank lines
     [/[ \t]*\r?\n$/g, ""], // Strip whitespace from end of files
     [/^[ \t]*\r?\n/g, ""] // Strip whitespace from start of files
-  ],
-  html: []
+  ]),
+  html: new Map([
+
+  ])
 };
 const PIPES = {
+  openPipe: (title = "gulp") => {
+    const [titleColor, padChar, tagName] = STREAMSTYLES[title] ?? ["red", "?", "???"];
+    return plumber()
+      .pipe(debug, {
+        title: logParts.tag(tagName, titleColor, padChar),
+        minimal: true,
+        showFiles: true,
+        showCount: false
+      })
+      .pipe(plunger, function errorReporter(err) {
+        logger.error(logParts.error(title, err.message));
+        this.emit("end");
+      });
+  },
+  replacer: (format) => {
+    let pipeline = plumber();
+    if (format in REGEXPPATTERNS) {
+      REGEXPPATTERNS[format].forEach((rParam, sParam) => { pipeline = pipeline.pipe(replacer, sParam, rParam) });
+    }
+    return pipeline;
+  },
+  terser: () => plumber()
+    .pipe(terser, {
+      parse: {},
+      compress: {},
+      mangle: {
+        properties: {}
+      },
+      format: {},
+      sourceMap: {},
+      ecma: 2020,
+      module: true
+    }),
+  closePipe: (title, source, destination) => {
+    const thisDest = dest(destination);
+    thisDest.on("finish", () => logger(logParts.finish(title, source, destination)));
+    return thisDest;
+  }
+};
+const PLUMBING = {
   init: function initDist(done) {
-    try { cleaner.sync(["./dist/"]) } catch (err) { console.info("Dist folder already empty.") }
+    try {
+      cleaner.sync(["./dist/"]);
+    } catch (err) {
+      return done();
+    }
     return done();
   },
   watch: function watchUpdates() {
@@ -112,104 +272,55 @@ const PIPES = {
     }
   },
   jsFull: (source, destination) => function pipeFullJS() {
-    return REGEXPPATTERNS.js
-      .reduce(
-        (pipeline, replacerArgs) => pipeline.pipe(replacer(...replacerArgs)),
-        src(source)
-          .pipe(plumber(function reportError(err) {
-            console.log("*** GULP TASK ERROR ***");
-            console.log(err);
-            this.emit("end");
-          }))
-          .pipe(header(BANNERS.js.full, {"package": packageJSON}))
-      )
-      .pipe(dest(destination));
+    return src(source)
+      .pipe(PIPES.openPipe("jsFull")())
+      .pipe(header(BANNERS.js.full, {"package": packageJSON}))
+      .pipe(PIPES.replacer("js")())
+      .pipe(PIPES.closePipe("jsFull", source, destination));
   },
   jsMin: (source, destination) => function pipeMinJS() {
-    return REGEXPPATTERNS.js
-      .reduce(
-        (pipeline, replacerArgs) => pipeline.pipe(replacer(...replacerArgs)),
-        src(source).pipe(plumber(function reportError(err) {
-          console.log("*** GULP TASK ERROR ***");
-          console.log(err);
-          this.emit("end");
-        }))
-      )
-      .pipe(renamer({suffix: ".min"}))
-      // .pipe(terser({
-      //   parse: {},
-      //   compress: {},
-      //   mangle: {
-      //     properties: {}
-      //   },
-      //   format: {},
-      //   sourceMap: {},
-      //   ecma: 2019,
-
-      //   module: true
-      // }))
+    return src(source)
+      .pipe(PIPES.openPipe("jsMin")())
       .pipe(header(BANNERS.js.min, {"package": packageJSON}))
-      .pipe(dest(destination));
+      .pipe(PIPES.replacer("js")())
+      .pipe(renamer({suffix: ".min"}))
+      .pipe(PIPES.terser()())
+      .pipe(PIPES.closePipe("jsMin", source, destination));
   },
   cssFull: (source, destination) => function pipeFullCSS() {
     return src(source)
-      // .pipe(plumber(function reportError(err) {
-      //   console.log("*** GULP TASK ERROR ***");
-      //   console.log(err);
-      //   this.emit("end");
-      // }))
+      .pipe(PIPES.openPipe("cssFull")())
       .pipe(sasser({outputStyle: "nested"}))
       .pipe(bundler([
         prefixer({cascade: false})
       ]))
-      .pipe(dest(destination));
+      .pipe(PIPES.closePipe("cssFull", source, destination));
   },
   cssMin: (source, destination) => function pipeMinCSS() {
     return src(source)
-      // .pipe(plumber(function reportError(err) {
-      //   console.log("*** GULP TASK ERROR ***");
-      //   console.log(err);
-      //   this.emit("end");
-      // }))
+      .pipe(PIPES.openPipe("cssMin")())
       .pipe(sasser({outputStyle: "compressed"}))
       .pipe(bundler([
         prefixer({cascade: false}),
         minifier()
       ]))
       .pipe(header(BANNERS.css.min, {"package": packageJSON}))
-      .pipe(dest(destination));
+      .pipe(PIPES.closePipe("cssMin", source, destination));
   },
   html: (source, destination) => function pipeHTML() {
-    return REGEXPPATTERNS.html
-      .reduce(
-        (pipeline, replacerArgs) => pipeline.pipe(replacer(...replacerArgs)),
-        src(source)
-      )
-      .pipe(dest(destination));
+    return src(source)
+      .pipe(PIPES.openPipe("html")())
+      .pipe(PIPES.closePipe("html", source, destination));
   },
   toDest: (source, destination) => function pipeToDest() {
-    return src(source).pipe(dest(destination));
+    return src(source)
+      .pipe(PIPES.openPipe("toDest")())
+      .pipe(PIPES.closePipe("toDest", source, destination));
   }
 };
 // #endregion ▄▄▄▄▄ CONFIGURATION ▄▄▄▄▄
 
 // #region ▒░▒░▒░▒[INITIALIZATION]▒░▒░▒░▒ ~
-const {src, dest, watch, series, parallel} = require("gulp");
-const plumber = require("gulp-plumber");
-
-const cleaner = require("del");
-const renamer = require("gulp-rename");
-const header = require("gulp-header");
-const replacer = require("gulp-replace");
-
-const terser = require("gulp-terser");
-
-const sasser = require("gulp-sass")(require("node-sass"));
-const bundler = require("gulp-postcss");
-const prefixer = require("autoprefixer");
-const minifier = require("cssnano");
-
-const packageJSON = require("./package");
 
 const BANNERS = {
   js: {...BANNERTEMPLATE},
@@ -224,8 +335,8 @@ BUILDFUNCS.js = parallel(...((buildFiles) => {
   const funcs = [];
   for (const [destGlob, sourceGlobs] of Object.entries(buildFiles)) {
     sourceGlobs.forEach((sourceGlob) => {
-      funcs.push(PIPES.jsMin(sourceGlob, destGlob));
-      funcs.push(PIPES.jsFull(sourceGlob, destGlob));
+      funcs.push(PLUMBING.jsMin(sourceGlob, destGlob));
+      funcs.push(PLUMBING.jsFull(sourceGlob, destGlob));
     });
   }
   return funcs;
@@ -236,20 +347,25 @@ BUILDFUNCS.js = parallel(...((buildFiles) => {
 BUILDFUNCS.css = parallel(...((sourceDestGlobs) => {
   const funcs = [];
   for (const [destGlob, sourceGlobs] of Object.entries(sourceDestGlobs)) {
-    sourceGlobs.forEach((sourceGlob) => {
-      funcs.push(PIPES[/dist/.test(destGlob) ? "cssMin" : "cssFull"](sourceGlob, destGlob));
-    });
+    const formatType = /dist/.test(destGlob) ? "cssMin" : "cssFull";
+    funcs.push(PLUMBING[formatType](sourceGlobs[0], destGlob));
+
+    // sourceGlobs.forEach((sourceGlob) => {
+    //   funcs.push(PLUMBING[/dist/.test(destGlob) ? "cssMin" : "cssFull"](sourceGlob, destGlob));
+    // });
   }
+  logger(`There are ${funcs.length} CSS Build Funcs.`);
   return funcs;
 })(BUILDFILES.css));
 // #endregion ▄▄▄▄▄ CSS ▄▄▄▄▄
 
 // #region ████████ HTML: Compiling HTML ████████ ~
+
 BUILDFUNCS.html = parallel(...((sourceDestGlobs) => {
   const funcs = [];
   for (const [destGlob, sourceGlobs] of Object.entries(sourceDestGlobs)) {
     sourceGlobs.forEach((sourceGlob) => {
-      funcs.push(PIPES.html(sourceGlob, destGlob));
+      funcs.push(PLUMBING.html(sourceGlob, destGlob));
     });
   }
   return funcs;
@@ -260,7 +376,7 @@ BUILDFUNCS.html = parallel(...((sourceDestGlobs) => {
 BUILDFUNCS.assets = parallel(...((sourceDestGlobs) => {
   const funcs = [];
   for (const [destGlob, sourceGlobs] of Object.entries(sourceDestGlobs)) {
-    sourceGlobs.forEach((sourceGlob) => funcs.push(PIPES.toDest(sourceGlob, destGlob)));
+    sourceGlobs.forEach((sourceGlob) => funcs.push(PLUMBING.toDest(sourceGlob, destGlob)));
   }
   return funcs;
 })(BUILDFILES.assets));
@@ -268,8 +384,8 @@ BUILDFUNCS.assets = parallel(...((sourceDestGlobs) => {
 
 // #region ▒░▒░▒░▒[EXPORTS]▒░▒░▒░▒ ~
 exports.default = series(
-  PIPES.init,
+  PLUMBING.init,
   parallel(...Object.values(BUILDFUNCS)),
-  PIPES.watch
+  PLUMBING.watch
 );
 // #endregion ▒▒▒▒[EXPORTS]▒▒▒▒

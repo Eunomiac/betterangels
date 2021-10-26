@@ -18,6 +18,7 @@ import {
   BetterAngelsItemSheet,
   // #endregion ▮▮▮▮[Items]▮▮▮▮
   // #region ▮▮▮▮▮▮▮[XCircles]▮▮▮▮▮▮▮ ~
+  XElem,
   XCircle,
   XItem, XDie, XSnap
   // #endregion ▮▮▮▮[XCircles]▮▮▮▮
@@ -91,6 +92,7 @@ Hooks.once("ready", () => {
     MinorNPCSheet,
     BetterAngelsItem,
     BetterAngelsItemSheet,
+    XElem,
     XCircle,
     XItem,
     XDie,

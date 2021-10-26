@@ -2,7 +2,7 @@ $is-debugging: true;
 $die-size: 30px; // will want to remove this; set all size/position in js
 
 $padding-top: 50px;
-$padding-bottom: 100px; 
+$padding-bottom: 100px;
 $padding-left: 100px;
 $padding-right: 350px;
 
@@ -12,31 +12,31 @@ $padding-right: 350px;
   left: $padding-left;
   width: calc(100% - #{$padding-left + $padding-right});
   height: calc(100% - #{$padding-top + $padding-bottom});
-  
+
   * {
     position: absolute;
-    transform-origin: 50% 50%;
     box-sizing: border-box;
+    transform-origin: 50% 50%;
   }
 
   .x-circle {
-    opacity: 0.5;
+    opacity: 50%;
 
-    svg circle { fill: var(--circleColor) }
+    svg circle { fill: var(--circle-color) }
 
-    &.x-circle-basic { --circleColor: #{$c-lime}; }
-    &.x-circle-pink { --circleColor: #{$c-pink}; }
-    &.x-circle-cyan { --circleColor: #{$c-cyan}; }
-    &.x-circle-yellow { --circleColor: #{$c-yellow}; }
-    &.x-circle-purple { --circleColor: #{$c-purple}; }
+    &.x-circle-basic { --circle-color: #{$c-lime}; }
+    &.x-circle-pink { --circle-color: #{$c-pink}; }
+    &.x-circle-cyan { --circle-color: #{$c-cyan}; }
+    &.x-circle-yellow { --circle-color: #{$c-yellow}; }
+    &.x-circle-purple { --circle-color: #{$c-purple}; }
   }
 
   .x-item {
     &.x-die {
       display: table-cell;
-      vertical-align: middle;
       text-align: center;
-      background: radial-gradient(ellipse, $c-white, var(--dieColor) 90%);
+      vertical-align: middle;
+      background: radial-gradient(ellipse, $c-white, var(--die-color) 90%);
       border-radius: calc(#{$die-size} * 0.2);
       outline: calc(#{$die-size} * 0.1) solid $c-black;
       font: {
@@ -45,12 +45,12 @@ $padding-right: 350px;
         family: sans-serif;
       }
 
-      &.x-die-basic { --dieColor: #{$c-lime} }
+      &.x-die-basic { --die-color: #{$c-lime} }
     }
 
     &.x-snap {
       pointer-events: none;
-      opacity: 0;
+      opacity: 0%;
     }
   }
 }
@@ -65,13 +65,14 @@ $padding-right: 350px;
     text-align: center;
     outline: 3px solid $c-red;
 
-    &#dbContainer { 
+    &.db {
       z-index: 10000;
       outline: 3px dotted $c-lime;
     }
 
-    .x-circle {    
-      .snap-circle { stroke: black }  
+    .x-circle {
+      .snap-circle { stroke: black }
+
       .angle-marker {
         width: 25px;
         height: 25px;
@@ -82,6 +83,7 @@ $padding-right: 350px;
         color: $c-orange;
         text-shadow: 0 0 2px $c-black, 0 0 2px $c-black, 0 0 2px $c-black;
       }
+
       .path-marker {
         width: 20px;
         height: 14px;
@@ -90,7 +92,7 @@ $padding-right: 350px;
         color: $c-white;
         background-color: $c-red;
         border-radius: 5px;
-        opacity: 1;
+        opacity: 100%;
       }
     }
   }

@@ -1,7 +1,7 @@
 /* ****▌███████████████████████████████████████████████████████████████████████████▐**** *\
 |*     ▌███████░░░░░░░░░░░░░░ Better Angels for Foundry VTT ░░░░░░░░░░░░░░░░███████▐     *|
 |*     ▌██████████████████░░░░░░░░░░░░░ by Eunomiac ░░░░░░░░░░░░░██████████████████▐     *|
-|*     ▌███████████████ MIT License █ v0.0.1-prealpha █ Oct 25 2021 ███████████████▐     *|
+|*     ▌███████████████ MIT License █ v0.0.1-prealpha █ Oct 26 2021 ███████████████▐     *|
 |*     ▌████████░░░░░░░░ https://github.com/Eunomiac/betterangels ░░░░░░░░█████████▐     *|
 \* ****▌███████████████████████████████████████████████████████████████████████████▐**** */
 
@@ -15,10 +15,10 @@ import {
   XElem,
   XItem, XDie, XSnap,
   // ▮▮▮▮▮▮▮[Mixins]▮▮▮▮▮▮▮
-  MIX, HasMotionPath, HasSnapPath
+  MIX, BindToXElem, HasMotionPath, HasSnapPath
 } from "../helpers/bundler.mjs";
 
-export default class XCircle extends MIX(XElem).with(HasSnapPath) {
+export default class XCircle extends MIX().with(BindToXElem, HasSnapPath) {
   // ████████ STATIC: Static Getters, Setters, Methods ████████
   // ░░░░░░░[Getters]░░░░ Registry, Enumerables, Constants ░░░░░░░
   static get REGISTRY() { return (this._REGISTRY = this._REGISTRY ?? {}) }
@@ -145,18 +145,19 @@ export default class XCircle extends MIX(XElem).with(HasSnapPath) {
   // ████████ PRIVATE METHODS ████████
   // ░░░░░░░[Initializing]░░░░ Creating DOM Elements ░░░░░░░
   _create(x, y, radius) {
-    [this._xCircle] = $(`
+    const xElem = new XElem(`
     <div id="${this.id}" class="${this.defaultClasses.join(" ")}" style="height: ${2 * radius}px; width: ${2 * radius}px;">
       <svg height="100%" width="100%">
         <circle cx="${radius}" cy="${radius}" r="${radius}" stroke="none" />
-        <circle id="${this.snap.id}" class="snap-circle" cx="${radius}" cy="${radius}" r="${radius * 0.8}" fill="none" stroke="none" />
       </svg>
     </div>
-    `).appendTo(XCircle.CONTAINER);
-    this.set({xPercent: -50, yPercent: -50, x, y});
+    `, {properties: {x, y}, parent: XElem.CONTAINER});
+    return;
+    this.bindXElem(xElem);
+    this.path = new XElem(`
+      <circle id="${this.snap.id}" class="snap-circle" cx="${radius}" cy="${radius}" r="${radius * 0.8}" fill="none" stroke="none" />
+    `, {properties: {x: radius * 0.8, y: radius * 0.8}, parent: this.selector("svg"), isMotionPath: true});
 
-    MotionPathPlugin.convertToPath(`#${this.id} #${this.snap.id}`);
-    gsap.set(`#${this.id} #${this.snap.id}`, {xPercent: -50, yPercent: -50, transformOrigin: "50% 50%", x: radius * 0.8, y: radius * 0.8});
     this._toggleSlowRotate(true);
   }
 

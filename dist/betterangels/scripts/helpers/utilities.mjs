@@ -1,7 +1,7 @@
 /* ****▌███████████████████████████████████████████████████████████████████████████▐**** *\
 |*     ▌███████░░░░░░░░░░░░░░ Better Angels for Foundry VTT ░░░░░░░░░░░░░░░░███████▐     *|
 |*     ▌██████████████████░░░░░░░░░░░░░ by Eunomiac ░░░░░░░░░░░░░██████████████████▐     *|
-|*     ▌███████████████ MIT License █ v0.0.1-prealpha █ Oct 25 2021 ███████████████▐     *|
+|*     ▌███████████████ MIT License █ v0.0.1-prealpha █ Oct 26 2021 ███████████████▐     *|
 |*     ▌████████░░░░░░░░ https://github.com/Eunomiac/betterangels ░░░░░░░░█████████▐     *|
 \* ****▌███████████████████████████████████████████████████████████████████████████▐**** */
 
@@ -319,6 +319,7 @@ const isNumber = (ref, isStringOk = false) => ["int", "float"].includes(getType(
 const isPosInt = (ref) => getType(ref) === "int" && ref >= 0;
 const isIterable = (ref) => !["null", "undefined"].includes(getType(ref)) && typeof ref[Symbol.iterator] === "function";
 const isUndefined = (ref) => getType(ref) === "undefined";
+const isHTMLCode = (ref) => getType(ref) === "string" && /^<.*>$/u.test(ref);
 const hasItems = (ref) => {
   ref = getType(ref) === "list" ? Object.keys(ref) : ref;
   return isIterable(ref) && Array.from(ref).length > 0;
@@ -755,7 +756,8 @@ export default {
 
   // ████████ TYPES: Type Checking, Validation, Conversion, Casting ████████
   getType,
-  isNumber, isPosInt, isIterable, hasItems,
+  isNumber, isPosInt, isIterable, isHTMLCode,
+  hasItems,
   areEqual,
   pFloat, pInt, radToDeg, degToRad,
 

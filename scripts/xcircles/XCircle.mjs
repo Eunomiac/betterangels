@@ -11,12 +11,12 @@ import {
   XItem, XDie, XSnap,
   // #endregion ▮▮▮▮[XCircles]▮▮▮▮
   // #region ▮▮▮▮▮▮▮[Mixins]▮▮▮▮▮▮▮ ~
-  MIX, HasMotionPath, HasSnapPath
+  MIX, BindToXElem, HasMotionPath, HasSnapPath
   // #endregion ▮▮▮▮[Mixins]▮▮▮▮
 } from "../helpers/bundler.mjs";
 // #endregion ▄▄▄▄▄ IMPORTS ▄▄▄▄▄
 
-export default class XCircle extends MIX(XElem).with(HasSnapPath) {
+export default class XCircle extends MIX().with(BindToXElem, HasSnapPath) {
   // #region ████████ STATIC: Static Getters, Setters, Methods ████████ ~
   // #region ░░░░░░░[Getters]░░░░ Registry, Enumerables, Constants ░░░░░░░ ~
   static get REGISTRY() { return (this._REGISTRY = this._REGISTRY ?? {}) }
@@ -178,18 +178,20 @@ export default class XCircle extends MIX(XElem).with(HasSnapPath) {
   // #region ████████ PRIVATE METHODS ████████ ~
   // #region ░░░░░░░[Initializing]░░░░ Creating DOM Elements ░░░░░░░ ~
   _create(x, y, radius) {
-    [this._xCircle] = $(`
+    const xElem = new XElem(`
     <div id="${this.id}" class="${this.defaultClasses.join(" ")}" style="height: ${2 * radius}px; width: ${2 * radius}px;">
       <svg height="100%" width="100%">
         <circle cx="${radius}" cy="${radius}" r="${radius}" stroke="none" />
-        <circle id="${this.snap.id}" class="snap-circle" cx="${radius}" cy="${radius}" r="${radius * 0.8}" fill="none" stroke="none" />
       </svg>
     </div>
-    `).appendTo(XCircle.CONTAINER);
-    this.set({xPercent: -50, yPercent: -50, x, y});
+    `, {properties: {x, y}, parent: XElem.CONTAINER});
+    return;
+    this.bindXElem(xElem);
+    this.path = new XElem(`
+      <circle id="${this.snap.id}" class="snap-circle" cx="${radius}" cy="${radius}" r="${radius * 0.8}" fill="none" stroke="none" />
+    `, {properties: {x: radius * 0.8, y: radius * 0.8}, parent: this.selector("svg"), isMotionPath: true});
+
     /*DEVCODE*/console.log(this);/*!DEVCODE*/
-    MotionPathPlugin.convertToPath(`#${this.id} #${this.snap.id}`);
-    gsap.set(`#${this.id} #${this.snap.id}`, {xPercent: -50, yPercent: -50, transformOrigin: "50% 50%", x: radius * 0.8, y: radius * 0.8});
     this._toggleSlowRotate(true);
   }
   // #endregion ░░░░[Initializing]░░░░
