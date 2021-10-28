@@ -1,12 +1,9 @@
 // #region ████████ IMPORTS ████████ ~
-import gsap from "/scripts/greensock/esm/all.js"; // eslint-disable-line import/no-unresolved
-
-// const _ = require("underscore");
-// const Fuse = require("fuse.js");
-// const Hyphenopoly = require("hyphenopoly");
-// import _ from "underscore";
-// import Fuse from "/scripts/fuse.js"; // https://fusejs.io/api/options.html
-// import Hyphenopoly from "/scripts/hyphenopoly"; // https://github.com/mnater/Hyphenopoly/blob/master/docs/Node-Module.md
+/* eslint-disable import/no-unresolved */
+import gsap from "/scripts/greensock/esm/all.js";
+import Fuse from "/scripts/fuse.js/dist/fuse.esm.js"; // https://fusejs.io/api/options.html
+import Hyphenopoly from "/scripts/hyphenopoly/min/Hyphenopoly.js"; // https://github.com/mnater/Hyphenopoly/blob/master/docs/Node-Module.md
+/* eslint-enable import/no-unresolved */
 
 // #region ▮▮▮▮▮▮▮[IMPORT CONFIG] Initialization Function for Imports ▮▮▮▮▮▮▮ ~
 const _hyph = (str) => str; /* Hyphenopoly.config(
@@ -425,17 +422,17 @@ const degToRad = (deg, isConstrained = true) => {
 
 // #region ████████ STRINGS: String Parsing, Manipulation, Conversion, Regular Expressions ████████ ~
 // #region ░░░░░░░[Case Conversion]░░░░ Upper, Lower, Sentence & Title Case ░░░░░░░ ~
-const uCase = (str) => `${str}`.toUpperCase();
-const lCase = (str) => `${str}`.toLowerCase();
+const uCase = (str) => `${str ?? ""}`.toUpperCase();
+const lCase = (str) => `${str ?? ""}`.toLowerCase();
 const sCase = (str) => {
-  let [first, ...rest] = `${str}`.split(/\s+/);
+  let [first, ...rest] = `${str ?? ""}`.split(/\s+/);
   first = testRegExp(first, _capWords) ? first : `${uCase(first.charAt(0))}${lCase(first.slice(1))}`;
   if (hasItems(rest)) {
     rest = rest.map((word) => (testRegExp(word, _capWords) ? word : lCase(word)));
   }
   return [first, ...rest].join(" ").trim();
 };
-const tCase = (str) => `${str}`.split(/\s/)
+const tCase = (str) => `${str ?? ""}`.split(/\s/)
   .map((word, i) => (i && testRegExp(word, _noCapWords) ? lCase(word) : sCase(word)))
   .join(" ").trim();
 // #endregion ░░░░[Case Conversion]░░░░
@@ -618,7 +615,7 @@ const loremIpsum = (numWords = 200) => {
   words.length = numWords;
   return `${sCase(words.join(" ")).trim().replace(/[^a-z\s]*$/ui, "")}.`;
 };
-const randWord = (numWords = 1, wordList = _randomWords) => new Array(numWords).fill(null).map(() => randElem(wordList)).join(" ");
+const randWord = (numWords = 1, wordList = _randomWords) => [...Array(numWords)].map(() => randElem(wordList)).join(" ");
 // #endregion ░░░░[Content]░░░░
 // #region ░░░░░░░[Localization]░░░░ Simplified Localization Functionality ░░░░░░░ ~
 /* const Loc = (locRef, formatDict = {}) => {

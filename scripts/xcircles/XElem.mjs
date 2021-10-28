@@ -131,21 +131,26 @@ export default class XElem extends MIX().with(Positioner) {
 
   // #region ████████ REPARENTING: Reparenting & Converting Coordinates ████████ ~
   get parent() { return this._parent }
-  set parent(v) {
-    const [elem] = $(`#${v?.id ?? "noElemFound"}`);
-    if (elem) {
-      const {x, y} = MotionPathPlugin.convertCoordinates(
-        this.parent?.elem ?? this.parent ?? this.elem,
-        elem,
-        {x: this.x, y: this.y}
-      );
-      this._parent = v;
+  set parent(newParent) {
+    if (newParent instanceof XElem) {
+      const {x, y} = MotionPathPlugin.convertCoordinates(this.parent.elem, newParent.elem, this.pos);
+      this._parent = newParent;
+      this.$.appendTo(newParent.elem);
       this.set({x, y});
-      this.$.appendTo(elem);
     } else {
-      throw new Error(`[${this.constructor.name}.parent] No element found for '${v}'`);
+      throw new Error(`[${this.constructor.name}.parent] No element found for '${newParent}'`);
     }
   }
+  /* set parent(newParent) {
+    if (newParent instanceof XElem) {
+      const {x, y} = MotionPathPlugin.convertCoordinates(this.parent.elem, newParent.elem, this.pos);
+      this._parent = newParent;
+      this.$.appendTo(newParent.elem);
+      this.set({x, y});
+    } else {
+      throw new Error(`[${this.constructor.name}.parent] No element found for '${newParent}'`);
+    }
+  } */
   // #endregion ▄▄▄▄▄ REPARENTING ▄▄▄▄▄
 
   // #region ████████ STYLES: CSS Style Management ████████ ~

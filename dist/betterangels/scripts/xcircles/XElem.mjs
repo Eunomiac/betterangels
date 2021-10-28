@@ -1,7 +1,7 @@
 /* ****▌███████████████████████████████████████████████████████████████████████████▐**** *\
 |*     ▌███████░░░░░░░░░░░░░░ Better Angels for Foundry VTT ░░░░░░░░░░░░░░░░███████▐     *|
 |*     ▌██████████████████░░░░░░░░░░░░░ by Eunomiac ░░░░░░░░░░░░░██████████████████▐     *|
-|*     ▌███████████████ MIT License █ v0.0.1-prealpha █ Oct 26 2021 ███████████████▐     *|
+|*     ▌███████████████ MIT License █ v0.0.1-prealpha █ Oct 27 2021 ███████████████▐     *|
 |*     ▌████████░░░░░░░░ https://github.com/Eunomiac/betterangels ░░░░░░░░█████████▐     *|
 \* ****▌███████████████████████████████████████████████████████████████████████████▐**** */
 
@@ -129,21 +129,26 @@ export default class XElem extends MIX().with(Positioner) {
 
   // ████████ REPARENTING: Reparenting & Converting Coordinates ████████
   get parent() { return this._parent }
-  set parent(v) {
-    const [elem] = $(`#${v?.id ?? "noElemFound"}`);
-    if (elem) {
-      const {x, y} = MotionPathPlugin.convertCoordinates(
-        this.parent?.elem ?? this.parent ?? this.elem,
-        elem,
-        {x: this.x, y: this.y}
-      );
-      this._parent = v;
+  set parent(newParent) {
+    if (newParent instanceof XElem) {
+      const {x, y} = MotionPathPlugin.convertCoordinates(this.parent.elem, newParent.elem, this.pos);
+      this._parent = newParent;
+      this.$.appendTo(newParent.elem);
       this.set({x, y});
-      this.$.appendTo(elem);
     } else {
-      throw new Error(`[${this.constructor.name}.parent] No element found for '${v}'`);
+      throw new Error(`[${this.constructor.name}.parent] No element found for '${newParent}'`);
     }
   }
+  /* set parent(newParent) {
+    if (newParent instanceof XElem) {
+      const {x, y} = MotionPathPlugin.convertCoordinates(this.parent.elem, newParent.elem, this.pos);
+      this._parent = newParent;
+      this.$.appendTo(newParent.elem);
+      this.set({x, y});
+    } else {
+      throw new Error(`[${this.constructor.name}.parent] No element found for '${newParent}'`);
+    }
+  } */
 
   // ████████ STYLES: CSS Style Management ████████
   get defaultClasses() { return this.constructor.CLASSES ?? [] }

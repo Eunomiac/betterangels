@@ -9,7 +9,6 @@
   "esmodules": [
     "scripts/betterangels.mjs",
     "greensock/esm/all.js",
-    "underscore/underscore.esm.min.js",
     "fuse.js/dist/fuse.esm.js",
     "hyphenopoly/min/Hyphenopoly.js"
   ],

@@ -1,7 +1,7 @@
 /* ****▌███████████████████████████████████████████████████████████████████████████▐**** *\
 |*     ▌███████░░░░░░░░░░░░░░ Better Angels for Foundry VTT ░░░░░░░░░░░░░░░░███████▐     *|
 |*     ▌██████████████████░░░░░░░░░░░░░ by Eunomiac ░░░░░░░░░░░░░██████████████████▐     *|
-|*     ▌███████████████ MIT License █ v0.0.1-prealpha █ Oct 26 2021 ███████████████▐     *|
+|*     ▌███████████████ MIT License █ v0.0.1-prealpha █ Oct 27 2021 ███████████████▐     *|
 |*     ▌████████░░░░░░░░ https://github.com/Eunomiac/betterangels ░░░░░░░░█████████▐     *|
 \* ****▌███████████████████████████████████████████████████████████████████████████▐**** */
 
@@ -139,11 +139,11 @@ export const HasSnapPath = (superclass) => class extends HasMotionPath(superclas
       get elem() { return _this.path?.elem },
       get raw() { return _this.rawPath },
       get points() {
-        return new Array(_this.numSnapPoints).fill(null).map((v, i) => {
+        return [...Array(_this.numSnapPoints)].map((_, index) => {
           const {x, y} = MotionPathPlugin.convertCoordinates(
             _this.domElem,
             XElem.CONTAINER,
-            _this._getPosOnPath(gsap.utils.mapRange(0, _this.numSnapPoints, 0, 1, i))
+            _this._getPosOnPath(gsap.utils.mapRange(0, _this.numSnapPoints, 0, 1, index))
           );
           return {x, y};
         });
@@ -153,7 +153,6 @@ export const HasSnapPath = (superclass) => class extends HasMotionPath(superclas
 };
 export const IsDraggable = (superclass) => class extends superclass {
   // ████████ GETTERS & SETTERS ████████
-  // ░░░░░░░ Read-Only ░░░░░░░
   get dragger() { return this._dragger }
   get isThrowing() { return this.dragger?.isThrowing }
   get isDragging() { return this._isDragging && !this.isThrowing }
@@ -162,7 +161,7 @@ export const IsDraggable = (superclass) => class extends superclass {
   get parent() { return super.parent }
   set parent(v) {
     super.parent = v;
-    this.dragger?.update(false, this.isDragging);
+    this.dragger?.update();
   }
   get isMoving() { return super.isMoving || this.isDragging || this.isThrowing }
   set isMoving(v) { super.isMoving = v }

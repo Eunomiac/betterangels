@@ -1,7 +1,7 @@
 /* ****▌███████████████████████████████████████████████████████████████████████████▐**** *\
 |*     ▌███████░░░░░░░░░░░░░░ Better Angels for Foundry VTT ░░░░░░░░░░░░░░░░███████▐     *|
 |*     ▌██████████████████░░░░░░░░░░░░░ by Eunomiac ░░░░░░░░░░░░░██████████████████▐     *|
-|*     ▌███████████████ MIT License █ v0.0.1-prealpha █ Oct 26 2021 ███████████████▐     *|
+|*     ▌███████████████ MIT License █ v0.0.1-prealpha █ Oct 27 2021 ███████████████▐     *|
 |*     ▌████████░░░░░░░░ https://github.com/Eunomiac/betterangels ░░░░░░░░█████████▐     *|
 \* ****▌███████████████████████████████████████████████████████████████████████████▐**** */
 
@@ -351,7 +351,7 @@ export default class XCircle extends MIX().with(BindToXElem, HasSnapPath) {
   // ░░░░░░░[Items]░░░░ Contained Item Management ░░░░░░░
   // ========== Adding / Removing ===========
   async addDice(numDice = 1, type = XDie.TYPES.basic) {
-    const newDice = new Array(numDice).fill(null).map(() => new XDie({circle: this, type}));
+    const newDice = [...Array(numDice)].map(() => new XDie({circle: this, type}));
     return this._distItems(this._getSlotsPlus(newDice));
   }
   async killItem(item) {

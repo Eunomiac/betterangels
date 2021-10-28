@@ -406,7 +406,7 @@ export default class XCircle extends MIX().with(BindToXElem, HasSnapPath) {
   // #region ░░░░░░░[Items]░░░░ Contained Item Management ░░░░░░░ ~
   // #region ========== Adding / Removing =========== ~
   async addDice(numDice = 1, type = XDie.TYPES.basic) {
-    const newDice = new Array(numDice).fill(null).map(() => new XDie({circle: this, type}));
+    const newDice = [...Array(numDice)].map(() => new XDie({circle: this, type}));
     return this._distItems(this._getSlotsPlus(newDice));
   }
   async killItem(item) {
@@ -608,8 +608,8 @@ export default class XCircle extends MIX().with(BindToXElem, HasSnapPath) {
     };
     this.hideAngles();
     if (isShowingAll) {
-      new Array(numGuides).fill(null)
-        .map((n, i) => gsap.utils.mapRange(0, numGuides, -180, 180, i))
+      [...Array(numGuides)]
+        .map((_, i) => gsap.utils.mapRange(0, numGuides, -180, 180, i))
         .forEach((angle) => makeMarker(angle, true));
     } else {
       makeMarker(0, false);

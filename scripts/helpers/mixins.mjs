@@ -144,11 +144,11 @@ export const HasSnapPath = (superclass) => class extends HasMotionPath(superclas
       get elem() { return _this.path?.elem },
       get raw() { return _this.rawPath },
       get points() {
-        return new Array(_this.numSnapPoints).fill(null).map((v, i) => {
+        return [...Array(_this.numSnapPoints)].map((_, index) => {
           const {x, y} = MotionPathPlugin.convertCoordinates(
             _this.domElem,
             XElem.CONTAINER,
-            _this._getPosOnPath(gsap.utils.mapRange(0, _this.numSnapPoints, 0, 1, i))
+            _this._getPosOnPath(gsap.utils.mapRange(0, _this.numSnapPoints, 0, 1, index))
           );
           return {x, y};
         });
@@ -158,17 +158,15 @@ export const HasSnapPath = (superclass) => class extends HasMotionPath(superclas
 };
 export const IsDraggable = (superclass) => class extends superclass {
   // #region ████████ GETTERS & SETTERS ████████ ~
-  // #region ░░░░░░░ Read-Only ░░░░░░░ ~
   get dragger() { return this._dragger }
   get isThrowing() { return this.dragger?.isThrowing }
   get isDragging() { return this._isDragging && !this.isThrowing }
-  // #endregion ░░░░░░░[Read-Only]░░░░░░░ ~
 
   // #region ░░░░░░░ Writeable ░░░░░░░ ~
   get parent() { return super.parent }
   set parent(v) {
     super.parent = v;
-    this.dragger?.update(false, this.isDragging);
+    this.dragger?.update();
   }
   get isMoving() { return super.isMoving || this.isDragging || this.isThrowing }
   set isMoving(v) { super.isMoving = v }
