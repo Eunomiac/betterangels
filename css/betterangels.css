@@ -195,8 +195,11 @@
     transform-origin: 50% 50%; }
   .x-container .x-circle {
     opacity: 50%; }
-    .x-container .x-circle svg circle {
-      fill: var(--circle-color); }
+    .x-container .x-circle > svg {
+      top: 0;
+      left: 0; }
+      .x-container .x-circle > svg circle {
+        fill: var(--circle-color); }
     .x-container .x-circle.x-circle-basic {
       --circle-color: lime; }
     .x-container .x-circle.x-circle-pink {
@@ -236,7 +239,10 @@
   .x-container.db {
     z-index: 10000;
     outline: 3px dotted lime; }
-  .x-container .x-circle .snap-circle {
+    .x-container.db > svg {
+      top: 0;
+      left: 0; }
+  .x-container .x-circle .motion-path {
     stroke: black; }
   .x-container .x-circle .angle-marker {
     width: 25px;

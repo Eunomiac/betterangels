@@ -22,7 +22,11 @@ $padding-right: 350px;
   .x-circle {
     opacity: 50%;
 
-    svg circle { fill: var(--circle-color) }
+    > svg {
+      top: 0;
+      left: 0;
+      circle { fill: var(--circle-color) }
+    }
 
     &.x-circle-basic { --circle-color: #{$c-lime}; }
     &.x-circle-pink { --circle-color: #{$c-pink}; }
@@ -68,10 +72,14 @@ $padding-right: 350px;
     &.db {
       z-index: 10000;
       outline: 3px dotted $c-lime;
+      > svg {
+        top: 0;
+        left: 0;
+      }
     }
 
     .x-circle {
-      .snap-circle { stroke: black }
+      .motion-path { stroke: black }
 
       .angle-marker {
         width: 25px;

@@ -1,7 +1,7 @@
 /* ****▌███████████████████████████████████████████████████████████████████████████▐**** *\
 |*     ▌███████░░░░░░░░░░░░░░ Better Angels for Foundry VTT ░░░░░░░░░░░░░░░░███████▐     *|
 |*     ▌██████████████████░░░░░░░░░░░░░ by Eunomiac ░░░░░░░░░░░░░██████████████████▐     *|
-|*     ▌███████████████ MIT License █ v0.0.1-prealpha █ Oct 27 2021 ███████████████▐     *|
+|*     ▌█████████████████████ MIT License █ v0.0.1-prealpha █  ████████████████████▐     *|
 |*     ▌████████░░░░░░░░ https://github.com/Eunomiac/betterangels ░░░░░░░░█████████▐     *|
 \* ****▌███████████████████████████████████████████████████████████████████████████▐**** */
 
@@ -15,67 +15,33 @@ import {
   XElem,
   XItem, XDie, XSnap,
   // ▮▮▮▮▮▮▮[Mixins]▮▮▮▮▮▮▮
-  MIX, BindToXElem, HasMotionPath, HasSnapPath
+  MIX, HasSnapPath
 } from "../helpers/bundler.mjs";
 
-export default class XCircle extends MIX().with(BindToXElem, HasSnapPath) {
+export default class XCircle extends MIX(XElem).with(HasSnapPath) {
   // ████████ STATIC: Static Getters, Setters, Methods ████████
-  // ░░░░░░░[Getters]░░░░ Registry, Enumerables, Constants ░░░░░░░
-  static get REGISTRY() { return (this._REGISTRY = this._REGISTRY ?? {}) }
-  static get ALL() { return Object.values(this.REGISTRY) }
+  // ░░░░░░░[Enumerables]░░░░ Class Subtypes ░░░░░░░
   static get TYPES() {
     return {
-      basic: "basic",
+      ...super.TYPES,
       pink: "pink",
       yellow: "yellow",
       cyan: "cyan",
       purple: "purple"
     };
   }
-  static get DEFAULTTYPE() { return this.TYPES.basic }
-  static get CLASSES() { return ["x-circle"] }
-  static get PREFIX() { return "xCircle" }
-  static get SNAPPOINTS() { return (this._SNAPPOINTS = this._SNAPPOINTS ?? new Map()) }
-
+  // ░░░░░░░[Defaults]░░░░ Overrides of XElem Defaults ░░░░░░░
+  static get DEFAULT_DATA() {
+    return {
+      ...super.DEFAULT_DATA,
+      CLASSES: [...super.DEFAULT_DATA.CLASSES, "x-circle"],
+      PREFIX: "xCircle"
+    };
+  }
   // ░░░░░░░[Methods]░░░░ Static Methods ░░░░░░░
-  static NameCircle(circle) {
-    if (circle._options.name) {
-      circle._name = circle._options.name;
-    } else {
-      const namePrefix = `${circle._owner}_${circle._type}`;
-      const nameTest = new RegExp(`^${namePrefix}_`);
-      const circleNum = parseInt(Object.keys(this.REGISTRY)
-        .filter((key) => nameTest.test(key)).pop()?.match(/_(\d+)$/)
-        ?.pop() ?? 0) + 1;
-      circle._name = `${namePrefix}_${circleNum}`;
-      circle._id = `${circle.constructor.PREFIX}-${circle.name}`;
-    }
-  }
-
-  static Register(circle) {
-    circle.snap.points.forEach(({x, y}) => {
-      x = Math.round(x);
-      y = Math.round(y);
-      this.SNAPPOINTS.set({x, y}, circle);
-    });
-
-    this.REGISTRY[circle.name] = circle;
-    return circle;
-  }
-  static Unregister(circle) {
-    this.SNAPPOINTS.forEach((regCircle, point, map) => {
-      if (circle === regCircle) { map.delete(point) }
-    });
-    delete this.REGISTRY[circle.name];
-  }
-  static Kill(circle) {
-    circle.killAll();
-    delete this.REGISTRY[circle.name];
-  }
   static Snap({x, y}) {
     const snapPoint = gsap.utils.snap({values: Array.from(this.SNAPPOINTS.keys())}, {x, y});
     const circle = this.SNAPPOINTS.get(snapPoint);
-    console.log(`SNAPPING: {${x}, ${y}} to {${snapPoint.x}, ${snapPoint.y}} of Circle ${circle.type}`);
     return {...snapPoint, circle};
   }
   static UpdateCircleWatch(item, pos) {
@@ -93,21 +59,27 @@ export default class XCircle extends MIX().with(BindToXElem, HasSnapPath) {
 
   // ████████ CONSTRUCTOR ████████
   constructor(x, y, radius, options = {}) {
-    super();
-    this._options = options;
+    const circle$ = $(`
+    <div style="height: ${2 * radius}px; width: ${2 * radius}px;">
+      <svg height="100%" width="100%">
+        <circle cx="${radius}" cy="${radius}" r="${radius}" stroke="none"></circle>
+        <circle class="motion-path" cx="${radius}" cy="${radius}" r="${radius * 0.8}" fill="none" stroke="none"></circle>
+      </svg>
+    </div>`);
+    super(circle$, {
+      properties: {x, y},
+      pathProperties: {
+        x: radius * 0.8,
+        y: radius * 0.8
+      },
+      classes: [`x-circle-${options.type ?? XCircle.DEFAULT_DATA.TYPE}`],
+      ...options
+    });
 
-    this.type = options.type;
-    this._owner = options.owner?.id ?? options.owner ?? U.GMID();
-
-    this.constructor.NameCircle(this);
-    this._create(x, y, radius);
-    this.constructor.Register(this);
+    this._toggleSlowRotate(true);
   }
 
   // ████████ GETTERS & SETTERS ████████
-  // ░░░░░░░ Read-Only ░░░░░░░
-  get owner() { return game.users.get(this._owner) }
-  get name() { return this._name }
   get slots() { return (this._slots = this._slots ?? []) }
 
   // ========== Path Items: Positioning Contained Items Along Motion Path ===========
@@ -130,37 +102,7 @@ export default class XCircle extends MIX().with(BindToXElem, HasSnapPath) {
   // ========== Animation: Tickers & Other Animations ===========
   get watchFuncs() { return (this._watchFuncs = this._watchFuncs ?? new Map()) }
 
-  // ░░░░░░░ Writeable ░░░░░░░
-  get type() { return this._type }
-  set type(v) {
-    const checkedType = this.constructor.TYPES[v] ?? v ?? this.constructor.DEFAULTTYPE;
-    if (Object.values(this.constructor.TYPES).includes(checkedType)) {
-      this._type = checkedType;
-      this.classes = [];
-    } else {
-      throw new Error(`Invalid ${this.constructor.name} Type: ${v}`);
-    }
-  }
-
   // ████████ PRIVATE METHODS ████████
-  // ░░░░░░░[Initializing]░░░░ Creating DOM Elements ░░░░░░░
-  _create(x, y, radius) {
-    const xElem = new XElem(`
-    <div id="${this.id}" class="${this.defaultClasses.join(" ")}" style="height: ${2 * radius}px; width: ${2 * radius}px;">
-      <svg height="100%" width="100%">
-        <circle cx="${radius}" cy="${radius}" r="${radius}" stroke="none" />
-      </svg>
-    </div>
-    `, {properties: {x, y}, parent: XElem.CONTAINER});
-    return;
-    this.bindXElem(xElem);
-    this.path = new XElem(`
-      <circle id="${this.snap.id}" class="snap-circle" cx="${radius}" cy="${radius}" r="${radius * 0.8}" fill="none" stroke="none" />
-    `, {properties: {x: radius * 0.8, y: radius * 0.8}, parent: this.selector("svg"), isMotionPath: true});
-
-    this._toggleSlowRotate(true);
-  }
-
   // ░░░░░░░[Animation]░░░░ Animation Effects, Tweens, Timelines ░░░░░░░
   _killTweens(types) {
     if (types) {

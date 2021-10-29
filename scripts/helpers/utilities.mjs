@@ -1,8 +1,8 @@
 // #region ████████ IMPORTS ████████ ~
 /* eslint-disable import/no-unresolved */
 import gsap from "/scripts/greensock/esm/all.js";
-import Fuse from "/scripts/fuse.js/dist/fuse.esm.js"; // https://fusejs.io/api/options.html
-import Hyphenopoly from "/scripts/hyphenopoly/min/Hyphenopoly.js"; // https://github.com/mnater/Hyphenopoly/blob/master/docs/Node-Module.md
+// import Fuse from "/scripts/fuse.js/dist/fuse.esm.js"; // https://fusejs.io/api/options.html
+// import Hyphenopoly from "/scripts/hyphenopoly/min/Hyphenopoly.js"; // https://github.com/mnater/Hyphenopoly/blob/master/docs/Node-Module.md
 /* eslint-enable import/no-unresolved */
 
 // #region ▮▮▮▮▮▮▮[IMPORT CONFIG] Initialization Function for Imports ▮▮▮▮▮▮▮ ~
@@ -288,72 +288,55 @@ const GMID = () => game.users.find((user) => user.isGM)?.id ?? false;
 // #endregion ▄▄▄▄▄ GETTERS ▄▄▄▄▄
 
 // #region ████████ TYPES: Type Checking, Validation, Conversion, Casting ████████ ~
-/*~
 
-const objTypes = {
+const getType = (ref) => {
+  const baseType = Object.prototype.toString.call(ref).slice(8, -1).toLowerCase();
+  if (baseType === "number") {
+    if (isNaN(ref)) { return "nan" }
+    return /\./.test(`${ref}`) ? "float" : "int";
+  } else if (/function$/.test(baseType)) {
+    return /^class/.test(String(ref)) ? "class" : "function";
+  }
+  return baseType;
+};
+const results = {};
+Object.entries({
+
   string: "hello",
   string_empty: "",
   string_int: "1",
   string_float: "1.33",
-  integer: 1,
-  float: 1.25,
-  zero: 0,
-  boolean: true,
-  array_empty: [],
-  array_filled: [1, 2, 3],
+
+  boolean_true: true,  boolean_false: false,
+  "null": null,        "undefined": undefined,
+
+  integer: 1,          float: 1.25,
+  zero: 0,             infinity: Infinity,
+  nan: NaN,
+
+  array_empty: [],      array_filled: [1, 2, 3],
+  list_empty: {},       list_filled: {one: 1, two: 2, three: 3},
+  set_empty: new Set(), set_filled: new Set([{"one": 1}, {"two": 2}]),
+  map_empty: new Map(), map_filled: new Map([{"one": 1}, {"two": 2}]),
+
   date: new Date(),
-  obj_empty: {},
-  obj_filled: {one: 1, two: 2, three: 3},
-  set_empty: new Set(),
-  set_filled: new Set([{"one": 1}, {"two": 2}]),
-  map_empty: new Map(),
-  map_filled: new Map([{"one": 1}, {"two": 2}]),
-  weakSet: new WeakSet([{"one": 1}, {"two": 2}]),
-  weakMap: new WeakMap(),
   regexp: /regexp/,
   class: class TestClass {},
-  // promise: new Promise(),
-  // promise_resolved: new Promise().resolve(),
-  // promise_rejected: new Promise().reject(),
+  class_instance: new (class ClassName { })(),
+  promise: new Promise((resolve, reject) => {}),
+  promise_resolved: new Promise((resolve, reject) => { resolve() }),
+  promise_rejected: new Promise((resolve, reject) => { reject(true) }).catch(() => true),
+
   func_arrow: () => true,
   func_anon: function() { return true},
   func_named: function namedFunc() { return true},
   func_async: async function asyncFunc() { return true },
-  func_generator: function*() { return true },
-  "null": null,
-  "undefined": undefined,
-  "NaN": NaN,
-  "Infinity": Infinity
-};
-const groupedResults = {};
-Object.entries(objTypes).forEach(([key, val]) => {
-  const valType = getType(val);
-  groupedResults[valType] = groupedResults[valType] ?? [];
-  groupedResults[valType].push(key);
-});
-console.log(groupedResults);
-~*/
-const getType = (ref) => {
-  const baseType = Object.prototype.toString.call(ref)
-    .slice(8, -1)
-    .toLowerCase()
-    .trim();
-  switch (baseType) {
-    case "number": {
-      if (isNaN(ref)) { return "NaN" }
-      if (/\./.test(`${ref}`)) { return "float" }
-      return "int";
-    }
-    case "object": { return "list" }
-    default: {
-      if (/function$/.test(baseType)) {
-        if (/^class/.test(String(ref))) { return "class" }
-        return "function";
-      }
-    }
-  }
-  return baseType;
-};
+  func_generator: function*() { yield true }
+
+}).forEach(([key, val]) => (results[getType(val)] = results[getType(val)] ?? []).push(key));
+console.log(results);
+
+
 const isNumber = (ref, isStringOk = false) => ["int", "float"].includes(getType(isStringOk ? parseFloat(ref) : ref));
 const isPosInt = (ref) => getType(ref) === "int" && ref >= 0;
 const isIterable = (ref) => !["null", "undefined"].includes(getType(ref)) && typeof ref[Symbol.iterator] === "function";
@@ -750,27 +733,35 @@ export const Remove = (arr, findFunc = (e, i, a) => true) => {
 // Given an object and a predicate function, returns array of two objects:
 //   one with entries that pass, one with entries that fail.
 const partition = (obj, predicate = (v, k) => true) => [
-  Object.fromEntries(Object.entries(obj).filter(([key, val]) => predicate(val, key))),
-  Object.fromEntries(Object.entries(obj).filter(([key, val]) => !predicate(val, key)))
+  objFilter(obj, predicate),
+  objFilter(obj, (v, k) => !predicate(v, k))
 ];
 const objMap = (obj, keyFunc, valFunc) => {
   // An object-equivalent Array.map() function, which accepts mapping functions to transform both keys and values.
   // If only one function is provided, it's assumed to be mapping the values and will receive (v, k) args.
   [valFunc, keyFunc] = [valFunc, keyFunc].filter((x) => ["function", "boolean"].includes(typeof x));
+  if (getType(obj) === "array") { return obj.map(valFunc) }
   keyFunc = keyFunc || ((k) => k);
   valFunc = valFunc || ((v) => v);
   return Object.fromEntries(Object.entries(obj).map(([key, val]) => [keyFunc(key, val), valFunc(val, key)]));
 };
-const objFilter = (obj, keyTestFunc, valTestFunc) => {
+const objFilter = (obj, keyFunc, valFunc) => {
   // An object-equivalent Array.filter() function, which accepts filter functions for both keys and/or values.
   // If only one function is provided, it's assumed to be mapping the values and will receive (v, k) args.
-  [valTestFunc, keyTestFunc] = [valTestFunc, keyTestFunc].filter((x) => ["function", "boolean"].includes(typeof x));
-  keyTestFunc = keyTestFunc || (() => true);
-  valTestFunc = valTestFunc || (() => true);
-  return Object.fromEntries(Object.entries(obj).filter(([key, val]) => keyTestFunc(key) && valTestFunc(val)));
+  [valFunc, keyFunc] = [valFunc, keyFunc].filter((x) => ["function", "boolean"].includes(typeof x));
+  if (getType(obj) === "array") { return obj.filter(valFunc) }
+  keyFunc = keyFunc || (() => true);
+  valFunc = valFunc || (() => true);
+  return Object.fromEntries(Object.entries(obj).filter(([key, val]) => keyFunc(key) && valFunc(val)));
 };
-// An object-equivalent Array.forEach() function, which accepts one function(val, key) to perform for each member.
-const objForEach = (obj, func) => Object.entries(obj).forEach(([key, val]) => func(val, key));
+const objForEach = (obj, func) => {
+  // An object-equivalent Array.forEach() function, which accepts one function(val, key) to perform for each member.
+  if (getType(obj) === "array") { 
+    obj.forEach(func)
+  } else {
+    Object.entries(obj).forEach(([key, val]) => func(val, key));
+  }
+};
 
 const remove = (obj, searchFunc) => {
   // Given an array or list and a search function, will remove the first matching element and return it.

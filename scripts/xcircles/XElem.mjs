@@ -4,37 +4,75 @@ import {
   gsap, MotionPathPlugin, // GreenSock Animation Platform
   // #endregion ▮▮▮▮[External Libraries]▮▮▮▮
   // #region ▮▮▮▮▮▮▮[Utility]▮▮▮▮▮▮▮ ~
-  U,
+  U
   // #endregion ▮▮▮▮[Utility]▮▮▮▮
-  // #region ▮▮▮▮▮▮▮[Mixins]▮▮▮▮▮▮▮ ~
-  MIX, Positioner
-  // #endregion ▮▮▮▮[Mixins]▮▮▮▮
 } from "../helpers/bundler.mjs";
 // #endregion ▄▄▄▄▄ IMPORTS ▄▄▄▄▄
 
-export default class XElem extends MIX().with(Positioner) {
+export default class XElem {
   // #region ████████ STATIC: Static Getters, Setters, Methods ████████ ~
-  static get CONTAINER_DATA() {
+  // #region ░░░░░░░[Enumerables]░░░░ Class Subtypes ░░░░░░░ ~
+  static get TYPES() { return {basic: "basic"} }
+  // #endregion ░░░░[Enumerables]░░░░
+  // #region ░░░░░░░[Defaults]░░░░ Default Settings for Base XElems ░░░░░░░ ~
+  static get DEFAULT_DATA() {
     return {
-      id: "x-container",
-      classes: ["x-container"]
+      PREFIX: "xElem",
+      CLASSES: ["x-elem"],
+      TYPE: this.TYPES.basic,
+      PROPERTIES: {
+        position: "absolute",
+        xPercent: -50,
+        yPercent: -50,
+        transformOrigin: "50% 50%"
+      },
+      CONTAINER: {
+        html: "<div></div>",
+        id: "x-container",
+        parent: $(".vtt.game")[0],
+        classes: ["x-container"],
+        properties: {
+          position: "relative",
+          xPercent: 0,
+          yPercent: 0,
+          transformOrigin: "0% 0%"
+        }
+      }
     };
   }
   static get CONTAINER() {
-    return (this._CONTAINER = this._CONTAINER ?? this.MakeContainer());
-  }
-  static get STANDARDSETTINGS() {
-    return {position: "absolute", xPercent: -50, yPercent: -50, transformOrigin: "50% 50%"};
-  }
-  static MakeContainer() {
-    this._CONTAINER = new XElem(
-      "<div id=\"#x-container\" class=\"x-container\" />",
+    return (XElem._CONTAINER = XElem._CONTAINER ?? new XElem(
+      $(XElem.DEFAULT_DATA.CONTAINER.html).attr("id", XElem.DEFAULT_DATA.CONTAINER.id),
       {
-        properties: U.objMap(this.STANDARDSETTINGS, (v) => null),
-        parent: new XElem(this.CONTAINER_DATA.parentSelector)
+        properties: {
+          ...XElem.DEFAULT_DATA.PROPERTIES,
+          ...XElem.DEFAULT_DATA.CONTAINER.properties
+        },
+        parent: XElem.DEFAULT_DATA.CONTAINER.parent,
+        classes: XElem.DEFAULT_DATA.CONTAINER.classes
       }
-    );
+    ));
   }
+  // #endregion ░░░░[Defaults]░░░░
+  // #region ░░░░░░░[Initialization]░░░░ Registration & DOM Initialization ░░░░░░░ ~
+  static get REGISTRY() { return (this._REGISTRY = this._REGISTRY ?? {}) }
+  static get ALL() { return Object.values(this.REGISTRY) }
+
+  static Register(elem) { return (this.REGISTRY[elem.name] = elem) }
+  static Unregister(elem) { delete this.REGISTRY[elem.name] }
+
+  static GetName({owner, type} = {}) {
+    const namePrefix = `${owner}_${type}`;
+    const nameTest = new RegExp(`^${namePrefix}_`);
+    const elemNum = U.pInt(Object.keys(this.REGISTRY)
+      .filter((key) => nameTest.test(key))
+      .pop()
+      ?.match(/_(\d+)$/)
+      ?.pop()) + 1;
+    return `${namePrefix}_${elemNum}`;
+  }
+  // #endregion ░░░░[Initialization]░░░░
+
   // #endregion ▄▄▄▄▄ STATIC ▄▄▄▄▄
 
   // #region ▮▮▮▮▮▮▮[GSAP INTEGRATION] Ensuring Properties Set Using GSAP ▮▮▮▮▮▮▮ ~
@@ -43,49 +81,76 @@ export default class XElem extends MIX().with(Positioner) {
   // #endregion ▮▮▮▮[GSAP INTEGRATION]▮▮▮▮
 
   // #region ████████ CONSTRUCTOR ████████ ~
-  constructor(htmlOrSelector, {properties = {}, parent, isMotionPath} = {}) {
-    super();
-    const setParams = {};
-    if (U.isHTMLCode(htmlOrSelector)) {
-      parent = parent ?? XElem.CONTAINER;
-      Object.assign(setParams, this.constructor.STANDARDSETTINGS);
-      if (isMotionPath) {
-        [this._elem] = MotionPathPlugin.convertToPath(
-          $(`<svg>${htmlOrSelector}</svg>`)
-            .find("*")
-            .appendTo(parent.$.find("svg"))[0]
-        );
-        this._$ = $(this._elem);
-      } else {
-        this._$ = $(htmlOrSelector);
-        [this._elem] = this.$;
-        console.log(this);
+  get options() { return (this._options = this._options ?? {}) }
+
+  constructor($obj, {
+    properties = {},
+    owner = U.GMID(),
+    type = this.constructor.DEFAULT_DATA.TYPE,
+    parent,
+    classes = [],
+    ...options
+  } = {}) {
+    if ("jquery" in $obj) {
+      parent = parent ?? $obj.parents()[0] ?? this.constructor.CONTAINER;
+      let parentElem;
+      if (parent instanceof XElem) {
+        this._parent = parent;
+        parentElem = parent.elem;
+      } else if ("jquery" in parent) {
+        [parentElem] = parent;
+      } else if (parent instanceof HTMLElement) {
+        parentElem = parent;
       }
+      if (!$obj.parents[0]) {
+        if (parentElem) {
+          $obj.appendTo(parentElem);
+        } else {
+          throw new Error("XElems must be existing DOM elements, or provide a parent to append to.");
+        }
+      }
+      this._$ = $obj;
+      [this._elem] = this.$;
+      this._owner = U.getType(owner) === "string" ? owner : owner.id;
+      this.type = type;
+      const name = options.name ?? this.constructor.GetName({owner: this._owner, type});
+      if (name in this.constructor.REGISTRY) {
+        throw new Error(`'${options.name}' has already been registered as an ${this.constructor.name}.`);
+      } else {
+        this._name = name;
+        this._id = `${this.constructor.DEFAULT_DATA.PREFIX}-${name}`;
+      }
+      this._options = options;
+      this.$.attr("id", this._id);
+      this.classes = [
+        ...options.noDefaultClasses ? [] : this.constructor.DEFAULT_DATA.CLASSES,
+        ...classes
+      ];
+      this.set(U.objFilter({
+        ...this.constructor.DEFAULT_DATA.PROPERTIES,
+        ...properties
+      }, (val) => val !== null));
     } else {
-      if (isMotionPath) {
-        [this._elem] = MotionPathPlugin.convertToPath($(htmlOrSelector)[0]);
-        this._$ = $(this._elem);
-      } else {
-        this._$ = $(htmlOrSelector);
-        [this._elem] = this.$;
-      }
+      throw new Error(`${this.constructor.name} must be instantiated with a jQuery object.`);
     }
-    this.set(U.objFilter({...setParams, ...properties}, (v) => v !== null));
   }
   // #endregion ▄▄▄▄▄ CONSTRUCTOR ▄▄▄▄▄
 
   // #region ████████ DOM: Basic DOM Management ████████ ~
   get $() { return this._$ }
   get elem() { return this._elem }
-  get id() { return (this._id = this._id ?? this.elem.id) }
+  get name() { return this._name }
+  get id() { return this._id }
   get sel() { return (this._sel = this._sel ?? `#${this.id}`) }
-  get selector() { return (this._selector = this._selector ?? gsap.utils.selector(this.elem)) }
-
   get tag() { return this.elem.tagName }
-
-  get isValidPath() {
-    return this.elem instanceof SVGElement
-    || $(`<svg>${this.elem.outerHTML}</svg>`).find("*")[0] instanceof SVGElement;
+  get owner() { return game.users.get(this._owner) }
+  get type() { return this._type }
+  set type(v) {
+    if (Object.values(this.constructor.TYPES).includes(v)) {
+      this._type = v;
+    } else {
+      throw new Error(`Invalid ${this.constructor.name} Type: ${v}`);
+    }
   }
 
   kill() { this.$.remove() }
@@ -141,35 +206,20 @@ export default class XElem extends MIX().with(Positioner) {
       throw new Error(`[${this.constructor.name}.parent] No element found for '${newParent}'`);
     }
   }
-  /* set parent(newParent) {
-    if (newParent instanceof XElem) {
-      const {x, y} = MotionPathPlugin.convertCoordinates(this.parent.elem, newParent.elem, this.pos);
-      this._parent = newParent;
-      this.$.appendTo(newParent.elem);
-      this.set({x, y});
-    } else {
-      throw new Error(`[${this.constructor.name}.parent] No element found for '${newParent}'`);
-    }
-  } */
   // #endregion ▄▄▄▄▄ REPARENTING ▄▄▄▄▄
 
   // #region ████████ STYLES: CSS Style Management ████████ ~
-  get defaultClasses() { return this.constructor.CLASSES ?? [] }
-
-  get classes() { return this.elem?.classList }
+  get classes() { return this.elem.classList }
   set classes(v) {
-    if (this.classes) {
-      const newClassList = [
-        ...this.defaultClasses ?? [],
-        ...Array.from([v])
-          .flat()
-          .join(" ")
-          .trim()
-          .split(" ")
-      ];
-      this.classes.forEach((c) => { if (!newClassList.includes(c)) { this.classes.remove(c) } });
-      v.forEach((c) => this.classes.add(c));
-    }
+    if (U.getType(v) === "string") { v = v.trim().split(/\s+/) }
+    const newClassList = [
+      ...this.constructor.DEFAULT_DATA.CLASSES,
+      ...v
+    ];
+    Array.from(this.classes)
+      .filter((cls) => !newClassList.includes(cls))
+      .forEach(this.classes.remove);
+    v.forEach((c) => this.classes.add(c));
   }
   // #endregion ▄▄▄▄▄ STYLES ▄▄▄▄▄
 

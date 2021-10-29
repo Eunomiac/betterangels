@@ -1,7 +1,7 @@
 /* ****▌███████████████████████████████████████████████████████████████████████████▐**** *\
 |*     ▌███████░░░░░░░░░░░░░░ Better Angels for Foundry VTT ░░░░░░░░░░░░░░░░███████▐     *|
 |*     ▌██████████████████░░░░░░░░░░░░░ by Eunomiac ░░░░░░░░░░░░░██████████████████▐     *|
-|*     ▌███████████████ MIT License █ v0.0.1-prealpha █ Oct 27 2021 ███████████████▐     *|
+|*     ▌█████████████████████ MIT License █ v0.0.1-prealpha █  ████████████████████▐     *|
 |*     ▌████████░░░░░░░░ https://github.com/Eunomiac/betterangels ░░░░░░░░█████████▐     *|
 \* ****▌███████████████████████████████████████████████████████████████████████████▐**** */
 
@@ -12,12 +12,13 @@ import {
   // ▮▮▮▮▮▮▮[Utility]▮▮▮▮▮▮▮
   U,
   // ▮▮▮▮▮▮▮[XCircles]▮▮▮▮▮▮▮
+  XElem,
   XCircle,
   // ▮▮▮▮▮▮▮[Mixins]▮▮▮▮▮▮▮
-  MIX, BindToXElem, IsDraggable, SnapsToCircle
+  MIX, IsDraggable, SnapsToCircle
 } from "../helpers/bundler.mjs";
 
-class XItem extends MIX().with(BindToXElem) {
+class XItem extends XElem {
   // ████████ STATIC: Static Getters, Setters, Methods ████████
   // ░░░░░░░[Getters]░░░░ Registry, Enumerables, Constants ░░░░░░░
   static get REGISTRY() { return (this._REGISTRY = this._REGISTRY ?? {}) }

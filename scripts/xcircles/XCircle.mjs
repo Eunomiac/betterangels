@@ -11,96 +11,37 @@ import {
   XItem, XDie, XSnap,
   // #endregion ▮▮▮▮[XCircles]▮▮▮▮
   // #region ▮▮▮▮▮▮▮[Mixins]▮▮▮▮▮▮▮ ~
-  MIX, BindToXElem, HasMotionPath, HasSnapPath
+  MIX, HasSnapPath
   // #endregion ▮▮▮▮[Mixins]▮▮▮▮
 } from "../helpers/bundler.mjs";
 // #endregion ▄▄▄▄▄ IMPORTS ▄▄▄▄▄
 
-export default class XCircle extends MIX().with(BindToXElem, HasSnapPath) {
+export default class XCircle extends MIX(XElem).with(HasSnapPath) {
   // #region ████████ STATIC: Static Getters, Setters, Methods ████████ ~
-  // #region ░░░░░░░[Getters]░░░░ Registry, Enumerables, Constants ░░░░░░░ ~
-  static get REGISTRY() { return (this._REGISTRY = this._REGISTRY ?? {}) }
-  static get ALL() { return Object.values(this.REGISTRY) }
+  // #region ░░░░░░░[Enumerables]░░░░ Class Subtypes ░░░░░░░ ~
   static get TYPES() {
     return {
-      basic: "basic",
+      ...super.TYPES,
       pink: "pink",
       yellow: "yellow",
       cyan: "cyan",
       purple: "purple"
     };
   }
-  static get DEFAULTTYPE() { return this.TYPES.basic }
-  static get CLASSES() { return ["x-circle"] }
-  static get PREFIX() { return "xCircle" }
-  static get SNAPPOINTS() { return (this._SNAPPOINTS = this._SNAPPOINTS ?? new Map()) }
-  // #endregion ░░░░[Getters]░░░░
-
+  // #endregion ░░░░[Enumerables]░░░░
+  // #region ░░░░░░░[Defaults]░░░░ Overrides of XElem Defaults ░░░░░░░ ~
+  static get DEFAULT_DATA() {
+    return {
+      ...super.DEFAULT_DATA,
+      CLASSES: [...super.DEFAULT_DATA.CLASSES, "x-circle"],
+      PREFIX: "xCircle"
+    };
+  }
+  // #endregion ░░░░[Defaults]░░░░
   // #region ░░░░░░░[Methods]░░░░ Static Methods ░░░░░░░ ~
-  static NameCircle(circle) {
-    if (circle._options.name) {
-      circle._name = circle._options.name;
-    } else {
-      const namePrefix = `${circle._owner}_${circle._type}`;
-      const nameTest = new RegExp(`^${namePrefix}_`);
-      const circleNum = parseInt(Object.keys(this.REGISTRY)
-        .filter((key) => nameTest.test(key)).pop()?.match(/_(\d+)$/)
-        ?.pop() ?? 0) + 1;
-      circle._name = `${namePrefix}_${circleNum}`;
-      circle._id = `${circle.constructor.PREFIX}-${circle.name}`;
-    }
-  }
-  /*DEVCODE*/
-  static get HTMLSNAPPOINTS() { return (this._HTMLSNAPPOINTS = this._HTMLSNAPPOINTS ?? new Map()) }
-  static get INNSNAPPOINTS() { return (this._INNSNAPPOINTS = this._INNSNAPPOINTS ?? new Map()) }
-  static get ABSSNAPPOINTS() { return (this._ABSSNAPPOINTS = this._ABSSNAPPOINTS ?? new Map()) }
-  static get REVSNAPPOINTS() { return (this._REVSNAPPOINTS = this._REVSNAPPOINTS ?? new Map()) }
-  /*!DEVCODE*/
-  static Register(circle) {
-    circle.snap.points.forEach(({x, y}) => {
-      x = Math.round(x);
-      y = Math.round(y);
-      this.SNAPPOINTS.set({x, y}, circle);
-    });
-    /*DEVCODE*/
-    circle.snap.htmlPoints.forEach(({x, y}) => {
-      x = Math.round(x);
-      y = Math.round(y);
-      this.HTMLSNAPPOINTS.set({x, y}, circle);
-    });
-    circle.snap.innPoints.forEach(({x, y}) => {
-      x = Math.round(x);
-      y = Math.round(y);
-      this.INNSNAPPOINTS.set({x, y}, circle);
-    });
-    circle.snap.absPoints.forEach(({x, y}) => {
-      x = Math.round(x);
-      y = Math.round(y);
-      this.ABSSNAPPOINTS.set({x, y}, circle);
-    });
-    circle.snap.revPoints.forEach(({x, y}) => {
-      x = Math.round(x);
-      y = Math.round(y);
-      this.REVSNAPPOINTS.set({x, y}, circle);
-    });
-    /*!DEVCODE*/
-    this.REGISTRY[circle.name] = circle;
-    return circle;
-  }
-  static Unregister(circle) {
-    this.SNAPPOINTS.forEach((regCircle, point, map) => {
-      if (circle === regCircle) { map.delete(point) }
-    });
-    delete this.REGISTRY[circle.name];
-  }
-  static Kill(circle) {
-    circle.killAll();
-    delete this.REGISTRY[circle.name];
-  }
   static Snap({x, y}) {
     const snapPoint = gsap.utils.snap({values: Array.from(this.SNAPPOINTS.keys())}, {x, y});
     const circle = this.SNAPPOINTS.get(snapPoint);
-    console.log(`SNAPPING: {${x}, ${y}} to {${snapPoint.x}, ${snapPoint.y}} of Circle ${circle.type}`);
     return {...snapPoint, circle};
   }
   static UpdateCircleWatch(item, pos) {
@@ -120,22 +61,28 @@ export default class XCircle extends MIX().with(BindToXElem, HasSnapPath) {
 
   // #region ████████ CONSTRUCTOR ████████ ~
   constructor(x, y, radius, options = {}) {
-    super();
-    this._options = options;
-
-    this.type = options.type;
-    this._owner = options.owner?.id ?? options.owner ?? U.GMID();
-
-    this.constructor.NameCircle(this);
-    this._create(x, y, radius);
-    this.constructor.Register(this);
+    const circle$ = $(`
+    <div style="height: ${2 * radius}px; width: ${2 * radius}px;">
+      <svg height="100%" width="100%">
+        <circle cx="${radius}" cy="${radius}" r="${radius}" stroke="none"></circle>
+        <circle class="motion-path" cx="${radius}" cy="${radius}" r="${radius * 0.8}" fill="none" stroke="none"></circle>
+      </svg>
+    </div>`);
+    super(circle$, {
+      properties: {x, y},
+      pathProperties: {
+        x: radius * 0.8,
+        y: radius * 0.8
+      },
+      classes: [`x-circle-${options.type ?? XCircle.DEFAULT_DATA.TYPE}`],
+      ...options
+    });
+    /*DEVCODE*/console.log(this);/*!DEVCODE*/
+    this._toggleSlowRotate(true);
   }
   // #endregion ▄▄▄▄▄ CONSTRUCTOR ▄▄▄▄▄
 
   // #region ████████ GETTERS & SETTERS ████████ ~
-  // #region ░░░░░░░ Read-Only ░░░░░░░ ~
-  get owner() { return game.users.get(this._owner) }
-  get name() { return this._name }
   get slots() { return (this._slots = this._slots ?? []) }
 
   // #region ========== Path Items: Positioning Contained Items Along Motion Path =========== ~
@@ -160,44 +107,9 @@ export default class XCircle extends MIX().with(BindToXElem, HasSnapPath) {
   get watchFuncs() { return (this._watchFuncs = this._watchFuncs ?? new Map()) }
   // #endregion _______ Animation _______
   // #endregion ░░░░[Read-Only]░░░░
-
-  // #region ░░░░░░░ Writeable ░░░░░░░ ~
-  get type() { return this._type }
-  set type(v) {
-    const checkedType = this.constructor.TYPES[v] ?? v ?? this.constructor.DEFAULTTYPE;
-    if (Object.values(this.constructor.TYPES).includes(checkedType)) {
-      this._type = checkedType;
-      this.classes = [];
-    } else {
-      throw new Error(`Invalid ${this.constructor.name} Type: ${v}`);
-    }
-  }
-  // #endregion ░░░░[Writeable]░░░░
   // #endregion ▄▄▄▄▄ GETTERS & SETTERS ▄▄▄▄▄
 
   // #region ████████ PRIVATE METHODS ████████ ~
-  // #region ░░░░░░░[Initializing]░░░░ Creating DOM Elements ░░░░░░░ ~
-  _create(x, y, radius) {
-    const xElem = new XElem(`
-    <div id="${this.id}" class="${this.defaultClasses.join(" ")}" style="height: ${2 * radius}px; width: ${2 * radius}px;">
-      <svg height="100%" width="100%">
-        <circle cx="${radius}" cy="${radius}" r="${radius}" stroke="none" />
-      </svg>
-    </div>
-    `, {properties: {x, y}, parent: XElem.CONTAINER});
-    return;
-    this.bindXElem(xElem);
-    this.path = new XElem(`
-      <circle id="${this.snap.id}" class="snap-circle" cx="${radius}" cy="${radius}" r="${radius * 0.8}" fill="none" stroke="none" />
-    `, {properties: {x: radius * 0.8, y: radius * 0.8}, parent: this.selector("svg"), isMotionPath: true});
-
-    /*DEVCODE*/console.log(this);/*!DEVCODE*/
-    this._toggleSlowRotate(true);
-  }
-  // #endregion ░░░░[Initializing]░░░░
-
-  //~ # region ░░░░░░░[Elements]░░░░ Managing Core Circle Elements ░░░░░░░ ~// # endregion ░░░░[Elements]░░░░
-
   // #region ░░░░░░░[Animation]░░░░ Animation Effects, Tweens, Timelines ░░░░░░░ ~
   _killTweens(types) {
     if (types) {
@@ -550,15 +462,16 @@ export default class XCircle extends MIX().with(BindToXElem, HasSnapPath) {
   }
   // #endregion ░░░░[INITIALIZATION]░░░░
   // #region ░░░░░░░ PING ░░░░░░░ ~
-  static PING({x, y}, {context, radius = 20, color = "yellow"} = {}) {
+  static PING({x, y}, parentID, {radius = 20, color = "yellow"} = {}) {
     const [pingElem] = $(`<svg class="db" height="100%" width="100%">
       <circle cx="${radius}" cy="${radius}" r="${radius}" fill="${color}" stroke="none" />
     </svg>`)
       .appendTo(XCircle.DBCONTAINER)
       .children()
       .last();
-    if (context) {
-      ({x, y} = MotionPathPlugin.convertCoordinates(context, XCircle.DBCONTAINER, {x, y}));
+    if (parentID) {
+      const [parentContext] = $(parentID);
+      ({x, y} = MotionPathPlugin.convertCoordinates(parentContext, XCircle.DBCONTAINER, {x, y}));
     }
     gsap.set(pingElem, {xPercent: -50, yPercent: -50, transformOrigin: "50% 50%", x, y});
     gsap.to(pingElem, {

@@ -166,12 +166,14 @@ const padHeaderLines = (match) => {
 };
 // #endregion ▮▮▮▮[UTILITY]▮▮▮▮
 
+const ISDEPLOYING = false;
+
 // #region ████████ CONFIGURATION: Banner Headers, Source/Destination Globs, Build Behavior ████████
 const BANNERTEMPLATE = {
   full: `/* ****▌███████████████████████████████████████████████████████████████████████████▐**** *\\
 |*     ▌█░░░░░░░░░ Better Angels for Foundry VTT ░░░░░░░░░░░█▐     *|
 |*     ▌██████████████████░░░░░░░░░░░░░ by Eunomiac ░░░░░░░░░░░░░██████████████████▐     *|
-|*     ▌█ <%= package.license %> License █ v<%= package.version %> █ ${new Date().toString().match(/\b[A-Z][a-z]+ \d+ \d+/).shift()} █▐     *|
+|*     ▌█ <%= package.license %> License █ v<%= package.version %> █ ${ISDEPLOYING ? new Date().toString().match(/\b[A-Z][a-z]+ \d+ \d+/).shift() : ""} █▐     *|
 |*     ▌████░░░░ <%= package.url %> ░░░░█████▐     *|
 \\* ****▌███████████████████████████████████████████████████████████████████████████▐**** */\n\n`,
   min: [

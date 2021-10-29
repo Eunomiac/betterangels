@@ -7,15 +7,16 @@ import {
   U,
   // #endregion ▮▮▮▮[Utility]▮▮▮▮
   // #region ▮▮▮▮▮▮▮[XCircles]▮▮▮▮▮▮▮ ~
+  XElem,
   XCircle,
   // #endregion ▮▮▮▮[XCircles]▮▮▮▮
   // #region ▮▮▮▮▮▮▮[Mixins]▮▮▮▮▮▮▮ ~
-  MIX, BindToXElem, IsDraggable, SnapsToCircle
+  MIX, IsDraggable, SnapsToCircle
   // #endregion ▮▮▮▮[Mixins]▮▮▮▮
 } from "../helpers/bundler.mjs";
 // #endregion ▄▄▄▄▄ IMPORTS ▄▄▄▄▄
 
-class XItem extends MIX().with(BindToXElem) {
+class XItem extends XElem {
   // #region ████████ STATIC: Static Getters, Setters, Methods ████████ ~
   // #region ░░░░░░░[Getters]░░░░ Registry, Enumerables, Constants ░░░░░░░ ~
   static get REGISTRY() { return (this._REGISTRY = this._REGISTRY ?? {}) }
