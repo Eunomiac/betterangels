@@ -49,9 +49,8 @@ export default class XCircle extends MIX(XElem).with(HasSnapPath) {
       return [item.snap.circle, item.snap.point];
     }
     const {x, y, circle} = this.Snap(pos);
-    if (item.closestCircle !== circle) {
-      item.closestCircle?.unwatchItem(item);
-      circle.watchItem(item);
+    if (item.closestCircle?.name !== circle.name) {
+      item.closestCircle?.unwatchItem(item).then(() => circle.watchItem(item));
     }
     return [circle, {x, y}];
   }
@@ -222,7 +221,15 @@ export default class XCircle extends MIX(XElem).with(HasSnapPath) {
   _getSlotPathPositions(slots) {
     return [...slots ?? this.slots].map((item) => this._getSlotItemPos(item, slots).pathPos);
   }
-  _getSnapItemFor(item) { return this.slots.find((slotItem) => slotItem.snapTarget === item) }
+  _getSnapItemFor(item) {
+    console.log("=== SNAPPING ===");
+    console.log(this.slots);
+    console.log(item.name);
+    console.log(this.slots.map((slotItem) => slotItem.snapTarget?.name));
+    console.log(this.slots.find((slotItem) => slotItem.snapTarget?.name === item.name));
+    console.log("________________");
+    return this.slots.find((slotItem) => slotItem.snapTarget?.name === item.name);
+  }
   _getSnapPosFor(item) { return this._getSlotItemPos(this._getSnapItemFor(item)) }
   _getSlotsWithout(ref, slots = this.slots) { return slots.filter((slot) => slot !== ref) }
   _getSlotsPlus(items, index, slots = this.slots) {
@@ -234,13 +241,10 @@ export default class XCircle extends MIX(XElem).with(HasSnapPath) {
     ];
   }
   _swapItemToSnap(item) {
-    const type = XSnap.TYPES[[
-      ["die", XDie]
-    ].find(([typ, cls]) => item instanceof cls)[0]];
     const {slot} = this._getSlotItemPos(item);
     if (~slot) {
       const slots = [...this.slots];
-      slots[slot] = new XSnap(item, {circle: this, type, alignTo: item});
+      slots[slot] = new XSnap(item, {parent: this});
       return slots;
     }
     return false;
@@ -298,7 +302,7 @@ export default class XCircle extends MIX(XElem).with(HasSnapPath) {
     if (item.circle) { return Promise.reject() }
     if (this._getSnapItemFor(item)) { return Promise.resolve() }
     const snapSlot = this._getNearestSlot(isCatching ? item.snap.point : item);
-    const snapItem = new XSnap(item, {circle: this});
+    const snapItem = new XSnap(item, {parent: this});
     return this._distItems(this._getSlotsPlus(snapItem, snapSlot, this._getSlotsWithout(snapItem)));
   }
   async _closeSnapPoint(item) {
@@ -317,8 +321,8 @@ export default class XCircle extends MIX(XElem).with(HasSnapPath) {
   //~ # region ░░░░░░░[Elements]░░░░ Managing Core DOM Elements ░░░░░░░ ~// #endregion ░░░░[Elements]░░░░
   // #region ░░░░░░░[Items]░░░░ Contained Item Management ░░░░░░░ ~
   // #region ========== Adding / Removing =========== ~
-  async addDice(numDice = 1, type = XDie.TYPES.basic) {
-    const newDice = [...Array(numDice)].map(() => new XDie({circle: this, type}));
+  async addDice(numDice = 1, type = undefined) {
+    const newDice = [...Array(numDice)].map(() => new XDie({parent: this, type}));
     return this._distItems(this._getSlotsPlus(newDice));
   }
   async killItem(item) {

@@ -29,6 +29,11 @@ export const HasMotionPath = (superclass) => class extends superclass {
   get path() { return this._path }
   set path(path) {
     if (this.isValidMotionPath(path)) {
+      gsap.set(path, {
+        xPercent: -50,
+        yPercent: -50,
+        transformOrigin: "50% 50%"
+      });
       $(path).attr("id", `${this.id}-motion-path`);
       [path] = MotionPathPlugin.convertToPath(path);
     }
@@ -70,10 +75,11 @@ export const HasSnapPath = (superclass) => class extends HasMotionPath(superclas
       ...super.path,
       get points() {
         return [...Array(_this.numSnapPoints)].map((_, index) => {
+          const localPoint = _this._getPosOnPath(gsap.utils.mapRange(0, _this.numSnapPoints, 0, 1, index));
           const {x, y} = MotionPathPlugin.convertCoordinates(
-            _this.parent.elem,
-            XElem.CONTAINER,
-            _this._getPosOnPath(gsap.utils.mapRange(0, _this.numSnapPoints, 0, 1, index))
+            _this.elem,
+            XElem.CONTAINER.elem,
+            localPoint
           );
           return {x, y};
         });
@@ -88,8 +94,8 @@ export const HasSnapPath = (superclass) => class extends HasMotionPath(superclas
   static get SNAPPOINTS() { return (this._SNAPPOINTS = this._SNAPPOINTS ?? new Map()) }
   static set SNAPPOINTS(xInst) {
     xInst.path.points.forEach(({x, y}) => {
-      x = U.pFloat(x, 2);
-      y = U.pFloat(y, 2);
+      x = U.pInt(x);
+      y = U.pInt(y);
       this.SNAPPOINTS.set({x, y}, xInst);
     });
   }
@@ -129,6 +135,7 @@ export const IsDraggable = (superclass) => class extends superclass {
   _onThrowComplete() { }
 
   _createDragger() {
+    const _this = this;
     [this._dragger] = Dragger.create(
       this.elem,
       {
@@ -137,12 +144,12 @@ export const IsDraggable = (superclass) => class extends superclass {
         callbackScope: this,
         minDuration: 2,
         throwResistance: 100,
-        onDragStart: this._onDragStart,
-        onDrag: this._onDrag,
-        snap: {points: this._onSnap},
-        onDragEnd: this._onDragEnd,
-        onThrowUpdate: this._onThrowUpdate,
-        onThrowComplete: this._onThrowComplete
+        onDragStart() { return this._onDragStart() },
+        onDrag(point) { return this._onDrag(point) },
+        snap: {points(point) { return _this._onSnap(point) }},
+        onDragEnd() { return this._onDragEnd() },
+        onThrowUpdate() { return this._onThrowUpdate() },
+        onThrowComplete() { return this._onThrowComplete() }
       }
     );
   }
@@ -161,7 +168,7 @@ export const SnapsToCircle = (superclass) => class extends IsDraggable(superclas
         };
   }
 
-  get closestCircle() { return (this._closestCircle = this.circle ?? this.snap?.circle ?? this._closestCircle ?? XCircle.GetClosestTo(this)) }
+  get closestCircle() { return (this._closestCircle = this.circle ?? this.snap?.circle ?? /* this._closestCircle ?? */ XCircle.GetClosestTo(this)) }
   set closestCircle(v) { this._closestCircle = v }
 
   get pathPos() { return (this._pathPos = this.circle ? this._pathPos ?? 0 : false) }
@@ -218,10 +225,10 @@ export const SnapsToCircle = (superclass) => class extends IsDraggable(superclas
     });
   }
 
-  catch(catchCircle) {
+  catch() {
+    this.circle = this._snapPath;
     delete this._snapPath;
     delete this._snapPoint;
-    this.circle = catchCircle;
   }
 
   _onDragStart(...args) {
@@ -237,9 +244,19 @@ export const SnapsToCircle = (superclass) => class extends IsDraggable(superclas
   }
   _onSnap(point) {
     super._onSnap(point);
+    console.log(`Snapping ${this.name} at (${U.pInt(point.x)}, ${U.pInt(point.y)}) to ...`);
     const {x, y, circle} = XCircle.Snap(point);
+    console.log(`... (${U.pInt(x)}, ${U.pInt(y)}) of the ${circle?.type?.toUpperCase()} XCircle`);
     this._snapPath = circle;
     this._snapPoint = {x, y};
     return {x, y};
   }
+  _onDragEnd() {
+    super._onDragEnd();
+    this._snapPath.catchItem(this);
+  }/*
+  _onThrowComplete() {
+    super._onThrowComplete();
+    this.catch();
+  } */
 };

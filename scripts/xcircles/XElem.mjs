@@ -72,7 +72,6 @@ export default class XElem {
     return `${namePrefix}_${elemNum}`;
   }
   // #endregion ░░░░[Initialization]░░░░
-
   // #endregion ▄▄▄▄▄ STATIC ▄▄▄▄▄
 
   // #region ▮▮▮▮▮▮▮[GSAP INTEGRATION] Ensuring Properties Set Using GSAP ▮▮▮▮▮▮▮ ~
@@ -126,6 +125,7 @@ export default class XElem {
         ...options.noDefaultClasses ? [] : this.constructor.DEFAULT_DATA.CLASSES,
         ...classes
       ];
+      this.constructor.Register(this);
       this.set(U.objFilter({
         ...this.constructor.DEFAULT_DATA.PROPERTIES,
         ...properties
@@ -190,7 +190,7 @@ export default class XElem {
   }
 
   _getAbsAngleTo({x, y}) { return U.getAngle(this, {x, y}) }
-  _getRelAngleTo({x, y}) { return U.cycleNum(this._getAbsAngleTo({x, y}) - this.rotation + 180, -180, 180) }
+  _getRelAngleTo({x, y}) { return U.getAngleDelta(this.rotation + 180, this._getAbsAngleTo({x, y})) } // U.cycleNum( - , -180, 180) }
   _getDistanceTo({x, y}) { return U.getDistance(this, {x, y}) }
   // #endregion ▄▄▄▄▄ POSITION ▄▄▄▄▄
 

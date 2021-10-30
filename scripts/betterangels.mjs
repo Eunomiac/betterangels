@@ -104,6 +104,11 @@ Hooks.once("ready", () => {
   window.GenerateCircles = GenerateCircles;
   GenerateCircles({topLeft: 2, left: 8, botLeft: 5});
   window.CIRCLES[0].showAngles(16, true);
+  window.SHOWSNAPS = () => { // PING({x, y}, parentID, {radius = 20, color = "yellow"} = {}) {
+    XCircle.SNAPPOINTS.forEach((circle, point) => {
+      XCircle.PING(point, undefined, {color: circle.type});
+    });
+  };
 });
 /*!DEVCODE*/
 /**

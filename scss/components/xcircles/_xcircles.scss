@@ -38,6 +38,8 @@ $padding-right: 350px;
   .x-item {
     &.x-die {
       display: table-cell;
+      width: $die-size;
+      height: $die-size;
       text-align: center;
       vertical-align: middle;
       background: radial-gradient(ellipse, $c-white, var(--die-color) 90%);
@@ -72,6 +74,7 @@ $padding-right: 350px;
     &.db {
       z-index: 10000;
       outline: 3px dotted $c-lime;
+
       > svg {
         top: 0;
         left: 0;

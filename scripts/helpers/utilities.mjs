@@ -288,7 +288,6 @@ const GMID = () => game.users.find((user) => user.isGM)?.id ?? false;
 // #endregion ▄▄▄▄▄ GETTERS ▄▄▄▄▄
 
 // #region ████████ TYPES: Type Checking, Validation, Conversion, Casting ████████ ~
-
 const getType = (ref) => {
   const baseType = Object.prototype.toString.call(ref).slice(8, -1).toLowerCase();
   if (baseType === "number") {
@@ -299,7 +298,7 @@ const getType = (ref) => {
   }
   return baseType;
 };
-const results = {};
+/*~ const results = {};
 Object.entries({
 
   string: "hello",
@@ -334,9 +333,7 @@ Object.entries({
   func_generator: function*() { yield true }
 
 }).forEach(([key, val]) => (results[getType(val)] = results[getType(val)] ?? []).push(key));
-console.log(results);
-
-
+console.log(results); ~*/
 const isNumber = (ref, isStringOk = false) => ["int", "float"].includes(getType(isStringOk ? parseFloat(ref) : ref));
 const isPosInt = (ref) => getType(ref) === "int" && ref >= 0;
 const isIterable = (ref) => !["null", "undefined"].includes(getType(ref)) && typeof ref[Symbol.iterator] === "function";
@@ -756,8 +753,8 @@ const objFilter = (obj, keyFunc, valFunc) => {
 };
 const objForEach = (obj, func) => {
   // An object-equivalent Array.forEach() function, which accepts one function(val, key) to perform for each member.
-  if (getType(obj) === "array") { 
-    obj.forEach(func)
+  if (getType(obj) === "array") {
+    obj.forEach(func);
   } else {
     Object.entries(obj).forEach(([key, val]) => func(val, key));
   }

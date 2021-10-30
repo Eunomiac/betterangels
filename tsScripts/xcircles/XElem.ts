@@ -1,23 +1,20 @@
-/* ****▌███████████████████████████████████████████████████████████████████████████▐**** *\
-|*     ▌███████░░░░░░░░░░░░░░ Better Angels for Foundry VTT ░░░░░░░░░░░░░░░░███████▐     *|
-|*     ▌██████████████████░░░░░░░░░░░░░ by Eunomiac ░░░░░░░░░░░░░██████████████████▐     *|
-|*     ▌█████████████████████ MIT License █ v0.0.1-prealpha █  ████████████████████▐     *|
-|*     ▌████████░░░░░░░░ https://github.com/Eunomiac/betterangels ░░░░░░░░█████████▐     *|
-\* ****▌███████████████████████████████████████████████████████████████████████████▐**** */
-
-// ████████ IMPORTS ████████
+// #region ████████ IMPORTS ████████ ~
 import {
-  // ▮▮▮▮▮▮▮[External Libraries]▮▮▮▮▮▮▮
+  // #region ▮▮▮▮▮▮▮[External Libraries]▮▮▮▮▮▮▮ ~
   gsap, MotionPathPlugin, // GreenSock Animation Platform
-  // ▮▮▮▮▮▮▮[Utility]▮▮▮▮▮▮▮
+  // #endregion ▮▮▮▮[External Libraries]▮▮▮▮
+  // #region ▮▮▮▮▮▮▮[Utility]▮▮▮▮▮▮▮ ~
   U
+  // #endregion ▮▮▮▮[Utility]▮▮▮▮
 } from "../helpers/bundler.mjs";
+// #endregion ▄▄▄▄▄ IMPORTS ▄▄▄▄▄
 
 export default class XElem {
-  // ████████ STATIC: Static Getters, Setters, Methods ████████
-  // ░░░░░░░[Enumerables]░░░░ Class Subtypes ░░░░░░░
+  // #region ████████ STATIC: Static Getters, Setters, Methods ████████ ~
+  // #region ░░░░░░░[Enumerables]░░░░ Class Subtypes ░░░░░░░ ~
   static get TYPES() { return {basic: "basic"} }
-  // ░░░░░░░[Defaults]░░░░ Default Settings for Base XElems ░░░░░░░
+  // #endregion ░░░░[Enumerables]░░░░
+  // #region ░░░░░░░[Defaults]░░░░ Default Settings for Base XElems ░░░░░░░ ~
   static get DEFAULT_DATA() {
     return {
       PREFIX: "xElem",
@@ -56,12 +53,13 @@ export default class XElem {
       }
     ));
   }
-  // ░░░░░░░[Initialization]░░░░ Registration & DOM Initialization ░░░░░░░
+  // #endregion ░░░░[Defaults]░░░░
+  // #region ░░░░░░░[Initialization]░░░░ Registration & DOM Initialization ░░░░░░░ ~
   static get REGISTRY() { return (this._REGISTRY = this._REGISTRY ?? {}) }
   static get ALL() { return Object.values(this.REGISTRY) }
 
-  static Register(elem) { return (this.REGISTRY[elem.name] = elem) }
-  static Unregister(elem) { delete this.REGISTRY[elem.name] }
+  static Register(elem: XElem) { return (this.REGISTRY[elem.name] = elem) }
+  static Unregister(elem: XElem) { delete this.REGISTRY[elem.name] }
 
   static GetName({owner, type} = {}) {
     const namePrefix = `${owner}_${type}`;
@@ -73,12 +71,16 @@ export default class XElem {
       ?.pop()) + 1;
     return `${namePrefix}_${elemNum}`;
   }
+  // #endregion ░░░░[Initialization]░░░░
 
-  // ▮▮▮▮▮▮▮[GSAP INTEGRATION] Ensuring Properties Set Using GSAP ▮▮▮▮▮▮▮
+  // #endregion ▄▄▄▄▄ STATIC ▄▄▄▄▄
+
+  // #region ▮▮▮▮▮▮▮[GSAP INTEGRATION] Ensuring Properties Set Using GSAP ▮▮▮▮▮▮▮ ~
   get(prop) { return gsap.getProperty(this.elem, prop) }
   set(propVals = {}) { gsap.set(this.elem, propVals) }
+  // #endregion ▮▮▮▮[GSAP INTEGRATION]▮▮▮▮
 
-  // ████████ CONSTRUCTOR ████████
+  // #region ████████ CONSTRUCTOR ████████ ~
   get options() { return (this._options = this._options ?? {}) }
 
   constructor($obj, {
@@ -124,7 +126,6 @@ export default class XElem {
         ...options.noDefaultClasses ? [] : this.constructor.DEFAULT_DATA.CLASSES,
         ...classes
       ];
-      this.constructor.Register(this);
       this.set(U.objFilter({
         ...this.constructor.DEFAULT_DATA.PROPERTIES,
         ...properties
@@ -133,8 +134,9 @@ export default class XElem {
       throw new Error(`${this.constructor.name} must be instantiated with a jQuery object.`);
     }
   }
+  // #endregion ▄▄▄▄▄ CONSTRUCTOR ▄▄▄▄▄
 
-  // ████████ DOM: Basic DOM Management ████████
+  // #region ████████ DOM: Basic DOM Management ████████ ~
   get $() { return this._$ }
   get elem() { return this._elem }
   get name() { return this._name }
@@ -152,8 +154,9 @@ export default class XElem {
   }
 
   kill() { this.$.remove() }
+  // #endregion ▄▄▄▄▄ DOM ▄▄▄▄▄
 
-  // ████████ POSITION: Getting & Setting Relative/Absolute Positions ████████
+  // #region ████████ POSITION: Getting & Setting Relative/Absolute Positions ████████ ~
   get x() { return this.get("x") } set x(x) { this.set({x}) }
   get y() { return this.get("y") } set y(y) { this.set({y}) }
   get pos() { return {x: this.x, y: this.y} } set pos({x, y}) { this.set({x, y}) }
@@ -187,10 +190,11 @@ export default class XElem {
   }
 
   _getAbsAngleTo({x, y}) { return U.getAngle(this, {x, y}) }
-  _getRelAngleTo({x, y}) { return U.getAngleDelta(this.rotation + 180, this._getAbsAngleTo({x, y})) } // U.cycleNum( - , -180, 180) }
+  _getRelAngleTo({x, y}) { return U.cycleNum(this._getAbsAngleTo({x, y}) - this.rotation + 180, -180, 180) }
   _getDistanceTo({x, y}) { return U.getDistance(this, {x, y}) }
+  // #endregion ▄▄▄▄▄ POSITION ▄▄▄▄▄
 
-  // ████████ REPARENTING: Reparenting & Converting Coordinates ████████
+  // #region ████████ REPARENTING: Reparenting & Converting Coordinates ████████ ~
   get parent() { return this._parent }
   set parent(newParent) {
     if (newParent instanceof XElem) {
@@ -202,8 +206,9 @@ export default class XElem {
       throw new Error(`[${this.constructor.name}.parent] No element found for '${newParent}'`);
     }
   }
+  // #endregion ▄▄▄▄▄ REPARENTING ▄▄▄▄▄
 
-  // ████████ STYLES: CSS Style Management ████████
+  // #region ████████ STYLES: CSS Style Management ████████ ~
   get classes() { return this.elem.classList }
   set classes(v) {
     if (U.getType(v) === "string") { v = v.trim().split(/\s+/) }
@@ -216,11 +221,13 @@ export default class XElem {
       .forEach(this.classes.remove);
     v.forEach((c) => this.classes.add(c));
   }
+  // #endregion ▄▄▄▄▄ STYLES ▄▄▄▄▄
 
-  // ████████ CONTENT: Getting & Setting Element Data & Content ████████
+  // #region ████████ CONTENT: Getting & Setting Element Data & Content ████████ ~
   get text() { return this.get("innerText") }
   set text(v) { this.set({innerText: v}) }
 
   get html() { return this.get("innerHTML") }
   set html(v) { this.set({innerHTML: v}) }
+  // #endregion ▄▄▄▄▄ CONTENT ▄▄▄▄▄
 }
