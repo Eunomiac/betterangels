@@ -44,15 +44,17 @@ export default class XCircle extends MIX(XElem).with(HasSnapPath) {
     const circle = this.SNAPPOINTS.get(snapPoint);
     return {...snapPoint, circle};
   }
-  static UpdateCircleWatch(item, pos) {
-    if (item.snap) {
-      return [item.snap.circle, item.snap.point];
-    }
-    const {x, y, circle} = this.Snap(pos);
+  static UpdateCircleWatch(item) {
+    if (item.snap) { return item.snap }
+    const {x, y, circle} = this.Snap(item.pos);
     if (item.closestCircle?.name !== circle.name) {
-      item.closestCircle?.unwatchItem(item).then(() => circle.watchItem(item));
+      if (item.closestCircle) {
+        item.closestCircle.unwatchItem(item).then(() => circle.watchItem(item));
+      } else {
+        circle.watchItem(item);
+      }
     }
-    return [circle, {x, y}];
+    return {x, y, circle};
   }
   static GetClosestTo(item) { return this.Snap(item).circle }
   // #endregion ░░░░[Methods]░░░░
@@ -222,12 +224,6 @@ export default class XCircle extends MIX(XElem).with(HasSnapPath) {
     return [...slots ?? this.slots].map((item) => this._getSlotItemPos(item, slots).pathPos);
   }
   _getSnapItemFor(item) {
-    console.log("=== SNAPPING ===");
-    console.log(this.slots);
-    console.log(item.name);
-    console.log(this.slots.map((slotItem) => slotItem.snapTarget?.name));
-    console.log(this.slots.find((slotItem) => slotItem.snapTarget?.name === item.name));
-    console.log("________________");
     return this.slots.find((slotItem) => slotItem.snapTarget?.name === item.name);
   }
   _getSnapPosFor(item) { return this._getSlotItemPos(this._getSnapItemFor(item)) }
@@ -475,7 +471,7 @@ export default class XCircle extends MIX(XElem).with(HasSnapPath) {
       .last();
     if (parentID) {
       const [parentContext] = $(parentID);
-      ({x, y} = MotionPathPlugin.convertCoordinates(parentContext, XCircle.DBCONTAINER, {x, y}));
+      ({x, y} = MotionPathPlugin.convertCoordinates(parentContext, XCircle.DBCONTAINER.elem, {x, y}));
     }
     gsap.set(pingElem, {xPercent: -50, yPercent: -50, transformOrigin: "50% 50%", x, y});
     gsap.to(pingElem, {
@@ -538,7 +534,7 @@ export default class XCircle extends MIX(XElem).with(HasSnapPath) {
   getPathReport() {
     const pathData = [0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1].map((pathPos) => {
       const {x, y, angle} = MotionPathPlugin.getPositionOnPath(this.snap.path, pathPos, true);
-      const convCoords = MotionPathPlugin.convertCoordinates(this.elem, XCircle.CONTAINER, {x, y});
+      const convCoords = this.alignLocalPointTo(XElem.CONTAINER, {x, y});
       return {
         pos: {x: parseInt(x), y: parseInt(y)},
         convPos: {x: parseInt(convCoords.x), y: parseInt(convCoords.y)},

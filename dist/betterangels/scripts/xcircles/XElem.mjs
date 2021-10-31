@@ -65,7 +65,7 @@ export default class XElem {
 
   static GetName({owner, type} = {}) {
     const namePrefix = `${owner}_${type}`;
-    const nameTest = new RegExp(`^${namePrefix}_`);
+    const nameTest = new RegExp(`${namePrefix}_`);
     const elemNum = U.pInt(Object.keys(this.REGISTRY)
       .filter((key) => nameTest.test(key))
       .pop()
@@ -190,12 +190,18 @@ export default class XElem {
   _getRelAngleTo({x, y}) { return U.getAngleDelta(this.rotation + 180, this._getAbsAngleTo({x, y})) } // U.cycleNum( - , -180, 180) }
   _getDistanceTo({x, y}) { return U.getDistance(this, {x, y}) }
 
+  alignOriginTo(targetSpace) {
+    return MotionPathPlugin.convertCoordinates(this.parent.elem, targetSpace.elem, this.pos);
+  }
+  alignLocalPointTo(targetSpace, point) {
+    return MotionPathPlugin.convertCoordinates(this.elem, targetSpace.elem, point);
+  }
+
   // ████████ REPARENTING: Reparenting & Converting Coordinates ████████
   get parent() { return this._parent }
   set parent(newParent) {
     if (newParent instanceof XElem) {
-      const {x, y} = MotionPathPlugin.convertCoordinates(this.parent.elem, newParent.elem, this.pos);
-      this._parent = newParent;
+      const {x, y} = this.alignOriginTo(newParent);
       this.$.appendTo(newParent.elem);
       this.set({x, y});
     } else {

@@ -44,15 +44,17 @@ export default class XCircle extends MIX(XElem).with(HasSnapPath) {
     const circle = this.SNAPPOINTS.get(snapPoint);
     return {...snapPoint, circle};
   }
-  static UpdateCircleWatch(item, pos) {
-    if (item.snap) {
-      return [item.snap.circle, item.snap.point];
-    }
-    const {x, y, circle} = this.Snap(pos);
+  static UpdateCircleWatch(item) {
+    if (item.snap) { return item.snap }
+    const {x, y, circle} = this.Snap(item.pos);
     if (item.closestCircle?.name !== circle.name) {
-      item.closestCircle?.unwatchItem(item).then(() => circle.watchItem(item));
+      if (item.closestCircle) {
+        item.closestCircle.unwatchItem(item).then(() => circle.watchItem(item));
+      } else {
+        circle.watchItem(item);
+      }
     }
-    return [circle, {x, y}];
+    return {x, y, circle};
   }
   static GetClosestTo(item) { return this.Snap(item).circle }
 
@@ -214,12 +216,6 @@ export default class XCircle extends MIX(XElem).with(HasSnapPath) {
     return [...slots ?? this.slots].map((item) => this._getSlotItemPos(item, slots).pathPos);
   }
   _getSnapItemFor(item) {
-    console.log("=== SNAPPING ===");
-    console.log(this.slots);
-    console.log(item.name);
-    console.log(this.slots.map((slotItem) => slotItem.snapTarget?.name));
-    console.log(this.slots.find((slotItem) => slotItem.snapTarget?.name === item.name));
-    console.log("________________");
     return this.slots.find((slotItem) => slotItem.snapTarget?.name === item.name);
   }
   _getSnapPosFor(item) { return this._getSlotItemPos(this._getSnapItemFor(item)) }
