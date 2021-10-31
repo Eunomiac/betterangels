@@ -693,7 +693,7 @@ const makeCycler = (array, index = 0) => {
     }
   }());
 };
-const getLast = (array) => (array.length ? array[array.length - 1] : null);
+const getLast = (array) => (array.length ? array[array.length - 1] : undefined);
 /*~ #region TO PROCESS: ARRAY FUNCTIONS: Last, Flip, Insert, Change, Remove
 export const Last = (arr) => (Array.isArray(arr) && arr.length ? arr[arr.length - 1] : undefined);
 export const Flip = (arr) => Clone(arr).reverse();
@@ -984,6 +984,7 @@ export default {
   // ████████ ARRAYS: Array Manipulation ████████
   randElem, randIndex,
   makeCycler,
+  getLast,
 
   // ████████ OBJECTS: Manipulation of Simple Key/Val Objects ████████
   partition,

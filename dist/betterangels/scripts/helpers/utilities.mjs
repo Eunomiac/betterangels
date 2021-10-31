@@ -649,7 +649,7 @@ const makeCycler = (array, index = 0) => {
     }
   }());
 };
-const getLast = (array) => (array.length ? array[array.length - 1] : null);
+const getLast = (array) => (array.length ? array[array.length - 1] : undefined);
 
 // ████████ OBJECTS: Manipulation of Simple Key/Val Objects ████████
 // Given an object and a predicate function, returns array of two objects:
@@ -783,6 +783,7 @@ export default {
   // ████████ ARRAYS: Array Manipulation ████████
   randElem, randIndex,
   makeCycler,
+  getLast,
 
   // ████████ OBJECTS: Manipulation of Simple Key/Val Objects ████████
   partition,

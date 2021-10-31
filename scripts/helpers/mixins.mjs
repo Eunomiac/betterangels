@@ -184,7 +184,6 @@ export const SnapsToCircle = (superclass) => class extends IsDraggable(superclas
   get targetPathPos() { return (this._targetPathPos = this.circle ? this._targetPathPos ?? 0 : false) }
   set targetPathPos(v) { this._targetPathPos = this.circle ? v : false }
 
-  
   async setPathPos(targetPos) {
     if (!this.circle) { return Promise.reject() }
     if (targetPos === this.pathPos || targetPos === this.targetPathPos) { return Promise.resolve() }

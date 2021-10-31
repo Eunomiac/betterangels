@@ -41,17 +41,23 @@ export default class XElem {
     };
   }
   static get CONTAINER() {
-    return (XElem._CONTAINER = XElem._CONTAINER ?? new XElem(
-      $(XElem.DEFAULT_DATA.CONTAINER.html).attr("id", XElem.DEFAULT_DATA.CONTAINER.id),
-      {
-        properties: {
-          ...XElem.DEFAULT_DATA.PROPERTIES,
-          ...XElem.DEFAULT_DATA.CONTAINER.properties
-        },
-        parent: XElem.DEFAULT_DATA.CONTAINER.parent,
-        classes: XElem.DEFAULT_DATA.CONTAINER.classes
-      }
-    ));
+    if (!XElem._CONTAINER) {
+      XElem._CONTAINER = new XElem(
+        $(XElem.DEFAULT_DATA.CONTAINER.html),
+        {
+          properties: {
+            ...XElem.DEFAULT_DATA.PROPERTIES,
+            ...XElem.DEFAULT_DATA.CONTAINER.properties
+          },
+          parent: XElem.DEFAULT_DATA.CONTAINER.parent,
+          classes: XElem.DEFAULT_DATA.CONTAINER.classes
+        }
+      );
+      XElem._CONTAINER.$.attr("id", XElem.DEFAULT_DATA.CONTAINER.id);
+      XElem._CONTAINER._name = XElem.DEFAULT_DATA.CONTAINER.id;
+      XElem._CONTAINER._id = XElem.DEFAULT_DATA.CONTAINER.id;
+    }
+    return XElem._CONTAINER;
   }
   // #endregion ░░░░[Defaults]░░░░
   // #region ░░░░░░░[Initialization]░░░░ Registration & DOM Initialization ░░░░░░░ ~
@@ -61,15 +67,17 @@ export default class XElem {
   static Register(elem) { return (this.REGISTRY[elem.name] = elem) }
   static Unregister(elem) { delete this.REGISTRY[elem.name] }
 
-  static GetName({owner, type} = {}) {
-    const namePrefix = `${owner}_${type}`;
-    const nameTest = new RegExp(`${namePrefix}_`);
-    const elemNum = U.pInt(Object.keys(this.REGISTRY)
-      .filter((key) => nameTest.test(key))
-      .pop()
-      ?.match(/_(\d+)$/)
-      ?.pop()) + 1;
-    return `${namePrefix}_${elemNum}`;
+  static GetName(xElem) {
+    if (xElem.options?.name) {
+      if (xElem.options.name in this.REGISTRY) {
+        throw new Error(`'${xElem.options.name}' has already been registered as an ${xElem.constructor.name}.`);
+      }
+      return xElem.options.name;
+    }
+    const elemNum = U.pInt(U.getLast(this.ALL.filter((regXElem) => regXElem.constructor.name === xElem.constructor.name
+      && regXElem._owner === xElem._owner
+      && regXElem._type === xElem._type))?.name?.match(/\d+$/)?.pop()) + 1;
+    return `${xElem.constructor.DEFAULT_DATA.PREFIX}-${xElem._owner}_${xElem._type}_${elemNum}`;
   }
   // #endregion ░░░░[Initialization]░░░░
   // #endregion ▄▄▄▄▄ STATIC ▄▄▄▄▄
@@ -112,14 +120,9 @@ export default class XElem {
       [this._elem] = this.$;
       this._owner = U.getType(owner) === "string" ? owner : owner.id;
       this.type = type;
-      const name = options.name ?? this.constructor.GetName({owner: this._owner, type});
-      if (name in this.constructor.REGISTRY) {
-        throw new Error(`'${options.name}' has already been registered as an ${this.constructor.name}.`);
-      } else {
-        this._name = name;
-        this._id = `${this.constructor.DEFAULT_DATA.PREFIX}-${name}`;
-      }
       this._options = options;
+      this._name = this.constructor.GetName(this);
+      this._id = this._name;
       this.$.attr("id", this._id);
       this.classes = [
         ...options.noDefaultClasses ? [] : this.constructor.DEFAULT_DATA.CLASSES,

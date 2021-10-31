@@ -138,53 +138,38 @@ export default class XCircle extends MIX(XElem).with(HasSnapPath) {
   }
 
   // ░░░░░░░[Items]░░░░ Managing Contained XItems ░░░░░░░
-  /*
-    Whenever a "SnapsToCircle" XItem parents itself to .x-container (for any reason)
-    ... static XCircle method checks to see which registered XCircles are valid receivers
-        --> sends this data back to the XItem, which logs the XCircles that will be watching it
-    ... if there are valid XCircles, XItem starts a gsap.ticker in which it sends each valid XCircle...
-        1) Its angle to the XCircle's center (which will have to be converted to relAngle to account for circle's rotation)
-        2) Its distance from the XCircle's center
-    ... XCircle, on receiving this data every tick:
-        1) Checks to see if it already has an XSnap item linked to the floating XItem
-          ... NO?
-            A) XCircle determines the TWO slots it must form a gap between such that the gap aims towards the XItem
-            B) XCircle creates the XSnap item and inserts it into the gap
-        2) Scales the pathweight of the XSnap item depending on the distance to the floating XItem
-        3) Updates the distribution of all slotted XItems to reflect the new pathweight
-        4) At the SAME TIME, rotates itself so that the absAngle to the XSnap item matches the absAngle to the floating XItem
-
-    Whenever a "SnapsToCircle" XItem fires its onSnap() method (i.e. at the moment of a throw)
-    ... XItem determines, via XCircle, which snap point it will land on
-    ... XItem removes that XCircle from its watch-log, saving it as its snapCircle
-    ... XItem tells all other XCircles in its watch-log to stop watching it, and removes them from its log as it does so
-      ... those XCircles kill the associated XSnap item and redistribute their slots
-    ... XItem tells the XCircle it's snapping to where it's going to land
-    ... XCircle determines time until XItem lands (from tween)
-    ... XCircle rotates so that the associated XSnap item's absAngle equals the absAngle to the snap coordinates, timing the tween
-        so that it completes just as the XItem reaches its final snap point
-      ... XCircle continues to update the pathWeight of the XSnap item so that the space grows as the XItem approaches
-
-    Whenever a "SnapsToCircle" XItem fires its onThrowComplete() method after arriving at its snap position
-    ... XItem kills its XSnap item, reparents itself to the XCircle, and tells the XCircle to redistribute its slots
-
-    Whenever a "SnapsToCircle" XItem parents itself OUT of the .x-container (for any reason, including removal)
-    ... XItem tells any remaining XCircles in its watch-log to stop watching it
-      ... those XCircles kill the associated XSnap item and redistribute their slots
-  */
-  _areSlotsEqual(slots1, slots2) {
-    return slots1.length === slots2.length
-      && slots1.every((slot, i) => slot.name === slots2[i].name);
-  }
-  _areSameOrder(slots1, slots2) {
-    if (slots1.length !== slots2.length) { return false }
-    const posIndexOffset = slots2.findIndex((slot) => slot.name === slots1[0].name);
-    if (U.isPosInt(posIndexOffset)
-      && slots1.every((slot, i) => slot.name === gsap.utils.wrap(slots2, i + posIndexOffset).name)) {
-      const negIndexOffset = posIndexOffset - slots1.length;
-      return Math.abs(negIndexOffset) >= posIndexOffset ? posIndexOffset : negIndexOffset;
+  _compareSlots(oSlots, nSlots) {
+    // Given two sequences of slot items, returns a report object detailing the
+    // results of various comparison tests against the two slot arrays.
+    oSlots = [...oSlots];
+    nSlots = [...nSlots];
+    function getNext(slot, slots) {
+      const slotIndex = slots.findIndex((s) => slot === s);
+      return slots[slotIndex === slots.length - 1
+        ? 0
+        : slotIndex + 1];
     }
-    return false;
+    if (oSlots.length !== nSlots.length) {
+      return {isEqual: false, isSameOrder: false};
+    }
+    if (oSlots.every((oSlot, i) => oSlot === nSlots[i])) {
+      return {isEqual: true, isSameOrder: true};
+    }
+    const testResults = {isEqual: false, isSameOrder: true};
+    for (const slot of oSlots) {
+      if (getNext(slot, oSlots) !== getNext(slot, nSlots)) {
+        testResults.isSameOrder = false;
+        break;
+      }
+    }
+    if (testResults.isSameOrder) {
+      if (oSlots[0] === nSlots[1]) {
+        testResults.cycleSlot = 0;
+      } else if (oSlots[1] === nSlots[0]) {
+        testResults.cycleSlot = oSlots.length - 1;
+      }
+    }
+    return testResults;
   }
   _getAdjacentSlots(pathPos) {
     // Given a path position, returns the two nearest slot positions
@@ -242,13 +227,31 @@ export default class XCircle extends MIX(XElem).with(HasSnapPath) {
       ...slots.slice(index)
     ];
   }
+  _swapItemToSnap(item) {
+    const {slot} = this._getSlotItemPos(item);
+    if (~slot) {
+      const slots = [...this.slots];
+      slots[slot] = new XSnap(item, {parent: this});
+      return slots;
+    }
+    return false;
+  }
+  _swapSnapToItem(item) {
+    const {slot} = this._getSnapPosFor(item);
+    if (~slot) {
+      const slots = [...this.slots];
+      slots[slot] = item;
+      return slots;
+    }
+    return false;
+  }
+
   async _distItems(newSlots, duration = 1) {
     const oldSlots = [...this.slots];
 
-    if (this._areSlotsEqual(oldSlots, newSlots)) { return Promise.resolve() }
-    const indexOffset = this._areSameOrder(oldSlots, newSlots);
-    if (indexOffset !== false
-      && (oldSlots[0] === newSlots[1] || oldSlots[1] === newSlots[0])) {
+    const slotCompare = this._compareSlots(oldSlots, newSlots);
+    if (slotCompare.isEqual) { return Promise.resolve() }
+    if (slotCompare.isSameOrder && "cycleSlot" in slotCompare) {
       newSlots = [
         oldSlots[oldSlots.length - 1],
         ...oldSlots.slice(1, -1),
@@ -257,12 +260,35 @@ export default class XCircle extends MIX(XElem).with(HasSnapPath) {
     }
 
     this._slots = [...newSlots];
+
     const newPositions = this._getSlotPathPositions(this.slots);
     return Promise.allSettled(this.slots
       .map((item, i) => item.setPathPos(newPositions[i])));
   }
+  async _moveToSlot(item, newSlot) {
+    const {slot} = this._getSlotItemPos(item);
+    if (!Number.isInteger(newSlot)) { return Promise.reject() }
+    if (slot === newSlot) { return Promise.resolve() }
+    return this._distItems(this._getSlotsPlus(item, newSlot, this._getSlotsWithout(item)));
+  }
+  async _openSnapPoint(item, isCatching = false) {
+    if (item.circle) { return Promise.reject() }
+    if (this._getSnapItemFor(item)) { return Promise.resolve() }
+    const snapSlot = this._getNearestSlot(isCatching ? item.snap.point : item);
+    const snapItem = new XSnap(item, {parent: this});
+    return this._distItems(this._getSlotsPlus(snapItem, snapSlot, this._getSlotsWithout(snapItem)));
+  }
+  async _closeSnapPoint(item) {
+    const snapItem = this._getSnapItemFor(item);
+    if (snapItem) {
+      return this._distItems(this._getSlotsWithout(snapItem))
+        .then(() => snapItem.kill());
+    }
+    return Promise.reject();
+  }
 
   // ████████ PUBLIC METHODS ████████
+
   // ░░░░░░░[Items]░░░░ Contained Item Management ░░░░░░░
   // ========== Adding / Removing ===========
   async addDice(numDice = 1, type = undefined) {
@@ -272,6 +298,71 @@ export default class XCircle extends MIX(XElem).with(HasSnapPath) {
   async killItem(item) {
     this._distItems(this._getSlotsWithout(item));
     item.kill();
+  }
+  // ========== Releasing to Drag ===========
+  async pluckItem(item) {
+    return this._distItems(this._swapItemToSnap(item))
+      .then(() => this._addWatchFuncFor(item));
+  }
+
+  _addWatchFuncFor(item) {
+    if (this.watchFuncs.has(item)) { return }
+    function watchFunc() {
+      const snapItem = this._getSnapItemFor(item);
+      if (snapItem) {
+        this._moveToSlot(snapItem, this._getNearestSlot(item));
+      }
+    }
+    this.watchFuncs.set(item, watchFunc.bind(this));
+    gsap.ticker.add(watchFunc.bind(this));
+  }
+  _removeWatchFuncFor(item) {
+    if (this.watchFuncs.has(item)) {
+      gsap.ticker.remove(this.watchFuncs.get(item));
+      this.watchFuncs.delete(item);
+    }
+  }
+  async watchItem(item) {
+    return this._openSnapPoint(item)
+      .then(() => this._addWatchFuncFor(item))
+      .catch(() => console.warn(`Could not open snap point for ${item.name}`));
+  }
+  async unwatchItem(item) {
+    this._removeWatchFuncFor(item);
+    return this._closeSnapPoint(item);
+  }
+  async catchItem(item) {
+    // Use endX and endY to get exact position item will land as absolute angle
+    // Also get angle to where the item's current snap slot is
+    // Rotate during the tween so that the two line up
+    if (!item.isThrowing) { return Promise.reject() }
+    const {tween, endX, endY} = item.dragger;
+
+    this._toggleSlowRotate(false);
+    this._removeWatchFuncFor(item);
+    return this._openSnapPoint(item, true)
+      .then(() => {
+        const {angle: angleToSlot} = this._getSlotItemPos(this._getSnapItemFor(item));
+        const angleToEndPoint = this._getAbsAngleTo({x: endX, y: endY});
+        const angleDelta = U.getAngleDelta(angleToSlot, angleToEndPoint);
+        const duration = tween.duration() - tween.time();
+        const rotation = `${angleDelta > 0 ? "+" : "-"}=${Math.abs(parseInt(angleDelta))}`;
+        gsap.to(this.elem, {
+          rotation,
+          duration,
+          ease: "power4.out",
+          callbackScope: this,
+          onUpdate() {
+            this.items.forEach((_item) => _item.straighten());
+          },
+          onComplete() {
+            item.circle = this;
+            item.straighten();
+            this._distItems(this._swapSnapToItem(item));
+            this._toggleSlowRotate(true);
+          }
+        });
+      });
   }
 
 }
