@@ -16,9 +16,30 @@ import {
 } from "../helpers/bundler.mjs";
 // #endregion ▄▄▄▄▄ IMPORTS ▄▄▄▄▄
 
+const EFFECTS = (() => {
+  gsap.registerEffect({
+    name: "slowRotate",
+    effect: (targets, config) => {
+      const [target] = targets;
+      return gsap.to(target.elem, {
+        rotation: "+=360",
+        duration: 100,
+        repeat: -1,
+        ease: "none",
+        paused: true,
+        callbackScope: target,
+        onUpdate() {
+          this.slots.forEach((item) => item.straighten?.());
+        }
+      });
+    },
+    defaults: {}
+  });
+  return gsap.effects;
+})();
+
 export default class XCircle extends MIX(XElem).with(HasSnapPath) {
   // #region ████████ STATIC: Static Getters, Setters, Methods ████████ ~
-  // #region ░░░░░░░[Enumerables]░░░░ Class Subtypes ░░░░░░░ ~
   static get TYPES() {
     return {
       ...super.TYPES,
@@ -28,8 +49,6 @@ export default class XCircle extends MIX(XElem).with(HasSnapPath) {
       purple: "purple"
     };
   }
-  // #endregion ░░░░[Enumerables]░░░░
-  // #region ░░░░░░░[Defaults]░░░░ Overrides of XElem Defaults ░░░░░░░ ~
   static get DEFAULT_DATA() {
     return {
       ...super.DEFAULT_DATA,
@@ -37,27 +56,12 @@ export default class XCircle extends MIX(XElem).with(HasSnapPath) {
       PREFIX: "xCircle"
     };
   }
-  // #endregion ░░░░[Defaults]░░░░
-  // #region ░░░░░░░[Methods]░░░░ Static Methods ░░░░░░░ ~
   static Snap({x, y}) {
     const snapPoint = gsap.utils.snap({values: Array.from(this.SNAPPOINTS.keys())}, {x, y});
     const circle = this.SNAPPOINTS.get(snapPoint);
     return {...snapPoint, circle};
   }
-  static UpdateCircleWatch(item) {
-    if (item.snap) { return item.snap }
-    const {x, y, circle} = this.Snap(item.pos);
-    if (item.closestCircle?.name !== circle.name) {
-      if (item.closestCircle) {
-        item.closestCircle.unwatchItem(item).then(() => circle.watchItem(item));
-      } else {
-        circle.watchItem(item);
-      }
-    }
-    return {x, y, circle};
-  }
   static GetClosestTo(item) { return this.Snap(item).circle }
-  // #endregion ░░░░[Methods]░░░░
   // #endregion ▄▄▄▄▄ STATIC ▄▄▄▄▄
 
   // #region ████████ CONSTRUCTOR ████████ ~
@@ -83,209 +87,217 @@ export default class XCircle extends MIX(XElem).with(HasSnapPath) {
   }
   // #endregion ▄▄▄▄▄ CONSTRUCTOR ▄▄▄▄▄
 
-  // #region ████████ GETTERS & SETTERS ████████ ~
   get slots() { return (this._slots = this._slots ?? []) }
 
-  // #region ========== Path Items: Positioning Contained Items Along Motion Path =========== ~
-  get pathMap() { //~ IN ALL CASES, PATH STARTS AT 90deg, 0deg IS AT 12'O'CLOCK
+  // #region ████████ Animation: Animation Effects, Tweens, Timelines ████████ ~
+  get effects() { return (this._effects = this._effects ?? {}) }
+
+  _toggleSlowRotate(isRotating) {
+    this.effects.slowRotate = this.effects.slowRotate ?? EFFECTS.slowRotate(this);
+    if (Boolean(isRotating) === Boolean(this.effects.slowRotate.isActive())) { return }
+    if (isRotating) {
+      this.effects.slowRotate.play();
+    } else {
+      this.effects.slowRotate.pause();
+    }
+  }
+  // #endregion ▄▄▄▄▄ Animation ▄▄▄▄▄
+
+  // #region ████████ XItems: Managing Contained XItems ████████ ~
+  get pathMap() {
     // Incorporates the weights of all items and returns a Map of [item]: [pathPos] in order of slots
-    const pathMap = new Map();
-    let totalWeights = 0;
+    if (!this._pathMap) { this.drawPathMap() }
+    return this._pathMap;
+  }
+  drawPathMap() {
+    this._pathMap = new Map();
+    let totalWeights = 0; //~ IN ALL CASES, PATH STARTS AT 90deg, 0deg IS AT 12'O'CLOCK
     this.slots.forEach((slotItem) => {
       totalWeights += slotItem.pathWeight;
-      pathMap.set(slotItem, totalWeights - 0.5 * slotItem.pathWeight);
+      this._pathMap.set(slotItem, totalWeights - 0.5 * slotItem.pathWeight);
     });
-    for (const [item, pathWeight] of pathMap.entries()) {
-      pathMap.set(item, gsap.utils.normalize(0, totalWeights, pathWeight));
+    for (const [item, pathWeight] of this._pathMap.entries()) {
+      this._pathMap.set(item, gsap.utils.normalize(0, totalWeights, pathWeight));
     }
-    return pathMap;
   }
   get pathPositions() { return Array.from(this.pathMap.values()) }
-  get pathItems() { return Array.from(this.pathMap.keys()) }
-  // #endregion _______ Path Items _______
 
-  // #region ========== Animation: Tickers & Other Animations =========== ~
-  get watchFuncs() { return (this._watchFuncs = this._watchFuncs ?? new Map()) }
-  // #endregion _______ Animation _______
-  // #endregion ░░░░[Read-Only]░░░░
-  // #endregion ▄▄▄▄▄ GETTERS & SETTERS ▄▄▄▄▄
-
-  // #region ████████ PRIVATE METHODS ████████ ~
-  // #region ░░░░░░░[Animation]░░░░ Animation Effects, Tweens, Timelines ░░░░░░░ ~
-  _killTweens(types) {
-    if (types) {
-      [types].flat().forEach((type) => {
-        gsap.killTweensOf(this.elem, type);
-        if (type === "rotation") {
-          delete this._isSlowRotating;
-        }
-      });
-    } else {
-      gsap.killTweensOf(this.elem);
-      delete this._isSlowRotating;
-    }
-  }
-  _toggleSlowRotate(isRotating) {
-    if (Boolean(isRotating) === Boolean(this._isSlowRotating)) { return }
-    if (isRotating) {
-      this._isSlowRotating = gsap.to(this.elem, {
-        rotation: "+=360",
-        duration: 100,
-        repeat: -1,
-        ease: "none",
-        callbackScope: this,
-        onUpdate() {
-          this.slots.forEach((item) => item.straighten());
-        }
-      });
-    } else {
-      this._isSlowRotating.kill();
-      delete this._isSlowRotating;
-    }
-  }
-  // #endregion ░░░░[Animation]░░░░
-
-  // #region ░░░░░░░[Items]░░░░ Managing Contained XItems ░░░░░░░ ~
-  /*
-    Whenever a "SnapsToCircle" XItem parents itself to .x-container (for any reason)
-    ... static XCircle method checks to see which registered XCircles are valid receivers
-        --> sends this data back to the XItem, which logs the XCircles that will be watching it
-    ... if there are valid XCircles, XItem starts a gsap.ticker in which it sends each valid XCircle...
-        1) Its angle to the XCircle's center (which will have to be converted to relAngle to account for circle's rotation)
-        2) Its distance from the XCircle's center
-    ... XCircle, on receiving this data every tick:
-        1) Checks to see if it already has an XSnap item linked to the floating XItem
-          ... NO?
-            A) XCircle determines the TWO slots it must form a gap between such that the gap aims towards the XItem
-            B) XCircle creates the XSnap item and inserts it into the gap
-        2) Scales the pathweight of the XSnap item depending on the distance to the floating XItem
-        3) Updates the distribution of all slotted XItems to reflect the new pathweight
-        4) At the SAME TIME, rotates itself so that the absAngle to the XSnap item matches the absAngle to the floating XItem
-
-    Whenever a "SnapsToCircle" XItem fires its onSnap() method (i.e. at the moment of a throw)
-    ... XItem determines, via XCircle, which snap point it will land on
-    ... XItem removes that XCircle from its watch-log, saving it as its snapCircle
-    ... XItem tells all other XCircles in its watch-log to stop watching it, and removes them from its log as it does so
-      ... those XCircles kill the associated XSnap item and redistribute their slots
-    ... XItem tells the XCircle it's snapping to where it's going to land
-    ... XCircle determines time until XItem lands (from tween)
-    ... XCircle rotates so that the associated XSnap item's absAngle equals the absAngle to the snap coordinates, timing the tween
-        so that it completes just as the XItem reaches its final snap point
-      ... XCircle continues to update the pathWeight of the XSnap item so that the space grows as the XItem approaches
-
-    Whenever a "SnapsToCircle" XItem fires its onThrowComplete() method after arriving at its snap position
-    ... XItem kills its XSnap item, reparents itself to the XCircle, and tells the XCircle to redistribute its slots
-
-    Whenever a "SnapsToCircle" XItem parents itself OUT of the .x-container (for any reason, including removal)
-    ... XItem tells any remaining XCircles in its watch-log to stop watching it
-      ... those XCircles kill the associated XSnap item and redistribute their slots
-  */
-  _areSlotsEqual(slots1, slots2) {
-    return slots1.length === slots2.length
-      && slots1.every((slot, i) => slot.name === slots2[i].name);
-  }
-  _areSameOrder(slots1, slots2) {
-    if (slots1.length !== slots2.length) { return false }
-    const posIndexOffset = slots2.findIndex((slot) => slot.name === slots1[0].name);
-    if (U.isPosInt(posIndexOffset)
-      && slots1.every((slot, i) => slot.name === gsap.utils.wrap(slots2, i + posIndexOffset).name)) {
-      const negIndexOffset = posIndexOffset - slots1.length;
-      return Math.abs(negIndexOffset) >= posIndexOffset ? posIndexOffset : negIndexOffset;
-    }
-    return false;
-  }
-  _getAdjacentSlots(pathPos) {
-    // Given a path position, returns the two nearest slot positions
-    const {pathPositions: pathVals} = this;
-    const upperSlot = pathVals
-      .findIndex((v, i, a) => i === (a.length - 1) || v >= pathPos);
-    pathVals.reverse();
-    const lowerSlot = this.pathMap.size - 1 - pathVals
-      .findIndex((v, i, a) => i === (a.length - 1) || v <= pathPos);
-    return [lowerSlot, upperSlot];
-  }
-  _getAngledPathPos({x, y}) {
-    // Determines the path position closest to the provided point, relying on angle.
-    if ([x, y].includes(undefined)) { return false }
-    const angle = this._getRelAngleTo({x, y});
-    return gsap.utils.normalize(-180, 180, angle);
-  }
-  _getNearestSlot({x, y}) {
-    // Determines closest slot to the provided point, relying on angle.
-    if ([x, y].includes(undefined)) { return false }
-    const angle = this._getRelAngleTo({x, y});
-    const pathPos = this._getAngledPathPos({x, y});
-    if (pathPos !== false) {
-      const [lowerSlot, upperSlot] = this._getAdjacentSlots(pathPos);
-      if (upperSlot === 0
-        || lowerSlot === upperSlot
-        || gsap.utils.snap([
-          this.pathPositions[lowerSlot],
-          this.pathPositions[upperSlot]
-        ], pathPos) === this.pathPositions[upperSlot]) { return upperSlot }
-      return lowerSlot;
-    }
-    return false;
-  }
-  _getSlotItemPos(item) {
-    // Returns the pixel coordinates, angle, pathPos and slot of a slot item
+  getSlotPos(item) {
     return {
       ...this._getPosOnPath(this.pathMap.get(item)),
       slot: this.slots.findIndex((slotItem) => slotItem === item)
     };
   }
-  _getSlotPathPositions(slots) {
-    return [...slots ?? this.slots].map((item) => this._getSlotItemPos(item, slots).pathPos);
-  }
-  _getSnapItemFor(item) {
-    return this.slots.find((slotItem) => slotItem.snapTarget?.name === item.name);
-  }
-  _getSnapPosFor(item) { return this._getSlotItemPos(this._getSnapItemFor(item)) }
-  _getSlotsWithout(ref, slots = this.slots) { return slots.filter((slot) => slot !== ref) }
-  _getSlotsPlus(items, index, slots = this.slots) {
-    index = index ?? slots.length;
-    return [
-      ...slots.slice(0, index),
-      ...[items].flat(),
-      ...slots.slice(index)
-    ];
-  }
-  async _distItems(newSlots, duration = 1) {
-    const oldSlots = [...this.slots];
+  getSnapItem(item) { return this.slots.find((slotItem) => slotItem instanceof XSnap && slotItem.snapTarget === item) }
+  getSlotPositions(slots) { return (slots ?? this.slots).map((slotItem) => this.getSlotPos(slotItem)) }
+  getSlotPathPositions(slots) { return this.getSlotPositions(slots).map((slotData) => slotData.pathPos) }
 
-    if (this._areSlotsEqual(oldSlots, newSlots)) { return Promise.resolve() }
-    const indexOffset = this._areSameOrder(oldSlots, newSlots);
-    if (indexOffset !== false
-      && (oldSlots[0] === newSlots[1] || oldSlots[1] === newSlots[0])) {
-      newSlots = [
-        oldSlots[oldSlots.length - 1],
-        ...oldSlots.slice(1, -1),
-        oldSlots[0]
-      ];
+  getNearestSlot({x, y}) {
+    // Determines closest slot to the provided point, relying on angle.
+    if ([x, y].includes(undefined)) { return false }
+    const {pathPos} = this._getPosOnCircle({x, y});
+    const pathVals = Array.from(this.pathMap.values());
+    const upperSlot = Math.max(0, pathVals.findIndex((v) => v >= pathPos));
+    const lowerSlot = upperSlot === 0 ? this.pathMap.size - 1 : upperSlot - 1;
+    let upperPathPos = this.pathPositions[upperSlot],
+        lowerPathPos = this.pathPositions[lowerSlot];
+    while (upperPathPos < pathPos) { upperPathPos++ }
+    while (lowerPathPos > pathPos) { lowerPathPos-- }
+    if (upperPathPos - pathPos > pathPos - lowerPathPos) {
+      return lowerSlot;
     }
+    return upperSlot;
+  }
 
-    this._slots = [...newSlots];
-    const newPositions = this._getSlotPathPositions(this.slots);
+  addItem(item, insertAt) {
+    if (U.isPosInt(insertAt)) {
+      this._slots = [
+        ...this._slots.slice(0, insertAt),
+        item,
+        ...this._slots.slice(insertAt)
+      ];
+    } else {
+      this.slots.push(item);
+      console.log(this.slots);
+    }
+    this.drawPathMap();
+    return item;
+  }
+  swapItem(newItem, oldItem) {
+    oldItem = oldItem ?? this.slots.find((slotItem) => slotItem.snapTarget === newItem);
+    const index = this.slots.findIndex((slotItem) => slotItem === oldItem);
+    if (U.isPosInt(index)) {
+      this.slots[index] = newItem;
+    } else {
+      throw new Error(`${oldItem.name} not found in ${this.name}: ${newItem.name} NOT swapped in.`);
+    }
+    this.drawPathMap();
+    return oldItem;
+  }
+  removeItem(item) {
+    if (this.slots.includes(item)) {
+      this._slots = this.slots.filter((slotItem) => slotItem !== item);
+    } else {
+      throw new Error(`${item.name} not found in ${this.name}`);
+    }
+    this.drawPathMap();
+    return item;
+  }
+  killItem(item) { this.removeItem(item).kill() }
+
+  async distributeSlots(duration = 0.5) {
+    const newPositions = this.getSlotPathPositions();
     return Promise.allSettled(this.slots
-      .map((item, i) => item.setPathPos(newPositions[i])));
+      .map((item, i) => item.setPathPos(newPositions[i], duration)));
   }
-  // #endregion ░░░░[Items]░░░░
-  // #endregion ▄▄▄▄▄ PRIVATE METHODS ▄▄▄▄▄
+  async createDice(numDice = 1, type = undefined) {
+    [...Array(numDice)].forEach(() => this.addItem(new XDie({parent: this, type})));
+    return this.distributeSlots(5);
+  }
+  async createSnapPoint(targetItem, {x, y} = {}) {
+    ({x, y} = this._getPosOnCircle(x ?? targetItem.x, y ?? targetItem.y));
+    const snapItem = this.addItem(new XSnap(targetItem, {parent: this, properties: {x, y}}), this.getNearestSlot({x, y}));
+    this.distributeSlots(0.25);
+    return snapItem;
+  }
+  async catchThrownItem(targetItem) {
+    // Pause rotation
+    this._toggleSlowRotate(false);
+    // Open snap point facing thrown item AND absolute angle
+    const {x, y} = this._getPosOnCircle(targetItem);
+    // const dbItem = this.addItem(new XSnap(targetItem, {parent: this, properties: {x, y}}), this.getNearestSlot({x, y}));
+    // gsap.set(dbItem, {background: "purple"});
+    // dbItem.parent = XElem.CONTAINER;
+    const snapItem = this.createSnapPoint(targetItem);
+    const catchAngle = U.getAngle({x: targetItem.dragger.endX, y: targetItem.dragger.endY}, this);
+    const {duration} = targetItem.dragger.tween;
+    gsap.to(this.elem, {
+      rotation: catchAngle,
+      duration: 1,
+      ease: "expo4.out",
+      callbackScope: this,
+      onUpdate() {
+        this.slots.forEach((item) => item.straighten?.());
+      }
+    });
+    // Determine absolute angle to item's snap point
+    // Get how much time is left in the throw tween
+    // Rotate so snap point is at snap coords
+  }
+  // #endregion ▄▄▄▄▄ XItems ▄▄▄▄▄
 
-  // #region ████████ PUBLIC METHODS ████████ ~
-  // #region ░░░░░░░[Items]░░░░ Contained Item Management ░░░░░░░ ~
-  // #region ========== Adding / Removing =========== ~
-  async addDice(numDice = 1, type = undefined) {
-    const newDice = [...Array(numDice)].map(() => new XDie({parent: this, type}));
-    return this._distItems(this._getSlotsPlus(newDice));
-  }
-  async killItem(item) {
-    this._distItems(this._getSlotsWithout(item));
-    item.kill();
-  }
-  // #endregion _______ Adding / Removing _______
+  // #region ░░░░░░░[Items]░░░░ Managing Contained XItems ░░░░░░░ ~
+  // _areSlotsEqual(slots1, slots2) {
+  //   return slots1.length === slots2.length
+  //     && slots1.every((slot, i) => slot.name === slots2[i].name);
+  // }
+  // _areSameOrder(slots1, slots2) {
+  //   if (slots1.length !== slots2.length) { return false }
+  //   const posIndexOffset = slots2.findIndex((slot) => slot.name === slots1[0].name);
+  //   if (U.isPosInt(posIndexOffset)
+  //     && slots1.every((slot, i) => slot.name === gsap.utils.wrap(slots2, i + posIndexOffset).name)) {
+  //     const negIndexOffset = posIndexOffset - slots1.length;
+  //     return Math.abs(negIndexOffset) >= posIndexOffset ? posIndexOffset : negIndexOffset;
+  //   }
+  //   return false;
+  // }
+
+  // pluckItem(xItem) {
+  //   this._slots = this._getSlotsWithout(xItem);
+  // }
+
+  // _getSlotPathPositions(slots) {
+  //   return [...slots ?? this.slots].map((item) => this._getSlotItemPos(item, slots).pathPos);
+  // }
+
+  // _getSnapPosFor(item) { return this._getSlotItemPos(this._getSnapItemFor(item)) }
+  // _getSlotsWithout(ref, slots = this.slots) { return slots.filter((slot) => slot !== ref) }
+  // _getSlotsPlus(items, index, slots = this.slots) {
+  //   index = index ?? slots.length;
+  //   return [
+  //     ...slots.slice(0, index),
+  //     ...[items].flat(),
+  //     ...slots.slice(index)
+  //   ];
+  // }
+  // _unshiftSlots(newSlots) {
+  //   newSlots = [...newSlots];
+  //   const oldSlots = [...this.slots];
+  //   const shiftCounts = {};
+  //   newSlots.forEach((item, slotNum) => {
+  //     const oldSlotNum = oldSlots.findIndex((oItem) => oItem.name === item.name);
+  //     if (U.isPosInt(oldSlotNum)) {
+  //       shiftCounts[slotNum - oldSlotNum] = (shiftCounts[slotNum - oldSlotNum] ?? 0) + 1;
+  //     }
+  //   });
+  //   let [indexShift] = Object.entries(shiftCounts).reduce(([maxShift, maxCount], [shift, count]) => (count > maxCount ? [parseInt(shift), count] : [maxShift, maxCount]), [0, 0]);
+  //   while (indexShift !== 0) {
+  //     if (indexShift > 0) {
+  //       newSlots.push(newSlots.shift());
+  //       indexShift--;
+  //     } else {
+  //       newSlots.unshift(newSlots.pop());
+  //       indexShift++;
+  //     }
+  //   }
+  //   return newSlots;
+  // }
+  // async _distItems(newSlots, duration = 1) {
+  //   const oldSlots = [...this.slots];
+
+  //   if (this._areSlotsEqual(oldSlots, newSlots)) { return Promise.resolve() }
+
+  //   this._slots = newSlots; // [...this._unshiftSlots(newSlots)];
+  //   const newPositions = this._getSlotPathPositions();
+  //   // console.log({
+  //   //   oldSlots: oldSlots.map((slot) => slot.name.replace(new RegExp(`${slot.owner.id}_`, "g"), "")),
+  //   //   newSlots: newSlots.map((slot) => slot.name.replace(new RegExp(`${slot.owner.id}_`, "g"), "")),
+  //   //   newPositions
+  //   // });
+  //   return Promise.allSettled(this.slots
+  //     .map((item, i) => item.setPathPos(newPositions[i])));
+  // }
   // #endregion ░░░░[Items]░░░░
-  // #endregion ▄▄▄▄▄ PUBLIC METHODS ▄▄▄▄▄
 
   /*DEVCODE*/
   // #region ████████ TEST METHODS: For Debugging & Development ████████ ~

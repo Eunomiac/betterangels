@@ -12,7 +12,6 @@ import {
   // ▮▮▮▮▮▮▮[Utility]▮▮▮▮▮▮▮
   U
 } from "../helpers/bundler.mjs";
-
 export default class XElem {
   // ████████ STATIC: Static Getters, Setters, Methods ████████
   // ░░░░░░░[Enumerables]░░░░ Class Subtypes ░░░░░░░

@@ -77,7 +77,7 @@ const GenerateCircles = (circles = {center: 0}) => {
   const newCircles = [];
   for (const [circlePos, numDice] of Object.entries(circles)) {
     window.CIRCLES.unshift(new XCircle(...circleParams[circlePos], 100, {type: circleTyper.next().value}));
-    window.CIRCLES[0].addDice(numDice);
+    window.CIRCLES[0].createDice(numDice);
   }
 };
 

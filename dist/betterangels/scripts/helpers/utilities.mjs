@@ -731,6 +731,10 @@ const replace = (obj, searchFunc, repVal) => {
 };
 
 // ████████ FUNCTIONS: Function Wrapping, Queuing, Manipulation ████████
+const getDynamicFunc = (funcName, func, context) => {
+  const dFunc = {[funcName](...args) { return func(...args) }}[funcName];
+  return context ? dFunc.bind(context) : dFunc;
+};
 
 // ████████ HTML: Parsing HTML Code, Manipulating DOM Objects ████████
 // ░░░░░░░[GreenSock]░░░░ Wrappers for GreenSock Functions ░░░░░░░
@@ -789,6 +793,9 @@ export default {
   partition,
   objMap, objFilter, objForEach,
   remove, replace,
+
+  // ████████ FUNCTIONS: Function Wrapping, Queuing, Manipulation ████████
+  getDynamicFunc,
 
   // ████████ HTML: Parsing HTML Code, Manipulating DOM Objects ████████
   // ░░░░░░░ GreenSock ░░░░░░░

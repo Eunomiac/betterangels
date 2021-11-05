@@ -8,7 +8,6 @@ import {
   // #endregion ▮▮▮▮[Utility]▮▮▮▮
 } from "../helpers/bundler.mjs";
 // #endregion ▄▄▄▄▄ IMPORTS ▄▄▄▄▄
-
 export default class XElem {
   // #region ████████ STATIC: Static Getters, Setters, Methods ████████ ~
   // #region ░░░░░░░[Enumerables]░░░░ Class Subtypes ░░░░░░░ ~

@@ -138,6 +138,50 @@ export default class XCircle extends MIX(XElem).with(HasSnapPath) {
   }
 
   // ░░░░░░░[Items]░░░░ Managing Contained XItems ░░░░░░░
+  /*
+    Whenever a "SnapsToCircle" XItem parents itself to .x-container (for any reason)
+    ... determines from REGISTRY which registered XCircles are valid receivers
+          - logs them to 'watchingCircles'
+          - calls 'startWatching(this)' on each XCircle
+
+    XCircle.startWatching(xItem) => {
+      sanity check: if already watching, throw error; if already contains snap item, throw error.
+      1) determine relative angle to xItem
+      2) determine the TWO slots it must form a gap between such that the gap aims towards the XItem
+      3) create XSnap item and insert it into the gap
+      4) call updateWatchTicker()
+    }
+
+    XCircle.updateWatchTicker() => { checks this._isWatching: if false, set true & adds watch function to gsap.ticker }
+
+    watch function() { // run on every tick
+      for each XSnap item {
+        call "getWatchData" on XSnap
+          ... updates XSnap's pathweight based on distance to watched item
+          ... returns the slot it should be in (from relative angle) to face item
+      }
+      take new slots positions of each XSnap item and construct a new slots array
+      redistribute slot items to new slot array
+    }
+
+    Whenever a "SnapsToCircle" XItem fires its onSnap() method (i.e. at the moment of a throw)
+    ... XItem determines, via XCircle, which snap point it will land on
+    ... XItem removes that XCircle from its watch-log, saving it as its snapCircle
+    ... XItem tells all other XCircles in its watch-log to stop watching it, and removes them from its log as it does so
+      ... those XCircles kill the associated XSnap item and redistribute their slots
+    ... XItem tells the XCircle it's snapping to where it's going to land
+    ... XCircle determines time until XItem lands (from tween)
+    ... XCircle rotates so that the associated XSnap item's absAngle equals the absAngle to the snap coordinates, timing the tween
+        so that it completes just as the XItem reaches its final snap point
+      ... XCircle continues to update the pathWeight of the XSnap item so that the space grows as the XItem approaches
+
+    Whenever a "SnapsToCircle" XItem fires its onThrowComplete() method after arriving at its snap position
+    ... XItem kills its XSnap item, reparents itself to the XCircle, and tells the XCircle to redistribute its slots
+
+    Whenever a "SnapsToCircle" XItem parents itself OUT of the .x-container (for any reason, including removal)
+    ... XItem tells any remaining XCircles in its watch-log to stop watching it
+      ... those XCircles kill the associated XSnap item and redistribute their slots
+  */
   _compareSlots(oSlots, nSlots) {
     // Given two sequences of slot items, returns a report object detailing the
     // results of various comparison tests against the two slot arrays.

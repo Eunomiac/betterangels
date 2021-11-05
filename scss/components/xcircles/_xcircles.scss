@@ -82,6 +82,16 @@ $padding-right: 350px;
     }
 
     .x-circle {
+      .x-snap {
+        display: table-cell;
+        width: $die-size * 0.5;
+        height: $die-size * 0.5;
+        background: radial-gradient(ellipse, $c-white, $c-red 90%);
+        border-radius: calc(#{$die-size * 0.5} * 0.2);
+        outline: calc(#{$die-size} * 0.1) solid #FFDD00;
+        opacity: 100%;
+      }
+
       .motion-path { stroke: black }
 
       .angle-marker {

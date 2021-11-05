@@ -34,11 +34,11 @@ class XItem extends XElem {
 
   // ████████ GETTERS & SETTERS ████████
   get slot() {
-    const {slot} = this.circle?._getSlotItemPos(this) ?? {};
+    const {slot} = this.circle?.getSlotPos(this) ?? {};
     return slot;
   }
   get slotAbsAngle() {
-    const {angle} = this.circle?._getSlotItemPos(this) ?? {};
+    const {angle} = this.circle?.getSlotPos(this) ?? {};
     return angle;
   }
 
@@ -87,45 +87,54 @@ class XSnap extends MIX(XItem).with(SnapsToCircle) {
     return {
       ...super.DEFAULT_DATA,
       PREFIX: "xSnap",
-      CLASSES: [...super.DEFAULT_DATA.CLASSES, "x-snap"]
+      CLASSES: [...super.DEFAULT_DATA.CLASSES, "x-snap"],
+      MINWEIGHT: 1.5,
+      MAXWEIGHT: 3
     };
   }
 
   // ████████ CONSTRUCTOR ████████
   constructor(snapTarget, {
     properties = {},
-    alignTo = snapTarget,
-    pathWeight = 2,
-    name = `S:${snapTarget.name}`,
+    parent = snapTarget.circle,
+    pathWeight = XSnap.DEFAULT_DATA.MINWEIGHT,
+    name,
     ...options
   } = {}) {
-    if (snapTarget._snapTarget) {
-      throw new Error(`${snapTarget.name} already has an associated XSnap element.`);
-    }
+    if (!(parent instanceof XCircle)) { throw new Error("[XSnap] XSnaps must be parented to an XCircle.") }
+    name = `S:${snapTarget.name}:${parent.name}`;
+    const {pathPos} = parent._getPosOnCircle({x: snapTarget.x, y: snapTarget.y});
+    const {x, y} = parent._getPosOnPath(pathPos);
     super($("<div></div>"), {
       ...options,
       properties: {
         ...properties,
-        x: alignTo.x,
-        y: alignTo.y
+        x,
+        y
       },
+      parent,
       pathWeight,
       name
     });
     this._snapTarget = snapTarget;
-    snapTarget._snapTarget = this;
   }
 
-  // ████████ GETTERS & SETTERS ████████
+  get curSlot() { return this.circle.slots.findIndex((slotItem) => slotItem.name === this.name) }
+  get targetSlot() { return this.circle._getNearestSlot(this.snapTarget) }
+
   get snapTarget() { return this._snapTarget }
-  set snapTarget(v) {
-    if (v._snapTarget) {
-      throw new Error(`${v.name} already has an associated XSnap element.`);
-    }
-    this._snapTarget = v;
-    v._snapTarget = this;
+  get targetDistance() { return Math.max(0, U.getDistance(this.circle, this.snapTarget) - this.circle.path.radius) }
+
+  get pathWeight() {
+    this._pathWeightInterpolator = gsap.utils.interpolate(this.constructor.DEFAULT_DATA.MINWEIGHT, this.constructor.DEFAULT_DATA.MAXWEIGHT);
+    this._pathWeight = this._pathWeightInterpolator(gsap.utils.normalize(0, 2000, this.targetDistance));
+    return super.pathWeight;
   }
 }
 
 // ████████ EXPORTS ████████
-export {XItem, XDie, XSnap};
+export {
+  XItem,
+  XDie,
+  XSnap
+};

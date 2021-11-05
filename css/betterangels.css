@@ -244,6 +244,15 @@
     .x-container.db > svg {
       top: 0;
       left: 0; }
+  .x-container .x-circle .x-snap {
+    display: table-cell;
+    width: 15px;
+    height: 15px;
+    background: -o-radial-gradient(ellipse, white, red 90%);
+    background: radial-gradient(ellipse, white, red 90%);
+    border-radius: calc(15px * 0.2);
+    outline: calc(30px * 0.1) solid #FFDD00;
+    opacity: 100%; }
   .x-container .x-circle .motion-path {
     stroke: black; }
   .x-container .x-circle .angle-marker {
