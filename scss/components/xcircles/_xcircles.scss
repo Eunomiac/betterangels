@@ -71,16 +71,6 @@ $padding-right: 350px;
     text-align: center;
     outline: 3px solid $c-red;
 
-    &.db {
-      z-index: 10000;
-      outline: 3px dotted $c-lime;
-
-      > svg {
-        top: 0;
-        left: 0;
-      }
-    }
-
     .x-circle {
       .x-snap {
         display: table-cell;
@@ -98,23 +88,75 @@ $padding-right: 350px;
         width: 25px;
         height: 25px;
         font-family: sans-serif;
-        font-size: 10px;
-        font-weight: bold;
-        line-height: 10px;
-        color: $c-orange;
-        text-shadow: 0 0 2px $c-black, 0 0 2px $c-black, 0 0 2px $c-black;
+        font-size: 12px;
+        line-height: 12px;
+        color: $c-yellow;
+        text-shadow:
+          0 0 2px $c-black,
+          0 0 2px $c-black,
+          0 0 2px $c-black,
+          0 0 2px $c-black,
+          0 0 2px $c-black,
+          0 0 2px $c-black,
+          0 0 2px $c-black,
+          0 0 2px $c-black,
+          0 0 2px $c-black,
+          0 0 2px $c-black,
+          0 0 2px $c-black,
+          0 0 2px $c-black,
+          0 0 2px $c-black,
+          0 0 2px $c-black,
+          0 0 2px $c-black,
+          0 0 2px $c-black,
+          0 0 2px $c-black,
+          0 0 2px $c-black,
+          0 0 2px $c-black,
+          0 0 2px $c-black,
+          0 0 2px $c-black;
       }
 
-      .path-marker {
-        width: 20px;
-        height: 14px;
-        font-size: 12px;
-        line-height: 16px;
-        color: $c-white;
-        background-color: $c-red;
-        border-radius: 5px;
-        opacity: 100%;
+      table.db.db-display {
+        position: static;
+        width: 150%;
+        padding: 0;
+        margin: -3px 1px 1px -4px;
+        border: none;
+
+        * { position: static }
+
+        td.db {
+          padding: 0;
+          margin: 0;
+          font-size: 10px;
+          line-height: 9px;
+          text-shadow: 0 0 0 black;
+          transform: scaleX(0.75);
+          transform-origin: left;
+        }
       }
+    }
+
+    .x-die {
+      &.db-display {
+        background: white;
+        outline-width: 6px;
+        outline-color: white;
+      }
+
+      &.db-flagged {
+        background: #FFAAAA;
+        outline-color: #FFAAAA;
+      }
+    }
+  }
+
+  .db.x-container {
+    z-index: 10000;
+    outline: 3px dotted $c-lime;
+
+    > svg {
+      top: 0;
+      left: 0;
     }
   }
 }

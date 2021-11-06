@@ -162,6 +162,7 @@ export default class XElem {
   get x() { return this.get("x") } set x(x) { this.set({x}) }
   get y() { return this.get("y") } set y(y) { this.set({y}) }
   get pos() { return {x: this.x, y: this.y} } set pos({x, y}) { this.set({x, y}) }
+  get absPos() { return this.getPointIn(XElem.CONTAINER) }
 
   get left() { return this.x - 0.5 * this.width } set left(left) { this.x = left + 0.5 * this.width }
   get top() { return this.y - 0.5 * this.height } set top(top) { this.y = top + 0.5 * this.height }
@@ -191,9 +192,28 @@ export default class XElem {
     }
   }
 
-  _getAbsAngleTo({x, y}) { return U.getAngle(this, {x, y}) }
-  _getRelAngleTo({x, y}) { return U.getAngleDelta(this.rotation + 180, this._getAbsAngleTo({x, y})) } // U.cycleNum( - , -180, 180) }
+  getAbsAngleTo(posRef) {
+    if (posRef instanceof XElem) {
+      posRef = posRef.absPos;
+    }
+    return U.getAngle(this.absPos, posRef);
+  }
+  getRelAngleTo(posRef) { return U.getAngleDelta(this.rotation, this.getAbsAngleTo(posRef)) }
+  getDistanceTo(posRef) {
+    if (posRef instanceof XElem) {
+      posRef = posRef.absPos;
+    }
+    return U.getDistance(this.absPos, posRef);
+  }
+
+  // _getAbsAngleTo({x, y}) { return U.getAngle(this, {x, y}) }
+  // _getRelAngleTo({x, y}) { return U.getAngleDelta(this.rotation + 180, this._getAbsAngleTo({x, y})) } // U.cycleNum( - , -180, 180) }
   _getDistanceTo({x, y}) { return U.getDistance(this, {x, y}) }
+
+  getPointIn(targetSpace, point) {
+    point = point ?? this.pos;
+    return MotionPathPlugin.convertCoordinates(this.parent.elem, targetSpace.elem, point);
+  }
 
   alignOriginTo(targetSpace) {
     return MotionPathPlugin.convertCoordinates(this.parent.elem, targetSpace.elem, this.pos);

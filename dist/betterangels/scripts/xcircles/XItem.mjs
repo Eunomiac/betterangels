@@ -77,8 +77,8 @@ class XDie extends MIX(XItem).with(IsDraggable, SnapsToCircle) {
       ...options,
       classes: [`x-die-${options.type ?? XDie.DEFAULT_DATA.TYPE}`]
     });
-
   }
+
 }
 
 class XSnap extends MIX(XItem).with(SnapsToCircle) {
@@ -103,8 +103,7 @@ class XSnap extends MIX(XItem).with(SnapsToCircle) {
   } = {}) {
     if (!(parent instanceof XCircle)) { throw new Error("[XSnap] XSnaps must be parented to an XCircle.") }
     name = `S:${snapTarget.name}:${parent.name}`;
-    const {pathPos} = parent._getPosOnCircle({x: snapTarget.x, y: snapTarget.y});
-    const {x, y} = parent._getPosOnPath(pathPos);
+    const {pathPos, x, y} = parent.getPosOnCircle(snapTarget);
     super($("<div></div>"), {
       ...options,
       properties: {
@@ -120,7 +119,7 @@ class XSnap extends MIX(XItem).with(SnapsToCircle) {
   }
 
   get curSlot() { return this.circle.slots.findIndex((slotItem) => slotItem.name === this.name) }
-  get targetSlot() { return this.circle._getNearestSlot(this.snapTarget) }
+  get targetSlot() { return this.circle.getNearestSlot(this.snapTarget) }
 
   get snapTarget() { return this._snapTarget }
   get targetDistance() { return Math.max(0, U.getDistance(this.circle, this.snapTarget) - this.circle.path.radius) }

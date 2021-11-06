@@ -70,7 +70,7 @@ export default class XCircle extends MIX(XElem).with(HasSnapPath) {
     <div style="height: ${2 * radius}px; width: ${2 * radius}px;">
       <svg height="100%" width="100%">
         <circle cx="${radius}" cy="${radius}" r="${radius}" stroke="none"></circle>
-        <circle class="motion-path" cx="${radius}" cy="${radius}" r="${radius * 0.8}" fill="none" stroke="none"></circle>
+        <path class="motion-path" fill="none" stroke="none" d="m 100 20 c 44.2 0 80 35.8 80 80 c 0 44.2 -35.8 80 -80 80 c -44.2 0 -80 -35.8 -80 -80 c 0 -44.2 35.8 -80 80 -80 z"></path>
       </svg>
     </div>`);
     super(circle$, {
@@ -132,10 +132,10 @@ export default class XCircle extends MIX(XElem).with(HasSnapPath) {
   getSlotPositions(slots) { return (slots ?? this.slots).map((slotItem) => this.getSlotPos(slotItem)) }
   getSlotPathPositions(slots) { return this.getSlotPositions(slots).map((slotData) => slotData.pathPos) }
 
-  getNearestSlot({x, y}) {
+  getNearestSlot(xItem, xItemPoint) {
     // Determines closest slot to the provided point, relying on angle.
-    if ([x, y].includes(undefined)) { return false }
-    const {pathPos} = this._getPosOnCircle({x, y});
+    xItemPoint = xItemPoint ?? {x: xItem.x, y: xItem.y};
+    const {pathPos} = this.getPosOnCircle(xItem, xItemPoint);
     const pathVals = Array.from(this.pathMap.values());
     const upperSlot = Math.max(0, pathVals.findIndex((v) => v >= pathPos));
     const lowerSlot = upperSlot === 0 ? this.pathMap.size - 1 : upperSlot - 1;
@@ -194,9 +194,11 @@ export default class XCircle extends MIX(XElem).with(HasSnapPath) {
     [...Array(numDice)].forEach(() => this.addItem(new XDie({parent: this, type})));
     return this.distributeSlots(5);
   }
-  async createSnapPoint(targetItem, {x, y} = {}) {
-    ({x, y} = this._getPosOnCircle(x ?? targetItem.x, y ?? targetItem.y));
-    const snapItem = this.addItem(new XSnap(targetItem, {parent: this, properties: {x, y}}), this.getNearestSlot({x, y}));
+  async createSnapPoint(targetItem, targetPoint) {
+    targetPoint = this.getPosOnCircle(targetItem, targetPoint);
+    delete targetPoint.pathPos;
+    delete targetPoint.angle;
+    const snapItem = this.addItem(new XSnap(targetItem, {parent: this, properties: targetPoint}), this.getNearestSlot(targetItem, targetPoint));
     this.distributeSlots(0.25);
     return snapItem;
   }
@@ -204,12 +206,12 @@ export default class XCircle extends MIX(XElem).with(HasSnapPath) {
     // Pause rotation
     this._toggleSlowRotate(false);
     // Open snap point facing thrown item AND absolute angle
-    const {x, y} = this._getPosOnCircle(targetItem);
-    // const dbItem = this.addItem(new XSnap(targetItem, {parent: this, properties: {x, y}}), this.getNearestSlot({x, y}));
+    const {x, y} = this.getPosOnCircle(targetItem);
+    // const dbItem = this.addItem(new XSnap(targetItem, {parent: this, properties: {x, y}}), this.getNearestSlot(targetItem, {x, y}));
     // gsap.set(dbItem, {background: "purple"});
     // dbItem.parent = XElem.CONTAINER;
     const snapItem = this.createSnapPoint(targetItem);
-    const catchAngle = U.getAngle({x: targetItem.dragger.endX, y: targetItem.dragger.endY}, this);
+    const catchAngle = this.getAbsAngleTo(targetItem, {x: targetItem.dragger.endX, y: targetItem.dragger.endY});
     const {duration} = targetItem.dragger.tween;
     gsap.to(this.elem, {
       rotation: catchAngle,
@@ -299,107 +301,4 @@ export default class XCircle extends MIX(XElem).with(HasSnapPath) {
   // }
   // #endregion ░░░░[Items]░░░░
 
-  /*DEVCODE*/
-  // #region ████████ TEST METHODS: For Debugging & Development ████████ ~
-  // #region ░░░░░░░[INITIALIZATION]░░░░ DB Container, Hiding & Showing Debug Data ░░░░░░░ ~
-  static get DBCONTAINER() {
-    return (this._DBCONTAINER = this._DBCONTAINER
-      ?? $("#dbContainer")[0]
-      ?? $("<div id=\"dbContainer\" class=\"db x-container\" />").appendTo(".vtt.game")[0]);
-  }
-  dbShow() {
-    this.showAngles();
-    this.dbUpdate();
-  }
-  dbHide() {
-    this.hideAngles();
-    this._isDBActive = false;
-  }
-  // #endregion ░░░░[INITIALIZATION]░░░░
-  // #region ░░░░░░░ PING ░░░░░░░ ~
-  static PING({x, y}, parentID, {radius = 20, color = "yellow"} = {}) {
-    const [pingElem] = $(`<svg class="db" height="100%" width="100%">
-      <circle cx="${radius}" cy="${radius}" r="${radius}" fill="${color}" stroke="none" />
-    </svg>`)
-      .appendTo(XCircle.DBCONTAINER)
-      .children()
-      .last();
-    if (parentID) {
-      const [parentContext] = $(parentID);
-      ({x, y} = MotionPathPlugin.convertCoordinates(parentContext, XCircle.DBCONTAINER.elem, {x, y}));
-    }
-    gsap.set(pingElem, {xPercent: -50, yPercent: -50, transformOrigin: "50% 50%", x, y});
-    gsap.to(pingElem, {
-      opacity: 0.75,
-      scale: 1,
-      startAt: {
-        opacity: 0.25,
-        scale: 5
-      },
-      duration: 1,
-      ease: "bounce",
-      onComplete() {
-        gsap.to(pingElem, {
-          opacity: 1,
-          scale: 0.25,
-          duration: 10,
-          delay: 5,
-          ease: "sine"
-        });
-      }
-    });
-  }
-  get ping() { return this.constructor.PING }
-  // #endregion ░░░░[PING]░░░░
-  // #region ░░░░░░░[ANGLE DISPLAY]░░░░ Display Angle & Path Position on Circle ░░░░░░░ ~
-  get angleGuide() { return (this._angleGuide = this._angleGuide ?? {}) }
-  showAngles(numGuides = 4, isShowingAll = false) {
-    [this._dbAngleContainer] = $(`
-    <svg height="100%" width="100%">
-      <circle id="db-${this.id}" class="db snap-circle" cx="${this.radius}" cy="${this.radius}" r="${this.radius * 1.25}" fill="none" stroke="none" />
-    </svg>
-    `).appendTo(XCircle.DBCONTAINER);
-    gsap.set(this._dbAngleContainer, {xPercent: -50, yPercent: -50, x: this.x, y: this.y});
-    MotionPathPlugin.convertToPath(`#db-${this.id}`);
-    this._dbAnglePath = MotionPathPlugin.getRawPath(`#db-${this.id}`);
-    MotionPathPlugin.cacheRawPathMeasurements(this._dbAnglePath);
-    const makeMarker = (ang, isVerbose = true) => {
-      // const pathPos = gsap.utils.normalize(0, 360, ang);
-      const pathPos = Math.round(100 * gsap.utils.normalize(-180, 180, ang)) / 100;
-      const {x, y, angle: pathAngle} = MotionPathPlugin.getPositionOnPath(this._dbAnglePath, pathPos, true);
-      [this.angleGuide[ang]] = $(
-        isVerbose
-          ? `<div class="db angle-marker">${parseInt(pathAngle)}<br>${pathPos}</div>`
-          : `<div class="db angle-marker small-marker">${parseInt(pathAngle)}</div>`
-      ).appendTo(this.elem);
-      gsap.set(this.angleGuide[ang], {x, y, xPercent: -50, yPercent: -50, rotation: -1 * this.rotation});
-    };
-    this.hideAngles();
-    if (isShowingAll) {
-      [...Array(numGuides)]
-        .map((_, i) => gsap.utils.mapRange(0, numGuides, -180, 180, i))
-        .forEach((angle) => makeMarker(angle, true));
-    } else {
-      makeMarker(0, false);
-    }
-  }
-  hideAngles() { $(`#${this.id} .angle-marker`).remove() }
-  // #endregion ░░░░[ANGLE DISPLAY]░░░░
-  // #region ░░░░░░░[CONSOLE GETTERS]░░░░ Data Retrieval via Console Command ░░░░░░░ ~
-  getPathReport() {
-    const pathData = [0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1].map((pathPos) => {
-      const {x, y, angle} = MotionPathPlugin.getPositionOnPath(this.snap.path, pathPos, true);
-      const convCoords = this.alignLocalPointTo(XElem.CONTAINER, {x, y});
-      return {
-        pos: {x: parseInt(x), y: parseInt(y)},
-        convPos: {x: parseInt(convCoords.x), y: parseInt(convCoords.y)},
-        angle: parseInt(angle),
-        pathPos
-      };
-    });
-    console.log(pathData);
-  }
-  // #endregion ░░░░[CONSOLE GETTERS]░░░░
-  // #endregion ▄▄▄▄▄ TEST METHODS ▄▄▄▄▄
-  /*!DEVCODE*/
 }

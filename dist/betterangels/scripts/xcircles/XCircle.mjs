@@ -71,7 +71,7 @@ export default class XCircle extends MIX(XElem).with(HasSnapPath) {
     <div style="height: ${2 * radius}px; width: ${2 * radius}px;">
       <svg height="100%" width="100%">
         <circle cx="${radius}" cy="${radius}" r="${radius}" stroke="none"></circle>
-        <circle class="motion-path" cx="${radius}" cy="${radius}" r="${radius * 0.8}" fill="none" stroke="none"></circle>
+        <path class="motion-path" fill="none" stroke="none" d="m 100 20 c 44.2 0 80 35.8 80 80 c 0 44.2 -35.8 80 -80 80 c -44.2 0 -80 -35.8 -80 -80 c 0 -44.2 35.8 -80 80 -80 z"></path>
       </svg>
     </div>`);
     super(circle$, {
@@ -131,10 +131,10 @@ export default class XCircle extends MIX(XElem).with(HasSnapPath) {
   getSlotPositions(slots) { return (slots ?? this.slots).map((slotItem) => this.getSlotPos(slotItem)) }
   getSlotPathPositions(slots) { return this.getSlotPositions(slots).map((slotData) => slotData.pathPos) }
 
-  getNearestSlot({x, y}) {
+  getNearestSlot(xItem, xItemPoint) {
     // Determines closest slot to the provided point, relying on angle.
-    if ([x, y].includes(undefined)) { return false }
-    const {pathPos} = this._getPosOnCircle({x, y});
+    xItemPoint = xItemPoint ?? {x: xItem.x, y: xItem.y};
+    const {pathPos} = this.getPosOnCircle(xItem, xItemPoint);
     const pathVals = Array.from(this.pathMap.values());
     const upperSlot = Math.max(0, pathVals.findIndex((v) => v >= pathPos));
     const lowerSlot = upperSlot === 0 ? this.pathMap.size - 1 : upperSlot - 1;
@@ -193,9 +193,11 @@ export default class XCircle extends MIX(XElem).with(HasSnapPath) {
     [...Array(numDice)].forEach(() => this.addItem(new XDie({parent: this, type})));
     return this.distributeSlots(5);
   }
-  async createSnapPoint(targetItem, {x, y} = {}) {
-    ({x, y} = this._getPosOnCircle(x ?? targetItem.x, y ?? targetItem.y));
-    const snapItem = this.addItem(new XSnap(targetItem, {parent: this, properties: {x, y}}), this.getNearestSlot({x, y}));
+  async createSnapPoint(targetItem, targetPoint) {
+    targetPoint = this.getPosOnCircle(targetItem, targetPoint);
+    delete targetPoint.pathPos;
+    delete targetPoint.angle;
+    const snapItem = this.addItem(new XSnap(targetItem, {parent: this, properties: targetPoint}), this.getNearestSlot(targetItem, targetPoint));
     this.distributeSlots(0.25);
     return snapItem;
   }
@@ -203,12 +205,12 @@ export default class XCircle extends MIX(XElem).with(HasSnapPath) {
     // Pause rotation
     this._toggleSlowRotate(false);
     // Open snap point facing thrown item AND absolute angle
-    const {x, y} = this._getPosOnCircle(targetItem);
-    // const dbItem = this.addItem(new XSnap(targetItem, {parent: this, properties: {x, y}}), this.getNearestSlot({x, y}));
+    const {x, y} = this.getPosOnCircle(targetItem);
+    // const dbItem = this.addItem(new XSnap(targetItem, {parent: this, properties: {x, y}}), this.getNearestSlot(targetItem, {x, y}));
     // gsap.set(dbItem, {background: "purple"});
     // dbItem.parent = XElem.CONTAINER;
     const snapItem = this.createSnapPoint(targetItem);
-    const catchAngle = U.getAngle({x: targetItem.dragger.endX, y: targetItem.dragger.endY}, this);
+    const catchAngle = this.getAbsAngleTo(targetItem, {x: targetItem.dragger.endX, y: targetItem.dragger.endY});
     const {duration} = targetItem.dragger.tween;
     gsap.to(this.elem, {
       rotation: catchAngle,

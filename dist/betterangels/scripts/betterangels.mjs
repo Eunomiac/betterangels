@@ -10,7 +10,7 @@ import {
   // ▮▮▮▮▮▮▮[Constants]▮▮▮▮▮▮▮
   BETTERANGELS,
   // ▮▮▮▮▮▮▮[External Libraries]▮▮▮▮▮▮▮
-  gsap, Dragger, InertiaPlugin, MotionPathPlugin, // GreenSock Animation Platform
+  gsap, Dragger, InertiaPlugin, MotionPathPlugin, GSDevTools, // GreenSock Animation Platform
   // ▮▮▮▮▮▮▮[Utility]▮▮▮▮▮▮▮
   preloadTemplates, U,
   // ▮▮▮▮▮▮▮[Actors]▮▮▮▮▮▮▮
@@ -25,7 +25,7 @@ import {
   XItem, XDie, XSnap
 } from "./helpers/bundler.mjs";
 
-gsap.registerPlugin(Dragger, InertiaPlugin, MotionPathPlugin);
+gsap.registerPlugin(Dragger, InertiaPlugin, MotionPathPlugin, GSDevTools);
 
 // ████████ ON INIT: On-Initialization Hook ████████
 Hooks.once("init", async () => {

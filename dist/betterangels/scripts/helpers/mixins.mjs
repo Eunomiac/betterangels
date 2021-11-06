@@ -28,20 +28,22 @@ export const MIX = (superclass = class {}) => new MixinBuilder(superclass);
 export const HasMotionPath = (superclass) => class extends superclass {
   get path() { return this._path }
   set path(elem) {
-    const radius = gsap.getProperty(elem, "r");
+    // const radius = gsap.getProperty(elem, "r");
     gsap.set(elem, {
       xPercent: -50,
       yPercent: -50,
       transformOrigin: "50% 50%"
     });
     $(elem).attr("id", `${this.id}-motion-path`);
-    [elem] = MotionPathPlugin.convertToPath(elem);
+    // [elem] = MotionPathPlugin.convertToPath(elem);
+    // m 100 20 c 44.2 0 80 35.8 80 80 c 0 44.2 -35.8 80 -80 80 c -44.2 0 -80 -35.8 -80 -80 c 0 -44.2 35.8 -80 80 -80 z
     this._path = {
       id: `${this.id}-motion-path`,
       elem,
       raw: MotionPathPlugin.getRawPath(elem),
-      radius
+      radius: U.pInt(U.regExtract($(elem).attr("d"), /(\d+)\s*z$/gui))
     };
+    console.log(`PATH RADIUS: ${this._path.radius}`);
     MotionPathPlugin.cacheRawPathMeasurements(this.path.raw);
   }
 
@@ -58,8 +60,9 @@ export const HasMotionPath = (superclass) => class extends superclass {
     const {x, y, angle} = MotionPathPlugin.getPositionOnPath(this.path.raw, pathPos, true);
     return {x, y, angle, pathPos};
   }
-  _getPosOnCircle({pathPos, x, y} = {}) {
-    pathPos = pathPos ?? gsap.utils.normalize(-180, 180, this._getRelAngleTo({x, y}));
+  getPosOnCircle(xItem, {pathPos, x, y} = {}) {
+    pathPos = pathPos ?? gsap.utils.normalize(-180, 180, U.cycleNum(this.getRelAngleTo(xItem, {x: x ?? xItem.x, y: y ?? xItem.y}) - 90, [-180, 180]));
+    // pathPos = pathPos ?? gsap.utils.normalize(-180, 180, this.getRelAngleTo(xItem, {x: x ?? xItem.x, y: y ?? xItem.y}));
     return this._getPosOnPath(pathPos);
   }
 };
@@ -158,9 +161,7 @@ export const SnapsToCircle = (superclass) => class extends IsDraggable(superclas
     };
   }
 
-  get pathPos() {
-    return this.circle._getPosOnCircle({x: this.x, y: this.y}).pathPos;
-  }
+  get pathPos() { return this.circle.getPosOnCircle(this).pathPos }
 
   get pathWeight() { return (this._pathWeight = this._pathWeight ?? this.options.pathWeight ?? 1) }
   set pathWeight(v) { this._pathWeight = v }
@@ -170,11 +171,11 @@ export const SnapsToCircle = (superclass) => class extends IsDraggable(superclas
 
   async setPathPos(targetPos, duration = 0.5) {
     if (!this.circle) { return Promise.reject() }
-    if (targetPos === this.targetPathPos) { return Promise.resolve() }
+    // if (targetPos === this.targetPathPos) { return Promise.resolve() }
     this.targetPathPos = targetPos;
     const {pathPos} = this;
-    while (this.targetPathPos < pathPos) { this.targetPathPos++ }
-    while (Math.abs(pathPos - this.targetPathPos) > 0.5) { this.targetPathPos-- }
+    // while (this.targetPathPos < pathPos) { this.targetPathPos++ }
+    // while (Math.abs(pathPos - this.targetPathPos) > 0.5) { this.targetPathPos-- }
     return new Promise((resolve, reject) => {
       gsap.to(this.elem, {
         motionPath: {
@@ -207,6 +208,8 @@ export const SnapsToCircle = (superclass) => class extends IsDraggable(superclas
   }
 
   _onDragStart(...args) {
+    delete this._snapPoint;
+    delete this._snapCircle;
     super._onDragStart(...args);
     this.circle?.removeItem(this);
     this.circle?.distributeSlots();
@@ -217,16 +220,21 @@ export const SnapsToCircle = (superclass) => class extends IsDraggable(superclas
     super._onDrag(point, ...args);
   }
   _onSnap(point) {
-    super._onSnap(point);
-    const {x, y, circle} = XCircle.Snap(point);
-    return {x, y};
+    if (!this._snapPoint) {
+      super._onSnap(point);
+      const {x, y, circle} = XCircle.Snap(point);
+      this._snapPoint = {x, y};
+      this._snapCircle = circle;
+    }
+    return this._snapPoint;
   }
   _onDragEnd() {
     super._onDragEnd();
-    this._snapPoint = {x: this.endX, y: this.endY};
-    const {circle} = XCircle.Snap(this._snapPoint);
-    this._snapCircle = circle;
+    // this._snapPoint = {x: this.endX, y: this.endY};
+    // const {circle} = XCircle.Snap(this._snapPoint);
+    // this._snapCircle = circle;
     this._snapCircle.catchThrownItem(this);
+    // gsap.globalTimeline.pause();
   }
   _onThrowComplete() {
     super._onThrowComplete();

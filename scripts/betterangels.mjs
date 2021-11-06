@@ -4,7 +4,7 @@ import {
   BETTERANGELS,
   // #endregion ▮▮▮▮[Constants]▮▮▮▮
   // #region ▮▮▮▮▮▮▮[External Libraries]▮▮▮▮▮▮▮ ~
-  gsap, Dragger, InertiaPlugin, MotionPathPlugin, // GreenSock Animation Platform
+  gsap, Dragger, InertiaPlugin, MotionPathPlugin, GSDevTools, // GreenSock Animation Platform
   // #endregion ▮▮▮▮[External Libraries]▮▮▮▮
   // #region ▮▮▮▮▮▮▮[Utility]▮▮▮▮▮▮▮ ~
   preloadTemplates, U,
@@ -23,8 +23,10 @@ import {
   XItem, XDie, XSnap
   // #endregion ▮▮▮▮[XCircles]▮▮▮▮
 } from "./helpers/bundler.mjs";
+/*DEVCODE*/ import DB from "./helpers/debug.mjs"; /*!DEVCODE*/
 
-gsap.registerPlugin(Dragger, InertiaPlugin, MotionPathPlugin);
+gsap.registerPlugin(Dragger, InertiaPlugin, MotionPathPlugin, GSDevTools);
+
 // #endregion ▄▄▄▄▄ IMPORTS ▄▄▄▄▄
 
 /*DEVCODE*/console.log("STARTING BETTER ANGELS");/*!DEVCODE*/
@@ -65,7 +67,8 @@ Hooks.once("init", async () => {
 const GenerateCircles = (circles = {center: 0}) => {
   window.CIRCLES = window.CIRCLES ?? [];
   const circleParams = {
-    center: [635, 414],
+    zeroed: [0, 0],
+    center: [375, 414],
     topLeft: [100, 100],
     topRight: [100, 1370],
     left: [100, 414],
@@ -83,7 +86,7 @@ const GenerateCircles = (circles = {center: 0}) => {
 
 Hooks.once("ready", () => {
   window.REF = game.betterangels;
-  window.DB = {
+  Object.assign(DB, {
     BetterAngelsActor,
     BetterAngelsActorSheet,
     HellboundActorSheet,
@@ -98,17 +101,31 @@ Hooks.once("ready", () => {
     XDie,
     XSnap,
     gsap,
-    MotionPathPlugin
-  };
+    MotionPathPlugin,
+    GSDevTools,
+    pause() { gsap.globalTimeline.pause() },
+    play() { gsap.globalTimeline.play() }
+  });
+  window.DB = DB;
   window.U = U;
   window.GenerateCircles = GenerateCircles;
+
   GenerateCircles({topLeft: 2, left: 8, botLeft: 5});
-  window.CIRCLES[0].showAngles(16, true);
-  window.SHOWSNAPS = () => { // PING({x, y}, parentID, {radius = 20, color = "yellow"} = {}) {
-    XCircle.SNAPPOINTS.forEach((circle, point) => {
-      XCircle.PING(point, undefined, {color: circle.type});
-    });
-  };
+
+  return;
+  GenerateCircles({center: 4});
+
+  // window.CIRCLES[0]._toggleSlowRotate(false);
+  DB.setDBCircle(window.CIRCLES[0]);
+  DB.setDBDie(window.CIRCLES[0].slots[0]);
+  DB.showAngles(window.CIRCLES[0], 8, true);
+  DB.addDieWatch(["dbRelPos"]);
+  DB.addDieWatch(["pathPos", "targetPathPos"]);
+  DB.addDieWatch(["dbAbsAngle", "dbRelAngle"]);
+  DB.addDieWatch(["dbAbsPos"]);
+  // setTimeout(() => DB.pause(), 10000);
+
+  DB.showDieData(window.CIRCLES[0]);
 });
 /*!DEVCODE*/
 /**

@@ -673,7 +673,7 @@ const cycleNum = (num, [min = 0, max = Infinity] = []) => gsap.utils.wrap(min, m
 const roundNum = (num, sigDigits = 0) => (sigDigits === 0 ? pInt(num) : pFloat(num, sigDigits));
 // #region ░░░░░░░[Positioning]░░░░ Relationships On 2D Cartesian Plane ░░░░░░░ ~
 const getDistance = ({x: x1, y: y1}, {x: x2, y: y2}) => ((x1 - x2) ** 2 + (y1 - y2) ** 2) ** 0.5;
-const getAngle = ({x: x0, y: y0}, {x: xT, y: yT}) => radToDeg(Math.atan2(yT - y0, xT - x0));
+const getAngle = ({x: x0, y: y0}, {x: xT, y: yT}) => radToDeg(Math.atan2(yT - y0, xT - x0)); // cycleNum(radToDeg(Math.atan2(yT - y0, xT - x0)), [-180, 180]);
 const getAngleDelta = (angleStart, angleEnd) => cycleNum(angleEnd - angleStart, [-180, 180]);
 // #endregion ░░░░[Positioning]░░░░
 // #endregion ▄▄▄▄▄ NUMBERS ▄▄▄▄▄
@@ -694,6 +694,11 @@ const makeCycler = (array, index = 0) => {
   }());
 };
 const getLast = (array) => (array.length ? array[array.length - 1] : undefined);
+const unique = (array) => {
+  const returnArray = [];
+  array.forEach((item) => { if (!returnArray.includes(item)) { returnArray.push(item) } });
+  return returnArray;
+};
 /*~ #region TO PROCESS: ARRAY FUNCTIONS: Last, Flip, Insert, Change, Remove
 export const Last = (arr) => (Array.isArray(arr) && arr.length ? arr[arr.length - 1] : undefined);
 export const Flip = (arr) => Clone(arr).reverse();
@@ -988,6 +993,7 @@ export default {
   randElem, randIndex,
   makeCycler,
   getLast,
+  unique,
 
   // ████████ OBJECTS: Manipulation of Simple Key/Val Objects ████████
   partition,

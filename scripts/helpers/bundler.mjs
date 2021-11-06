@@ -3,7 +3,8 @@ export {default as BETTERANGELS} from "./config.mjs";
 export {default as gsap,
   Draggable as Dragger,
   InertiaPlugin,
-  MotionPathPlugin
+  MotionPathPlugin,
+  GSDevTools
 } from "/scripts/greensock/esm/all.js"; // eslint-disable-line import/no-unresolved
 
 export {default as U} from "./utilities.mjs";
