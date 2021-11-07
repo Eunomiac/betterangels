@@ -198,7 +198,7 @@
     .x-container .x-circle > svg {
       top: 0;
       left: 0; }
-      .x-container .x-circle > svg circle {
+      .x-container .x-circle > svg .circle-path {
         fill: var(--circle-color); }
     .x-container .x-circle.x-circle-basic {
       --circle-color: lime; }
@@ -268,8 +268,8 @@
     .x-container .x-circle table.db.db-display td.db {
       padding: 0;
       margin: 0;
-      font-size: 10px;
-      line-height: 9px;
+      font-size: 12px;
+      line-height: 11px;
       text-shadow: 0 0 0 black;
       -webkit-transform: scaleX(0.75);
       -ms-transform: scaleX(0.75);

@@ -670,11 +670,15 @@ const randNum = (min, max, snap = 0) => gsap.utils.random(min, max, snap);
 const randInt = (min, max) => randNum(min, max, 1);
 const coinFlip = () => randNum(0, 1, 1) === 1;
 const cycleNum = (num, [min = 0, max = Infinity] = []) => gsap.utils.wrap(min, max, num);
+const cycleAngle = (angle) => cycleNum(angle, [-180, 180]);
 const roundNum = (num, sigDigits = 0) => (sigDigits === 0 ? pInt(num) : pFloat(num, sigDigits));
 // #region ░░░░░░░[Positioning]░░░░ Relationships On 2D Cartesian Plane ░░░░░░░ ~
 const getDistance = ({x: x1, y: y1}, {x: x2, y: y2}) => ((x1 - x2) ** 2 + (y1 - y2) ** 2) ** 0.5;
-const getAngle = ({x: x0, y: y0}, {x: xT, y: yT}) => radToDeg(Math.atan2(yT - y0, xT - x0)); // cycleNum(radToDeg(Math.atan2(yT - y0, xT - x0)), [-180, 180]);
-const getAngleDelta = (angleStart, angleEnd) => cycleNum(angleEnd - angleStart, [-180, 180]);
+const getAngle = ({x: x1, y: y1}, {x: x2, y: y2}, {x: xO = 0, y: yO = 0} = {}) => {
+  x1 -= xO; y1 -= yO; x2 -= xO; y2 -= yO;
+  return cycleAngle(radToDeg(Math.atan2(y2 - y1, x2 - x1)));
+};
+const getAngleDelta = (angleStart, angleEnd) => cycleAngle(angleEnd - angleStart);
 // #endregion ░░░░[Positioning]░░░░
 // #endregion ▄▄▄▄▄ NUMBERS ▄▄▄▄▄
 
@@ -941,12 +945,32 @@ const getDynamicFunc = (funcName, func, context) => {
 const get = (...args) => gsap.getProperty(...args);
 const set = (...args) => gsap.set(...args);
 // #endregion ░░░░[GreenSock]░░░░
-// #region ░░░░░░░[CSS]░░░░ CSS Styles Parsing ░░░░░░░ ~
+const getRawCirclePath = (r, {x: xO, y: yO} = {}) => {
+  [r, xO, yO] = [r, xO, yO].map((val) => parseInt(val)); // roundNum(val, 2));
+  const [b1, b2] = [0.4475 * r, (1 - 0.4475) * r];
+  const [xT, yT] = [xO, yO - r];
+  return [[
+    ...[xT, yT],
+    ...[b2, 0, r, b1, r, r],
+    ...[0, b2, -b1, r, -r, r],
+    ...[-b2, 0, -r, -b1, -r, -r],
+    ...[0, -b2, b1, -r, r, -r]
+  ]];
+};
+const drawCirclePath = (radius, origin) => {
+  const [[xT, yT, ...segments]] = getRawCirclePath(radius, origin);
+  const path = [`m ${xT} ${yT}`];
+  segments.forEach((coord, i) => {
+    if (i % 6 === 0) { path.push("c") }
+    path.push(coord);
+  });
+  path.push("z");
+  console.log(path.join(" "));
+  return path.join(" ");
+};
 const formatAsClass = (str) => `${str}`.replace(/([A-Z])|\s/g, "-$1").replace(/^-/, "").trim().toLowerCase();
-// #endregion ░░░░[CSS]░░░░
-// #region ░░░░░░░[Positioning]░░░░ Positioning of DOM Elements ░░░░░░░ ~
 const getGSAngleDelta = (startAngle, endAngle) => signNum(roundNum(getAngleDelta(startAngle, endAngle), 2)).replace(/^(.)/, "$1=");
-// #endregion ░░░░[Positioning]░░░░
+
 // #endregion ▄▄▄▄▄ HTML ▄▄▄▄▄
 
 // #region ████████ EXPORTS ████████ ~
@@ -984,7 +1008,7 @@ export default {
   // ████████ NUMBERS: Number Casting, Mathematics, Conversion ████████
   randNum, randInt,
   coinFlip,
-  cycleNum, roundNum,
+  cycleNum, cycleAngle, roundNum,
   // ░░░░░░░ Positioning ░░░░░░░
   getDistance,
   getAngle, getAngleDelta,
@@ -1006,9 +1030,9 @@ export default {
   // ████████ HTML: Parsing HTML Code, Manipulating DOM Objects ████████
   // ░░░░░░░ GreenSock ░░░░░░░
   gsap, get, set,
-  // ░░░░░░░ CSS ░░░░░░░
+
+  getRawCirclePath, drawCirclePath,
   formatAsClass,
-  // ░░░░░░░ Positioning ░░░░░░░
   getGSAngleDelta
 };
 // #endregion ▄▄▄▄▄ EXPORTS ▄▄▄▄▄

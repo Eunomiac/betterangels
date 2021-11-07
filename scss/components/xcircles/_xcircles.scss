@@ -1,3 +1,4 @@
+// $is-debugging: false;
 $is-debugging: true;
 $die-size: 30px; // will want to remove this; set all size/position in js
 
@@ -25,7 +26,7 @@ $padding-right: 350px;
     > svg {
       top: 0;
       left: 0;
-      circle { fill: var(--circle-color) }
+      .circle-path { fill: var(--circle-color) }
     }
 
     &.x-circle-basic { --circle-color: #{$c-lime}; }
@@ -127,8 +128,8 @@ $padding-right: 350px;
         td.db {
           padding: 0;
           margin: 0;
-          font-size: 10px;
-          line-height: 9px;
+          font-size: 12px;
+          line-height: 11px;
           text-shadow: 0 0 0 black;
           transform: scaleX(0.75);
           transform-origin: left;

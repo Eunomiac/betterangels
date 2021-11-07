@@ -14,9 +14,21 @@ import {
 } from "./bundler.mjs";
 // #endregion ▄▄▄▄▄ IMPORTS ▄▄▄▄▄
 
-class DB {
-  constructor() {
+const TESTCIRCLES = {
+  zeroed: [0, 0],
+  center: [375, 414],
+  topLeft: [100, 100],
+  topRight: [1370, 100],
+  left: [100, 414],
+  right: [1370, 414],
+  botLeft: [100, 729],
+  botRight: [1370, 729]
+};
+export default class {
+  constructor(circles) {
     [this._DBCONTAINER] = $("<div id=\"dbContainer\" class=\"db x-container\" />").appendTo(".vtt.game");
+    this.generateCircles(circles);
+    this.toggleDiceShowSlot(true);
   }
   get DBCONTAINER() { return this._DBCONTAINER }
 
@@ -38,6 +50,19 @@ class DB {
     this.hideDisplay();
     // this._isDBActive = false;
   }
+
+  // #region ████████ Test Circle Generation: Creating XCircles & Populating with XDice ████████ ~
+  generateCircles(circles = {center: 5}) {
+    window.CIRCLES = window.CIRCLES ?? [];
+    const circleTyper = U.makeCycler(Object.values(XCircle.TYPES));
+    const newCircles = [];
+    for (const [circlePos, numDice] of Object.entries(circles)) {
+      const thisCircle = new XCircle(...TESTCIRCLES[circlePos], 100, {type: circleTyper.next().value});
+      thisCircle.createDice(numDice);
+      window.CIRCLES.push(thisCircle);
+    }
+  }
+  // #endregion ▄▄▄▄▄ Test Circle Generation ▄▄▄▄▄
 
   // #region ████████ SHOW ANGLES: Showing Angles & Path Positions Along XCircles ████████ ~
   get isShowingAnglesFor() { return (this._isShowingAngles = this._isShowingAngles ?? []) }
@@ -61,32 +86,24 @@ class DB {
   showAngles(circle, numGuides = 4, isShowingAll = false) {
     [circle._dbAngleContainer] = $(`
     <svg height="100%" width="100%">
-      <path id="db-${circle.id}" class="db snap-circle" fill="none" stroke="none" d="m 100 -20 c 66.3 0 120 53.7 120 120 c 0 66.3 -53.7 120 -120 120 c -66.3 0 -120 -53.7 -120 -120 c 0 -66.3 53.7 -120 120 -120 z"></path>
-      <circle id="db-${circle.id}" class="db snap-circle" cx="${circle.radius}" cy="${circle.radius}" r="${circle.radius * 1.25}" fill="none" stroke="none" />
+      <path id="db-${circle.id}" class="db snap-circle" fill="none" stroke="none" d="${U.drawCirclePath(circle.radius * 1.25, {x: circle.radius, y: circle.radius})}"></path>
     </svg>
     `).appendTo(this.DBCONTAINER);
     gsap.set(circle._dbAngleContainer, {xPercent: -50, yPercent: -50, x: circle.x, y: circle.y});
     circle._dbAnglePath = MotionPathPlugin.getRawPath(`#db-${circle.id}`);
     MotionPathPlugin.cacheRawPathMeasurements(circle._dbAnglePath);
-    const makeMarker = (ang, isVerbose = true) => {
+    const makeMarker = (ang) => {
       circle.angleGuide = circle.angleGuide ?? {};
       const pathPos = Math.round(100 * gsap.utils.normalize(-180, 180, ang)) / 100;
       const {x, y, angle: pathAngle} = MotionPathPlugin.getPositionOnPath(circle._dbAnglePath, pathPos, true);
-      [circle.angleGuide[ang]] = $(
-        isVerbose
-          ? `<div class="db angle-marker">${parseInt(pathAngle)}<br>${pathPos}</div>`
-          : `<div class="db angle-marker small-marker">${parseInt(pathAngle)}</div>`
-      ).appendTo(circle.elem);
+      [circle.angleGuide[ang]] = $(`<div class="db angle-marker">${parseInt(pathAngle)}<br>${pathPos}</div>`)
+        .appendTo(circle.elem);
       gsap.set(circle.angleGuide[ang], {x, y, xPercent: -50, yPercent: -50, rotation: -1 * circle.rotation});
     };
     this.hideAngles(circle);
-    if (isShowingAll) {
-      [...Array(numGuides)]
-        .map((_, i) => gsap.utils.mapRange(0, numGuides, -180, 180, i))
-        .forEach((angle) => makeMarker(angle, true));
-    } else {
-      makeMarker(0, false);
-    }
+    [...Array(numGuides)]
+      .map((_, i) => gsap.utils.mapRange(0, numGuides, -180, 180, i))
+      .forEach((angle) => makeMarker(angle));
     circle._dbAngleStraightener = this.getStraightenFunc(circle);
     gsap.ticker.add(circle._dbAngleStraightener);
   }
@@ -105,7 +122,6 @@ class DB {
       circle.drawPathMap();
       circle.distributeSlots(10);
     }
-
   }
   // #endregion ▄▄▄▄▄ XCircles ▄▄▄▄▄
 
@@ -143,6 +159,10 @@ class DB {
       }
     }[`${circle.id}DieUpdater`];
   }
+  toggleDiceShowSlot(isShowingSlot = true) {
+    XElem.ALL.filter((item) => item instanceof XDie)
+      .forEach((die) => (die.text = isShowingSlot ? die.slot : ""));
+  }
   addDieWatch(dieKeys) {
     this.dieWatchData.push([dieKeys].flat());
   }
@@ -160,7 +180,7 @@ class DB {
       if (item instanceof XDie) {
         item.$.removeClass("db-display");
         item.$.removeClass("db-flagged");
-        item.html(item.slot);
+        item.text = item.slot;
       }
     });
     gsap.ticker.remove(circle._dbDieDataFunc);
@@ -168,16 +188,15 @@ class DB {
 
   // #endregion ▄▄▄▄▄ XDie ▄▄▄▄▄
   // #region ████████ PING: Ping Notification Display ████████ ~
-  ping({x, y}, parentID, {radius = 20, color = "yellow"} = {}) {
+  ping({x, y}, {radius = 20, color = "yellow", contextElem} = {}) {
     const [pingElem] = $(`<svg class="db" height="100%" width="100%">
       <circle cx="${radius}" cy="${radius}" r="${radius}" fill="${color}" stroke="none" />
     </svg>`)
       .appendTo(this.DBCONTAINER)
       .children()
       .last();
-    if (parentID) {
-      const [parentContext] = $(parentID);
-      ({x, y} = MotionPathPlugin.convertCoordinates(parentContext, this.DBCONTAINER.elem, {x, y}));
+    if (contextElem) {
+      ({x, y} = MotionPathPlugin.convertCoordinates(contextElem, this.DBCONTAINER.elem, {x, y}));
     }
     gsap.set(pingElem, {xPercent: -50, yPercent: -50, transformOrigin: "50% 50%", x, y});
     gsap.to(pingElem, {
@@ -200,6 +219,11 @@ class DB {
       }
     });
   }
+  pingSnaps() {
+    XCircle.SNAPPOINTS.forEach((circle, point) => {
+      this.ping(point, {color: circle.type === "basic" ? "lime" : circle.type});
+    });
+  }
   // #endregion ▄▄▄▄▄ PING ▄▄▄▄▄
 
   // #region ████████ REPORTS: To-Console Data Reporting ████████ ~
@@ -218,5 +242,3 @@ class DB {
   }
   // #endregion ▄▄▄▄▄ REPORTS ▄▄▄▄▄
 }
-
-export default new DB();

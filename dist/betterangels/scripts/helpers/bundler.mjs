@@ -11,7 +11,8 @@ export {default as gsap,
   Draggable as Dragger,
   InertiaPlugin,
   MotionPathPlugin,
-  GSDevTools
+  GSDevTools,
+  RoughEase
 } from "/scripts/greensock/esm/all.js";
 
 export {default as U} from "./utilities.mjs";

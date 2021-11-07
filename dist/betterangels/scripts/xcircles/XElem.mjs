@@ -140,6 +140,7 @@ export default class XElem {
   get $() { return this._$ }
   get elem() { return this._elem }
   get name() { return this._name }
+  get shortName() { return this._name.replace(/^.+_([^_]+_\d+)$/, "$1") }
   get id() { return this._id }
   get sel() { return (this._sel = this._sel ?? `#${this.id}`) }
   get tag() { return this.elem.tagName }
@@ -177,7 +178,7 @@ export default class XElem {
     });
   }
 
-  get rotation() { return gsap.getProperty(this.elem, "rotation") }
+  get rotation() { return U.cycleNum(gsap.getProperty(this.elem, "rotation"), [-180, 180]) }
   set rotation(v) {
     if (/^[+-]=/.test(`${v}`)) {
       v = this.rotation + U.pFloat(`${v}`.replace(/=/g, ""));
@@ -193,7 +194,7 @@ export default class XElem {
     if (posRef instanceof XElem) {
       posRef = posRef.absPos;
     }
-    return U.getAngle(this.absPos, posRef);
+    return U.cycleAngle(U.getAngle(this.absPos, posRef) + 90);
   }
   getRelAngleTo(posRef) { return U.getAngleDelta(this.rotation, this.getAbsAngleTo(posRef)) }
   getDistanceTo(posRef) {
@@ -218,6 +219,9 @@ export default class XElem {
   alignLocalPointTo(targetSpace, point) {
     return MotionPathPlugin.convertCoordinates(this.elem, targetSpace.elem, point);
   }
+  alignGlobalPointTo(targetSpace, point) {
+    return MotionPathPlugin.convertCoordinates(XElem.CONTAINER.elem, targetSpace.elem, point);
+  }
 
   // ████████ REPARENTING: Reparenting & Converting Coordinates ████████
   get parent() { return this._parent }
@@ -225,6 +229,7 @@ export default class XElem {
     if (newParent instanceof XElem) {
       const {x, y} = this.alignOriginTo(newParent);
       this.$.appendTo(newParent.elem);
+      this._parent = newParent;
       this.set({x, y});
     } else {
       throw new Error(`[${this.constructor.name}.parent] No element found for '${newParent}'`);

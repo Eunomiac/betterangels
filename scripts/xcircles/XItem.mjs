@@ -98,7 +98,7 @@ class XSnap extends MIX(XItem).with(SnapsToCircle) {
       ...super.DEFAULT_DATA,
       PREFIX: "xSnap",
       CLASSES: [...super.DEFAULT_DATA.CLASSES, "x-snap"],
-      MINWEIGHT: 1.5,
+      MINWEIGHT: 2,
       MAXWEIGHT: 3
     };
   }
@@ -135,12 +135,6 @@ class XSnap extends MIX(XItem).with(SnapsToCircle) {
 
   get snapTarget() { return this._snapTarget }
   get targetDistance() { return Math.max(0, U.getDistance(this.circle, this.snapTarget) - this.circle.path.radius) }
-
-  get pathWeight() {
-    this._pathWeightInterpolator = gsap.utils.interpolate(this.constructor.DEFAULT_DATA.MINWEIGHT, this.constructor.DEFAULT_DATA.MAXWEIGHT);
-    this._pathWeight = this._pathWeightInterpolator(gsap.utils.normalize(0, 2000, this.targetDistance));
-    return super.pathWeight;
-  }
 }
 
 // #region ████████ EXPORTS ████████ ~

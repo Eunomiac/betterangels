@@ -4,7 +4,7 @@ import {
   BETTERANGELS,
   // #endregion ▮▮▮▮[Constants]▮▮▮▮
   // #region ▮▮▮▮▮▮▮[External Libraries]▮▮▮▮▮▮▮ ~
-  gsap, Dragger, InertiaPlugin, MotionPathPlugin, GSDevTools, // GreenSock Animation Platform
+  gsap, Dragger, InertiaPlugin, MotionPathPlugin, GSDevTools, RoughEase, // GreenSock Animation Platform
   // #endregion ▮▮▮▮[External Libraries]▮▮▮▮
   // #region ▮▮▮▮▮▮▮[Utility]▮▮▮▮▮▮▮ ~
   preloadTemplates, U,
@@ -23,7 +23,7 @@ import {
   XItem, XDie, XSnap
   // #endregion ▮▮▮▮[XCircles]▮▮▮▮
 } from "./helpers/bundler.mjs";
-/*DEVCODE*/ import DB from "./helpers/debug.mjs"; /*!DEVCODE*/
+/*DEVCODE*/ import BA_DB from "./helpers/debug.mjs"; /*!DEVCODE*/
 
 gsap.registerPlugin(Dragger, InertiaPlugin, MotionPathPlugin, GSDevTools);
 
@@ -64,29 +64,16 @@ Hooks.once("init", async () => {
 // #endregion ▄▄▄▄▄ ON INIT ▄▄▄▄▄
 
 /*DEVCODE*/
-const GenerateCircles = (circles = {center: 0}) => {
-  window.CIRCLES = window.CIRCLES ?? [];
-  const circleParams = {
-    zeroed: [0, 0],
-    center: [375, 414],
-    topLeft: [100, 100],
-    topRight: [100, 1370],
-    left: [100, 414],
-    right: [1370, 414],
-    botLeft: [100, 729],
-    botRight: [1370, 729]
-  };
-  const circleTyper = U.makeCycler(Object.values(XCircle.TYPES));
-  const newCircles = [];
-  for (const [circlePos, numDice] of Object.entries(circles)) {
-    window.CIRCLES.unshift(new XCircle(...circleParams[circlePos], 100, {type: circleTyper.next().value}));
-    window.CIRCLES[0].createDice(numDice);
-  }
-};
-
 Hooks.once("ready", () => {
   window.REF = game.betterangels;
-  Object.assign(DB, {
+  window.DB = new BA_DB({
+    topLeft: 10,
+    botLeft: 5,
+    topRight: 6,
+    botRight: 4
+  });
+  Object.entries({
+    U,
     BetterAngelsActor,
     BetterAngelsActorSheet,
     HellboundActorSheet,
@@ -103,29 +90,17 @@ Hooks.once("ready", () => {
     gsap,
     MotionPathPlugin,
     GSDevTools,
-    pause() { gsap.globalTimeline.pause() },
-    play() { gsap.globalTimeline.play() }
-  });
-  window.DB = DB;
-  window.U = U;
-  window.GenerateCircles = GenerateCircles;
-
-  GenerateCircles({topLeft: 2, left: 8, botLeft: 5});
-
-  return;
-  GenerateCircles({center: 4});
-
-  // window.CIRCLES[0]._toggleSlowRotate(false);
-  DB.setDBCircle(window.CIRCLES[0]);
-  DB.setDBDie(window.CIRCLES[0].slots[0]);
-  DB.showAngles(window.CIRCLES[0], 8, true);
-  DB.addDieWatch(["dbRelPos"]);
-  DB.addDieWatch(["pathPos", "targetPathPos"]);
-  DB.addDieWatch(["dbAbsAngle", "dbRelAngle"]);
-  DB.addDieWatch(["dbAbsPos"]);
-  // setTimeout(() => DB.pause(), 10000);
-
-  DB.showDieData(window.CIRCLES[0]);
+    pause: () => gsap.globalTimeline.pause(),
+    play: () => gsap.globalTimeline.play()
+  }).forEach(([key, ref]) => { window[key] = ref });
+  window.DB.setDBCircle(window.CIRCLES[0]);
+  window.DB.showAngles(window.CIRCLES[0], 8, true);
+  // DB.addDieWatch(["dbRelPos"]);
+  window.DB.addDieWatch(["pathPos", "targetPathPos"]);
+  window.DB.addDieWatch(["dbAbsAngle", "dbRelAngle"]);
+  // DB.addDieWatch(["dbAbsPos"]);
+  // DB.setDBDie(window.CIRCLES[1].slots[2]);
+  // DB.showDieData(window.CIRCLES[1]);
 });
 /*!DEVCODE*/
 /**

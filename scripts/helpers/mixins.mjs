@@ -41,11 +41,10 @@ export const HasMotionPath = (superclass) => class extends superclass {
       raw: MotionPathPlugin.getRawPath(elem),
       radius: U.pInt(U.regExtract($(elem).attr("d"), /(\d+)\s*z$/gui))
     };
-    console.log(`PATH RADIUS: ${this._path.radius}`);
     MotionPathPlugin.cacheRawPathMeasurements(this.path.raw);
   }
 
-  constructor($obj, {pathProperties = {}, ...options} = {}) {
+  constructor($obj, {path: pathData, pathProperties = {}, ...options} = {}) {
     super($obj, options);
     const [path] = this.$.find(".motion-path");
     gsap.set(path, U.objFilter({
@@ -59,8 +58,7 @@ export const HasMotionPath = (superclass) => class extends superclass {
     return {x, y, angle, pathPos};
   }
   getPosOnCircle(xItem, {pathPos, x, y} = {}) {
-    pathPos = pathPos ?? gsap.utils.normalize(-180, 180, U.cycleNum(this.getRelAngleTo(xItem, {x: x ?? xItem.x, y: y ?? xItem.y}) - 90, [-180, 180]));
-    // pathPos = pathPos ?? gsap.utils.normalize(-180, 180, this.getRelAngleTo(xItem, {x: x ?? xItem.x, y: y ?? xItem.y}));
+    pathPos = pathPos ?? gsap.utils.normalize(0, 360, U.cycleNum(this.getRelAngleTo(xItem, {x: x ?? xItem.x, y: y ?? xItem.y}), [0, 360]));
     return this._getPosOnPath(pathPos);
   }
 };
@@ -128,7 +126,8 @@ export const IsDraggable = (superclass) => class extends superclass {
         inertia: true,
         callbackScope: this,
         minDuration: 2,
-        throwResistance: 100,
+        throwResistance: 4000,
+        edgeResistance: 1000,
         onDragStart() { return this._onDragStart() },
         onDrag(point) { return this._onDrag(point) },
         snap: {points(point) { return _this._onSnap(point) }},
@@ -185,7 +184,7 @@ export const SnapsToCircle = (superclass) => class extends IsDraggable(superclas
         },
         duration,
         callbackScope: this,
-        ease: "power4.out",
+        ease: "power4.inOut",
         onStart() {
           this.isMoving = true;
         },
@@ -208,9 +207,12 @@ export const SnapsToCircle = (superclass) => class extends IsDraggable(superclas
   _onDragStart(...args) {
     delete this._snapPoint;
     delete this._snapCircle;
+    delete this._startCircle;
     super._onDragStart(...args);
-    this.circle?.removeItem(this);
-    this.circle?.distributeSlots();
+    if (this.circle) {
+      this._startCircle = this.circle;
+      this.circle.pluckItem(this);
+    }
     this.parent = XCircle.CONTAINER;
     this.straighten();
   }
@@ -220,7 +222,7 @@ export const SnapsToCircle = (superclass) => class extends IsDraggable(superclas
   _onSnap(point) {
     if (!this._snapPoint) {
       super._onSnap(point);
-      const {x, y, circle} = XCircle.Snap(point);
+      const {x, y, circle} = XCircle.Snap(point, this._startCircle);
       this._snapPoint = {x, y};
       this._snapCircle = circle;
     }
@@ -232,26 +234,28 @@ export const SnapsToCircle = (superclass) => class extends IsDraggable(superclas
     // const {circle} = XCircle.Snap(this._snapPoint);
     // this._snapCircle = circle;
     this._snapCircle.catchThrownItem(this);
+
     // gsap.globalTimeline.pause();
   }
   _onThrowComplete() {
     super._onThrowComplete();
     this.circle = this._snapCircle;
-    this.circle._toggleSlowRotate(true);
+    this.circle.grabThrownItem(this);
+    /* this.circle._toggleSlowRotate(true);
     gsap.fromTo(this.elem, this._snapPoint, {
       x: this._snapCircle.x,
       y: this._snapCircle.y,
       opacity: 0.4,
-      ease: "expo.out",
+      ease: "expo.in",
       duration: 1,
       callbackScope: this,
       onComplete() {
         gsap.to(this.elem, {opacity: 1, duration: 0.5});
-        this._snapCircle.swapItem(this).kill();
-        this._snapCircle.distributeSlots();
-        this._snapCircle._toggleSlowRotate(true);
+        this.circle.swapItem(this).kill();
+        this.circle.distributeSlots();
+        this.circle._toggleSlowRotate(true);
       }
-    });
+    }); */
   }
 
 };

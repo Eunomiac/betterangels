@@ -10,7 +10,7 @@ import {
   // ▮▮▮▮▮▮▮[Constants]▮▮▮▮▮▮▮
   BETTERANGELS,
   // ▮▮▮▮▮▮▮[External Libraries]▮▮▮▮▮▮▮
-  gsap, Dragger, InertiaPlugin, MotionPathPlugin, GSDevTools, // GreenSock Animation Platform
+  gsap, Dragger, InertiaPlugin, MotionPathPlugin, GSDevTools, RoughEase, // GreenSock Animation Platform
   // ▮▮▮▮▮▮▮[Utility]▮▮▮▮▮▮▮
   preloadTemplates, U,
   // ▮▮▮▮▮▮▮[Actors]▮▮▮▮▮▮▮
