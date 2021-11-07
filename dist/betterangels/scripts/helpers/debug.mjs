@@ -120,8 +120,7 @@ export default class {
       ?? (this._dbCircle = this._dbCircle ?? XElem.ALL.find((elem) => elem instanceof XCircle));
     if (circle) {
       [circle.slots[slot1], circle.slots[slot2]] = [circle.slots[slot2], circle.slots[slot1]];
-      circle.drawPathMap();
-      circle.distributeSlots(10);
+      circle.distributeSlots(10, "expo.out");
     }
   }
 

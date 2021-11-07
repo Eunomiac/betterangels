@@ -229,69 +229,6 @@
     pointer-events: none;
     opacity: 0%; }
 
-.db {
-  pointer-events: none; }
-
-.x-container {
-  font-size: 26px;
-  font-weight: bold;
-  line-height: 30px;
-  text-align: center;
-  outline: 3px solid red; }
-  .x-container .x-circle .x-snap {
-    display: table-cell;
-    width: 15px;
-    height: 15px;
-    background: -o-radial-gradient(ellipse, white, red 90%);
-    background: radial-gradient(ellipse, white, red 90%);
-    border-radius: calc(15px * 0.2);
-    outline: calc(30px * 0.1) solid #FFDD00;
-    opacity: 100%; }
-  .x-container .x-circle .motion-path {
-    stroke: black; }
-  .x-container .x-circle .angle-marker {
-    width: 25px;
-    height: 25px;
-    font-family: sans-serif;
-    font-size: 12px;
-    line-height: 12px;
-    color: yellow;
-    text-shadow: 0 0 2px black, 0 0 2px black, 0 0 2px black, 0 0 2px black, 0 0 2px black, 0 0 2px black, 0 0 2px black, 0 0 2px black, 0 0 2px black, 0 0 2px black, 0 0 2px black, 0 0 2px black, 0 0 2px black, 0 0 2px black, 0 0 2px black, 0 0 2px black, 0 0 2px black, 0 0 2px black, 0 0 2px black, 0 0 2px black, 0 0 2px black; }
-  .x-container .x-circle table.db.db-display {
-    position: static;
-    width: 150%;
-    padding: 0;
-    margin: -3px 1px 1px -4px;
-    border: none; }
-    .x-container .x-circle table.db.db-display * {
-      position: static; }
-    .x-container .x-circle table.db.db-display td.db {
-      padding: 0;
-      margin: 0;
-      font-size: 12px;
-      line-height: 11px;
-      text-shadow: 0 0 0 black;
-      -webkit-transform: scaleX(0.75);
-      -ms-transform: scaleX(0.75);
-      transform: scaleX(0.75);
-      -webkit-transform-origin: left;
-      -ms-transform-origin: left;
-      transform-origin: left; }
-  .x-container .x-die.db-display {
-    background: white;
-    outline-width: 6px;
-    outline-color: white; }
-  .x-container .x-die.db-flagged {
-    background: #FFAAAA;
-    outline-color: #FFAAAA; }
-
-.db.x-container {
-  z-index: 10000;
-  outline: 3px dotted lime; }
-  .db.x-container > svg {
-    top: 0;
-    left: 0; }
-
 /* Styles limited to betterangels sheets */
 .betterangels {
   /* ----------------------------------------- */

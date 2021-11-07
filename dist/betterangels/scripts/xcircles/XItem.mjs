@@ -88,7 +88,7 @@ class XSnap extends MIX(XItem).with(SnapsToCircle) {
       ...super.DEFAULT_DATA,
       PREFIX: "xSnap",
       CLASSES: [...super.DEFAULT_DATA.CLASSES, "x-snap"],
-      MINWEIGHT: 2,
+      MINWEIGHT: 3, // 2,
       MAXWEIGHT: 3
     };
   }

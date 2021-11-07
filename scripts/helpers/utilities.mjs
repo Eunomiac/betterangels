@@ -965,7 +965,6 @@ const drawCirclePath = (radius, origin) => {
     path.push(coord);
   });
   path.push("z");
-  console.log(path.join(" "));
   return path.join(" ");
 };
 const formatAsClass = (str) => `${str}`.replace(/([A-Z])|\s/g, "-$1").replace(/^-/, "").trim().toLowerCase();

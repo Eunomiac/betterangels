@@ -93,6 +93,9 @@ Hooks.once("ready", () => {
     pause: () => gsap.globalTimeline.pause(),
     play: () => gsap.globalTimeline.play()
   }).forEach(([key, ref]) => { window[key] = ref });
+
+  return;
+
   window.DB.setDBCircle(window.CIRCLES[0]);
   window.DB.showAngles(window.CIRCLES[0], 8, true);
   // DB.addDieWatch(["dbRelPos"]);

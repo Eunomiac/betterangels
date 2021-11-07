@@ -126,7 +126,7 @@ export const IsDraggable = (superclass) => class extends superclass {
         inertia: true,
         callbackScope: this,
         minDuration: 2,
-        throwResistance: 4000,
+        throwResistance: 400,
         edgeResistance: 1000,
         onDragStart() { return this._onDragStart() },
         onDrag(point) { return this._onDrag(point) },
@@ -166,7 +166,7 @@ export const SnapsToCircle = (superclass) => class extends IsDraggable(superclas
   get targetPathPos() { return (this._targetPathPos = this._targetPathPos ?? 0) }
   set targetPathPos(v) { this._targetPathPos = v }
 
-  async setPathPos(targetPos, duration = 0.5) {
+  async setPathPos(targetPos, duration = 0.5, ease = "power4.inOut") {
     if (!this.circle) { return Promise.reject() }
     // if (targetPos === this.targetPathPos) { return Promise.resolve() }
     this.targetPathPos = targetPos;
@@ -184,7 +184,7 @@ export const SnapsToCircle = (superclass) => class extends IsDraggable(superclas
         },
         duration,
         callbackScope: this,
-        ease: "power4.inOut",
+        ease,
         onStart() {
           this.isMoving = true;
         },
