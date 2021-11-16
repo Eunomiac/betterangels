@@ -1,63 +1,179 @@
 {
-    "Actor": {
-        "types": ["hellbound", "demon", "majornpc", "minornpc"],
-        "templates": {
-            "base": {
-                "concept": "",
-                "description": "",
-                "imageURL": ""
-            },
-            "strategies": {
-                "cunning": {"min": 0, "max": 5, "value": 0},
-                "patient": {"min": 0, "max": 5, "value": 0},
-                "sly": {"min": 0, "max": 5, "value": 0},
-                "open": {"min": 0, "max": 5, "value": 0},
-                "devious": {"min": 0, "max": 5, "value": 0},
-                "insightful": {"min": 0, "max": 5, "value": 0}
-            },
-            "tactics": {
-                "greed": {"min": 0, "max": 5, "value": 0},
-                "generosity": {"min": 0, "max": 5, "value": 0},
-                "espionage": {"min": 0, "max": 5, "value": 0},
-                "knowledge": {"min": 0, "max": 5, "value": 0},
-                "cruelty": {"min": 0, "max": 5, "value": 0},
-                "courage": {"min": 0, "max": 5, "value": 0},
-                "cowardice": {"min": 0, "max": 5, "value": 0},
-                "endurance": {"min": 0, "max": 5, "value": 0},
-                "corruption": {"min": 0, "max": 5, "value": 0},
-                "nurture": {"min": 0, "max": 5, "value": 0},
-                "deceit": {"min": 0, "max": 5, "value": 0},
-                "honesty": {"min": 0, "max": 5, "value": 0}
-            }
-        },
-        "hellbound": {
-            "templates": ["base", "strategies", "tactics"]
-        },
-        "demon": {
-            "templates": ["base", "strategies", "tactics"]
-        },
-        "majornpc": {
-            "templates": ["base", "strategies", "tactics"]
-        },
-        "minornpc": {
-            "templates": ["base"]
-        }
-    },
-    "Item": {
-        "types": ["power", "aspect", "device"],
-        "templates": {
-            "base": {
-                "description": ""
-            }
-        },
-        "power": {
-            "templates": ["base"]
-        },
-        "aspect": {
-            "templates": ["base"]
-        },
-        "device": {
-            "templates": ["base"]
-        }
-    }
+	"Actor": {
+		"types": [
+			"hellbound",
+			"demon",
+			"majornpc",
+			"minornpc",
+			"mobnpc"
+		],
+		"templates": {
+			"base": {
+				"concept": "",
+				"description": "",
+				"imageURL": ""
+			},
+			"strategies": {
+				"cunning": {
+					"min": 0,
+					"max": 5,
+					"value": 0
+				},
+				"patient": {
+					"min": 0,
+					"max": 5,
+					"value": 0
+				},
+				"sly": {
+					"min": 0,
+					"max": 5,
+					"value": 0
+				},
+				"open": {
+					"min": 0,
+					"max": 5,
+					"value": 0
+				},
+				"devious": {
+					"min": 0,
+					"max": 5,
+					"value": 0
+				},
+				"insightful": {
+					"min": 0,
+					"max": 5,
+					"value": 0
+				}
+			},
+			"tactics": {
+				"greed": {
+					"min": 0,
+					"max": 5,
+					"value": 0
+				},
+				"generosity": {
+					"min": 0,
+					"max": 5,
+					"value": 0
+				},
+				"espionage": {
+					"min": 0,
+					"max": 5,
+					"value": 0
+				},
+				"knowledge": {
+					"min": 0,
+					"max": 5,
+					"value": 0
+				},
+				"cruelty": {
+					"min": 0,
+					"max": 5,
+					"value": 0
+				},
+				"courage": {
+					"min": 0,
+					"max": 5,
+					"value": 0
+				},
+				"cowardice": {
+					"min": 0,
+					"max": 5,
+					"value": 0
+				},
+				"endurance": {
+					"min": 0,
+					"max": 5,
+					"value": 0
+				},
+				"corruption": {
+					"min": 0,
+					"max": 5,
+					"value": 0
+				},
+				"nurture": {
+					"min": 0,
+					"max": 5,
+					"value": 0
+				},
+				"deceit": {
+					"min": 0,
+					"max": 5,
+					"value": 0
+				},
+				"honesty": {
+					"min": 0,
+					"max": 5,
+					"value": 0
+				}
+			}
+		},
+		"hellbound": {
+			"templates": [
+				"base",
+				"strategies",
+				"tactics"
+			],
+			"humanname": "",
+			"villainname": "",
+			"demonname": ""
+		},
+		"demon": {
+			"templates": [
+				"base",
+				"strategies",
+				"tactics"
+			],
+			"humanname": "",
+			"villainname": "",
+			"demonname": ""
+		},
+		"majornpc": {
+			"templates": [
+				"base",
+				"strategies",
+				"tactics"
+			],
+			"humanname": "",
+			"villainname": "",
+			"demonname": ""
+		},
+		"minornpc": {
+			"templates": [
+				"base"
+			]
+		},
+		"mobnpc": {
+			"templates": [
+				"base"
+			]
+		}
+	},
+	"Item": {
+		"types": [
+			"power",
+			"aspect",
+			"device"
+		],
+		"templates": {
+			"base": {
+				"description": ""
+			}
+		},
+		"power": {
+			"templates": [
+				"base"
+			]
+		},
+		"aspect": {
+			"templates": [
+				"base"
+			]
+		},
+		"device": {
+			"templates": [
+				"base"
+			]
+		}
+	}
 }

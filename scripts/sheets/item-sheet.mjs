@@ -16,10 +16,10 @@ export default class extends ItemSheet {
   get template() {
     const path = "systems/betterangels/templates/item";
     //~ To return a single sheet for all item types:
-    //~ return `${path}/item-sheet.html`;
+    //~ return `${path}/item-sheet.hbs`;
 
-    //~ To return a different sheet for each item type (e.g. 'weapon-sheet.html'):
-    return `${path}/item-${this.item.data.type}-sheet.html`;
+    //~ To return a different sheet for each item type (e.g. 'weapon-sheet.hbs'):
+    return `${path}/item-${this.item.data.type}-sheet.hbs`;
   }
 
   getData() {

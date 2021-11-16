@@ -194,6 +194,7 @@
     -ms-transform-origin: 50% 50%;
     transform-origin: 50% 50%; }
   .x-container .x-circle {
+    background-image: url("../../../assets/animations/xcircle-bg1.webm");
     opacity: 50%; }
     .x-container .x-circle > svg {
       top: 0;

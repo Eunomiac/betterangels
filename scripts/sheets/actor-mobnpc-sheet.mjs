@@ -1,13 +1,12 @@
-import HellboundActorSheet from "./actor-hellbound-sheet.mjs";
+import BetterAngelsActorSheet from "./actor-sheet.mjs";
 
-export default class extends HellboundActorSheet {
+export default class extends BetterAngelsActorSheet {
 
   static get defaultOptions() {
     return mergeObject(super.defaultOptions, {
-      classes: [...super.defaultOptions.classes, "demon", "companion"],
+      classes: [...super.defaultOptions.classes, "npc", "minornpc"],
       width: 400,
-      height: 700,
-      tabs: [{navSelector: ".sheet-tabs", contentSelector: ".sheet-body", initial: "strats_tacts"}]
+      height: 400
     });
   }
 

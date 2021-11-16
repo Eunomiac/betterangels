@@ -299,7 +299,6 @@ const getType = (ref) => {
   }
   return baseType;
 };
-
 const isNumber = (ref, isStringOk = false) => ["int", "float"].includes(getType(isStringOk ? parseFloat(ref) : ref));
 const isPosInt = (ref) => getType(ref) === "int" && ref >= 0;
 const isIterable = (ref) => !["null", "undefined"].includes(getType(ref)) && typeof ref[Symbol.iterator] === "function";

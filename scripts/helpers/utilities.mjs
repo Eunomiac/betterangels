@@ -298,42 +298,6 @@ const getType = (ref) => {
   }
   return baseType;
 };
-/*~ const results = {};
-Object.entries({
-
-  string: "hello",
-  string_empty: "",
-  string_int: "1",
-  string_float: "1.33",
-
-  boolean_true: true,  boolean_false: false,
-  "null": null,        "undefined": undefined,
-
-  integer: 1,          float: 1.25,
-  zero: 0,             infinity: Infinity,
-  nan: NaN,
-
-  array_empty: [],      array_filled: [1, 2, 3],
-  list_empty: {},       list_filled: {one: 1, two: 2, three: 3},
-  set_empty: new Set(), set_filled: new Set([{"one": 1}, {"two": 2}]),
-  map_empty: new Map(), map_filled: new Map([{"one": 1}, {"two": 2}]),
-
-  date: new Date(),
-  regexp: /regexp/,
-  class: class TestClass {},
-  class_instance: new (class ClassName { })(),
-  promise: new Promise((resolve, reject) => {}),
-  promise_resolved: new Promise((resolve, reject) => { resolve() }),
-  promise_rejected: new Promise((resolve, reject) => { reject(true) }).catch(() => true),
-
-  func_arrow: () => true,
-  func_anon: function() { return true},
-  func_named: function namedFunc() { return true},
-  func_async: async function asyncFunc() { return true },
-  func_generator: function*() { yield true }
-
-}).forEach(([key, val]) => (results[getType(val)] = results[getType(val)] ?? []).push(key));
-console.log(results); ~*/
 const isNumber = (ref, isStringOk = false) => ["int", "float"].includes(getType(isStringOk ? parseFloat(ref) : ref));
 const isPosInt = (ref) => getType(ref) === "int" && ref >= 0;
 const isIterable = (ref) => !["null", "undefined"].includes(getType(ref)) && typeof ref[Symbol.iterator] === "function";

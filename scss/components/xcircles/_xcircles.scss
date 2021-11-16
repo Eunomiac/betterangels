@@ -1,4 +1,5 @@
 $is-debugging: false;
+
 // $is-debugging: true;
 $die-size: 30px; // will want to remove this; set all size/position in js
 
@@ -21,6 +22,7 @@ $padding-right: 350px;
   }
 
   .x-circle {
+    background-image: url("../../../assets/animations/xcircle-bg1.webm");
     opacity: 50%;
 
     > svg {

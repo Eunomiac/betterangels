@@ -7,135 +7,135 @@
 
 export default class extends ActorSheet {
 
-  static get defaultOptions() {
-    return mergeObject(super.defaultOptions, {
-      classes: ["betterangels", "sheet", "actor"],
-      template: "systems/betterangels/templates/actor/actor-sheet.html",
-      width: 400,
-      height: 700,
-      tabs: [{navSelector: ".sheet-tabs", contentSelector: ".sheet-body", initial: "features"}]
-    });
-  }
+	static get defaultOptions() {
+		return mergeObject(super.defaultOptions, {
+			classes: ["betterangels", "sheet", "actor"],
+			template: "systems/betterangels/templates/actor/actor-sheet.html",
+			width: 400,
+			height: 700,
+			tabs: [{navSelector: ".sheet-tabs", contentSelector: ".sheet-body", initial: "human"}]
+		});
+	}
 
-  get template() { return `systems/betterangels/templates/actor/actor-${this.actor.data.type}-sheet.html` }
+	get template() { return `systems/betterangels/templates/actor/actor-${this.actor.data.type}-sheet.html` }
 
-  getData() {
+	getData() {
 
-    const context = super.getData();
+		const context = super.getData();
 
-    const actorData = context.actor.data;
+		const actorData = context.actor.data;
 
-    context.data = actorData.data;
-    context.flags = actorData.flags;
+		context.data = actorData.data;
+		context.flags = actorData.flags;
 
-    if (actorData.type === "character") {
-      this._prepareItems(context);
-      this._prepareCharacterData(context);
-    }
+		if (actorData.type === "character") {
+			this._prepareItems(context);
+			this._prepareCharacterData(context);
+		}
 
-    context.rollData = context.actor.getRollData();
+		context.rollData = context.actor.getRollData();
 
-    return context;
-  }
+		return context;
+	}
 
-  _prepareCharacterData(context) { }
+	_prepareCharacterData(context) { }
 
-  _prepareItems(context) {
+	_prepareItems(context) {
 
-    const gear = [];
-    const features = [];
+		const gear = [];
+		const features = [];
 
-    for (const i of context.items) {
-      i.img = i.img || DEFAULT_TOKEN;
-      if (i.type === "item") {
-        // Append to gear.
-        gear.push(i);
-      } else if (i.type === "feature") {
-        // Append to features.
-        features.push(i);
-      }
-    }
+		for (const i of context.items) {
+			i.img = i.img || DEFAULT_TOKEN;
+			if (i.type === "item") {
+				// Append to gear.
+				gear.push(i);
+			} else if (i.type === "feature") {
+				// Append to features.
+				features.push(i);
+			}
+		}
 
-    context.gear = gear;
-    context.features = features;
-  }
+		context.gear = gear;
+		context.features = features;
+	}
 
-  activateListeners(html) {
-    super.activateListeners(html);
+	activateListeners(html) {
+		super.activateListeners(html);
 
-    html.find(".item-edit").click((ev) => {
-      const li = $(ev.currentTarget).parents(".item");
-      const item = this.actor.items.get(li.data("itemId"));
-      item.sheet.render(true);
-    });
+		html.find(".item-edit").click((ev) => {
+			const li = $(ev.currentTarget).parents(".item");
+			const item = this.actor.items.get(li.data("itemId"));
+			item.sheet.render(true);
+		});
 
-    if (!this.isEditable) { return }
+		if (!this.isEditable) { return }
 
-    html.find(".item-create").click(this._onItemCreate.bind(this));
+		html.find(".item-create").click(this._onItemCreate.bind(this));
 
-    html.find(".item-delete").click((ev) => {
-      const li = $(ev.currentTarget).parents(".item");
-      const item = this.actor.items.get(li.data("itemId"));
-      item.delete();
-      li.slideUp(200, () => this.render(false));
-    });
+		html.find(".item-delete").click((ev) => {
+			const li = $(ev.currentTarget).parents(".item");
+			const item = this.actor.items.get(li.data("itemId"));
+			item.delete();
+			li.slideUp(200, () => this.render(false));
+		});
 
-    html.find(".rollable").click(this._onRoll.bind(this));
+		html.find(".rollable").click(this._onRoll.bind(this));
 
-    if (this.actor.isOwner) {
-      const handler = (ev) => this._onDragStart(ev);
-      html.find("li.item").each((i, li) => {
-        if (li.classList.contains("inventory-header")) { return }
-        li.setAttribute("draggable", true);
-        li.addEventListener("dragstart", handler, false);
-      });
-    }
-  }
+		if (this.actor.isOwner) {
+			const handler = (ev) => this._onDragStart(ev);
+			html.find("li.item").each((i, li) => {
+				if (li.classList.contains("inventory-header")) { return }
+				li.setAttribute("draggable", true);
+				li.addEventListener("dragstart", handler, false);
+			});
+		}
+	}
 
-  async _onItemCreate(event) {
-    event.preventDefault();
-    const header = event.currentTarget;
+	async _onItemCreate(event) {
+		event.preventDefault();
+		const header = event.currentTarget;
 
-    const {type} = header.dataset;
+		const {type} = header.dataset;
 
-    const data = duplicate(header.dataset);
+		const data = duplicate(header.dataset);
 
-    const name = `New ${type.capitalize()}`;
+		const name = `New ${type.capitalize()}`;
 
-    const itemData = {name, type, data};
+		const itemData = {name, type, data};
 
-    delete itemData.data.type;
+		delete itemData.data.type;
 
-    return await Item.create(itemData, {parent: this.actor});
-  }
+		return await Item.create(itemData, {parent: this.actor});
+	}
 
-  _onRoll(event) {
-    event.preventDefault();
-    const element = event.currentTarget;
-    const {dataset} = element;
+	_onRoll(event) {
+		event.preventDefault();
+		const element = event.currentTarget;
+		const {dataset} = element;
 
-    if (dataset.rollType) {
-      if (dataset.rollType === "item") {
-        const {itemId} = element.closest(".item").dataset;
-        const item = this.actor.items.get(itemId);
-        if (item) {
-          return item.roll();
-        }
-      }
-    }
+		if (dataset.rollType) {
+			if (dataset.rollType === "item") {
+				const {itemId} = element.closest(".item").dataset;
+				const item = this.actor.items.get(itemId);
+				if (item) {
+					return item.roll();
+				}
+			}
+		}
 
-    if (dataset.roll) {
-      const label = dataset.label ? `[roll] ${dataset.label}` : "";
-      const roll = new Roll(dataset.roll, this.actor.getRollData()).roll();
-      roll.toMessage({
-        speaker: ChatMessage.getSpeaker({actor: this.actor}),
-        flavor: label,
-        rollMode: game.settings.get("core", "rollMode")
-      });
-      return roll;
-    }
+		if (dataset.roll) {
+			const label = dataset.label ? `[roll] ${dataset.label}` : "";
+			const roll = new Roll(dataset.roll, this.actor.getRollData()).roll();
+			roll.toMessage({
+				speaker: ChatMessage.getSpeaker({actor: this.actor}),
+				flavor: label,
+				rollMode: game.settings.get("core", "rollMode")
+			});
+			return roll;
+		}
 
-    return false;
-  }
+		return false;
+	}
 
 }

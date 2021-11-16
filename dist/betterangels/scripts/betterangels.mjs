@@ -7,50 +7,86 @@
 
 // ████████ IMPORTS ████████
 import {
-  // ▮▮▮▮▮▮▮[Constants]▮▮▮▮▮▮▮
-  BETTERANGELS,
-  // ▮▮▮▮▮▮▮[External Libraries]▮▮▮▮▮▮▮
-  gsap, Dragger, InertiaPlugin, MotionPathPlugin, GSDevTools, RoughEase, // GreenSock Animation Platform
-  // ▮▮▮▮▮▮▮[Utility]▮▮▮▮▮▮▮
-  preloadTemplates, U,
-  // ▮▮▮▮▮▮▮[Actors]▮▮▮▮▮▮▮
-  BetterAngelsActor,
-  BetterAngelsActorSheet, HellboundActorSheet, DemonCompanionSheet, MajorNPCSheet, MinorNPCSheet,
-  // ▮▮▮▮▮▮▮[Items]▮▮▮▮▮▮▮
-  BetterAngelsItem,
-  BetterAngelsItemSheet,
-  // ▮▮▮▮▮▮▮[XCircles]▮▮▮▮▮▮▮
-  XElem,
-  XCircle,
-  XItem, XDie, XSnap
+	// ▮▮▮▮▮▮▮[Constants]▮▮▮▮▮▮▮
+	BETTERANGELS,
+	// ▮▮▮▮▮▮▮[External Libraries]▮▮▮▮▮▮▮
+	gsap,
+	Dragger,
+	InertiaPlugin,
+	MotionPathPlugin,
+	GSDevTools,
+	RoughEase, // GreenSock Animation Platform
+	// ▮▮▮▮▮▮▮[Utility]▮▮▮▮▮▮▮
+	preloadTemplates,
+	U,
+	// ▮▮▮▮▮▮▮[Actors]▮▮▮▮▮▮▮
+	BetterAngelsActor,
+	BetterAngelsActorSheet,
+	HellboundActorSheet,
+	DemonCompanionSheet,
+	MajorNPCSheet,
+	MinorNPCSheet,
+	MobNPCSheet,
+	// ▮▮▮▮▮▮▮[Items]▮▮▮▮▮▮▮
+	BetterAngelsItem,
+	BetterAngelsItemSheet,
+	// ▮▮▮▮▮▮▮[XCircles]▮▮▮▮▮▮▮
+	XElem,
+	XCircle,
+	XItem,
+	XDie,
+	XSnap
 } from "./helpers/bundler.mjs";
 
 gsap.registerPlugin(Dragger, InertiaPlugin, MotionPathPlugin, GSDevTools);
 
 // ████████ ON INIT: On-Initialization Hook ████████
 Hooks.once("init", async () => {
-  console.log("STARTING BETTER ANGELS");
+	console.log("STARTING BETTER ANGELS");
 
-  // ▮▮▮▮▮▮▮[Configuration] Apply Configuration Settings ▮▮▮▮▮▮▮
-  CONFIG.BETTERANGELS = BETTERANGELS;
+	// ▮▮▮▮▮▮▮[Configuration] Apply Configuration Settings ▮▮▮▮▮▮▮
+	CONFIG.BETTERANGELS = BETTERANGELS;
 
-  // ▮▮▮▮▮▮▮[Classes] Register & Apply Class Extensions ▮▮▮▮▮▮▮
-  game.betterangels = {
-    BetterAngelsActor,
-    BetterAngelsItem
-  };
-  CONFIG.Actor.documentClass = BetterAngelsActor;
-  CONFIG.Item.documentClass = BetterAngelsItem;
+	// ▮▮▮▮▮▮▮[Classes] Register & Apply Class Extensions ▮▮▮▮▮▮▮
+	game.betterangels = {
+		BetterAngelsActor,
+		BetterAngelsItem
+	};
+	CONFIG.Actor.documentClass = BetterAngelsActor;
+	CONFIG.Item.documentClass = BetterAngelsItem;
 
-  Actors.unregisterSheet("core", ActorSheet);
-  Actors.registerSheet("betterangels", HellboundActorSheet, {makeDefault: true, types: ["hellbound"], label: "ba.sheet.hellboundSheet"});
-  Actors.registerSheet("betterangels", DemonCompanionSheet, {makeDefault: false, types: ["hellbound"], label: "ba.sheet.demonSheet"});
-  Actors.registerSheet("betterangels", MajorNPCSheet, {makeDefault: false, types: ["majornpc"], label: "ba.sheet.majorNPCSheet"});
-  Actors.registerSheet("betterangels", MinorNPCSheet, {makeDefault: false, types: ["minornpc"], label: "ba.sheet.minorNPCSheet"});
+	Actors.unregisterSheet("core", ActorSheet);
+	Actors.registerSheet("betterangels", HellboundActorSheet, {
+		makeDefault: true,
+		types: ["hellbound"],
+		label: "ba.sheet.hellboundSheet"
+	});
+	Actors.registerSheet("betterangels", DemonCompanionSheet, {
+		makeDefault: false,
+		types: ["hellbound"],
+		label: "ba.sheet.demonSheet"
+	});
+	Actors.registerSheet("betterangels", MajorNPCSheet, {
+		makeDefault: false,
+		types: ["majornpc"],
+		label: "ba.sheet.majorNPCSheet"
+	});
+	Actors.registerSheet("betterangels", MinorNPCSheet, {
+		makeDefault: false,
+		types: ["minornpc"],
+		label: "ba.sheet.minorNPCSheet"
+	});
+	Actors.registerSheet("betterangels", MobNPCSheet, {
+		makeDefault: false,
+		types: ["mobnpc"],
+		label: "ba.sheet.mobNPCSheet"
+	});
 
-  Items.unregisterSheet("core", ItemSheet);
-  Items.registerSheet("betterangels", BetterAngelsItemSheet, {makeDefault: true});
+	Items.unregisterSheet("core", ItemSheet);
+	Items.registerSheet("betterangels", BetterAngelsItemSheet, {
+		makeDefault: true
+	});
 
-  // ▮▮▮▮▮▮▮[Handlebar Templates] Preload Handlebars Templates ▮▮▮▮▮▮▮
-  return preloadTemplates();
+	// ▮▮▮▮▮▮▮[Handlebar Templates] Preload Handlebars Templates ▮▮▮▮▮▮▮
+	return preloadTemplates();
 });

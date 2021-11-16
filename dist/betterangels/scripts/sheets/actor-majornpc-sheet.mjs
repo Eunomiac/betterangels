@@ -14,7 +14,7 @@ export default class extends BetterAngelsActorSheet {
       classes: [...super.defaultOptions.classes, "npc", "majornpc"],
       width: 400,
       height: 700,
-      tabs: [{navSelector: ".sheet-tabs", contentSelector: ".sheet-body", initial: "strats&tacts"}]
+      tabs: [{navSelector: ".sheet-tabs", contentSelector: ".sheet-body", initial: "strats_tacts"}]
     });
   }
 

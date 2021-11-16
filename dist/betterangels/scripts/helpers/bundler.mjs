@@ -25,6 +25,7 @@ export {default as HellboundActorSheet} from "../sheets/actor-hellbound-sheet.mj
 export {default as DemonCompanionSheet} from "../sheets/actor-demon-sheet.mjs";
 export {default as MajorNPCSheet} from "../sheets/actor-majornpc-sheet.mjs";
 export {default as MinorNPCSheet} from "../sheets/actor-minornpc-sheet.mjs";
+export {default as MobNPCSheet} from "../sheets/actor-mobnpc-sheet.mjs";
 export {default as BetterAngelsItem} from "../documents/item.mjs";
 export {default as BetterAngelsItemSheet} from "../sheets/item-sheet.mjs";
 
