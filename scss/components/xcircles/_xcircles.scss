@@ -28,7 +28,12 @@ $padding-right: 350px;
     > svg {
       top: 0;
       left: 0;
-      .circle-path { --circle-color: transparent !important; fill: var(--circle-color); }
+
+      .circle-path {
+        --circle-color: #{$c-gold-50} !important;
+
+        fill: var(--circle-color);
+      }
     }
 
     &.x-circle-basic { --circle-color: #{$c-lime}; }

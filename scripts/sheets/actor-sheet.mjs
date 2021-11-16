@@ -4,7 +4,7 @@ export default class extends ActorSheet {
 		return mergeObject(super.defaultOptions, {
 			classes: ["betterangels", "sheet", "actor"],
 			template: "systems/betterangels/templates/actor/actor-sheet.hbs",
-			width: 400,
+			width: 700,
 			height: 700,
 			tabs: [{navSelector: ".sheet-tabs", contentSelector: ".sheet-body", initial: "human"}]
 		});

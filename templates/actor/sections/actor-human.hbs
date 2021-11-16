@@ -1,0 +1,122 @@
+<!-- 
+
+	Click ANYWHERE within a trait's dot line: RADIAL MENU OPENS ...
+		- Remove a Dot
+		- Add a Dot
+		- Slide a Dot
+		... all such actions are broadcast to Chat.
+		OR can make it a click anywhere in dot GRID, and have two "Slide" options, one left and one right,
+			with "Add" up top and "Remove" below
+	Click on a LABEL -> Drag onto another LABEL -> RADIAL MENU OPENS ...
+		- If just drop: ROLLS
+		- Radial Menu contains modifiers to roll: drag onto those, roll with selected modifier
+
+
+	ALSO: NEED A CHECKBOX TO MARK PRIMARY SINISTER STRATEGY
+
+	ALSO: Consider combining Human and Demon sections onto Front
+		- tooltip with image of power/aspect rules?
+		- click to toggle it on/off: when on, it sets a "number of scenes" value (usually 1)
+		- also a button for "demon invoked"
+		- "end scene" command that decrements all "number of scenes" on powers/aspects by one, toggling off anything that hits zero
+			- could also change tooltips at this point to display sins instead of what the trait means
+		- "time passes" command that toggles off everything as if lots of scenes have passed
+	-->
+
+
+<div class="trait-line">
+	<div class="trait-grid tactic">
+		<label class="sinister">Greed</label>
+		{{#for 5}}
+			<div class="dot sinister"></div>
+		{{/for}}
+		{{#for 5}}
+			<div class="dot virtuous"></div>
+		{{/for}}
+		<label class="virtuous">Generosity</label>
+	</div>
+	<div class="trait-grid strategy">
+		<label class="sinister">Cunning</label>
+		{{#for 5}}
+			<div class="dot sinister"></div>
+		{{/for}}
+		{{#for 5}}
+			<div class="dot virtuous"></div>
+		{{/for}}
+		<label class="virtuous">Patient</label>
+	</div>
+	<div class="trait-grid tactic">
+		<label class="sinister">Espionage</label>
+		{{#for 5}}
+			<div class="dot sinister"></div>
+		{{/for}}
+		{{#for 5}}
+			<div class="dot virtuous"></div>
+		{{/for}}
+		<label class="virtuous">Knowledge</label>
+	</div>
+</div>
+<div class="trait-line">
+	<div class="trait-grid tactic">
+		<label class="sinister">Cruelty</label>
+		{{#for 5}}
+			<div class="dot sinister"></div>
+		{{/for}}
+		{{#for 5}}
+			<div class="dot virtuous"></div>
+		{{/for}}
+		<label class="virtuous">Courage</label>
+	</div>
+	<div class="trait-grid strategy">
+		<label class="sinister">Sly</label>
+		{{#for 5}}
+			<div class="dot sinister"></div>
+		{{/for}}
+		{{#for 5}}
+			<div class="dot virtuous"></div>
+		{{/for}}
+		<label class="virtuous">Open</label>
+	</div>
+	<div class="trait-grid tactic">
+		<label class="sinister">Cowardice</label>
+		{{#for 5}}
+			<div class="dot sinister"></div>
+		{{/for}}
+		{{#for 5}}
+			<div class="dot virtuous"></div>
+		{{/for}}
+		<label class="virtuous">Endurance</label>
+	</div>
+</div>
+<div class="trait-line">
+	<div class="trait-grid tactic">
+		<label class="sinister">Corruption</label>
+		{{#for 5}}
+			<div class="dot sinister"></div>
+		{{/for}}
+		{{#for 5}}
+			<div class="dot virtuous"></div>
+		{{/for}}
+		<label class="virtuous">Nurture</label>
+	</div>
+	<div class="trait-grid strategy">
+		<label class="sinister">Devious</label>
+		{{#for 5}}
+			<div class="dot sinister"></div>
+		{{/for}}
+		{{#for 5}}
+			<div class="dot virtuous"></div>
+		{{/for}}
+		<label class="virtuous">Insightful</label>
+	</div>
+	<div class="trait-grid tactic">
+		<label class="sinister">Deceit</label>
+		{{#for 5}}
+			<div class="dot sinister"></div>
+		{{/for}}
+		{{#for 5}}
+			<div class="dot virtuous"></div>
+		{{/for}}
+		<label class="virtuous">Honesty</label>
+	</div>
+</div>

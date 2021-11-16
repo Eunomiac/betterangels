@@ -1,7 +1,26 @@
 @import url("https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap");
+@font-face {
+  font-family: "DigitalStrip BB";
+  src: url("../assets/fonts/DigitalStripBB_Reg.otf"); }
+
+@font-face {
+  font-family: "DigitalStrip BB";
+  src: url("../assets/fonts/DigitalStripBB_Ital.otf");
+  font-style: italic; }
+
+@font-face {
+  font-family: "DigitalStrip BB";
+  font-style: italic;
+  font-weight: bold;
+  src: url("../assets/fonts/DigitalStripBB_BoldItal.otf"); }
+
+@font-face {
+  font-family: Komikax;
+  src: url("../assets/fonts/KOMIKAX_.ttf"); }
+
 /* Global styles */
 .window-app {
-  font-family: "Roboto", sans-serif; }
+  font-family: "DigitalStrip BB", sans-serif; }
 
 .rollable:hover, .rollable:focus {
   color: #000000;
@@ -199,7 +218,7 @@
       top: 0;
       left: 0; }
       .x-container .x-circle > svg .circle-path {
-        --circle-color: transparent !important;
+        --circle-color: gold !important;
         fill: var(--circle-color); }
     .x-container .x-circle.x-circle-basic {
       --circle-color: lime; }
@@ -237,7 +256,7 @@
   /* ----------------------------------------- */
   /* Example style for BetterAngels (can be removed if not needed) */ }
   .betterangels .item-form {
-    font-family: "Roboto", sans-serif; }
+    font-family: "DigitalStrip BB", sans-serif; }
   .betterangels .sheet-header {
     display: -webkit-box;
     display: -ms-flexbox;
@@ -395,5 +414,72 @@
     -ms-flex: 0 0 200px;
     flex: 0 0 200px;
     padding: 0 8px; }
-  .betterangels.actor .hellbound {
+  .betterangels.actor.hellbound {
+    width: auto !important;
     max-height: calc(100% - 2px); }
+  .betterangels.actor .trait-line {
+    display: grid;
+    grid-template-columns: 144px 140px 144px;
+    grid-gap: 16px; }
+    .betterangels.actor .trait-line .trait-grid {
+      display: grid;
+      grid-template-rows: repeat(4, var(--dot-size));
+      grid-template-columns: repeat(7, var(--dot-size));
+      grid-gap: 1px;
+      margin-top: auto;
+      margin-bottom: auto; }
+      .betterangels.actor .trait-line .trait-grid label {
+        font-family: "DigitalStrip BB", sans-serif;
+        line-height: calc(var(--dot-size) + 1px); }
+      .betterangels.actor .trait-line .trait-grid label.sinister {
+        grid-row: 1;
+        grid-column: 1 / span 7;
+        margin-left: -20px; }
+      .betterangels.actor .trait-line .trait-grid label.virtuous {
+        grid-row: 4;
+        grid-column: 1 / span 7;
+        margin-right: -20px;
+        text-align: right; }
+      .betterangels.actor .trait-line .trait-grid .dot {
+        background-color: black;
+        border-radius: 50%; }
+        .betterangels.actor .trait-line .trait-grid .dot:nth-of-type(1) {
+          grid-row: 2;
+          grid-column: 1; }
+        .betterangels.actor .trait-line .trait-grid .dot:nth-of-type(2) {
+          grid-row: 2;
+          grid-column: 2; }
+        .betterangels.actor .trait-line .trait-grid .dot:nth-of-type(3) {
+          grid-row: 2;
+          grid-column: 3; }
+        .betterangels.actor .trait-line .trait-grid .dot:nth-of-type(4) {
+          grid-row: 2;
+          grid-column: 4; }
+        .betterangels.actor .trait-line .trait-grid .dot:nth-of-type(5) {
+          grid-row: 2;
+          grid-column: 5; }
+        .betterangels.actor .trait-line .trait-grid .dot:nth-of-type(6) {
+          grid-row: 3;
+          grid-column: 3; }
+        .betterangels.actor .trait-line .trait-grid .dot:nth-of-type(7) {
+          grid-row: 3;
+          grid-column: 4; }
+        .betterangels.actor .trait-line .trait-grid .dot:nth-of-type(8) {
+          grid-row: 3;
+          grid-column: 5; }
+        .betterangels.actor .trait-line .trait-grid .dot:nth-of-type(9) {
+          grid-row: 3;
+          grid-column: 6; }
+        .betterangels.actor .trait-line .trait-grid .dot:nth-of-type(10) {
+          grid-row: 3;
+          grid-column: 7; }
+      .betterangels.actor .trait-line .trait-grid.tactic {
+        --dot-size: 15px;
+        width: 144px;
+        padding: 16px; }
+      .betterangels.actor .trait-line .trait-grid.strategy {
+        --dot-size: 19px;
+        width: 140px; }
+        .betterangels.actor .trait-line .trait-grid.strategy label {
+          font-family: "Komikax", sans-serif;
+          line-height: 18px; }

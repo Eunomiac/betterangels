@@ -1,2 +1,25 @@
-$font-primary: 'Roboto', sans-serif;
-$font-secondary: 'Roboto', sans-serif;
+$font-primary: "DigitalStrip BB", sans-serif;
+$font-secondary: "Komikax", sans-serif;
+
+@font-face {
+  font-family: "DigitalStrip BB";
+  src: url("../assets/fonts/DigitalStripBB_Reg.otf");
+}
+
+@font-face {
+  font-family: "DigitalStrip BB";
+  src: url("../assets/fonts/DigitalStripBB_Ital.otf");
+  font-style: italic;
+}
+
+@font-face {
+  font-family: "DigitalStrip BB";
+  font-style: italic;
+  font-weight: bold;
+  src: url("../assets/fonts/DigitalStripBB_BoldItal.otf");
+}
+
+@font-face {
+  font-family: Komikax;
+  src: url("../assets/fonts/KOMIKAX_.ttf");
+}

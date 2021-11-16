@@ -13,6 +13,7 @@ import {
 	// #endregion ▮▮▮▮[External Libraries]▮▮▮▮
 	// #region ▮▮▮▮▮▮▮[Utility]▮▮▮▮▮▮▮ ~
 	preloadTemplates,
+	registerHelpers,
 	U,
 	// #endregion ▮▮▮▮[Utility]▮▮▮▮
 	// #region ▮▮▮▮▮▮▮[Actors]▮▮▮▮▮▮▮ ~
@@ -93,9 +94,10 @@ Hooks.once("init", async () => {
 	});
 	// #endregion ▮▮▮▮[Classes]▮▮▮▮
 
-	// #region ▮▮▮▮▮▮▮[Handlebar Templates] Preload Handlebars Templates ▮▮▮▮▮▮▮
+	// #region ▮▮▮▮▮▮▮[Handlebars] Preload Handlebars Templates & Register Custom Helpers ▮▮▮▮▮▮▮
+	await registerHelpers();
 	return preloadTemplates();
-	// #endregion ▮▮▮▮[Handlebar Templates]▮▮▮▮
+	// #endregion ▮▮▮▮[Handlebars]▮▮▮▮
 });
 // #endregion ▄▄▄▄▄ ON INIT ▄▄▄▄▄
 

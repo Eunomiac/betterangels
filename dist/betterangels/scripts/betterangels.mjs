@@ -18,6 +18,7 @@ import {
 	RoughEase, // GreenSock Animation Platform
 	// ▮▮▮▮▮▮▮[Utility]▮▮▮▮▮▮▮
 	preloadTemplates,
+	registerHelpers,
 	U,
 	// ▮▮▮▮▮▮▮[Actors]▮▮▮▮▮▮▮
 	BetterAngelsActor,
@@ -87,6 +88,7 @@ Hooks.once("init", async () => {
 		makeDefault: true
 	});
 
-	// ▮▮▮▮▮▮▮[Handlebar Templates] Preload Handlebars Templates ▮▮▮▮▮▮▮
+	// ▮▮▮▮▮▮▮[Handlebars] Preload Handlebars Templates & Register Custom Helpers ▮▮▮▮▮▮▮
+	await registerHelpers();
 	return preloadTemplates();
 });
