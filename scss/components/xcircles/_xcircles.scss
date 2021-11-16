@@ -22,13 +22,13 @@ $padding-right: 350px;
   }
 
   .x-circle {
-    background-image: url("../../../assets/animations/xcircle-bg1.webm");
+    // background-image: url("../../../assets/animations/xcircle-bg1.webm");
     opacity: 50%;
 
     > svg {
       top: 0;
       left: 0;
-      .circle-path { fill: var(--circle-color) }
+      .circle-path { --circle-color: transparent !important; fill: var(--circle-color); }
     }
 
     &.x-circle-basic { --circle-color: #{$c-lime}; }

@@ -50,6 +50,9 @@ export default class XCircle extends MIX(XElem).with(HasSnapPath) {
 	constructor(x, y, radius, options = {}) {
 		const circle$ = $(`
     <div style="height: ${2 * radius}px; width: ${2 * radius}px;">
+			<video width="200%" height="200%" autoplay muted loop style="left: -50%; top: -50%;">
+				<source src="https://github.com/Eunomiac/betterangels/blob/master/assets/animations/xcircle-bg3.webm?raw=true" type="video/webm">
+			</video>
       <svg height="100%" width="100%">
         <path class="circle-path" stroke="none" d="${U.drawCirclePath(radius, {x: radius, y: radius})}"></path>
         <path class="motion-path" fill="none" stroke="none" d="${U.drawCirclePath(radius * 0.8, {x: radius, y: radius})}"></path>

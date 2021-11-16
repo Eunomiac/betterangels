@@ -194,12 +194,12 @@
     -ms-transform-origin: 50% 50%;
     transform-origin: 50% 50%; }
   .x-container .x-circle {
-    background-image: url("../../../assets/animations/xcircle-bg1.webm");
     opacity: 50%; }
     .x-container .x-circle > svg {
       top: 0;
       left: 0; }
       .x-container .x-circle > svg .circle-path {
+        --circle-color: transparent !important;
         fill: var(--circle-color); }
     .x-container .x-circle.x-circle-basic {
       --circle-color: lime; }
