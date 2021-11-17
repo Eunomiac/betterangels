@@ -1,116 +1,326 @@
+@mixin radial-menu($radius, $num-buttons, $line-height, $depth: 1) {
+	$menu-size: $radius * 2;
+
+	&.size#{$radius}-#{$num-buttons}items {
+		--left-shift: #{-$radius};
+
+		top: -($radius);
+		left: -($radius);
+		z-index: $depth + 1;
+		width: $menu-size;
+		height: $menu-size;
+		margin-left: calc(var(--margin-shift) - var(--left-shift));
+
+		.menu-container {
+			@for $i from 1 through $num-buttons {
+				.menu-button:nth-child(#{$i}) button,
+				.menu-button:nth-child(#{$i}) label {
+					animation-delay: $i * 1s / $num-buttons;
+				}
+			}
+
+			.menu-button {
+				width: $radius / 2;
+				height: auto;
+				margin-top: -($radius / 4);
+				margin-left: -($radius / 4);
+
+				$angle: (360 / $num-buttons);
+				$rot: 0;
+
+				@for $i from 1 through $num-buttons {
+					&:nth-of-type(#{$i}) {
+						transform:
+							rotate($rot * 1deg)
+							translate(0.75 * $menu-size / 2)
+							rotate($rot * -1deg);
+					}
+
+					$rot: $rot + $angle;
+				}
+
+				button,
+				label {
+					height: $line-height;
+					line-height: $line-height;
+				}
+
+				label { font-size: $line-height * 4 / 5 }
+
+				button {
+					font-size: $line-height;
+					line-height: $line-height;
+					height: $line-height * 1.5;
+					width: $line-height * 1.5;
+				}
+
+
+			}
+		}
+	}
+}
+
 &.hellbound {
-  width: auto !important;
-  max-height: calc(100% - 2px);
+	width: auto !important;
+	max-height: calc(100% - 2px);
 }
 
 .trait-line {
-  $tactic-dot-size: 15px;
-  $strategy-dot-size: 19px;
-  $tactic-spacing: $tactic-dot-size + 1px;
-  $strategy-spacing: $strategy-dot-size + 1px;
+	$tactic-dot-size: 15px;
+	$strategy-dot-size: 19px;
+	$tactic-spacing: $tactic-dot-size + 1px;
+	$strategy-spacing: $strategy-dot-size + 1px;
 
-  display: grid;
-  grid-template-columns: #{9 * $tactic-spacing} #{7 * $strategy-spacing} #{9 * $tactic-spacing};
-  grid-gap: $tactic-spacing;
+	display: grid;
+	grid-template-columns: #{9 * $tactic-spacing} #{7 * $strategy-spacing} #{9 * $tactic-spacing};
+	grid-gap: $tactic-spacing;
 
-  .trait-grid {
-    display: grid;
-    grid-template-rows: repeat(4, var(--dot-size));
-    grid-template-columns: repeat(7, var(--dot-size));
-    grid-gap: 1px;
-    margin-top: auto;
-    margin-bottom: auto;
+	.trait-grid {
+		display: grid;
+		grid-template-rows: repeat(4, var(--dot-size));
+		grid-template-columns: repeat(7, var(--dot-size));
+		grid-gap: 1px;
+		margin-top: auto;
+		margin-bottom: auto;
 
-    label {
-      font-family: $font-primary;
-      line-height: calc(var(--dot-size) + 1px);
-    }
+		label {
+			position: relative;
+			z-index: 5;
+			font-family: $font-primary;
+			line-height: calc(var(--dot-size) + 1px);
 
-    label.sinister {
-      grid-row: 1;
-      grid-column: 1 / span 7;
-      margin-left: -20px;
-    }
+			&.sinister {
+				grid-row: 1;
+				grid-column: 1 / span 7;
+				margin-left: -20px;
+			}
 
-    label.virtuous {
-      grid-row: 4;
-      grid-column: 1 / span 7;
-      margin-right: -20px;
-      text-align: right;
-    }
+			&.virtuous {
+				grid-row: 4;
+				grid-column: 1 / span 7;
+				margin-right: -20px;
+				text-align: right;
+			}
+		}
 
-    .dot {
-      background-color: black;
-      border-radius: 50%;
+		.dot {
+			background-color: black;
+			border-radius: 50%;
 
-      &:nth-of-type(1) {
-        grid-row: 2;
-        grid-column: 1;
-      }
+			&:nth-of-type(1) {
+				grid-row: 2;
+				grid-column: 1;
+			}
 
-      &:nth-of-type(2) {
-        grid-row: 2;
-        grid-column: 2;
-      }
+			&:nth-of-type(2) {
+				grid-row: 2;
+				grid-column: 2;
+			}
 
-      &:nth-of-type(3) {
-        grid-row: 2;
-        grid-column: 3;
-      }
+			&:nth-of-type(3) {
+				grid-row: 2;
+				grid-column: 3;
+			}
 
-      &:nth-of-type(4) {
-        grid-row: 2;
-        grid-column: 4;
-      }
+			&:nth-of-type(4) {
+				grid-row: 2;
+				grid-column: 4;
+			}
 
-      &:nth-of-type(5) {
-        grid-row: 2;
-        grid-column: 5;
-      }
+			&:nth-of-type(5) {
+				grid-row: 2;
+				grid-column: 5;
+			}
 
-      &:nth-of-type(6) {
-        grid-row: 3;
-        grid-column: 3;
-      }
+			&:nth-of-type(6) {
+				grid-row: 3;
+				grid-column: 3;
+			}
 
-      &:nth-of-type(7) {
-        grid-row: 3;
-        grid-column: 4;
-      }
+			&:nth-of-type(7) {
+				grid-row: 3;
+				grid-column: 4;
+			}
 
-      &:nth-of-type(8) {
-        grid-row: 3;
-        grid-column: 5;
-      }
+			&:nth-of-type(8) {
+				grid-row: 3;
+				grid-column: 5;
+			}
 
-      &:nth-of-type(9) {
-        grid-row: 3;
-        grid-column: 6;
-      }
+			&:nth-of-type(9) {
+				grid-row: 3;
+				grid-column: 6;
+			}
 
-      &:nth-of-type(10) {
-        grid-row: 3;
-        grid-column: 7;
-      }
-    }
+			&:nth-of-type(10) {
+				grid-row: 3;
+				grid-column: 7;
+			}
+		}
 
-    &.tactic {
-      --dot-size: #{$tactic-dot-size};
+		&.tactic {
+			--dot-size: #{$tactic-dot-size};
 
-      width: 7 * $tactic-spacing + 2 * $tactic-spacing;
-      padding: $tactic-spacing;
-    }
+			width: 7 * $tactic-spacing + 2 * $tactic-spacing;
+			padding: $tactic-spacing;
 
-    &.strategy {
-      --dot-size: #{$strategy-dot-size};
+			> .radial-menu {
+				--margin-shift: #{-(7 * $tactic-spacing) / 2 - $tactic-spacing};
 
-      width: 7 * $strategy-spacing;
+				margin-top: $tactic-spacing;
+			}
+		}
 
-			label {
-				// font-size: 1.25em;
+		&.strategy {
+			--dot-size: #{$strategy-dot-size};
+
+			width: 7 * $strategy-spacing;
+
+			> .radial-menu {
+				--margin-shift: #{-(7 * $strategy-spacing) / 2 - $tactic-spacing};
+
+				margin-top: $strategy-spacing;
+			}
+
+			> label {
 				font-family: $font-secondary;
 				line-height: $strategy-dot-size - 1px;
 			}
-    }
-  }
+		}
+	}
+}
+
+.trait-grid {
+
+	* { transform-origin: 50% 50% }
+
+	> .radial-menu {
+		position: relative;
+		display: block;
+		padding: 0;
+		pointer-events: all;
+		background: transparent;
+		border-radius: 50%;
+		opacity: 0%;
+		transition: 0.5s;
+		transform: scale(0.3) rotate(-125deg);
+
+		@include radial-menu(60px, 8, 18px);
+		@include radial-menu(50px, 8, 18px);
+		@include radial-menu(40px, 8, 18px);
+
+		&.depth-1 { z-index: 2 }
+		&.depth-2 { z-index: 4 }
+		&.depth-3 { z-index: 6 }
+		&.depth-4 { z-index: 8 }
+
+		.menu-container {
+			position: absolute;
+			width: 100%;
+			height: 100%;
+			list-style: none;
+
+			.menu-button {
+				position: absolute;
+				top: 50%;
+				left: 50%;
+				display: block;
+				width: 100%;
+				height: 100%;
+				transition: 0.5s;
+
+				@keyframes slow-bob {
+					from { top: -3px; }
+					to { top: 3px; }
+				}
+
+				button {
+					position: absolute;
+					padding: 0;
+					margin: 0;
+					color: var(--button-color);
+					// background: radial-gradient(ellipse, $c-white, var(--button-color) 90%);
+					background: transparent;
+					border: none;
+					outline: none;
+					// outline: 2px solid var(--button-color);
+					box-shadow: none;
+					transition: 0.5s;
+					animation: slow-bob 2s cubic-bezier(0.36, 0, 0.63, 1) infinite alternate;
+					text-shadow: -1px -1px 2px #000000, 1px -1px 2px #000000, -1px 1px 2px #000000, 1px 1px 2px #000000;
+
+					&.button-green {
+						--button-color: #{$c-green};
+					}
+
+					&.button-blue {
+						--button-color: #{$c-cyan};
+					}
+
+					&.button-red {
+						--button-color: #{$c-red};
+					}
+				}
+
+				label {
+					position: relative;
+					display: block !important;
+					width: 200%;
+					height: auto !important;
+					margin-left: -50%;
+					text-align: center;
+					letter-spacing: 10px;
+					pointer-events: none;
+					opacity: 0%;
+					transition: 0.25s !important;
+					transform: scale(2);
+					animation: slow-bob 2s cubic-bezier(0.36, 0, 0.63, 1) infinite alternate;
+					font: {
+						family: $font-primary;
+						weight: bold;
+					}
+					text: {
+						transform: uppercase;
+						align: center;
+						shadow: -1px -1px 2px #000000, 1px -1px 2px #000000, -1px 1px 2px #000000, 1px 1px 2px #000000;
+					}
+
+					&.label-green {
+						color: $c-green;
+					}
+
+					&.label-blue {
+						color: $c-cyan;
+					}
+
+					&.label-red {
+						color: $c-red;
+					}
+				}
+			}
+		}
+	}
+
+	&:hover > .radial-menu {
+		z-index: 20;
+		opacity: 100%;
+		transform: scale(1) rotate(0deg);
+
+		.menu-container {
+			padding: 0;
+			margin: 0;
+			list-style: none;
+
+			.menu-button:hover button {
+				opacity: 0%;
+				transform: scale(1.5);
+
+				+ label {
+					letter-spacing: normal;
+					opacity: 100%;
+					transform: scale(1);
+				}
+			}
+		}
+	}
 }

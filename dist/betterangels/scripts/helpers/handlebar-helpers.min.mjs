@@ -1,1 +1,1 @@
-const a={for:(a,t)=>{const r=[],o=Handlebars.createFrame(t.data);for(let e=0;e<a;e++){o.index=e;try{r.push(t.t(e,{data:o}))}catch{r.push(`Bad For at ${e} of ${a}`)}}return r.join("")}};export default async()=>Handlebars.registerHelper(a);
+const t={for:(t,a)=>{const r=[],o=Handlebars.createFrame(a.data);for(let c=0;c<t;c++){o.index=c;try{r.push(a.t(c,{data:o}))}catch{r.push(`Bad For at ${c} of ${t}`)}}return r.join("")},count:t=>Object.values(t??{})?.length??0};export default async()=>Handlebars.registerHelper(t);

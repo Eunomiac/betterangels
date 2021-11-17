@@ -18,7 +18,8 @@ const HELPERS = {
 			}
 		}
 		return results.join("");
-	}
+	},
+	"count": (val) => Object.values(val ?? {})?.length ?? 0
 };
 
 export default async () => Handlebars.registerHelper(HELPERS);

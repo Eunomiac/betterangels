@@ -23,3 +23,15 @@
     </li>
   {{/each}}
 </ol>
+
+
+	<div id="{{data.menuID}}" class="radial-menu {{data.radius}}-{{count data.menuButtons}} depth-{{data.depth}}">
+			<ul class="menu-container">
+				{{#each data.menuButtons as |label menuData|}}
+				<li class="menu-button">
+					<button class="icon-{{menuData.icon}}" onclick="{{menuData.funcName}}()"></button>
+					<label class="label-{{menuData.color}}">{{label}}</label>
+				</li>
+				{{/each}}
+			</ul>
+	</div>

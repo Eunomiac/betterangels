@@ -8,7 +8,7 @@ const TEMPLATES = {
 		"actor-notes"
 	].map((title) => getPath(title, "actor/sections")),
 	actorPartials: [  // Actor Partials
-		"dot-grid"
+		"radial-menu"
 	].map((title) => getPath(title, "actor/parts"))
 };
 
