@@ -6,7 +6,7 @@ export default class extends ActorSheet {
 			template: "systems/betterangels/templates/actor/actor-sheet.hbs",
 			width: 700,
 			height: 700,
-			tabs: [{navSelector: ".sheet-tabs", contentSelector: ".sheet-body", initial: "human"}]
+			tabs: [{navSelector: ".sheet-tabs", contentSelector: ".sheet-body", initial: "stats"}]
 		});
 	}
 
@@ -75,6 +75,8 @@ export default class extends ActorSheet {
 		//~ Everything below here is only needed if the sheet is editable
 		if (!this.isEditable) { return }
 
+		html.find(".trait-button").click(this._changeTrait.bind(this));
+
 		//~ Add Inventory Item
 		html.find(".item-create").click(this._onItemCreate.bind(this));
 
@@ -97,6 +99,20 @@ export default class extends ActorSheet {
 				li.setAttribute("draggable", true);
 				li.addEventListener("dragstart", handler, false);
 			});
+		}
+	}
+
+	async _changeTrait(event) {
+		const {action, target} = event.target.dataset;
+		const {data} = this.actor.data;
+		switch (action) {
+			case "add": return this.actor.update({[`data.${target}.value`]: Math.min(data[target].max, data[target].value + 1)});
+			case "drop": return this.actor.update({[`data.${target}.value`]: Math.max(data[target].min, data[target].value - 1)});
+			case "slide": return this.actor.update({
+				[`data.${target}.value`]: Math.min(data[target].max, data[target].value + 1),
+				[`data.${CONFIG.BETTERANGELS.traitPairs[target]}.value`]: Math.max(data[CONFIG.BETTERANGELS.traitPairs[target]].min, data[CONFIG.BETTERANGELS.traitPairs[target]].value - 1)
+			});
+			default: return false;
 		}
 	}
 

@@ -1,36 +1,48 @@
-	<div id="test-money" class="radial-menu size50px-8items depth-2">
-			<ul class="menu-container">
-				<li class="menu-button">
-					<button class="icon-blah button-blue" onclick="firstFunc()">◢</button>
-					<label class="label-blue">Slide◢</label>
-				</li>
-				<li class="menu-button">
-					<button class="icon-foo button-red" onclick="secondFunc()">▶</button>
-					<label class="label-red">Drop▶</label>
-				</li>
-				<li class="menu-button">
-					{{!-- <button class="icon-bar" onclick="thirdFunc()">3️⃣</button>
-					<label class="label-blue">◤Slide</label> --}}
-				</li>
-				<li class="menu-button">
-					<button class="icon-bar button-green" onclick="thirdFunc()">◀</button>
-					<label class="label-green">◀Add</label>
-				</li>				
-				<li class="menu-button">
-					<button class="icon-blah button-blue" onclick="firstFunc()">◤</button>
-					<label class="label-blue">◤Slide</label>
-				</li>
-				<li class="menu-button">
-					<button class="icon-foo button-red" onclick="secondFunc()">◀</button>
-					<label class="label-red">◀Drop</label>
-				</li>
-				<li class="menu-button">
-					{{!-- <button class="icon-bar" onclick="thirdFunc()">3️⃣</button>
-					<label class="label-blue">2◤Slide</label> --}}
-				</li>
-				<li class="menu-button">
-					<button class="icon-bar button-green" onclick="thirdFunc()">▶</button>
-					<label class="label-green">Add▶</label>
-				</li>
-			</ul>
-	</div>
+<div class="radial-menu size50px-8items depth-2">
+	<ul class="menu-container">
+		<li class="menu-button 
+			{{~#if (test (lookup (lookup data top) "value") "==" (lookup (lookup data top) "min"))}} empty{{/if}}
+			{{~#if (test (lookup (lookup data bottom) "value") "==" (lookup (lookup data bottom) "max"))}} empty{{/if}}
+			{{~#if (test (math (lookup (lookup data top) "value") "+" (lookup (lookup data bottom) "value")) "==" 7)}} empty{{/if}}
+		">
+			<button class="trait-button button-blue" data-action="slide" data-target="{{bottom}}">◢</button>
+			<label class="label-blue">Slide◢</label>
+		</li>
+		<li class="menu-button 
+			{{~#if (test (lookup (lookup data bottom) "value") "==" (lookup (lookup data bottom) "min"))}} empty{{/if}}
+		">
+			<button class="trait-button button-red" data-action="drop" data-target="{{bottom}}">▶</button>
+			<label class="label-red">Drop▶</label>
+		</li>
+		<li class="menu-button"></li>
+		<li class="menu-button 
+			{{~#if (test (lookup (lookup data bottom) "value") "==" (lookup (lookup data bottom) "max"))}} empty{{/if}}
+			{{~#if (test (math (lookup (lookup data top) "value") "+" (lookup (lookup data bottom) "value")) "==" 7)}} empty{{/if}}
+		">
+			<button class="trait-button button-green" data-action="add" data-target="{{bottom}}">◀</button>
+			<label class="label-green">◀Add</label>
+		</li>	
+		<li class="menu-button 
+			{{~#if (test (lookup (lookup data top) "value") "==" (lookup (lookup data top) "max"))}} empty{{/if}}
+			{{~#if (test (lookup (lookup data bottom) "value") "==" (lookup (lookup data bottom) "min"))}} empty{{/if}}
+			{{~#if (test (math (lookup (lookup data top) "value") "+" (lookup (lookup data bottom) "value")) "==" 7)}} empty{{/if}}
+		">
+			<button class="trait-button button-blue" data-action="slide" data-target="{{top}}">◤</button>
+			<label class="label-blue">◤Slide</label>
+		</li>
+		<li class="menu-button 
+			{{~#if (test (lookup (lookup data top) "value") "==" (lookup (lookup data top) "min"))}} empty{{/if}}
+		">
+			<button class="trait-button button-red" data-action="drop" data-target="{{top}}">◀</button>
+			<label class="label-red">◀Drop</label>
+		</li>
+		<li class="menu-button"></li>
+		<li class="menu-button 
+			{{~#if (test (lookup (lookup data top) "value") "==" (lookup (lookup data top) "max"))}} empty{{/if}}
+			{{~#if (test (math (lookup (lookup data top) "value") "+" (lookup (lookup data bottom) "value")) "==" 7)}} empty{{/if}}
+		">
+			<button class="trait-button button-green" data-action="add" data-target="{{top}}">▶</button>
+			<label class="label-green">Add▶</label>
+		</li>
+	</ul>
+</div>

@@ -23,109 +23,22 @@
 		- "time passes" command that toggles off everything as if lots of scenes have passed
 	-->
 
+{{log this}}
 
 <div class="trait-line">
-	<div class="trait-grid tactic">
-		<label class="sinister">Greed</label>
-		{{> "/systems/betterangels/templates/actor/parts/radial-menu.html"}}
-		{{#for 5}}
-		<span class="dot sinister"></span>
-		{{/for}}
-		{{#for 5}}
-		<span class="dot virtuous"></span>
-		{{/for}}
-		<label class="virtuous">Generosity</label>
-	</div>
-	<div class="trait-grid strategy">
-		<label class="sinister">Cunning</label>
-		{{> "/systems/betterangels/templates/actor/parts/radial-menu.html"}}
-		{{#for 5}}
-		<span class="dot sinister"></span>
-		{{/for}}
-		{{#for 5}}
-		<span class="dot virtuous"></span>
-		{{/for}}
-		<label class="virtuous">Patient</label>
-	</div>
-	<div class="trait-grid tactic">
-		<label class="sinister">Espionage</label>
-		{{> "/systems/betterangels/templates/actor/parts/radial-menu.html"}}
-		{{#for 5}}
-		<span class="dot sinister"></span>
-		{{/for}}
-		{{#for 5}}
-		<span class="dot virtuous"></span>
-		{{/for}}
-		<label class="virtuous">Knowledge</label>
-	</div>
+	{{> "/systems/betterangels/templates/actor/parts/trait-grid.html" (bundle "type" "tactic" "top" "greed" "bottom" "generosity" "data" this) }}
+	{{> "/systems/betterangels/templates/actor/parts/trait-grid.html" (bundle "type" "strategy" "top" "cunning" "bottom" "patient" "data" this) }}
+	{{> "/systems/betterangels/templates/actor/parts/trait-grid.html" (bundle "type" "tactic" "top" "espionage" "bottom" "knowledge" "data" this) }}
 </div>
+
 <div class="trait-line">
-	<div class="trait-grid tactic">
-		<label class="sinister">Cruelty</label>
-		{{> "/systems/betterangels/templates/actor/parts/radial-menu.html"}}
-		{{#for 5}}
-		<span class="dot sinister"></span>
-		{{/for}}
-		{{#for 5}}
-		<span class="dot virtuous"></span>
-		{{/for}}
-		<label class="virtuous">Courage</label>
-	</div>
-	<div class="trait-grid strategy">
-		<label class="sinister">Sly</label>
-		{{> "/systems/betterangels/templates/actor/parts/radial-menu.html"}}
-		{{#for 5}}
-		<span class="dot sinister"></span>
-		{{/for}}
-		{{#for 5}}
-		<span class="dot virtuous"></span>
-		{{/for}}
-		<label class="virtuous">Open</label>
-	</div>
-	<div class="trait-grid tactic">
-		<label class="sinister">Cowardice</label>
-		{{> "/systems/betterangels/templates/actor/parts/radial-menu.html"}}
-		{{#for 5}}
-		<span class="dot sinister"></span>
-		{{/for}}
-		{{#for 5}}
-		<span class="dot virtuous"></span>
-		{{/for}}
-		<label class="virtuous">Endurance</label>
-	</div>
+	{{> "/systems/betterangels/templates/actor/parts/trait-grid.html" (bundle "type" "tactic" "top" "cruelty" "bottom" "courage" "data" this) }}
+	{{> "/systems/betterangels/templates/actor/parts/trait-grid.html" (bundle "type" "strategy" "top" "sly" "bottom" "open" "data" this) }}
+	{{> "/systems/betterangels/templates/actor/parts/trait-grid.html" (bundle "type" "tactic" "top" "contempt" "bottom" "endurance" "data" this) }}
 </div>
+
 <div class="trait-line">
-	<div class="trait-grid tactic">
-		<label class="sinister">Corruption</label>
-		{{> "/systems/betterangels/templates/actor/parts/radial-menu.html"}}
-		{{#for 5}}
-		<span class="dot sinister"></span>
-		{{/for}}
-		{{#for 5}}
-		<span class="dot virtuous"></span>
-		{{/for}}
-		<label class="virtuous">Nurture</label>
-	</div>
-	<div class="trait-grid strategy">
-		<label class="sinister">Devious</label>
-		{{> "/systems/betterangels/templates/actor/parts/radial-menu.html"}}
-		{{#for 5}}
-		<span class="dot sinister"></span>
-		{{/for}}
-		{{#for 5}}
-		<span class="dot virtuous"></span>
-		{{/for}}
-		<label class="virtuous">Insightful</label>
-	</div>
-	<div class="trait-grid tactic">
-		<label class="sinister">Deceit</label>
-		{{> "/systems/betterangels/templates/actor/parts/radial-menu.html"}}
-		{{#for 5}}
-		<span class="dot sinister"></span>
-		{{/for}}
-		{{#for 5}}
-		<span class="dot virtuous"></span>
-		{{/for}}
-		<label class="virtuous">Honesty</label>
-	</div>
+	{{> "/systems/betterangels/templates/actor/parts/trait-grid.html" (bundle "type" "tactic" "top" "corruption" "bottom" "nurture" "data" this) }}
+	{{> "/systems/betterangels/templates/actor/parts/trait-grid.html" (bundle "type" "strategy" "top" "devious" "bottom" "insightful" "data" this) }}
+	{{> "/systems/betterangels/templates/actor/parts/trait-grid.html" (bundle "type" "tactic" "top" "deceit" "bottom" "honesty" "data" this) }}
 </div>

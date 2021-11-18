@@ -1,0 +1,13 @@
+<div class="trait-pair {{type}}">
+	<label class="sinister">{{case "title" top}}</label>
+	<div class="trait-grid radial-hover">
+		{{> "/systems/betterangels/templates/actor/parts/radial-menu.hbs" this}}
+		{{#for 5}}
+		<span class="dot sinister {{~#if (test @index ">=" (lookup (lookup ../data ../top) "value"))}} empty{{/if}}"></span>
+		{{/for}}
+		{{#for 5}}
+		<span class="dot virtuous {{~#if (test (math 4 "-" @index) ">=" (lookup (lookup ../data ../bottom) "value"))}} empty{{/if}}"></span>
+		{{/for}}
+	</div>
+	<label class="virtuous">{{case "title" bottom}}</label>
+</div>

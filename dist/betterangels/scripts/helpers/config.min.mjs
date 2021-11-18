@@ -1,1 +1,1 @@
-export default{t:.8};
+export default{t:.8,o:{u:"endurance",i:"nurture",g:"cruelty",p:"courage",l:"patient",h:"honesty",m:"insightful",k:"contempt",v:"knowledge",F:"greed",M:"generosity",P:"deceit",S:"nurture",j:"espionage",q:"corruption",open:"sly",A:"cunning",B:"open"}};
