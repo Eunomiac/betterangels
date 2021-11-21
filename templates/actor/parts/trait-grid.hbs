@@ -8,10 +8,30 @@
 
 		{{#with (lookup data top) as | topData |}}
 		{{#with (lookup ../data ../bottom) as | botData |}}
-		{{#for topData.value}}<span id="{{topData.name}}-{{math @index "++"}}" class="dot sinister"></span>{{/for}}
-		{{#for topData.max topData.value}}<span id="{{topData.name}}-{{math @index "++"}}" class="dot sinister empty"></span>{{/for}}
-		{{#for botData.value (math botData.max "--") -1}}<span id="{{botData.name}}-{{math @index "++"}}" class="dot virtuous empty"></span>{{/for}}
-		{{#for botData.min (math botData.value "--") -1}}<span id="{{botData.name}}-{{math @index "++"}}" class="dot virtuous"></span>{{/for}}
+		{{#for topData.value}}
+			<div id="{{topData.name}}-{{math @index "++"}}" class="dot sinister">
+				<span class="dot-animation">&nbsp;</span>
+				<span class="dot-slot">&nbsp;</span>
+			</div>
+		{{/for}}
+		{{#for topData.max topData.value}}
+			<div id="{{topData.name}}-{{math @index "++"}}" class="dot sinister empty">
+				<span class="dot-animation">&nbsp;</span>
+				<span class="dot-slot">&nbsp;</span>
+			</div>
+		{{/for}}
+		{{#for botData.value (math botData.max "--") -1}}
+			<div id="{{botData.name}}-{{math @index "++"}}" class="dot virtuous empty">
+				<span class="dot-animation">&nbsp;</span>
+				<span class="dot-slot">&nbsp;</span>
+			</div>
+		{{/for}}
+		{{#for botData.min (math botData.value "--") -1}}
+			<div id="{{botData.name}}-{{math @index "++"}}" class="dot virtuous">
+				<span class="dot-animation">&nbsp;</span>
+				<span class="dot-slot">&nbsp;</span>
+			</div>
+		{{/for}}
 		{{/with}}
 		{{/with}}
 	</div>

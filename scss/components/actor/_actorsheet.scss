@@ -4,14 +4,11 @@
 	$menu-size: $radius * 2;
 
 	&.size#{$radius}-#{$num-buttons}items {
-		--left-shift: #{-$radius};
-
 		top: -($radius);
-		left: -($radius * 25 / 40);
+		left: calc(50% - #{$radius});
 		z-index: $depth + 1;
 		width: $menu-size;
 		height: $menu-size;
-		margin-left: calc(var(--margin-shift) - var(--left-shift));
 
 		.menu-container {
 			@for $i from 1 through $num-buttons {
@@ -24,7 +21,7 @@
 			.menu-button {
 				width: $radius / 2;
 				height: auto;
-				margin-top: -($radius / 4);
+				margin-top: -($height / 2);
 				margin-left: -($radius / 4);
 
 				$angle: (360 / $num-buttons);
@@ -87,9 +84,6 @@
 				button {
 					font-size: $height;
 					line-height: $height;
-
-					// height: $height * 0.8;
-					// width: $height * 0.8;
 				}
 			}
 		}
@@ -183,6 +177,7 @@ $strategy-spacing: $strategy-dot-size + 1px;
 
 		.trait-grid {
 			display: grid;
+			position: relative;
 			grid-template-rows: repeat(2, var(--dot-size));
 			grid-template-columns: repeat(7, var(--dot-size));
 			grid-row: 2 / span 2;
@@ -193,12 +188,29 @@ $strategy-spacing: $strategy-dot-size + 1px;
 
 			.dot {
 				position: relative;
-				box-sizing: border-box;
-				background-color: $c-black;
-				border: 1px solid $c-black;
-				border-radius: 50%;
 
-				&.empty { background-color: transparent }
+				> span {
+					position: absolute;
+					display: block;
+					left: 0;
+					top: 0;
+					height: 100%;
+					width: 100%;
+					box-sizing: border-box;
+					border: 1px solid $c-black;
+					border-radius: 50%;
+
+					&.dot-slot {
+						background-color: transparent;
+					}
+
+					&.dot-animation {
+						background-color: $c-black;
+					}
+				}
+
+
+				&.empty > span.dot-animation { background-color: transparent }
 
 				&:nth-of-type(1) {
 					grid-row: 1;
@@ -280,9 +292,7 @@ $strategy-spacing: $strategy-dot-size + 1px;
 }
 
 .radial-menu {
-	--margin-shift: calc(-7 * var(--spacing) / 2 - var(--spacing));
-
-	position: relative;
+	position: absolute;
 	display: block;
 	padding: 0;
 	margin-top: var(--spacing);
@@ -292,10 +302,8 @@ $strategy-spacing: $strategy-dot-size + 1px;
 	transition: 0.5s;
 	transform: scale(0.3) rotate(-125deg);
 
-	@include radial-menu(60px, 8, 14px);
 	@include radial-menu(50px, 8, 14px);
 	@include radial-menu(40px, 8, 14px);
-	@include radial-menu(30px, 8, 14px);
 
 	&.depth-1 { z-index: 2 }
 	&.depth-2 { z-index: 4 }
@@ -425,15 +433,11 @@ $strategy-spacing: $strategy-dot-size + 1px;
 			&.empty {
 				opacity: 50%;
 
-				// pointer-events: none !important;
-
 				button,
 				label {
 					color: $c-grey5;
 					pointer-events: none !important;
 				}
-
-				// display: none;
 			}
 		}
 	}
@@ -476,14 +480,4 @@ $strategy-spacing: $strategy-dot-size + 1px;
 			}
 		}
 	}
-}
-
-.trait-pair.tactic .radial-menu {
-	margin-top: $tactic-spacing;
-}
-
-.trait-pair.strategy .radial-menu {
-	--margin-shift: #{-(7 * $strategy-spacing) / 2 - $tactic-spacing};
-
-	margin-top: $strategy-spacing;
 }

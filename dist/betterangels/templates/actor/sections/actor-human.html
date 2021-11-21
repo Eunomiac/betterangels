@@ -1,44 +1,26 @@
-<!-- 
-
-	Click ANYWHERE within a trait's dot line: RADIAL MENU OPENS ...
-		- Remove a Dot
-		- Add a Dot
-		- Slide a Dot
-		... all such actions are broadcast to Chat.
-		OR can make it a click anywhere in dot GRID, and have two "Slide" options, one left and one right,
-			with "Add" up top and "Remove" below
-	Click on a LABEL -> Drag onto another LABEL -> RADIAL MENU OPENS ...
-		- If just drop: ROLLS
-		- Radial Menu contains modifiers to roll: drag onto those, roll with selected modifier
-
-
-	ALSO: NEED A CHECKBOX TO MARK PRIMARY SINISTER STRATEGY
-
-	ALSO: Consider combining Human and Demon sections onto Front
-		- tooltip with image of power/aspect rules?
-		- click to toggle it on/off: when on, it sets a "number of scenes" value (usually 1)
-		- also a button for "demon invoked"
-		- "end scene" command that decrements all "number of scenes" on powers/aspects by one, toggling off anything that hits zero
-			- could also change tooltips at this point to display sins instead of what the trait means
-		- "time passes" command that toggles off everything as if lots of scenes have passed
-	-->
-
-{{log this}}
-
 <div class="trait-line">
-	{{> "/systems/betterangels/templates/actor/parts/trait-grid.html" (bundle "type" "tactic" "top" "greed" "bottom" "generosity" "data" this) }}
-	{{> "/systems/betterangels/templates/actor/parts/trait-grid.html" (bundle "type" "strategy" "top" "cunning" "bottom" "patient" "data" this) }}
-	{{> "/systems/betterangels/templates/actor/parts/trait-grid.html" (bundle "type" "tactic" "top" "espionage" "bottom" "knowledge" "data" this) }}
+	{{> "/systems/betterangels/templates/actor/parts/trait-grid.html" 
+		(bundle "type" "tactic" "size" 40 "top" "greed" "bottom" "generosity" "data" this) }}
+	{{> "/systems/betterangels/templates/actor/parts/trait-grid.html"
+		(bundle "type" "strategy" "size" 50 "top" "cunning" "bottom" "patient" "data" this) }}
+	{{> "/systems/betterangels/templates/actor/parts/trait-grid.html" 
+		(bundle "type" "tactic" "size" 40 "top" "espionage" "bottom" "knowledge" "data" this) }}
 </div>
 
 <div class="trait-line">
-	{{> "/systems/betterangels/templates/actor/parts/trait-grid.html" (bundle "type" "tactic" "top" "cruelty" "bottom" "courage" "data" this) }}
-	{{> "/systems/betterangels/templates/actor/parts/trait-grid.html" (bundle "type" "strategy" "top" "sly" "bottom" "open" "data" this) }}
-	{{> "/systems/betterangels/templates/actor/parts/trait-grid.html" (bundle "type" "tactic" "top" "contempt" "bottom" "endurance" "data" this) }}
+	{{> "/systems/betterangels/templates/actor/parts/trait-grid.html"
+		(bundle "type" "tactic" "size" 40 "top" "cruelty" "bottom" "courage" "data" this) }}
+	{{> "/systems/betterangels/templates/actor/parts/trait-grid.html"
+		(bundle "type" "strategy" "size" 50 "top" "sly" "bottom" "open" "data" this) }}
+	{{> "/systems/betterangels/templates/actor/parts/trait-grid.html"
+		(bundle "type" "tactic" "size" 40 "top" "contempt" "bottom" "endurance" "data" this) }}
 </div>
 
 <div class="trait-line">
-	{{> "/systems/betterangels/templates/actor/parts/trait-grid.html" (bundle "type" "tactic" "top" "corruption" "bottom" "nurture" "data" this) }}
-	{{> "/systems/betterangels/templates/actor/parts/trait-grid.html" (bundle "type" "strategy" "top" "devious" "bottom" "insightful" "data" this) }}
-	{{> "/systems/betterangels/templates/actor/parts/trait-grid.html" (bundle "type" "tactic" "top" "deceit" "bottom" "honesty" "data" this) }}
+	{{> "/systems/betterangels/templates/actor/parts/trait-grid.html"
+		(bundle "type" "tactic" "size" 40 "top" "corruption" "bottom" "nurture" "data" this) }}
+	{{> "/systems/betterangels/templates/actor/parts/trait-grid.html"
+		(bundle "type" "strategy" "size" 50 "top" "devious" "bottom" "insightful" "data" this) }}
+	{{> "/systems/betterangels/templates/actor/parts/trait-grid.html"
+		(bundle "type" "tactic" "size" 40 "top" "deceit" "bottom" "honesty" "data" this) }}
 </div>

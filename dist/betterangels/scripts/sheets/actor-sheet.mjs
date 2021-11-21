@@ -14,10 +14,12 @@ import {
 	GSDevTools,
 	RoughEase, // GreenSock Animation Platform
 	// ▮▮▮▮▮▮▮[Utility]▮▮▮▮▮▮▮
-	U
+	U,
+	// ▮▮▮▮▮▮▮[Mixins]▮▮▮▮▮▮▮
+	MIX, UpdateQueue
 } from "../helpers/bundler.mjs";
 
-export default class extends ActorSheet {
+export default class extends MIX(ActorSheet).with(UpdateQueue) {
 
 	static get defaultOptions() {
 		return mergeObject(super.defaultOptions, {
@@ -30,9 +32,6 @@ export default class extends ActorSheet {
 	}
 
 	get template() { return `systems/betterangels/templates/actor/actor-${this.actor.data.type}-sheet.html` }
-
-	get pendingUpdateData() { return (this._pendingUpdateData = this._pendingUpdateData ?? {}) }
-	get actorData() { return U.merge(this.actor.data, U.expand(this.pendingUpdateData)) }
 
 	getData() {
 
@@ -51,46 +50,6 @@ export default class extends ActorSheet {
 		context.rollData = context.actor.getRollData();
 
 		return context;
-	}
-
-	get animate() {
-		return {
-			fillDot: (trait, dot) => {
-				const dotID = `#${trait}-${dot}`;
-				gsap.to(dotID, {
-					backgroundColor: "rgba(0, 0, 0, 1)",
-					ease: "power.out",
-					duration: 1,
-					onComplete() {
-						$(dotID).removeClass("empty");
-					}
-				});
-			},
-			emptyDot: (trait, dot) => {
-				const dotID = `#${trait}-${dot}`;
-				gsap.to(dotID, {
-					backgroundColor: "rgba(0, 0, 0, 0)",
-					ease: "power.out",
-					duration: 1,
-					onComplete() {
-						$(dotID).addClass("empty");
-					}
-				});
-			},
-			slideDot: (toTrait, toDot, fromTrait, fromDot) => {
-				this.animate.fillDot(toTrait, toDot);
-				this.animate.emptyDot(fromTrait, fromDot);
-			}
-		};
-	}
-
-	async updateActor(updateData = {}) {
-		updateData = {
-			...this.pendingUpdateData,
-			...updateData
-		};
-		delete this._pendingUpdateData;
-		return this.actor.update(updateData);
 	}
 
 	_prepareCharacterData(context) {
@@ -124,7 +83,53 @@ export default class extends ActorSheet {
 
 	_closeRadialMenu(event) {
 		$(".radial-menu.active").removeClass("active");
-		setTimeout(() => this.actor.update(this.pendingUpdateData), 500);
+		setTimeout(() => this.pushUpdates(), 500);
+	}
+
+	fillDot(trait, dot) {
+		const [dotElem] = $(`#${trait}-${dot} > .dot-animation`);
+		const [menuElem] = $(dotElem).closest(".radial-hover").find(".radial-menu");
+		const [videoElem] = $(menuElem).find("video");
+		const videoScale = gsap.getProperty(videoElem, "scale");
+		const tl = gsap.timeline({
+			onComplete() { $(dotElem).removeClass("empty") }
+		});
+		tl.fromTo(dotElem, {
+			scale: 7,
+			backgroundColor: "rgb(0, 0, 0)",
+			opacity: 0
+		}, {
+			scale: 1,
+			opacity: 1,
+			backgroundColor: "rgb(0, 0, 0)",
+			ease: "power4.in",
+			duration: 0.5
+		}, 0.25);
+	}
+	emptyDot(trait, dot) {
+		const [dotElem] = $(`#${trait}-${dot} > .dot-animation`);
+		const [menuElem] = $(dotElem).closest(".radial-hover").find(".radial-menu");
+		const [videoElem] = $(menuElem).find("video");
+		const videoScale = gsap.getProperty(videoElem, "scale");
+		console.log(`Scale: ${videoScale}`);
+		const tl = gsap.timeline({
+			onComplete() { $(dotElem).addClass("empty") }
+		});
+		tl.fromTo(dotElem, {
+			scale: 1,
+			backgroundColor: "rgb(0, 0, 0)",
+			opacity: 1
+		}, {
+			scale: 10,
+			opacity: 0,
+			backgroundColor: "rgb(0, 0, 0)",
+			ease: "power4.out",
+			duration: 0.75
+		}, 0.25);
+	}
+	slideDot(toTrait, toDot, fromTrait, fromDot) {
+		this.fillDot(toTrait, toDot);
+		this.emptyDot(fromTrait, fromDot);
 	}
 
 	_prepareItems(context) {
@@ -150,6 +155,8 @@ export default class extends ActorSheet {
 	activateListeners(html) {
 		super.activateListeners(html);
 
+		Hooks.once("renderActorSheet", () => html.find(".radial-menu video").each(function playMenuVideos() { this.play() }));
+
 		if (!this.isEditable) { return }
 
 		const sheetContext = this;
@@ -158,8 +165,6 @@ export default class extends ActorSheet {
 		html.find(".radial-hover").mouseleave(this._closeRadialMenu.bind(this));
 
 		html.find(".trait-button").click(this._changeTrait.bind(this));
-
-		html.find(".radial-menu video").each(function playMenuVideos() { this.play() });
 
 		Dragger.create(".trait-pair > label > span", {
 			onDragStart() {
@@ -214,21 +219,23 @@ export default class extends ActorSheet {
 		switch (action) {
 			case "add": {
 				const targetVal = Math.min(data[target].max, data[target].value + 1);
-				this.pendingUpdateData[`data.${target}.value`] = targetVal;
-				this.animate.fillDot(target, targetVal);
+				this.updateSync({[`data.${target}.value`]: targetVal});
+				this.fillDot(target, targetVal);
 				break;
 			}
 			case "drop": {
-				this.animate.emptyDot(target, data[target].value);
-				this.pendingUpdateData[`data.${target}.value`] = Math.max(data[target].min, data[target].value - 1);
+				this.emptyDot(target, data[target].value);
+				this.updateSync({[`data.${target}.value`]: Math.max(data[target].min, data[target].value - 1)});
 				break;
 			}
 			case "slide": {
 				const fromTarget = CONFIG.BETTERANGELS.traitPairs[target];
 				const targetVal = Math.min(data[target].max, data[target].value + 1);
-				this.animate.slideDot(target, targetVal, fromTarget, data[fromTarget].value);
-				this.pendingUpdateData[`data.${target}.value`] = targetVal;
-				this.pendingUpdateData[`data.${fromTarget}.value`] = Math.max(data[fromTarget].min, data[fromTarget].value - 1);
+				this.slideDot(target, targetVal, fromTarget, data[fromTarget].value);
+				this.updateSync({
+					[`data.${target}.value`]: targetVal,
+					[`data.${fromTarget}.value`]: Math.max(data[fromTarget].min, data[fromTarget].value - 1)
+				});
 				break;
 			}
 			default: return false;

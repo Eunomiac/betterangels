@@ -489,6 +489,7 @@
           transform: scale(1.2); }
       .betterangels.actor .trait-line .trait-pair .trait-grid {
         display: grid;
+        position: relative;
         grid-template-rows: repeat(2, var(--dot-size));
         grid-template-columns: repeat(7, var(--dot-size));
         grid-row: 2 / span 2;
@@ -497,13 +498,23 @@
         margin-bottom: auto;
         pointer-events: all; }
         .betterangels.actor .trait-line .trait-pair .trait-grid .dot {
-          position: relative;
-          -webkit-box-sizing: border-box;
-          box-sizing: border-box;
-          background-color: black;
-          border: 1px solid black;
-          border-radius: 50%; }
-          .betterangels.actor .trait-line .trait-pair .trait-grid .dot.empty {
+          position: relative; }
+          .betterangels.actor .trait-line .trait-pair .trait-grid .dot > span {
+            position: absolute;
+            display: block;
+            left: 0;
+            top: 0;
+            height: 100%;
+            width: 100%;
+            -webkit-box-sizing: border-box;
+            box-sizing: border-box;
+            border: 1px solid black;
+            border-radius: 50%; }
+            .betterangels.actor .trait-line .trait-pair .trait-grid .dot > span.dot-slot {
+              background-color: transparent; }
+            .betterangels.actor .trait-line .trait-pair .trait-grid .dot > span.dot-animation {
+              background-color: black; }
+          .betterangels.actor .trait-line .trait-pair .trait-grid .dot.empty > span.dot-animation {
             background-color: transparent; }
           .betterangels.actor .trait-line .trait-pair .trait-grid .dot:nth-of-type(1) {
             grid-row: 1;
@@ -551,8 +562,7 @@
           font-family: "Komikax", sans-serif;
           line-height: 18px; }
   .betterangels.actor .radial-menu {
-    --margin-shift: calc(-7 * var(--spacing) / 2 - var(--spacing));
-    position: relative;
+    position: absolute;
     display: block;
     padding: 0;
     margin-top: var(--spacing);
@@ -565,164 +575,12 @@
     -webkit-transform: scale(0.3) rotate(-125deg);
     -ms-transform: scale(0.3) rotate(-125deg);
     transform: scale(0.3) rotate(-125deg); }
-    .betterangels.actor .radial-menu.size60px-8items {
-      --left-shift: -60px;
-      top: -60px;
-      left: -37.5px;
-      z-index: 2;
-      width: 120px;
-      height: 120px;
-      margin-left: calc(var(--margin-shift) - var(--left-shift)); }
-      .betterangels.actor .radial-menu.size60px-8items .menu-container .menu-button:nth-child(1) button,
-      .betterangels.actor .radial-menu.size60px-8items .menu-container .menu-button:nth-child(1) label {
-        -webkit-animation-delay: 0.125s;
-        animation-delay: 0.125s; }
-      .betterangels.actor .radial-menu.size60px-8items .menu-container .menu-button:nth-child(2) button,
-      .betterangels.actor .radial-menu.size60px-8items .menu-container .menu-button:nth-child(2) label {
-        -webkit-animation-delay: 0.25s;
-        animation-delay: 0.25s; }
-      .betterangels.actor .radial-menu.size60px-8items .menu-container .menu-button:nth-child(3) button,
-      .betterangels.actor .radial-menu.size60px-8items .menu-container .menu-button:nth-child(3) label {
-        -webkit-animation-delay: 0.375s;
-        animation-delay: 0.375s; }
-      .betterangels.actor .radial-menu.size60px-8items .menu-container .menu-button:nth-child(4) button,
-      .betterangels.actor .radial-menu.size60px-8items .menu-container .menu-button:nth-child(4) label {
-        -webkit-animation-delay: 0.5s;
-        animation-delay: 0.5s; }
-      .betterangels.actor .radial-menu.size60px-8items .menu-container .menu-button:nth-child(5) button,
-      .betterangels.actor .radial-menu.size60px-8items .menu-container .menu-button:nth-child(5) label {
-        -webkit-animation-delay: 0.625s;
-        animation-delay: 0.625s; }
-      .betterangels.actor .radial-menu.size60px-8items .menu-container .menu-button:nth-child(6) button,
-      .betterangels.actor .radial-menu.size60px-8items .menu-container .menu-button:nth-child(6) label {
-        -webkit-animation-delay: 0.75s;
-        animation-delay: 0.75s; }
-      .betterangels.actor .radial-menu.size60px-8items .menu-container .menu-button:nth-child(7) button,
-      .betterangels.actor .radial-menu.size60px-8items .menu-container .menu-button:nth-child(7) label {
-        -webkit-animation-delay: 0.875s;
-        animation-delay: 0.875s; }
-      .betterangels.actor .radial-menu.size60px-8items .menu-container .menu-button:nth-child(8) button,
-      .betterangels.actor .radial-menu.size60px-8items .menu-container .menu-button:nth-child(8) label {
-        -webkit-animation-delay: 1s;
-        animation-delay: 1s; }
-      .betterangels.actor .radial-menu.size60px-8items .menu-container .menu-button {
-        width: 30px;
-        height: auto;
-        margin-top: -15px;
-        margin-left: -15px; }
-        .betterangels.actor .radial-menu.size60px-8items .menu-container .menu-button:nth-of-type(1) {
-          -webkit-transform: rotate(0deg) translate(45px) rotate(0deg) translateX(0px);
-          -ms-transform: rotate(0deg) translate(45px) rotate(0deg) translateX(0px);
-          transform: rotate(0deg) translate(45px) rotate(0deg) translateX(0px); }
-          .betterangels.actor .radial-menu.size60px-8items .menu-container .menu-button:nth-of-type(1) button > span {
-            -webkit-transform: "scale(1.5) ";
-            -ms-transform: "scale(1.5) ";
-            transform: "scale(1.5) "; }
-          .betterangels.actor .radial-menu.size60px-8items .menu-container .menu-button:nth-of-type(1):hover button > span {
-            -webkit-transform: "scale(5) ";
-            -ms-transform: "scale(5) ";
-            transform: "scale(5) "; }
-        .betterangels.actor .radial-menu.size60px-8items .menu-container .menu-button:nth-of-type(2) {
-          -webkit-transform: rotate(45deg) translate(45px) rotate(-45deg) translateX(0px) translateY(0px);
-          -ms-transform: rotate(45deg) translate(45px) rotate(-45deg) translateX(0px) translateY(0px);
-          transform: rotate(45deg) translate(45px) rotate(-45deg) translateX(0px) translateY(0px); }
-          .betterangels.actor .radial-menu.size60px-8items .menu-container .menu-button:nth-of-type(2) button > span {
-            -webkit-transform: "scale(1.5) rotate(75deg)";
-            -ms-transform: "scale(1.5) rotate(75deg)";
-            transform: "scale(1.5) rotate(75deg)"; }
-          .betterangels.actor .radial-menu.size60px-8items .menu-container .menu-button:nth-of-type(2):hover button > span {
-            -webkit-transform: "scale(5) rotate(75deg)";
-            -ms-transform: "scale(5) rotate(75deg)";
-            transform: "scale(5) rotate(75deg)"; }
-        .betterangels.actor .radial-menu.size60px-8items .menu-container .menu-button:nth-of-type(3) {
-          -webkit-transform: rotate(90deg) translate(45px) rotate(-90deg) translateX(0px) translateY(0px);
-          -ms-transform: rotate(90deg) translate(45px) rotate(-90deg) translateX(0px) translateY(0px);
-          transform: rotate(90deg) translate(45px) rotate(-90deg) translateX(0px) translateY(0px); }
-          .betterangels.actor .radial-menu.size60px-8items .menu-container .menu-button:nth-of-type(3) button > span {
-            -webkit-transform: "scale(1.5) rotate(75deg)";
-            -ms-transform: "scale(1.5) rotate(75deg)";
-            transform: "scale(1.5) rotate(75deg)"; }
-          .betterangels.actor .radial-menu.size60px-8items .menu-container .menu-button:nth-of-type(3):hover button > span {
-            -webkit-transform: "scale(5) rotate(75deg)";
-            -ms-transform: "scale(5) rotate(75deg)";
-            transform: "scale(5) rotate(75deg)"; }
-        .betterangels.actor .radial-menu.size60px-8items .menu-container .menu-button:nth-of-type(4) {
-          -webkit-transform: rotate(135deg) translate(45px) rotate(-135deg) translateX(0px) translateY(-0px);
-          -ms-transform: rotate(135deg) translate(45px) rotate(-135deg) translateX(0px) translateY(-0px);
-          transform: rotate(135deg) translate(45px) rotate(-135deg) translateX(0px) translateY(-0px); }
-          .betterangels.actor .radial-menu.size60px-8items .menu-container .menu-button:nth-of-type(4) button > span {
-            -webkit-transform: "scale(1.5) rotate(170deg)";
-            -ms-transform: "scale(1.5) rotate(170deg)";
-            transform: "scale(1.5) rotate(170deg)"; }
-          .betterangels.actor .radial-menu.size60px-8items .menu-container .menu-button:nth-of-type(4):hover button > span {
-            -webkit-transform: "scale(5) rotate(170deg)";
-            -ms-transform: "scale(5) rotate(170deg)";
-            transform: "scale(5) rotate(170deg)"; }
-        .betterangels.actor .radial-menu.size60px-8items .menu-container .menu-button:nth-of-type(5) {
-          -webkit-transform: rotate(180deg) translate(45px) rotate(-180deg) translateX(-0px);
-          -ms-transform: rotate(180deg) translate(45px) rotate(-180deg) translateX(-0px);
-          transform: rotate(180deg) translate(45px) rotate(-180deg) translateX(-0px); }
-          .betterangels.actor .radial-menu.size60px-8items .menu-container .menu-button:nth-of-type(5) button > span {
-            -webkit-transform: "scale(1.5) rotate(170deg)";
-            -ms-transform: "scale(1.5) rotate(170deg)";
-            transform: "scale(1.5) rotate(170deg)"; }
-          .betterangels.actor .radial-menu.size60px-8items .menu-container .menu-button:nth-of-type(5):hover button > span {
-            -webkit-transform: "scale(5) rotate(170deg)";
-            -ms-transform: "scale(5) rotate(170deg)";
-            transform: "scale(5) rotate(170deg)"; }
-        .betterangels.actor .radial-menu.size60px-8items .menu-container .menu-button:nth-of-type(6) {
-          -webkit-transform: rotate(225deg) translate(45px) rotate(-225deg) translateX(-0px) translateY(-0px);
-          -ms-transform: rotate(225deg) translate(45px) rotate(-225deg) translateX(-0px) translateY(-0px);
-          transform: rotate(225deg) translate(45px) rotate(-225deg) translateX(-0px) translateY(-0px); }
-          .betterangels.actor .radial-menu.size60px-8items .menu-container .menu-button:nth-of-type(6) button > span {
-            -webkit-transform: "scale(1.5) rotate(75deg)";
-            -ms-transform: "scale(1.5) rotate(75deg)";
-            transform: "scale(1.5) rotate(75deg)"; }
-          .betterangels.actor .radial-menu.size60px-8items .menu-container .menu-button:nth-of-type(6):hover button > span {
-            -webkit-transform: "scale(5) rotate(75deg)";
-            -ms-transform: "scale(5) rotate(75deg)";
-            transform: "scale(5) rotate(75deg)"; }
-        .betterangels.actor .radial-menu.size60px-8items .menu-container .menu-button:nth-of-type(7) {
-          -webkit-transform: rotate(270deg) translate(45px) rotate(-270deg) translateX(-0px) translateY(-0px);
-          -ms-transform: rotate(270deg) translate(45px) rotate(-270deg) translateX(-0px) translateY(-0px);
-          transform: rotate(270deg) translate(45px) rotate(-270deg) translateX(-0px) translateY(-0px); }
-          .betterangels.actor .radial-menu.size60px-8items .menu-container .menu-button:nth-of-type(7) button > span {
-            -webkit-transform: "scale(1.5) rotate(75deg)";
-            -ms-transform: "scale(1.5) rotate(75deg)";
-            transform: "scale(1.5) rotate(75deg)"; }
-          .betterangels.actor .radial-menu.size60px-8items .menu-container .menu-button:nth-of-type(7):hover button > span {
-            -webkit-transform: "scale(5) rotate(75deg)";
-            -ms-transform: "scale(5) rotate(75deg)";
-            transform: "scale(5) rotate(75deg)"; }
-        .betterangels.actor .radial-menu.size60px-8items .menu-container .menu-button:nth-of-type(8) {
-          -webkit-transform: rotate(315deg) translate(45px) rotate(-315deg) translateX(-0px) translateY(0px);
-          -ms-transform: rotate(315deg) translate(45px) rotate(-315deg) translateX(-0px) translateY(0px);
-          transform: rotate(315deg) translate(45px) rotate(-315deg) translateX(-0px) translateY(0px); }
-          .betterangels.actor .radial-menu.size60px-8items .menu-container .menu-button:nth-of-type(8) button > span {
-            -webkit-transform: "scale(1.5) rotate(170deg)";
-            -ms-transform: "scale(1.5) rotate(170deg)";
-            transform: "scale(1.5) rotate(170deg)"; }
-          .betterangels.actor .radial-menu.size60px-8items .menu-container .menu-button:nth-of-type(8):hover button > span {
-            -webkit-transform: "scale(5) rotate(170deg)";
-            -ms-transform: "scale(5) rotate(170deg)";
-            transform: "scale(5) rotate(170deg)"; }
-        .betterangels.actor .radial-menu.size60px-8items .menu-container .menu-button button,
-        .betterangels.actor .radial-menu.size60px-8items .menu-container .menu-button label {
-          height: 14px;
-          line-height: 14px; }
-        .betterangels.actor .radial-menu.size60px-8items .menu-container .menu-button label {
-          font-size: 14px; }
-        .betterangels.actor .radial-menu.size60px-8items .menu-container .menu-button button {
-          font-size: 14px;
-          line-height: 14px; }
     .betterangels.actor .radial-menu.size50px-8items {
-      --left-shift: -50px;
       top: -50px;
-      left: -31.25px;
+      left: calc(50% - 50px);
       z-index: 2;
       width: 100px;
-      height: 100px;
-      margin-left: calc(var(--margin-shift) - var(--left-shift)); }
+      height: 100px; }
       .betterangels.actor .radial-menu.size50px-8items .menu-container .menu-button:nth-child(1) button,
       .betterangels.actor .radial-menu.size50px-8items .menu-container .menu-button:nth-child(1) label {
         -webkit-animation-delay: 0.125s;
@@ -758,7 +616,7 @@
       .betterangels.actor .radial-menu.size50px-8items .menu-container .menu-button {
         width: 25px;
         height: auto;
-        margin-top: -12.5px;
+        margin-top: -7px;
         margin-left: -12.5px; }
         .betterangels.actor .radial-menu.size50px-8items .menu-container .menu-button:nth-of-type(1) {
           -webkit-transform: rotate(0deg) translate(37.5px) rotate(0deg) translateX(0px);
@@ -866,13 +724,11 @@
           font-size: 14px;
           line-height: 14px; }
     .betterangels.actor .radial-menu.size40px-8items {
-      --left-shift: -40px;
       top: -40px;
-      left: -25px;
+      left: calc(50% - 40px);
       z-index: 2;
       width: 80px;
-      height: 80px;
-      margin-left: calc(var(--margin-shift) - var(--left-shift)); }
+      height: 80px; }
       .betterangels.actor .radial-menu.size40px-8items .menu-container .menu-button:nth-child(1) button,
       .betterangels.actor .radial-menu.size40px-8items .menu-container .menu-button:nth-child(1) label {
         -webkit-animation-delay: 0.125s;
@@ -908,7 +764,7 @@
       .betterangels.actor .radial-menu.size40px-8items .menu-container .menu-button {
         width: 20px;
         height: auto;
-        margin-top: -10px;
+        margin-top: -7px;
         margin-left: -10px; }
         .betterangels.actor .radial-menu.size40px-8items .menu-container .menu-button:nth-of-type(1) {
           -webkit-transform: rotate(0deg) translate(30px) rotate(0deg) translateX(0px);
@@ -1013,156 +869,6 @@
         .betterangels.actor .radial-menu.size40px-8items .menu-container .menu-button label {
           font-size: 14px; }
         .betterangels.actor .radial-menu.size40px-8items .menu-container .menu-button button {
-          font-size: 14px;
-          line-height: 14px; }
-    .betterangels.actor .radial-menu.size30px-8items {
-      --left-shift: -30px;
-      top: -30px;
-      left: -18.75px;
-      z-index: 2;
-      width: 60px;
-      height: 60px;
-      margin-left: calc(var(--margin-shift) - var(--left-shift)); }
-      .betterangels.actor .radial-menu.size30px-8items .menu-container .menu-button:nth-child(1) button,
-      .betterangels.actor .radial-menu.size30px-8items .menu-container .menu-button:nth-child(1) label {
-        -webkit-animation-delay: 0.125s;
-        animation-delay: 0.125s; }
-      .betterangels.actor .radial-menu.size30px-8items .menu-container .menu-button:nth-child(2) button,
-      .betterangels.actor .radial-menu.size30px-8items .menu-container .menu-button:nth-child(2) label {
-        -webkit-animation-delay: 0.25s;
-        animation-delay: 0.25s; }
-      .betterangels.actor .radial-menu.size30px-8items .menu-container .menu-button:nth-child(3) button,
-      .betterangels.actor .radial-menu.size30px-8items .menu-container .menu-button:nth-child(3) label {
-        -webkit-animation-delay: 0.375s;
-        animation-delay: 0.375s; }
-      .betterangels.actor .radial-menu.size30px-8items .menu-container .menu-button:nth-child(4) button,
-      .betterangels.actor .radial-menu.size30px-8items .menu-container .menu-button:nth-child(4) label {
-        -webkit-animation-delay: 0.5s;
-        animation-delay: 0.5s; }
-      .betterangels.actor .radial-menu.size30px-8items .menu-container .menu-button:nth-child(5) button,
-      .betterangels.actor .radial-menu.size30px-8items .menu-container .menu-button:nth-child(5) label {
-        -webkit-animation-delay: 0.625s;
-        animation-delay: 0.625s; }
-      .betterangels.actor .radial-menu.size30px-8items .menu-container .menu-button:nth-child(6) button,
-      .betterangels.actor .radial-menu.size30px-8items .menu-container .menu-button:nth-child(6) label {
-        -webkit-animation-delay: 0.75s;
-        animation-delay: 0.75s; }
-      .betterangels.actor .radial-menu.size30px-8items .menu-container .menu-button:nth-child(7) button,
-      .betterangels.actor .radial-menu.size30px-8items .menu-container .menu-button:nth-child(7) label {
-        -webkit-animation-delay: 0.875s;
-        animation-delay: 0.875s; }
-      .betterangels.actor .radial-menu.size30px-8items .menu-container .menu-button:nth-child(8) button,
-      .betterangels.actor .radial-menu.size30px-8items .menu-container .menu-button:nth-child(8) label {
-        -webkit-animation-delay: 1s;
-        animation-delay: 1s; }
-      .betterangels.actor .radial-menu.size30px-8items .menu-container .menu-button {
-        width: 15px;
-        height: auto;
-        margin-top: -7.5px;
-        margin-left: -7.5px; }
-        .betterangels.actor .radial-menu.size30px-8items .menu-container .menu-button:nth-of-type(1) {
-          -webkit-transform: rotate(0deg) translate(22.5px) rotate(0deg) translateX(0px);
-          -ms-transform: rotate(0deg) translate(22.5px) rotate(0deg) translateX(0px);
-          transform: rotate(0deg) translate(22.5px) rotate(0deg) translateX(0px); }
-          .betterangels.actor .radial-menu.size30px-8items .menu-container .menu-button:nth-of-type(1) button > span {
-            -webkit-transform: "scale(1.5) ";
-            -ms-transform: "scale(1.5) ";
-            transform: "scale(1.5) "; }
-          .betterangels.actor .radial-menu.size30px-8items .menu-container .menu-button:nth-of-type(1):hover button > span {
-            -webkit-transform: "scale(5) ";
-            -ms-transform: "scale(5) ";
-            transform: "scale(5) "; }
-        .betterangels.actor .radial-menu.size30px-8items .menu-container .menu-button:nth-of-type(2) {
-          -webkit-transform: rotate(45deg) translate(22.5px) rotate(-45deg) translateX(0px) translateY(0px);
-          -ms-transform: rotate(45deg) translate(22.5px) rotate(-45deg) translateX(0px) translateY(0px);
-          transform: rotate(45deg) translate(22.5px) rotate(-45deg) translateX(0px) translateY(0px); }
-          .betterangels.actor .radial-menu.size30px-8items .menu-container .menu-button:nth-of-type(2) button > span {
-            -webkit-transform: "scale(1.5) rotate(75deg)";
-            -ms-transform: "scale(1.5) rotate(75deg)";
-            transform: "scale(1.5) rotate(75deg)"; }
-          .betterangels.actor .radial-menu.size30px-8items .menu-container .menu-button:nth-of-type(2):hover button > span {
-            -webkit-transform: "scale(5) rotate(75deg)";
-            -ms-transform: "scale(5) rotate(75deg)";
-            transform: "scale(5) rotate(75deg)"; }
-        .betterangels.actor .radial-menu.size30px-8items .menu-container .menu-button:nth-of-type(3) {
-          -webkit-transform: rotate(90deg) translate(22.5px) rotate(-90deg) translateX(0px) translateY(0px);
-          -ms-transform: rotate(90deg) translate(22.5px) rotate(-90deg) translateX(0px) translateY(0px);
-          transform: rotate(90deg) translate(22.5px) rotate(-90deg) translateX(0px) translateY(0px); }
-          .betterangels.actor .radial-menu.size30px-8items .menu-container .menu-button:nth-of-type(3) button > span {
-            -webkit-transform: "scale(1.5) rotate(75deg)";
-            -ms-transform: "scale(1.5) rotate(75deg)";
-            transform: "scale(1.5) rotate(75deg)"; }
-          .betterangels.actor .radial-menu.size30px-8items .menu-container .menu-button:nth-of-type(3):hover button > span {
-            -webkit-transform: "scale(5) rotate(75deg)";
-            -ms-transform: "scale(5) rotate(75deg)";
-            transform: "scale(5) rotate(75deg)"; }
-        .betterangels.actor .radial-menu.size30px-8items .menu-container .menu-button:nth-of-type(4) {
-          -webkit-transform: rotate(135deg) translate(22.5px) rotate(-135deg) translateX(0px) translateY(-0px);
-          -ms-transform: rotate(135deg) translate(22.5px) rotate(-135deg) translateX(0px) translateY(-0px);
-          transform: rotate(135deg) translate(22.5px) rotate(-135deg) translateX(0px) translateY(-0px); }
-          .betterangels.actor .radial-menu.size30px-8items .menu-container .menu-button:nth-of-type(4) button > span {
-            -webkit-transform: "scale(1.5) rotate(170deg)";
-            -ms-transform: "scale(1.5) rotate(170deg)";
-            transform: "scale(1.5) rotate(170deg)"; }
-          .betterangels.actor .radial-menu.size30px-8items .menu-container .menu-button:nth-of-type(4):hover button > span {
-            -webkit-transform: "scale(5) rotate(170deg)";
-            -ms-transform: "scale(5) rotate(170deg)";
-            transform: "scale(5) rotate(170deg)"; }
-        .betterangels.actor .radial-menu.size30px-8items .menu-container .menu-button:nth-of-type(5) {
-          -webkit-transform: rotate(180deg) translate(22.5px) rotate(-180deg) translateX(-0px);
-          -ms-transform: rotate(180deg) translate(22.5px) rotate(-180deg) translateX(-0px);
-          transform: rotate(180deg) translate(22.5px) rotate(-180deg) translateX(-0px); }
-          .betterangels.actor .radial-menu.size30px-8items .menu-container .menu-button:nth-of-type(5) button > span {
-            -webkit-transform: "scale(1.5) rotate(170deg)";
-            -ms-transform: "scale(1.5) rotate(170deg)";
-            transform: "scale(1.5) rotate(170deg)"; }
-          .betterangels.actor .radial-menu.size30px-8items .menu-container .menu-button:nth-of-type(5):hover button > span {
-            -webkit-transform: "scale(5) rotate(170deg)";
-            -ms-transform: "scale(5) rotate(170deg)";
-            transform: "scale(5) rotate(170deg)"; }
-        .betterangels.actor .radial-menu.size30px-8items .menu-container .menu-button:nth-of-type(6) {
-          -webkit-transform: rotate(225deg) translate(22.5px) rotate(-225deg) translateX(-0px) translateY(-0px);
-          -ms-transform: rotate(225deg) translate(22.5px) rotate(-225deg) translateX(-0px) translateY(-0px);
-          transform: rotate(225deg) translate(22.5px) rotate(-225deg) translateX(-0px) translateY(-0px); }
-          .betterangels.actor .radial-menu.size30px-8items .menu-container .menu-button:nth-of-type(6) button > span {
-            -webkit-transform: "scale(1.5) rotate(75deg)";
-            -ms-transform: "scale(1.5) rotate(75deg)";
-            transform: "scale(1.5) rotate(75deg)"; }
-          .betterangels.actor .radial-menu.size30px-8items .menu-container .menu-button:nth-of-type(6):hover button > span {
-            -webkit-transform: "scale(5) rotate(75deg)";
-            -ms-transform: "scale(5) rotate(75deg)";
-            transform: "scale(5) rotate(75deg)"; }
-        .betterangels.actor .radial-menu.size30px-8items .menu-container .menu-button:nth-of-type(7) {
-          -webkit-transform: rotate(270deg) translate(22.5px) rotate(-270deg) translateX(-0px) translateY(-0px);
-          -ms-transform: rotate(270deg) translate(22.5px) rotate(-270deg) translateX(-0px) translateY(-0px);
-          transform: rotate(270deg) translate(22.5px) rotate(-270deg) translateX(-0px) translateY(-0px); }
-          .betterangels.actor .radial-menu.size30px-8items .menu-container .menu-button:nth-of-type(7) button > span {
-            -webkit-transform: "scale(1.5) rotate(75deg)";
-            -ms-transform: "scale(1.5) rotate(75deg)";
-            transform: "scale(1.5) rotate(75deg)"; }
-          .betterangels.actor .radial-menu.size30px-8items .menu-container .menu-button:nth-of-type(7):hover button > span {
-            -webkit-transform: "scale(5) rotate(75deg)";
-            -ms-transform: "scale(5) rotate(75deg)";
-            transform: "scale(5) rotate(75deg)"; }
-        .betterangels.actor .radial-menu.size30px-8items .menu-container .menu-button:nth-of-type(8) {
-          -webkit-transform: rotate(315deg) translate(22.5px) rotate(-315deg) translateX(-0px) translateY(0px);
-          -ms-transform: rotate(315deg) translate(22.5px) rotate(-315deg) translateX(-0px) translateY(0px);
-          transform: rotate(315deg) translate(22.5px) rotate(-315deg) translateX(-0px) translateY(0px); }
-          .betterangels.actor .radial-menu.size30px-8items .menu-container .menu-button:nth-of-type(8) button > span {
-            -webkit-transform: "scale(1.5) rotate(170deg)";
-            -ms-transform: "scale(1.5) rotate(170deg)";
-            transform: "scale(1.5) rotate(170deg)"; }
-          .betterangels.actor .radial-menu.size30px-8items .menu-container .menu-button:nth-of-type(8):hover button > span {
-            -webkit-transform: "scale(5) rotate(170deg)";
-            -ms-transform: "scale(5) rotate(170deg)";
-            transform: "scale(5) rotate(170deg)"; }
-        .betterangels.actor .radial-menu.size30px-8items .menu-container .menu-button button,
-        .betterangels.actor .radial-menu.size30px-8items .menu-container .menu-button label {
-          height: 14px;
-          line-height: 14px; }
-        .betterangels.actor .radial-menu.size30px-8items .menu-container .menu-button label {
-          font-size: 14px; }
-        .betterangels.actor .radial-menu.size30px-8items .menu-container .menu-button button {
           font-size: 14px;
           line-height: 14px; }
     .betterangels.actor .radial-menu.depth-1 {
@@ -1322,8 +1028,3 @@
               -webkit-transform: scale(1);
               -ms-transform: scale(1);
               transform: scale(1); }
-  .betterangels.actor .trait-pair.tactic .radial-menu {
-    margin-top: 16px; }
-  .betterangels.actor .trait-pair.strategy .radial-menu {
-    --margin-shift: -86px;
-    margin-top: 20px; }

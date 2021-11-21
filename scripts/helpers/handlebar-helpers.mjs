@@ -1,13 +1,12 @@
 import {U} from "./bundler.mjs";
 
 const HELPERS = {
-	"for": (targetNum, ...args) => { // targetNum, startVal = 0, stepVal = 1, options) => {
+	"for": (targetNum, ...args) => {
 		const options = args.pop();
 		const startVal = U.pInt(args.shift() ?? 0);
 		const stepVal = U.pInt(args.shift() ?? 1);
 		const results = [];
 		const data = Handlebars.createFrame(options.data);
-		console.log({targetNum, startVal, stepVal});
 		for (let i = startVal; stepVal < 0 ? i >= targetNum : i < targetNum; i += stepVal) {
 			data.index = i;
 			try {

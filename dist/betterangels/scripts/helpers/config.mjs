@@ -7,6 +7,8 @@
 
 export default {
 	minFuzzyMatchScore: 0.8, // Determines strictness of FuzzyMatcher
+	strategies: ["cunning", "patient", "sly", "open", "devious", "insightful"],
+	tactics: ["greed", "generosity", "espionage", "knowledge", "cruelty", "courage", "contempt", "endurance", "corruption", "nurture", "deceit", "honesty"],
 	traitPairs: {
 		contempt: "endurance",
 		corruption: "nurture",
