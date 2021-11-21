@@ -1,13 +1,22 @@
 <div class="trait-pair {{type}}">
-	<label class="sinister">{{case "title" top}}</label>
+	<label id="trait-label-{{top}}" class="sinister">
+		<span>{{case "title" top}}</span>
+		<span class="draggable">{{case "title" top}}</span>
+	</label>
 	<div class="trait-grid radial-hover">
 		{{> "/systems/betterangels/templates/actor/parts/radial-menu.hbs" this}}
-		{{#for 5}}
-		<span class="dot sinister {{~#if (test @index ">=" (lookup (lookup ../data ../top) "value"))}} empty{{/if}}"></span>
-		{{/for}}
-		{{#for 5}}
-		<span class="dot virtuous {{~#if (test (math 4 "-" @index) ">=" (lookup (lookup ../data ../bottom) "value"))}} empty{{/if}}"></span>
-		{{/for}}
+
+		{{#with (lookup data top) as | topData |}}
+		{{#with (lookup ../data ../bottom) as | botData |}}
+		{{#for topData.value}}<span id="{{topData.name}}-{{math @index "++"}}" class="dot sinister"></span>{{/for}}
+		{{#for topData.max topData.value}}<span id="{{topData.name}}-{{math @index "++"}}" class="dot sinister empty"></span>{{/for}}
+		{{#for botData.value (math botData.max "--") -1}}<span id="{{botData.name}}-{{math @index "++"}}" class="dot virtuous empty"></span>{{/for}}
+		{{#for botData.min (math botData.value "--") -1}}<span id="{{botData.name}}-{{math @index "++"}}" class="dot virtuous"></span>{{/for}}
+		{{/with}}
+		{{/with}}
 	</div>
-	<label class="virtuous">{{case "title" bottom}}</label>
+	<label id="trait-label-{{bottom}}" class="virtuous">
+		<span>{{case "title" bottom}}</span>
+		<span class="draggable">{{case "title" bottom}}</span>
+	</label>
 </div>

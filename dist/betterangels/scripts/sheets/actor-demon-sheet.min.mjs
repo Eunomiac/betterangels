@@ -1,1 +1,0 @@
-import e from"./actor-hellbound-sheet.mjs";export default class extends e{static get t(){return mergeObject(super.t,{o:[...super.t.o,"demon","companion"],width:400,height:700,p:[{i:".sheet-tabs",u:".sheet-body",l:"strats_tacts"}]})}getData(){const e=super.getData();e.h.data;return e}m(e){super.m(e)}g(e){super.g(e)}_(e){super._(e)}}

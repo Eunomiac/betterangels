@@ -13,11 +13,33 @@ export default {
 		generosity: "greed",
 		greed: "generosity",
 		honesty: "deceit",
-		insightful: "nurture",
+		insightful: "devious",
 		knowledge: "espionage",
 		nurture: "corruption",
 		open: "sly",
 		patient: "cunning",
+		sly: "open"
+	},
+	virtuousTraitPairs: {
+		courage: "cruelty",
+		endurance: "contempt",
+		generosity: "greed",
+		honesty: "deceit",
+		insightful: "devious",
+		knowledge: "espionage",
+		nurture: "corruption",
+		open: "sly",
+		patient: "cunning"
+	},
+	sinisterTraitPairs: {
+		contempt: "endurance",
+		corruption: "nurture",
+		cruelty: "courage",
+		cunning: "patient",
+		deceit: "honesty",
+		devious: "insightful",
+		espionage: "knowledge",
+		greed: "generosity",
 		sly: "open"
 	}
 };

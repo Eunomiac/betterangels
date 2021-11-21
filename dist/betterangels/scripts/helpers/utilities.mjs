@@ -653,13 +653,42 @@ const makeCycler = (array, index = 0) => {
 	}());
 };
 const getLast = (array) => (array.length ? array[array.length - 1] : undefined);
+const pluckElem = (array, checkFunc = () => false) => {
+	const index = array.findIndex(checkFunc);
+	if (isPosInt(index)) {
+		const elem = array[index];
+		delete array[index];
+		for (let i = index; i < array.length - 1; i++) {
+			array[i] = array[i + 1];
+		}
+		array.length -= 1;
+		return elem;
+	}
+	return false;
+};
 const unique = (array) => {
 	const returnArray = [];
 	array.forEach((item) => { if (!returnArray.includes(item)) { returnArray.push(item) } });
 	return returnArray;
 };
+const without = (array, checkFunc = () => false) => {
+	const index = array.findIndex(checkFunc);
+	if (isPosInt(index)) {
+		return array.splice(index, 1).pop();
+	}
+	return false;
+};
 
 // ████████ OBJECTS: Manipulation of Simple Key/Val Objects ████████
+const cloneObj = (obj) => {
+	let clone;
+	try {
+		clone = JSON.parse(JSON.stringify(obj));
+	} catch (err) {
+		clone = {...obj};
+	}
+	return clone;
+};
 // Given an object and a predicate function, returns array of two objects:
 //   one with entries that pass, one with entries that fail.
 const partition = (obj, predicate = (v, k) => true) => [
@@ -692,7 +721,6 @@ const objForEach = (obj, func) => {
 		Object.entries(obj).forEach(([key, val]) => func(val, key));
 	}
 };
-
 const remove = (obj, searchFunc) => {
 	// Given an array or list and a search function, will remove the first matching element and return it.
 	if (getType(obj) === "list") {
@@ -736,6 +764,65 @@ const replace = (obj, searchFunc, repVal) => {
 		obj[repKey] = repVal;
 	}
 	return true;
+};
+const merge = (target, source, {isMergingArrays = true, isOverwritingArrays = true} = {}) => {
+	target = cloneObj(target);
+	const isObject = (obj) => obj && typeof obj === "object";
+
+	if (!isObject(target) || !isObject(source)) {
+		return source;
+	}
+
+	Object.keys(source).forEach((key) => {
+		const targetValue = target[key];
+		const sourceValue = source[key];
+
+		if (Array.isArray(targetValue) && Array.isArray(sourceValue)) {
+			if (isOverwritingArrays) {
+				target[key] = sourceValue;
+			} else if (isMergingArrays) {
+				target[key] = targetValue.map((x, i) => (sourceValue.length <= i ? x : merge(x, sourceValue[i], {isMergingArrays, isOverwritingArrays})));
+				if (sourceValue.length > targetValue.length) {
+					target[key] = target[key].concat(sourceValue.slice(targetValue.length));
+				}
+			} else {
+				target[key] = targetValue.concat(sourceValue);
+			}
+		} else if (isObject(targetValue) && isObject(sourceValue)) {
+			target[key] = merge({...targetValue}, sourceValue, {isMergingArrays, isOverwritingArrays});
+		} else {
+			target[key] = sourceValue;
+		}
+	});
+
+	return target;
+};
+const expand = (obj) => {
+	const expObj = {};
+	for (let [key, val] of Object.entries(obj)) {
+		if (getType(val) === "Object") {
+			val = expand(val);
+		}
+		setProperty(expObj, key, val);
+	}
+	return expObj;
+};
+const flatten = (obj) => {
+	const flatObj = {};
+	for (const [key, val] of Object.entries(obj)) {
+		if (getType(val) === "Object") {
+			if (isObjectEmpty(val)) {
+				flatObj[key] = val;
+			} else {
+				for (const [subKey, subVal] of Object.entries(flatten(val))) {
+					flatObj[`${key}.${subKey}`] = subVal;
+				}
+			}
+		} else {
+			flatObj[key] = val;
+		}
+	}
+	return flatObj;
 };
 
 // ████████ FUNCTIONS: Function Wrapping, Queuing, Manipulation ████████
@@ -815,13 +902,14 @@ export default {
 	// ████████ ARRAYS: Array Manipulation ████████
 	randElem, randIndex,
 	makeCycler,
-	getLast,
-	unique,
+	getLast, pluckElem,
+	unique, without,
 
 	// ████████ OBJECTS: Manipulation of Simple Key/Val Objects ████████
-	partition,
+	cloneObj, partition,
 	objMap, objFilter, objForEach,
-	remove, replace,
+	remove, replace, merge,
+	expand, flatten,
 
 	// ████████ FUNCTIONS: Function Wrapping, Queuing, Manipulation ████████
 	getDynamicFunc,

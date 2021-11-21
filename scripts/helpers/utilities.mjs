@@ -662,44 +662,43 @@ const makeCycler = (array, index = 0) => {
 	}());
 };
 const getLast = (array) => (array.length ? array[array.length - 1] : undefined);
+const pluckElem = (array, checkFunc = () => false) => {
+	const index = array.findIndex(checkFunc);
+	if (isPosInt(index)) {
+		const elem = array[index];
+		delete array[index];
+		for (let i = index; i < array.length - 1; i++) {
+			array[i] = array[i + 1];
+		}
+		array.length -= 1;
+		return elem;
+	}
+	return false;
+};
 const unique = (array) => {
 	const returnArray = [];
 	array.forEach((item) => { if (!returnArray.includes(item)) { returnArray.push(item) } });
 	return returnArray;
 };
-/*~ #region TO PROCESS: ARRAY FUNCTIONS: Last, Flip, Insert, Change, Remove
-export const Last = (arr) => (Array.isArray(arr) && arr.length ? arr[arr.length - 1] : undefined);
-export const Flip = (arr) => Clone(arr).reverse();
-export const Insert = (arr, val, index) => { // MUTATOR
-  arr[ pInt(index)] = val;
-  return arr;
+const without = (array, checkFunc = () => false) => {
+	const index = array.findIndex(checkFunc);
+	if (isPosInt(index)) {
+		return array.splice(index, 1).pop();
+	}
+	return false;
 };
-export const Change = (arr, findFunc = (e, i, a) => true, changeFunc = (e, i, a) => e) => { // MUTATOR
-  const index = arr.findIndex(findFunc);
-  if (index >= 0) {
-    arr[index] = changeFunc(arr[index], index, arr);
-    return arr;
-  } else {
-    return false;
-  }
-};
-export const Remove = (arr, findFunc = (e, i, a) => true) => {
-  const index = arr.findIndex(findFunc);
-  if (index >= 0) {
-    const elem = arr[index];
-    delete arr[index];
-    for (let i = index; i < arr.length - 1; i++) {
-      arr[i] = arr[i + 1];
-    }
-    arr.length -= 1;
-    return elem;
-  }
-  return false;
-};
-// #endregion ~*/
 // #endregion ▄▄▄▄▄ ARRAYS ▄▄▄▄▄
 
 // #region ████████ OBJECTS: Manipulation of Simple Key/Val Objects ████████ ~
+const cloneObj = (obj) => {
+	let clone;
+	try {
+		clone = JSON.parse(JSON.stringify(obj));
+	} catch (err) {
+		clone = {...obj};
+	}
+	return clone;
+};
 // Given an object and a predicate function, returns array of two objects:
 //   one with entries that pass, one with entries that fail.
 const partition = (obj, predicate = (v, k) => true) => [
@@ -732,7 +731,6 @@ const objForEach = (obj, func) => {
 		Object.entries(obj).forEach(([key, val]) => func(val, key));
 	}
 };
-
 const remove = (obj, searchFunc) => {
 	// Given an array or list and a search function, will remove the first matching element and return it.
 	if (getType(obj) === "list") {
@@ -777,124 +775,65 @@ const replace = (obj, searchFunc, repVal) => {
 	}
 	return true;
 };
-/*~ #region TO PROCESS: RemoveFirst, PullElement, PullIndex, Clone, Merge, Expand, Flatten, SumVals, MakeDict, NestedValues
-const removeFirst = (array, element) => array.splice(array.findIndex((v) => v === element));
-const pullElement = (array, checkFunc = (_v = true, _i = 0, _a = []) => { checkFunc(_v, _i, _a) }) => {
-  const index = array.findIndex((v, i, a) => checkFunc(v, i, a));
-  return index !== -1 && array.splice(index, 1).pop();
-};
-const pullIndex = (array, index) => pullElement(array, (v, i) => i === index);
-export const Clone = (obj) => {
-  let cloneObj;
-  try {
-    cloneObj = JSON.parse(JSON.stringify(obj));
-  } catch (err) {
-    // THROW({obj, err}, "ERROR: U.Clone()");
-    cloneObj = {...obj};
-  }
-  return cloneObj;
-};
-export const Merge = (target, source, {isMergingArrays = true, isOverwritingArrays = true} = {}) => {
-  target = Clone(target);
-  const isObject = (obj) => obj && typeof obj === "object";
+const merge = (target, source, {isMergingArrays = true, isOverwritingArrays = true} = {}) => {
+	target = cloneObj(target);
+	const isObject = (obj) => obj && typeof obj === "object";
 
-  if (!isObject(target) || !isObject(source)) {
-    return source;
-  }
+	if (!isObject(target) || !isObject(source)) {
+		return source;
+	}
 
-  Object.keys(source).forEach((key) => {
-    const targetValue = target[key];
-    const sourceValue = source[key];
+	Object.keys(source).forEach((key) => {
+		const targetValue = target[key];
+		const sourceValue = source[key];
 
-    if (Array.isArray(targetValue) && Array.isArray(sourceValue)) {
-      if (isOverwritingArrays) {
-        target[key] = sourceValue;
-      } else if (isMergingArrays) {
-        target[key] = targetValue.map((x, i) => (sourceValue.length <= i ? x : Merge(x, sourceValue[i], {isMergingArrays, isOverwritingArrays})));
-        if (sourceValue.length > targetValue.length) {
-          target[key] = target[key].concat(sourceValue.slice(targetValue.length));
-        }
-      } else {
-        target[key] = targetValue.concat(sourceValue);
-      }
-    } else if (isObject(targetValue) && isObject(sourceValue)) {
-      target[key] = Merge({...targetValue}, sourceValue, {isMergingArrays, isOverwritingArrays});
-    } else {
-      target[key] = sourceValue;
-    }
-  });
+		if (Array.isArray(targetValue) && Array.isArray(sourceValue)) {
+			if (isOverwritingArrays) {
+				target[key] = sourceValue;
+			} else if (isMergingArrays) {
+				target[key] = targetValue.map((x, i) => (sourceValue.length <= i ? x : merge(x, sourceValue[i], {isMergingArrays, isOverwritingArrays})));
+				if (sourceValue.length > targetValue.length) {
+					target[key] = target[key].concat(sourceValue.slice(targetValue.length));
+				}
+			} else {
+				target[key] = targetValue.concat(sourceValue);
+			}
+		} else if (isObject(targetValue) && isObject(sourceValue)) {
+			target[key] = merge({...targetValue}, sourceValue, {isMergingArrays, isOverwritingArrays});
+		} else {
+			target[key] = sourceValue;
+		}
+	});
 
-  return target;
+	return target;
 };
-export const Expand = (obj) => {
-  const expObj = {};
-  for (let [key, val] of Object.entries(obj)) {
-    if (getType(val) === "Object") {
-      val = Expand(val);
-    }
-    setProperty(expObj, key, val);
-  }
-  return expObj;
+const expand = (obj) => {
+	const expObj = {};
+	for (let [key, val] of Object.entries(obj)) {
+		if (getType(val) === "Object") {
+			val = expand(val);
+		}
+		setProperty(expObj, key, val);
+	}
+	return expObj;
 };
-export const Flatten = (obj) => {
-  const flatObj = {};
-  for (const [key, val] of Object.entries(obj)) {
-    if (getType(val) === "Object") {
-      if (isObjectEmpty(val)) {
-        flatObj[key] = val;
-      } else {
-        for (const [subKey, subVal] of Object.entries(Flatten(val))) {
-          flatObj[`${key}.${subKey}`] = subVal;
-        }
-      }
-    } else {
-      flatObj[key] = val;
-    }
-  }
-  return flatObj;
+const flatten = (obj) => {
+	const flatObj = {};
+	for (const [key, val] of Object.entries(obj)) {
+		if (getType(val) === "Object") {
+			if (isObjectEmpty(val)) {
+				flatObj[key] = val;
+			} else {
+				for (const [subKey, subVal] of Object.entries(flatten(val))) {
+					flatObj[`${key}.${subKey}`] = subVal;
+				}
+			}
+		} else {
+			flatObj[key] = val;
+		}
+	}
+	return flatObj;
 };
-export const SumVals = (...objs) => {
-  const valKey = objs.pop();
-  if (typeof valKey === "object") {
-    objs.push(valKey);
-  }
-  return objs.reduce(
-    (tot, obj) => tot + Object.values(obj).reduce((subTot, val) => subTot + (typeof val === "object" && valKey in val ? val[valKey] : val), 0),
-    0
-  );
-};
-export const MakeDict = (objRef, valFunc = (v) => v, keyFunc = (k) => k) => {
-  const newDict = {};
-  for (const key of Object.keys(objRef)) {
-    const val = objRef[key];
-    const newKey = keyFunc(key, val);
-    let newVal = valFunc(val, key);
-    if (typeof newVal === "object" && !Array.isArray(newVal)) {
-      const newValProp = ((nVal) => ["label", "name", "value"].find((x) => x in nVal))(newVal);
-      newVal = newValProp && newVal[newValProp];
-    }
-    if (["string", "number"].includes(typeof newVal)) {
-      newDict[newKey] = Loc(newVal);
-    }
-  }
-  return newDict;
-};
-
-export const NestedValues = (obj, flatVals = []) => {
-  if (obj && typeof obj === "object") {
-    for (const key of Object.keys(obj)) {
-      const val = obj[key];
-      if (val && typeof val === "object") {
-        flatVals.push(...NestedValues(val));
-      } else {
-        flatVals.push(val);
-      }
-    }
-    return flatVals;
-  }
-  return [obj].flat();
-};
-#endregion ~*/
 // #endregion ▄▄▄▄▄ OBJECTS ▄▄▄▄▄
 
 // #region ████████ FUNCTIONS: Function Wrapping, Queuing, Manipulation ████████ ~
@@ -979,13 +918,14 @@ export default {
 	// ████████ ARRAYS: Array Manipulation ████████
 	randElem, randIndex,
 	makeCycler,
-	getLast,
-	unique,
+	getLast, pluckElem,
+	unique, without,
 
 	// ████████ OBJECTS: Manipulation of Simple Key/Val Objects ████████
-	partition,
+	cloneObj, partition,
 	objMap, objFilter, objForEach,
-	remove, replace,
+	remove, replace, merge,
+	expand, flatten,
 
 	// ████████ FUNCTIONS: Function Wrapping, Queuing, Manipulation ████████
 	getDynamicFunc,

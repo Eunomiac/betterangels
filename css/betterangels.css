@@ -19,6 +19,9 @@
   src: url("../assets/fonts/KOMIKAX_.ttf"); }
 
 /* Global styles */
+.notification.error.permanent {
+  display: none !important; }
+
 .window-app {
   font-family: "DigitalStrip BB", sans-serif; }
 
@@ -417,402 +420,12 @@
   .betterangels.actor.hellbound {
     width: auto !important;
     max-height: calc(100% - 2px); }
-  .betterangels.actor .radial-hover > .radial-menu {
-    position: relative;
-    display: block;
-    padding: 0;
-    pointer-events: all;
-    background: transparent;
-    border-radius: 50%;
-    opacity: 0%;
-    -webkit-transition: 0.5s;
-    -o-transition: 0.5s;
-    transition: 0.5s;
-    -webkit-transform: scale(0.3) rotate(-125deg);
-    -ms-transform: scale(0.3) rotate(-125deg);
-    transform: scale(0.3) rotate(-125deg); }
-    .betterangels.actor .radial-hover > .radial-menu.size60px-8items {
-      --left-shift: -60px;
-      top: -60px;
-      left: -60px;
-      z-index: 2;
-      width: 120px;
-      height: 120px;
-      margin-left: calc(var(--margin-shift) - var(--left-shift)); }
-      .betterangels.actor .radial-hover > .radial-menu.size60px-8items .menu-container .menu-button:nth-child(1) button,
-      .betterangels.actor .radial-hover > .radial-menu.size60px-8items .menu-container .menu-button:nth-child(1) label {
-        -webkit-animation-delay: 0.125s;
-        animation-delay: 0.125s; }
-      .betterangels.actor .radial-hover > .radial-menu.size60px-8items .menu-container .menu-button:nth-child(2) button,
-      .betterangels.actor .radial-hover > .radial-menu.size60px-8items .menu-container .menu-button:nth-child(2) label {
-        -webkit-animation-delay: 0.25s;
-        animation-delay: 0.25s; }
-      .betterangels.actor .radial-hover > .radial-menu.size60px-8items .menu-container .menu-button:nth-child(3) button,
-      .betterangels.actor .radial-hover > .radial-menu.size60px-8items .menu-container .menu-button:nth-child(3) label {
-        -webkit-animation-delay: 0.375s;
-        animation-delay: 0.375s; }
-      .betterangels.actor .radial-hover > .radial-menu.size60px-8items .menu-container .menu-button:nth-child(4) button,
-      .betterangels.actor .radial-hover > .radial-menu.size60px-8items .menu-container .menu-button:nth-child(4) label {
-        -webkit-animation-delay: 0.5s;
-        animation-delay: 0.5s; }
-      .betterangels.actor .radial-hover > .radial-menu.size60px-8items .menu-container .menu-button:nth-child(5) button,
-      .betterangels.actor .radial-hover > .radial-menu.size60px-8items .menu-container .menu-button:nth-child(5) label {
-        -webkit-animation-delay: 0.625s;
-        animation-delay: 0.625s; }
-      .betterangels.actor .radial-hover > .radial-menu.size60px-8items .menu-container .menu-button:nth-child(6) button,
-      .betterangels.actor .radial-hover > .radial-menu.size60px-8items .menu-container .menu-button:nth-child(6) label {
-        -webkit-animation-delay: 0.75s;
-        animation-delay: 0.75s; }
-      .betterangels.actor .radial-hover > .radial-menu.size60px-8items .menu-container .menu-button:nth-child(7) button,
-      .betterangels.actor .radial-hover > .radial-menu.size60px-8items .menu-container .menu-button:nth-child(7) label {
-        -webkit-animation-delay: 0.875s;
-        animation-delay: 0.875s; }
-      .betterangels.actor .radial-hover > .radial-menu.size60px-8items .menu-container .menu-button:nth-child(8) button,
-      .betterangels.actor .radial-hover > .radial-menu.size60px-8items .menu-container .menu-button:nth-child(8) label {
-        -webkit-animation-delay: 1s;
-        animation-delay: 1s; }
-      .betterangels.actor .radial-hover > .radial-menu.size60px-8items .menu-container .menu-button {
-        width: 30px;
-        height: auto;
-        margin-top: -15px;
-        margin-left: -15px; }
-        .betterangels.actor .radial-hover > .radial-menu.size60px-8items .menu-container .menu-button:nth-of-type(1) {
-          -webkit-transform: rotate(0deg) translate(45px) rotate(0deg);
-          -ms-transform: rotate(0deg) translate(45px) rotate(0deg);
-          transform: rotate(0deg) translate(45px) rotate(0deg); }
-        .betterangels.actor .radial-hover > .radial-menu.size60px-8items .menu-container .menu-button:nth-of-type(2) {
-          -webkit-transform: rotate(45deg) translate(45px) rotate(-45deg);
-          -ms-transform: rotate(45deg) translate(45px) rotate(-45deg);
-          transform: rotate(45deg) translate(45px) rotate(-45deg); }
-        .betterangels.actor .radial-hover > .radial-menu.size60px-8items .menu-container .menu-button:nth-of-type(3) {
-          -webkit-transform: rotate(90deg) translate(45px) rotate(-90deg);
-          -ms-transform: rotate(90deg) translate(45px) rotate(-90deg);
-          transform: rotate(90deg) translate(45px) rotate(-90deg); }
-        .betterangels.actor .radial-hover > .radial-menu.size60px-8items .menu-container .menu-button:nth-of-type(4) {
-          -webkit-transform: rotate(135deg) translate(45px) rotate(-135deg);
-          -ms-transform: rotate(135deg) translate(45px) rotate(-135deg);
-          transform: rotate(135deg) translate(45px) rotate(-135deg); }
-        .betterangels.actor .radial-hover > .radial-menu.size60px-8items .menu-container .menu-button:nth-of-type(5) {
-          -webkit-transform: rotate(180deg) translate(45px) rotate(-180deg);
-          -ms-transform: rotate(180deg) translate(45px) rotate(-180deg);
-          transform: rotate(180deg) translate(45px) rotate(-180deg); }
-        .betterangels.actor .radial-hover > .radial-menu.size60px-8items .menu-container .menu-button:nth-of-type(6) {
-          -webkit-transform: rotate(225deg) translate(45px) rotate(-225deg);
-          -ms-transform: rotate(225deg) translate(45px) rotate(-225deg);
-          transform: rotate(225deg) translate(45px) rotate(-225deg); }
-        .betterangels.actor .radial-hover > .radial-menu.size60px-8items .menu-container .menu-button:nth-of-type(7) {
-          -webkit-transform: rotate(270deg) translate(45px) rotate(-270deg);
-          -ms-transform: rotate(270deg) translate(45px) rotate(-270deg);
-          transform: rotate(270deg) translate(45px) rotate(-270deg); }
-        .betterangels.actor .radial-hover > .radial-menu.size60px-8items .menu-container .menu-button:nth-of-type(8) {
-          -webkit-transform: rotate(315deg) translate(45px) rotate(-315deg);
-          -ms-transform: rotate(315deg) translate(45px) rotate(-315deg);
-          transform: rotate(315deg) translate(45px) rotate(-315deg); }
-        .betterangels.actor .radial-hover > .radial-menu.size60px-8items .menu-container .menu-button button,
-        .betterangels.actor .radial-hover > .radial-menu.size60px-8items .menu-container .menu-button label {
-          height: 18px;
-          line-height: 18px; }
-        .betterangels.actor .radial-hover > .radial-menu.size60px-8items .menu-container .menu-button label {
-          font-size: 14.4px; }
-        .betterangels.actor .radial-hover > .radial-menu.size60px-8items .menu-container .menu-button button {
-          font-size: 18px;
-          line-height: 18px;
-          height: 27px;
-          width: 27px; }
-    .betterangels.actor .radial-hover > .radial-menu.size50px-8items {
-      --left-shift: -50px;
-      top: -50px;
-      left: -50px;
-      z-index: 2;
-      width: 100px;
-      height: 100px;
-      margin-left: calc(var(--margin-shift) - var(--left-shift)); }
-      .betterangels.actor .radial-hover > .radial-menu.size50px-8items .menu-container .menu-button:nth-child(1) button,
-      .betterangels.actor .radial-hover > .radial-menu.size50px-8items .menu-container .menu-button:nth-child(1) label {
-        -webkit-animation-delay: 0.125s;
-        animation-delay: 0.125s; }
-      .betterangels.actor .radial-hover > .radial-menu.size50px-8items .menu-container .menu-button:nth-child(2) button,
-      .betterangels.actor .radial-hover > .radial-menu.size50px-8items .menu-container .menu-button:nth-child(2) label {
-        -webkit-animation-delay: 0.25s;
-        animation-delay: 0.25s; }
-      .betterangels.actor .radial-hover > .radial-menu.size50px-8items .menu-container .menu-button:nth-child(3) button,
-      .betterangels.actor .radial-hover > .radial-menu.size50px-8items .menu-container .menu-button:nth-child(3) label {
-        -webkit-animation-delay: 0.375s;
-        animation-delay: 0.375s; }
-      .betterangels.actor .radial-hover > .radial-menu.size50px-8items .menu-container .menu-button:nth-child(4) button,
-      .betterangels.actor .radial-hover > .radial-menu.size50px-8items .menu-container .menu-button:nth-child(4) label {
-        -webkit-animation-delay: 0.5s;
-        animation-delay: 0.5s; }
-      .betterangels.actor .radial-hover > .radial-menu.size50px-8items .menu-container .menu-button:nth-child(5) button,
-      .betterangels.actor .radial-hover > .radial-menu.size50px-8items .menu-container .menu-button:nth-child(5) label {
-        -webkit-animation-delay: 0.625s;
-        animation-delay: 0.625s; }
-      .betterangels.actor .radial-hover > .radial-menu.size50px-8items .menu-container .menu-button:nth-child(6) button,
-      .betterangels.actor .radial-hover > .radial-menu.size50px-8items .menu-container .menu-button:nth-child(6) label {
-        -webkit-animation-delay: 0.75s;
-        animation-delay: 0.75s; }
-      .betterangels.actor .radial-hover > .radial-menu.size50px-8items .menu-container .menu-button:nth-child(7) button,
-      .betterangels.actor .radial-hover > .radial-menu.size50px-8items .menu-container .menu-button:nth-child(7) label {
-        -webkit-animation-delay: 0.875s;
-        animation-delay: 0.875s; }
-      .betterangels.actor .radial-hover > .radial-menu.size50px-8items .menu-container .menu-button:nth-child(8) button,
-      .betterangels.actor .radial-hover > .radial-menu.size50px-8items .menu-container .menu-button:nth-child(8) label {
-        -webkit-animation-delay: 1s;
-        animation-delay: 1s; }
-      .betterangels.actor .radial-hover > .radial-menu.size50px-8items .menu-container .menu-button {
-        width: 25px;
-        height: auto;
-        margin-top: -12.5px;
-        margin-left: -12.5px; }
-        .betterangels.actor .radial-hover > .radial-menu.size50px-8items .menu-container .menu-button:nth-of-type(1) {
-          -webkit-transform: rotate(0deg) translate(37.5px) rotate(0deg);
-          -ms-transform: rotate(0deg) translate(37.5px) rotate(0deg);
-          transform: rotate(0deg) translate(37.5px) rotate(0deg); }
-        .betterangels.actor .radial-hover > .radial-menu.size50px-8items .menu-container .menu-button:nth-of-type(2) {
-          -webkit-transform: rotate(45deg) translate(37.5px) rotate(-45deg);
-          -ms-transform: rotate(45deg) translate(37.5px) rotate(-45deg);
-          transform: rotate(45deg) translate(37.5px) rotate(-45deg); }
-        .betterangels.actor .radial-hover > .radial-menu.size50px-8items .menu-container .menu-button:nth-of-type(3) {
-          -webkit-transform: rotate(90deg) translate(37.5px) rotate(-90deg);
-          -ms-transform: rotate(90deg) translate(37.5px) rotate(-90deg);
-          transform: rotate(90deg) translate(37.5px) rotate(-90deg); }
-        .betterangels.actor .radial-hover > .radial-menu.size50px-8items .menu-container .menu-button:nth-of-type(4) {
-          -webkit-transform: rotate(135deg) translate(37.5px) rotate(-135deg);
-          -ms-transform: rotate(135deg) translate(37.5px) rotate(-135deg);
-          transform: rotate(135deg) translate(37.5px) rotate(-135deg); }
-        .betterangels.actor .radial-hover > .radial-menu.size50px-8items .menu-container .menu-button:nth-of-type(5) {
-          -webkit-transform: rotate(180deg) translate(37.5px) rotate(-180deg);
-          -ms-transform: rotate(180deg) translate(37.5px) rotate(-180deg);
-          transform: rotate(180deg) translate(37.5px) rotate(-180deg); }
-        .betterangels.actor .radial-hover > .radial-menu.size50px-8items .menu-container .menu-button:nth-of-type(6) {
-          -webkit-transform: rotate(225deg) translate(37.5px) rotate(-225deg);
-          -ms-transform: rotate(225deg) translate(37.5px) rotate(-225deg);
-          transform: rotate(225deg) translate(37.5px) rotate(-225deg); }
-        .betterangels.actor .radial-hover > .radial-menu.size50px-8items .menu-container .menu-button:nth-of-type(7) {
-          -webkit-transform: rotate(270deg) translate(37.5px) rotate(-270deg);
-          -ms-transform: rotate(270deg) translate(37.5px) rotate(-270deg);
-          transform: rotate(270deg) translate(37.5px) rotate(-270deg); }
-        .betterangels.actor .radial-hover > .radial-menu.size50px-8items .menu-container .menu-button:nth-of-type(8) {
-          -webkit-transform: rotate(315deg) translate(37.5px) rotate(-315deg);
-          -ms-transform: rotate(315deg) translate(37.5px) rotate(-315deg);
-          transform: rotate(315deg) translate(37.5px) rotate(-315deg); }
-        .betterangels.actor .radial-hover > .radial-menu.size50px-8items .menu-container .menu-button button,
-        .betterangels.actor .radial-hover > .radial-menu.size50px-8items .menu-container .menu-button label {
-          height: 18px;
-          line-height: 18px; }
-        .betterangels.actor .radial-hover > .radial-menu.size50px-8items .menu-container .menu-button label {
-          font-size: 14.4px; }
-        .betterangels.actor .radial-hover > .radial-menu.size50px-8items .menu-container .menu-button button {
-          font-size: 18px;
-          line-height: 18px;
-          height: 27px;
-          width: 27px; }
-    .betterangels.actor .radial-hover > .radial-menu.size40px-8items {
-      --left-shift: -40px;
-      top: -40px;
-      left: -40px;
-      z-index: 2;
-      width: 80px;
-      height: 80px;
-      margin-left: calc(var(--margin-shift) - var(--left-shift)); }
-      .betterangels.actor .radial-hover > .radial-menu.size40px-8items .menu-container .menu-button:nth-child(1) button,
-      .betterangels.actor .radial-hover > .radial-menu.size40px-8items .menu-container .menu-button:nth-child(1) label {
-        -webkit-animation-delay: 0.125s;
-        animation-delay: 0.125s; }
-      .betterangels.actor .radial-hover > .radial-menu.size40px-8items .menu-container .menu-button:nth-child(2) button,
-      .betterangels.actor .radial-hover > .radial-menu.size40px-8items .menu-container .menu-button:nth-child(2) label {
-        -webkit-animation-delay: 0.25s;
-        animation-delay: 0.25s; }
-      .betterangels.actor .radial-hover > .radial-menu.size40px-8items .menu-container .menu-button:nth-child(3) button,
-      .betterangels.actor .radial-hover > .radial-menu.size40px-8items .menu-container .menu-button:nth-child(3) label {
-        -webkit-animation-delay: 0.375s;
-        animation-delay: 0.375s; }
-      .betterangels.actor .radial-hover > .radial-menu.size40px-8items .menu-container .menu-button:nth-child(4) button,
-      .betterangels.actor .radial-hover > .radial-menu.size40px-8items .menu-container .menu-button:nth-child(4) label {
-        -webkit-animation-delay: 0.5s;
-        animation-delay: 0.5s; }
-      .betterangels.actor .radial-hover > .radial-menu.size40px-8items .menu-container .menu-button:nth-child(5) button,
-      .betterangels.actor .radial-hover > .radial-menu.size40px-8items .menu-container .menu-button:nth-child(5) label {
-        -webkit-animation-delay: 0.625s;
-        animation-delay: 0.625s; }
-      .betterangels.actor .radial-hover > .radial-menu.size40px-8items .menu-container .menu-button:nth-child(6) button,
-      .betterangels.actor .radial-hover > .radial-menu.size40px-8items .menu-container .menu-button:nth-child(6) label {
-        -webkit-animation-delay: 0.75s;
-        animation-delay: 0.75s; }
-      .betterangels.actor .radial-hover > .radial-menu.size40px-8items .menu-container .menu-button:nth-child(7) button,
-      .betterangels.actor .radial-hover > .radial-menu.size40px-8items .menu-container .menu-button:nth-child(7) label {
-        -webkit-animation-delay: 0.875s;
-        animation-delay: 0.875s; }
-      .betterangels.actor .radial-hover > .radial-menu.size40px-8items .menu-container .menu-button:nth-child(8) button,
-      .betterangels.actor .radial-hover > .radial-menu.size40px-8items .menu-container .menu-button:nth-child(8) label {
-        -webkit-animation-delay: 1s;
-        animation-delay: 1s; }
-      .betterangels.actor .radial-hover > .radial-menu.size40px-8items .menu-container .menu-button {
-        width: 20px;
-        height: auto;
-        margin-top: -10px;
-        margin-left: -10px; }
-        .betterangels.actor .radial-hover > .radial-menu.size40px-8items .menu-container .menu-button:nth-of-type(1) {
-          -webkit-transform: rotate(0deg) translate(30px) rotate(0deg);
-          -ms-transform: rotate(0deg) translate(30px) rotate(0deg);
-          transform: rotate(0deg) translate(30px) rotate(0deg); }
-        .betterangels.actor .radial-hover > .radial-menu.size40px-8items .menu-container .menu-button:nth-of-type(2) {
-          -webkit-transform: rotate(45deg) translate(30px) rotate(-45deg);
-          -ms-transform: rotate(45deg) translate(30px) rotate(-45deg);
-          transform: rotate(45deg) translate(30px) rotate(-45deg); }
-        .betterangels.actor .radial-hover > .radial-menu.size40px-8items .menu-container .menu-button:nth-of-type(3) {
-          -webkit-transform: rotate(90deg) translate(30px) rotate(-90deg);
-          -ms-transform: rotate(90deg) translate(30px) rotate(-90deg);
-          transform: rotate(90deg) translate(30px) rotate(-90deg); }
-        .betterangels.actor .radial-hover > .radial-menu.size40px-8items .menu-container .menu-button:nth-of-type(4) {
-          -webkit-transform: rotate(135deg) translate(30px) rotate(-135deg);
-          -ms-transform: rotate(135deg) translate(30px) rotate(-135deg);
-          transform: rotate(135deg) translate(30px) rotate(-135deg); }
-        .betterangels.actor .radial-hover > .radial-menu.size40px-8items .menu-container .menu-button:nth-of-type(5) {
-          -webkit-transform: rotate(180deg) translate(30px) rotate(-180deg);
-          -ms-transform: rotate(180deg) translate(30px) rotate(-180deg);
-          transform: rotate(180deg) translate(30px) rotate(-180deg); }
-        .betterangels.actor .radial-hover > .radial-menu.size40px-8items .menu-container .menu-button:nth-of-type(6) {
-          -webkit-transform: rotate(225deg) translate(30px) rotate(-225deg);
-          -ms-transform: rotate(225deg) translate(30px) rotate(-225deg);
-          transform: rotate(225deg) translate(30px) rotate(-225deg); }
-        .betterangels.actor .radial-hover > .radial-menu.size40px-8items .menu-container .menu-button:nth-of-type(7) {
-          -webkit-transform: rotate(270deg) translate(30px) rotate(-270deg);
-          -ms-transform: rotate(270deg) translate(30px) rotate(-270deg);
-          transform: rotate(270deg) translate(30px) rotate(-270deg); }
-        .betterangels.actor .radial-hover > .radial-menu.size40px-8items .menu-container .menu-button:nth-of-type(8) {
-          -webkit-transform: rotate(315deg) translate(30px) rotate(-315deg);
-          -ms-transform: rotate(315deg) translate(30px) rotate(-315deg);
-          transform: rotate(315deg) translate(30px) rotate(-315deg); }
-        .betterangels.actor .radial-hover > .radial-menu.size40px-8items .menu-container .menu-button button,
-        .betterangels.actor .radial-hover > .radial-menu.size40px-8items .menu-container .menu-button label {
-          height: 18px;
-          line-height: 18px; }
-        .betterangels.actor .radial-hover > .radial-menu.size40px-8items .menu-container .menu-button label {
-          font-size: 14.4px; }
-        .betterangels.actor .radial-hover > .radial-menu.size40px-8items .menu-container .menu-button button {
-          font-size: 18px;
-          line-height: 18px;
-          height: 27px;
-          width: 27px; }
-    .betterangels.actor .radial-hover > .radial-menu.depth-1 {
-      z-index: 2; }
-    .betterangels.actor .radial-hover > .radial-menu.depth-2 {
-      z-index: 4; }
-    .betterangels.actor .radial-hover > .radial-menu.depth-3 {
-      z-index: 6; }
-    .betterangels.actor .radial-hover > .radial-menu.depth-4 {
-      z-index: 8; }
-    .betterangels.actor .radial-hover > .radial-menu .menu-container {
-      position: absolute;
-      width: 100%;
-      height: 100%;
-      list-style: none; }
-      .betterangels.actor .radial-hover > .radial-menu .menu-container .menu-button {
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        display: block;
-        width: 100%;
-        height: 100%;
-        -webkit-transition: 0.5s;
-        -o-transition: 0.5s;
-        transition: 0.5s; }
-
-@-webkit-keyframes slow-bob {
-  from {
-    top: -3px; }
-  to {
-    top: 3px; } }
-
-@keyframes slow-bob {
-  from {
-    top: -3px; }
-  to {
-    top: 3px; } }
-        .betterangels.actor .radial-hover > .radial-menu .menu-container .menu-button button {
-          position: absolute;
-          padding: 0;
-          margin: 0;
-          color: var(--button-color);
-          background: transparent;
-          border: none;
-          outline: none;
-          -webkit-box-shadow: none;
-          box-shadow: none;
-          -webkit-transition: 0.5s;
-          -o-transition: 0.5s;
-          transition: 0.5s;
-          -webkit-animation: slow-bob 2s cubic-bezier(0.36, 0, 0.63, 1) infinite alternate;
-          animation: slow-bob 2s cubic-bezier(0.36, 0, 0.63, 1) infinite alternate;
-          text-shadow: -1px -1px 2px #000000, 1px -1px 2px #000000, -1px 1px 2px #000000, 1px 1px 2px #000000; }
-          .betterangels.actor .radial-hover > .radial-menu .menu-container .menu-button button.button-green {
-            --button-color: #00c800; }
-          .betterangels.actor .radial-hover > .radial-menu .menu-container .menu-button button.button-blue {
-            --button-color: cyan; }
-          .betterangels.actor .radial-hover > .radial-menu .menu-container .menu-button button.button-red {
-            --button-color: red; }
-        .betterangels.actor .radial-hover > .radial-menu .menu-container .menu-button label {
-          position: relative;
-          display: block !important;
-          width: 200%;
-          height: auto !important;
-          margin-left: -50%;
-          text-align: center;
-          letter-spacing: 10px;
-          pointer-events: none;
-          opacity: 0%;
-          -webkit-transition: 0.25s !important;
-          -o-transition: 0.25s !important;
-          transition: 0.25s !important;
-          -webkit-transform: scale(2);
-          -ms-transform: scale(2);
-          transform: scale(2);
-          -webkit-animation: slow-bob 2s cubic-bezier(0.36, 0, 0.63, 1) infinite alternate;
-          animation: slow-bob 2s cubic-bezier(0.36, 0, 0.63, 1) infinite alternate;
-          font-family: "DigitalStrip BB", sans-serif;
-          font-weight: bold;
-          text-transform: uppercase;
-          text-align: center;
-          text-shadow: -1px -1px 2px #000000, 1px -1px 2px #000000, -1px 1px 2px #000000, 1px 1px 2px #000000; }
-          .betterangels.actor .radial-hover > .radial-menu .menu-container .menu-button label.label-green {
-            color: #00c800; }
-          .betterangels.actor .radial-hover > .radial-menu .menu-container .menu-button label.label-blue {
-            color: cyan; }
-          .betterangels.actor .radial-hover > .radial-menu .menu-container .menu-button label.label-red {
-            color: red; }
-        .betterangels.actor .radial-hover > .radial-menu .menu-container .menu-button.empty {
-          opacity: 0.5;
-          pointer-events: none; }
-          .betterangels.actor .radial-hover > .radial-menu .menu-container .menu-button.empty button,
-          .betterangels.actor .radial-hover > .radial-menu .menu-container .menu-button.empty label {
-            color: gray; }
-  .betterangels.actor .radial-hover:hover > .radial-menu {
-    z-index: 20;
-    opacity: 100%;
-    -webkit-transform: scale(1) rotate(0deg);
-    -ms-transform: scale(1) rotate(0deg);
-    transform: scale(1) rotate(0deg); }
-    .betterangels.actor .radial-hover:hover > .radial-menu .menu-container {
-      padding: 0;
-      margin: 0;
-      list-style: none; }
-      .betterangels.actor .radial-hover:hover > .radial-menu .menu-container .menu-button:hover button {
-        opacity: 0%;
-        -webkit-transform: scale(1.5);
-        -ms-transform: scale(1.5);
-        transform: scale(1.5); }
-        .betterangels.actor .radial-hover:hover > .radial-menu .menu-container .menu-button:hover button + label {
-          letter-spacing: normal;
-          opacity: 100%;
-          -webkit-transform: scale(1);
-          -ms-transform: scale(1);
-          transform: scale(1); }
   .betterangels.actor .trait-line {
     display: grid;
     grid-template-columns: 144px 140px 144px;
     grid-gap: 16px; }
     .betterangels.actor .trait-line * {
+      pointer-events: none;
       -webkit-transform-origin: 50% 50%;
       -ms-transform-origin: 50% 50%;
       transform-origin: 50% 50%; }
@@ -822,30 +435,74 @@
       grid-gap: 1px;
       margin-top: auto;
       margin-bottom: auto; }
-      .betterangels.actor .trait-line .trait-pair label {
+      .betterangels.actor .trait-line .trait-pair > label {
         position: relative;
-        z-index: 5; }
-        .betterangels.actor .trait-line .trait-pair label.sinister {
+        -webkit-transition: 3;
+        -o-transition: 3;
+        transition: 3; }
+        .betterangels.actor .trait-line .trait-pair > label > span {
+          position: absolute;
+          display: inline-block;
+          color: black;
+          background-color: transparent;
+          border-radius: 10px;
+          outline: 0;
+          -webkit-transition: 3;
+          -o-transition: 3;
+          transition: 3;
+          -webkit-transform: scale(1);
+          -ms-transform: scale(1);
+          transform: scale(1); }
+          .betterangels.actor .trait-line .trait-pair > label > span.draggable {
+            color: gold;
+            text-shadow: none;
+            text-shadow: 0 0 3px black, 0 0 3px black, 0 0 3px black, 0 0 3px black;
+            pointer-events: all;
+            border-radius: 10px;
+            outline: 3px solid yellow;
+            opacity: 0%;
+            -webkit-transform: scale(1);
+            -ms-transform: scale(1);
+            transform: scale(1); }
+            .betterangels.actor .trait-line .trait-pair > label > span.draggable.click-through {
+              pointer-events: none !important; }
+        .betterangels.actor .trait-line .trait-pair > label.sinister {
           grid-row: 1;
           margin-left: -20px; }
-        .betterangels.actor .trait-line .trait-pair label.virtuous {
+          .betterangels.actor .trait-line .trait-pair > label.sinister > span {
+            left: 0; }
+        .betterangels.actor .trait-line .trait-pair > label.virtuous {
           grid-row: 4;
           margin-right: -20px;
           text-align: right; }
+          .betterangels.actor .trait-line .trait-pair > label.virtuous > span {
+            right: 0; }
+        .betterangels.actor .trait-line .trait-pair > label:hover > span:not(.draggable) {
+          color: lime;
+          text-shadow: 0 0 3px orange, 0 0 3px orange, 0 0 3px orange, 0 0 3px orange;
+          background-color: gold;
+          -webkit-transition: 3;
+          -o-transition: 3;
+          transition: 3;
+          -webkit-transform: scale(1.2);
+          -ms-transform: scale(1.2);
+          transform: scale(1.2); }
       .betterangels.actor .trait-line .trait-pair .trait-grid {
-        grid-row: 2 / span 2;
         display: grid;
         grid-template-rows: repeat(2, var(--dot-size));
         grid-template-columns: repeat(7, var(--dot-size));
+        grid-row: 2 / span 2;
         grid-gap: 1px;
         margin-top: auto;
-        margin-bottom: auto; }
+        margin-bottom: auto;
+        pointer-events: all; }
         .betterangels.actor .trait-line .trait-pair .trait-grid .dot {
-          background-color: black;
-          border-radius: 50%;
-          border: 1px solid black;
+          position: relative;
           -webkit-box-sizing: border-box;
-          box-sizing: border-box; }
+          box-sizing: border-box;
+          background-color: black;
+          border: 1px solid black;
+          border-radius: 50%; }
           .betterangels.actor .trait-line .trait-pair .trait-grid .dot.empty {
             background-color: transparent; }
           .betterangels.actor .trait-line .trait-pair .trait-grid .dot:nth-of-type(1) {
@@ -880,20 +537,793 @@
             grid-column: 7; }
       .betterangels.actor .trait-line .trait-pair.tactic {
         --dot-size: 15px;
+        --spacing: 16px;
         width: 144px;
         padding: 16px; }
         .betterangels.actor .trait-line .trait-pair.tactic > label {
           font-family: "DigitalStrip BB", sans-serif;
           line-height: 14px; }
-        .betterangels.actor .trait-line .trait-pair.tactic .radial-hover > .radial-menu {
-          --margin-shift: -72px;
-          margin-top: 16px; }
       .betterangels.actor .trait-line .trait-pair.strategy {
         --dot-size: 19px;
+        --spacing: 20px;
         width: 140px; }
         .betterangels.actor .trait-line .trait-pair.strategy > label {
           font-family: "Komikax", sans-serif;
           line-height: 18px; }
-        .betterangels.actor .trait-line .trait-pair.strategy .radial-hover > .radial-menu {
-          --margin-shift: -86px;
-          margin-top: 20px; }
+  .betterangels.actor .radial-menu {
+    --margin-shift: calc(-7 * var(--spacing) / 2 - var(--spacing));
+    position: relative;
+    display: block;
+    padding: 0;
+    margin-top: var(--spacing);
+    background: transparent;
+    border-radius: 50%;
+    opacity: 0%;
+    -webkit-transition: 0.5s;
+    -o-transition: 0.5s;
+    transition: 0.5s;
+    -webkit-transform: scale(0.3) rotate(-125deg);
+    -ms-transform: scale(0.3) rotate(-125deg);
+    transform: scale(0.3) rotate(-125deg); }
+    .betterangels.actor .radial-menu.size60px-8items {
+      --left-shift: -60px;
+      top: -60px;
+      left: -37.5px;
+      z-index: 2;
+      width: 120px;
+      height: 120px;
+      margin-left: calc(var(--margin-shift) - var(--left-shift)); }
+      .betterangels.actor .radial-menu.size60px-8items .menu-container .menu-button:nth-child(1) button,
+      .betterangels.actor .radial-menu.size60px-8items .menu-container .menu-button:nth-child(1) label {
+        -webkit-animation-delay: 0.125s;
+        animation-delay: 0.125s; }
+      .betterangels.actor .radial-menu.size60px-8items .menu-container .menu-button:nth-child(2) button,
+      .betterangels.actor .radial-menu.size60px-8items .menu-container .menu-button:nth-child(2) label {
+        -webkit-animation-delay: 0.25s;
+        animation-delay: 0.25s; }
+      .betterangels.actor .radial-menu.size60px-8items .menu-container .menu-button:nth-child(3) button,
+      .betterangels.actor .radial-menu.size60px-8items .menu-container .menu-button:nth-child(3) label {
+        -webkit-animation-delay: 0.375s;
+        animation-delay: 0.375s; }
+      .betterangels.actor .radial-menu.size60px-8items .menu-container .menu-button:nth-child(4) button,
+      .betterangels.actor .radial-menu.size60px-8items .menu-container .menu-button:nth-child(4) label {
+        -webkit-animation-delay: 0.5s;
+        animation-delay: 0.5s; }
+      .betterangels.actor .radial-menu.size60px-8items .menu-container .menu-button:nth-child(5) button,
+      .betterangels.actor .radial-menu.size60px-8items .menu-container .menu-button:nth-child(5) label {
+        -webkit-animation-delay: 0.625s;
+        animation-delay: 0.625s; }
+      .betterangels.actor .radial-menu.size60px-8items .menu-container .menu-button:nth-child(6) button,
+      .betterangels.actor .radial-menu.size60px-8items .menu-container .menu-button:nth-child(6) label {
+        -webkit-animation-delay: 0.75s;
+        animation-delay: 0.75s; }
+      .betterangels.actor .radial-menu.size60px-8items .menu-container .menu-button:nth-child(7) button,
+      .betterangels.actor .radial-menu.size60px-8items .menu-container .menu-button:nth-child(7) label {
+        -webkit-animation-delay: 0.875s;
+        animation-delay: 0.875s; }
+      .betterangels.actor .radial-menu.size60px-8items .menu-container .menu-button:nth-child(8) button,
+      .betterangels.actor .radial-menu.size60px-8items .menu-container .menu-button:nth-child(8) label {
+        -webkit-animation-delay: 1s;
+        animation-delay: 1s; }
+      .betterangels.actor .radial-menu.size60px-8items .menu-container .menu-button {
+        width: 30px;
+        height: auto;
+        margin-top: -15px;
+        margin-left: -15px; }
+        .betterangels.actor .radial-menu.size60px-8items .menu-container .menu-button:nth-of-type(1) {
+          -webkit-transform: rotate(0deg) translate(45px) rotate(0deg) translateX(0px);
+          -ms-transform: rotate(0deg) translate(45px) rotate(0deg) translateX(0px);
+          transform: rotate(0deg) translate(45px) rotate(0deg) translateX(0px); }
+          .betterangels.actor .radial-menu.size60px-8items .menu-container .menu-button:nth-of-type(1) button > span {
+            -webkit-transform: "scale(1.5) ";
+            -ms-transform: "scale(1.5) ";
+            transform: "scale(1.5) "; }
+          .betterangels.actor .radial-menu.size60px-8items .menu-container .menu-button:nth-of-type(1):hover button > span {
+            -webkit-transform: "scale(5) ";
+            -ms-transform: "scale(5) ";
+            transform: "scale(5) "; }
+        .betterangels.actor .radial-menu.size60px-8items .menu-container .menu-button:nth-of-type(2) {
+          -webkit-transform: rotate(45deg) translate(45px) rotate(-45deg) translateX(0px) translateY(0px);
+          -ms-transform: rotate(45deg) translate(45px) rotate(-45deg) translateX(0px) translateY(0px);
+          transform: rotate(45deg) translate(45px) rotate(-45deg) translateX(0px) translateY(0px); }
+          .betterangels.actor .radial-menu.size60px-8items .menu-container .menu-button:nth-of-type(2) button > span {
+            -webkit-transform: "scale(1.5) rotate(75deg)";
+            -ms-transform: "scale(1.5) rotate(75deg)";
+            transform: "scale(1.5) rotate(75deg)"; }
+          .betterangels.actor .radial-menu.size60px-8items .menu-container .menu-button:nth-of-type(2):hover button > span {
+            -webkit-transform: "scale(5) rotate(75deg)";
+            -ms-transform: "scale(5) rotate(75deg)";
+            transform: "scale(5) rotate(75deg)"; }
+        .betterangels.actor .radial-menu.size60px-8items .menu-container .menu-button:nth-of-type(3) {
+          -webkit-transform: rotate(90deg) translate(45px) rotate(-90deg) translateX(0px) translateY(0px);
+          -ms-transform: rotate(90deg) translate(45px) rotate(-90deg) translateX(0px) translateY(0px);
+          transform: rotate(90deg) translate(45px) rotate(-90deg) translateX(0px) translateY(0px); }
+          .betterangels.actor .radial-menu.size60px-8items .menu-container .menu-button:nth-of-type(3) button > span {
+            -webkit-transform: "scale(1.5) rotate(75deg)";
+            -ms-transform: "scale(1.5) rotate(75deg)";
+            transform: "scale(1.5) rotate(75deg)"; }
+          .betterangels.actor .radial-menu.size60px-8items .menu-container .menu-button:nth-of-type(3):hover button > span {
+            -webkit-transform: "scale(5) rotate(75deg)";
+            -ms-transform: "scale(5) rotate(75deg)";
+            transform: "scale(5) rotate(75deg)"; }
+        .betterangels.actor .radial-menu.size60px-8items .menu-container .menu-button:nth-of-type(4) {
+          -webkit-transform: rotate(135deg) translate(45px) rotate(-135deg) translateX(0px) translateY(-0px);
+          -ms-transform: rotate(135deg) translate(45px) rotate(-135deg) translateX(0px) translateY(-0px);
+          transform: rotate(135deg) translate(45px) rotate(-135deg) translateX(0px) translateY(-0px); }
+          .betterangels.actor .radial-menu.size60px-8items .menu-container .menu-button:nth-of-type(4) button > span {
+            -webkit-transform: "scale(1.5) rotate(170deg)";
+            -ms-transform: "scale(1.5) rotate(170deg)";
+            transform: "scale(1.5) rotate(170deg)"; }
+          .betterangels.actor .radial-menu.size60px-8items .menu-container .menu-button:nth-of-type(4):hover button > span {
+            -webkit-transform: "scale(5) rotate(170deg)";
+            -ms-transform: "scale(5) rotate(170deg)";
+            transform: "scale(5) rotate(170deg)"; }
+        .betterangels.actor .radial-menu.size60px-8items .menu-container .menu-button:nth-of-type(5) {
+          -webkit-transform: rotate(180deg) translate(45px) rotate(-180deg) translateX(-0px);
+          -ms-transform: rotate(180deg) translate(45px) rotate(-180deg) translateX(-0px);
+          transform: rotate(180deg) translate(45px) rotate(-180deg) translateX(-0px); }
+          .betterangels.actor .radial-menu.size60px-8items .menu-container .menu-button:nth-of-type(5) button > span {
+            -webkit-transform: "scale(1.5) rotate(170deg)";
+            -ms-transform: "scale(1.5) rotate(170deg)";
+            transform: "scale(1.5) rotate(170deg)"; }
+          .betterangels.actor .radial-menu.size60px-8items .menu-container .menu-button:nth-of-type(5):hover button > span {
+            -webkit-transform: "scale(5) rotate(170deg)";
+            -ms-transform: "scale(5) rotate(170deg)";
+            transform: "scale(5) rotate(170deg)"; }
+        .betterangels.actor .radial-menu.size60px-8items .menu-container .menu-button:nth-of-type(6) {
+          -webkit-transform: rotate(225deg) translate(45px) rotate(-225deg) translateX(-0px) translateY(-0px);
+          -ms-transform: rotate(225deg) translate(45px) rotate(-225deg) translateX(-0px) translateY(-0px);
+          transform: rotate(225deg) translate(45px) rotate(-225deg) translateX(-0px) translateY(-0px); }
+          .betterangels.actor .radial-menu.size60px-8items .menu-container .menu-button:nth-of-type(6) button > span {
+            -webkit-transform: "scale(1.5) rotate(75deg)";
+            -ms-transform: "scale(1.5) rotate(75deg)";
+            transform: "scale(1.5) rotate(75deg)"; }
+          .betterangels.actor .radial-menu.size60px-8items .menu-container .menu-button:nth-of-type(6):hover button > span {
+            -webkit-transform: "scale(5) rotate(75deg)";
+            -ms-transform: "scale(5) rotate(75deg)";
+            transform: "scale(5) rotate(75deg)"; }
+        .betterangels.actor .radial-menu.size60px-8items .menu-container .menu-button:nth-of-type(7) {
+          -webkit-transform: rotate(270deg) translate(45px) rotate(-270deg) translateX(-0px) translateY(-0px);
+          -ms-transform: rotate(270deg) translate(45px) rotate(-270deg) translateX(-0px) translateY(-0px);
+          transform: rotate(270deg) translate(45px) rotate(-270deg) translateX(-0px) translateY(-0px); }
+          .betterangels.actor .radial-menu.size60px-8items .menu-container .menu-button:nth-of-type(7) button > span {
+            -webkit-transform: "scale(1.5) rotate(75deg)";
+            -ms-transform: "scale(1.5) rotate(75deg)";
+            transform: "scale(1.5) rotate(75deg)"; }
+          .betterangels.actor .radial-menu.size60px-8items .menu-container .menu-button:nth-of-type(7):hover button > span {
+            -webkit-transform: "scale(5) rotate(75deg)";
+            -ms-transform: "scale(5) rotate(75deg)";
+            transform: "scale(5) rotate(75deg)"; }
+        .betterangels.actor .radial-menu.size60px-8items .menu-container .menu-button:nth-of-type(8) {
+          -webkit-transform: rotate(315deg) translate(45px) rotate(-315deg) translateX(-0px) translateY(0px);
+          -ms-transform: rotate(315deg) translate(45px) rotate(-315deg) translateX(-0px) translateY(0px);
+          transform: rotate(315deg) translate(45px) rotate(-315deg) translateX(-0px) translateY(0px); }
+          .betterangels.actor .radial-menu.size60px-8items .menu-container .menu-button:nth-of-type(8) button > span {
+            -webkit-transform: "scale(1.5) rotate(170deg)";
+            -ms-transform: "scale(1.5) rotate(170deg)";
+            transform: "scale(1.5) rotate(170deg)"; }
+          .betterangels.actor .radial-menu.size60px-8items .menu-container .menu-button:nth-of-type(8):hover button > span {
+            -webkit-transform: "scale(5) rotate(170deg)";
+            -ms-transform: "scale(5) rotate(170deg)";
+            transform: "scale(5) rotate(170deg)"; }
+        .betterangels.actor .radial-menu.size60px-8items .menu-container .menu-button button,
+        .betterangels.actor .radial-menu.size60px-8items .menu-container .menu-button label {
+          height: 14px;
+          line-height: 14px; }
+        .betterangels.actor .radial-menu.size60px-8items .menu-container .menu-button label {
+          font-size: 14px; }
+        .betterangels.actor .radial-menu.size60px-8items .menu-container .menu-button button {
+          font-size: 14px;
+          line-height: 14px; }
+    .betterangels.actor .radial-menu.size50px-8items {
+      --left-shift: -50px;
+      top: -50px;
+      left: -31.25px;
+      z-index: 2;
+      width: 100px;
+      height: 100px;
+      margin-left: calc(var(--margin-shift) - var(--left-shift)); }
+      .betterangels.actor .radial-menu.size50px-8items .menu-container .menu-button:nth-child(1) button,
+      .betterangels.actor .radial-menu.size50px-8items .menu-container .menu-button:nth-child(1) label {
+        -webkit-animation-delay: 0.125s;
+        animation-delay: 0.125s; }
+      .betterangels.actor .radial-menu.size50px-8items .menu-container .menu-button:nth-child(2) button,
+      .betterangels.actor .radial-menu.size50px-8items .menu-container .menu-button:nth-child(2) label {
+        -webkit-animation-delay: 0.25s;
+        animation-delay: 0.25s; }
+      .betterangels.actor .radial-menu.size50px-8items .menu-container .menu-button:nth-child(3) button,
+      .betterangels.actor .radial-menu.size50px-8items .menu-container .menu-button:nth-child(3) label {
+        -webkit-animation-delay: 0.375s;
+        animation-delay: 0.375s; }
+      .betterangels.actor .radial-menu.size50px-8items .menu-container .menu-button:nth-child(4) button,
+      .betterangels.actor .radial-menu.size50px-8items .menu-container .menu-button:nth-child(4) label {
+        -webkit-animation-delay: 0.5s;
+        animation-delay: 0.5s; }
+      .betterangels.actor .radial-menu.size50px-8items .menu-container .menu-button:nth-child(5) button,
+      .betterangels.actor .radial-menu.size50px-8items .menu-container .menu-button:nth-child(5) label {
+        -webkit-animation-delay: 0.625s;
+        animation-delay: 0.625s; }
+      .betterangels.actor .radial-menu.size50px-8items .menu-container .menu-button:nth-child(6) button,
+      .betterangels.actor .radial-menu.size50px-8items .menu-container .menu-button:nth-child(6) label {
+        -webkit-animation-delay: 0.75s;
+        animation-delay: 0.75s; }
+      .betterangels.actor .radial-menu.size50px-8items .menu-container .menu-button:nth-child(7) button,
+      .betterangels.actor .radial-menu.size50px-8items .menu-container .menu-button:nth-child(7) label {
+        -webkit-animation-delay: 0.875s;
+        animation-delay: 0.875s; }
+      .betterangels.actor .radial-menu.size50px-8items .menu-container .menu-button:nth-child(8) button,
+      .betterangels.actor .radial-menu.size50px-8items .menu-container .menu-button:nth-child(8) label {
+        -webkit-animation-delay: 1s;
+        animation-delay: 1s; }
+      .betterangels.actor .radial-menu.size50px-8items .menu-container .menu-button {
+        width: 25px;
+        height: auto;
+        margin-top: -12.5px;
+        margin-left: -12.5px; }
+        .betterangels.actor .radial-menu.size50px-8items .menu-container .menu-button:nth-of-type(1) {
+          -webkit-transform: rotate(0deg) translate(37.5px) rotate(0deg) translateX(0px);
+          -ms-transform: rotate(0deg) translate(37.5px) rotate(0deg) translateX(0px);
+          transform: rotate(0deg) translate(37.5px) rotate(0deg) translateX(0px); }
+          .betterangels.actor .radial-menu.size50px-8items .menu-container .menu-button:nth-of-type(1) button > span {
+            -webkit-transform: "scale(1.5) ";
+            -ms-transform: "scale(1.5) ";
+            transform: "scale(1.5) "; }
+          .betterangels.actor .radial-menu.size50px-8items .menu-container .menu-button:nth-of-type(1):hover button > span {
+            -webkit-transform: "scale(5) ";
+            -ms-transform: "scale(5) ";
+            transform: "scale(5) "; }
+        .betterangels.actor .radial-menu.size50px-8items .menu-container .menu-button:nth-of-type(2) {
+          -webkit-transform: rotate(45deg) translate(37.5px) rotate(-45deg) translateX(0px) translateY(0px);
+          -ms-transform: rotate(45deg) translate(37.5px) rotate(-45deg) translateX(0px) translateY(0px);
+          transform: rotate(45deg) translate(37.5px) rotate(-45deg) translateX(0px) translateY(0px); }
+          .betterangels.actor .radial-menu.size50px-8items .menu-container .menu-button:nth-of-type(2) button > span {
+            -webkit-transform: "scale(1.5) rotate(75deg)";
+            -ms-transform: "scale(1.5) rotate(75deg)";
+            transform: "scale(1.5) rotate(75deg)"; }
+          .betterangels.actor .radial-menu.size50px-8items .menu-container .menu-button:nth-of-type(2):hover button > span {
+            -webkit-transform: "scale(5) rotate(75deg)";
+            -ms-transform: "scale(5) rotate(75deg)";
+            transform: "scale(5) rotate(75deg)"; }
+        .betterangels.actor .radial-menu.size50px-8items .menu-container .menu-button:nth-of-type(3) {
+          -webkit-transform: rotate(90deg) translate(37.5px) rotate(-90deg) translateX(0px) translateY(0px);
+          -ms-transform: rotate(90deg) translate(37.5px) rotate(-90deg) translateX(0px) translateY(0px);
+          transform: rotate(90deg) translate(37.5px) rotate(-90deg) translateX(0px) translateY(0px); }
+          .betterangels.actor .radial-menu.size50px-8items .menu-container .menu-button:nth-of-type(3) button > span {
+            -webkit-transform: "scale(1.5) rotate(75deg)";
+            -ms-transform: "scale(1.5) rotate(75deg)";
+            transform: "scale(1.5) rotate(75deg)"; }
+          .betterangels.actor .radial-menu.size50px-8items .menu-container .menu-button:nth-of-type(3):hover button > span {
+            -webkit-transform: "scale(5) rotate(75deg)";
+            -ms-transform: "scale(5) rotate(75deg)";
+            transform: "scale(5) rotate(75deg)"; }
+        .betterangels.actor .radial-menu.size50px-8items .menu-container .menu-button:nth-of-type(4) {
+          -webkit-transform: rotate(135deg) translate(37.5px) rotate(-135deg) translateX(0px) translateY(-0px);
+          -ms-transform: rotate(135deg) translate(37.5px) rotate(-135deg) translateX(0px) translateY(-0px);
+          transform: rotate(135deg) translate(37.5px) rotate(-135deg) translateX(0px) translateY(-0px); }
+          .betterangels.actor .radial-menu.size50px-8items .menu-container .menu-button:nth-of-type(4) button > span {
+            -webkit-transform: "scale(1.5) rotate(170deg)";
+            -ms-transform: "scale(1.5) rotate(170deg)";
+            transform: "scale(1.5) rotate(170deg)"; }
+          .betterangels.actor .radial-menu.size50px-8items .menu-container .menu-button:nth-of-type(4):hover button > span {
+            -webkit-transform: "scale(5) rotate(170deg)";
+            -ms-transform: "scale(5) rotate(170deg)";
+            transform: "scale(5) rotate(170deg)"; }
+        .betterangels.actor .radial-menu.size50px-8items .menu-container .menu-button:nth-of-type(5) {
+          -webkit-transform: rotate(180deg) translate(37.5px) rotate(-180deg) translateX(-0px);
+          -ms-transform: rotate(180deg) translate(37.5px) rotate(-180deg) translateX(-0px);
+          transform: rotate(180deg) translate(37.5px) rotate(-180deg) translateX(-0px); }
+          .betterangels.actor .radial-menu.size50px-8items .menu-container .menu-button:nth-of-type(5) button > span {
+            -webkit-transform: "scale(1.5) rotate(170deg)";
+            -ms-transform: "scale(1.5) rotate(170deg)";
+            transform: "scale(1.5) rotate(170deg)"; }
+          .betterangels.actor .radial-menu.size50px-8items .menu-container .menu-button:nth-of-type(5):hover button > span {
+            -webkit-transform: "scale(5) rotate(170deg)";
+            -ms-transform: "scale(5) rotate(170deg)";
+            transform: "scale(5) rotate(170deg)"; }
+        .betterangels.actor .radial-menu.size50px-8items .menu-container .menu-button:nth-of-type(6) {
+          -webkit-transform: rotate(225deg) translate(37.5px) rotate(-225deg) translateX(-0px) translateY(-0px);
+          -ms-transform: rotate(225deg) translate(37.5px) rotate(-225deg) translateX(-0px) translateY(-0px);
+          transform: rotate(225deg) translate(37.5px) rotate(-225deg) translateX(-0px) translateY(-0px); }
+          .betterangels.actor .radial-menu.size50px-8items .menu-container .menu-button:nth-of-type(6) button > span {
+            -webkit-transform: "scale(1.5) rotate(75deg)";
+            -ms-transform: "scale(1.5) rotate(75deg)";
+            transform: "scale(1.5) rotate(75deg)"; }
+          .betterangels.actor .radial-menu.size50px-8items .menu-container .menu-button:nth-of-type(6):hover button > span {
+            -webkit-transform: "scale(5) rotate(75deg)";
+            -ms-transform: "scale(5) rotate(75deg)";
+            transform: "scale(5) rotate(75deg)"; }
+        .betterangels.actor .radial-menu.size50px-8items .menu-container .menu-button:nth-of-type(7) {
+          -webkit-transform: rotate(270deg) translate(37.5px) rotate(-270deg) translateX(-0px) translateY(-0px);
+          -ms-transform: rotate(270deg) translate(37.5px) rotate(-270deg) translateX(-0px) translateY(-0px);
+          transform: rotate(270deg) translate(37.5px) rotate(-270deg) translateX(-0px) translateY(-0px); }
+          .betterangels.actor .radial-menu.size50px-8items .menu-container .menu-button:nth-of-type(7) button > span {
+            -webkit-transform: "scale(1.5) rotate(75deg)";
+            -ms-transform: "scale(1.5) rotate(75deg)";
+            transform: "scale(1.5) rotate(75deg)"; }
+          .betterangels.actor .radial-menu.size50px-8items .menu-container .menu-button:nth-of-type(7):hover button > span {
+            -webkit-transform: "scale(5) rotate(75deg)";
+            -ms-transform: "scale(5) rotate(75deg)";
+            transform: "scale(5) rotate(75deg)"; }
+        .betterangels.actor .radial-menu.size50px-8items .menu-container .menu-button:nth-of-type(8) {
+          -webkit-transform: rotate(315deg) translate(37.5px) rotate(-315deg) translateX(-0px) translateY(0px);
+          -ms-transform: rotate(315deg) translate(37.5px) rotate(-315deg) translateX(-0px) translateY(0px);
+          transform: rotate(315deg) translate(37.5px) rotate(-315deg) translateX(-0px) translateY(0px); }
+          .betterangels.actor .radial-menu.size50px-8items .menu-container .menu-button:nth-of-type(8) button > span {
+            -webkit-transform: "scale(1.5) rotate(170deg)";
+            -ms-transform: "scale(1.5) rotate(170deg)";
+            transform: "scale(1.5) rotate(170deg)"; }
+          .betterangels.actor .radial-menu.size50px-8items .menu-container .menu-button:nth-of-type(8):hover button > span {
+            -webkit-transform: "scale(5) rotate(170deg)";
+            -ms-transform: "scale(5) rotate(170deg)";
+            transform: "scale(5) rotate(170deg)"; }
+        .betterangels.actor .radial-menu.size50px-8items .menu-container .menu-button button,
+        .betterangels.actor .radial-menu.size50px-8items .menu-container .menu-button label {
+          height: 14px;
+          line-height: 14px; }
+        .betterangels.actor .radial-menu.size50px-8items .menu-container .menu-button label {
+          font-size: 14px; }
+        .betterangels.actor .radial-menu.size50px-8items .menu-container .menu-button button {
+          font-size: 14px;
+          line-height: 14px; }
+    .betterangels.actor .radial-menu.size40px-8items {
+      --left-shift: -40px;
+      top: -40px;
+      left: -25px;
+      z-index: 2;
+      width: 80px;
+      height: 80px;
+      margin-left: calc(var(--margin-shift) - var(--left-shift)); }
+      .betterangels.actor .radial-menu.size40px-8items .menu-container .menu-button:nth-child(1) button,
+      .betterangels.actor .radial-menu.size40px-8items .menu-container .menu-button:nth-child(1) label {
+        -webkit-animation-delay: 0.125s;
+        animation-delay: 0.125s; }
+      .betterangels.actor .radial-menu.size40px-8items .menu-container .menu-button:nth-child(2) button,
+      .betterangels.actor .radial-menu.size40px-8items .menu-container .menu-button:nth-child(2) label {
+        -webkit-animation-delay: 0.25s;
+        animation-delay: 0.25s; }
+      .betterangels.actor .radial-menu.size40px-8items .menu-container .menu-button:nth-child(3) button,
+      .betterangels.actor .radial-menu.size40px-8items .menu-container .menu-button:nth-child(3) label {
+        -webkit-animation-delay: 0.375s;
+        animation-delay: 0.375s; }
+      .betterangels.actor .radial-menu.size40px-8items .menu-container .menu-button:nth-child(4) button,
+      .betterangels.actor .radial-menu.size40px-8items .menu-container .menu-button:nth-child(4) label {
+        -webkit-animation-delay: 0.5s;
+        animation-delay: 0.5s; }
+      .betterangels.actor .radial-menu.size40px-8items .menu-container .menu-button:nth-child(5) button,
+      .betterangels.actor .radial-menu.size40px-8items .menu-container .menu-button:nth-child(5) label {
+        -webkit-animation-delay: 0.625s;
+        animation-delay: 0.625s; }
+      .betterangels.actor .radial-menu.size40px-8items .menu-container .menu-button:nth-child(6) button,
+      .betterangels.actor .radial-menu.size40px-8items .menu-container .menu-button:nth-child(6) label {
+        -webkit-animation-delay: 0.75s;
+        animation-delay: 0.75s; }
+      .betterangels.actor .radial-menu.size40px-8items .menu-container .menu-button:nth-child(7) button,
+      .betterangels.actor .radial-menu.size40px-8items .menu-container .menu-button:nth-child(7) label {
+        -webkit-animation-delay: 0.875s;
+        animation-delay: 0.875s; }
+      .betterangels.actor .radial-menu.size40px-8items .menu-container .menu-button:nth-child(8) button,
+      .betterangels.actor .radial-menu.size40px-8items .menu-container .menu-button:nth-child(8) label {
+        -webkit-animation-delay: 1s;
+        animation-delay: 1s; }
+      .betterangels.actor .radial-menu.size40px-8items .menu-container .menu-button {
+        width: 20px;
+        height: auto;
+        margin-top: -10px;
+        margin-left: -10px; }
+        .betterangels.actor .radial-menu.size40px-8items .menu-container .menu-button:nth-of-type(1) {
+          -webkit-transform: rotate(0deg) translate(30px) rotate(0deg) translateX(0px);
+          -ms-transform: rotate(0deg) translate(30px) rotate(0deg) translateX(0px);
+          transform: rotate(0deg) translate(30px) rotate(0deg) translateX(0px); }
+          .betterangels.actor .radial-menu.size40px-8items .menu-container .menu-button:nth-of-type(1) button > span {
+            -webkit-transform: "scale(1.5) ";
+            -ms-transform: "scale(1.5) ";
+            transform: "scale(1.5) "; }
+          .betterangels.actor .radial-menu.size40px-8items .menu-container .menu-button:nth-of-type(1):hover button > span {
+            -webkit-transform: "scale(5) ";
+            -ms-transform: "scale(5) ";
+            transform: "scale(5) "; }
+        .betterangels.actor .radial-menu.size40px-8items .menu-container .menu-button:nth-of-type(2) {
+          -webkit-transform: rotate(45deg) translate(30px) rotate(-45deg) translateX(0px) translateY(0px);
+          -ms-transform: rotate(45deg) translate(30px) rotate(-45deg) translateX(0px) translateY(0px);
+          transform: rotate(45deg) translate(30px) rotate(-45deg) translateX(0px) translateY(0px); }
+          .betterangels.actor .radial-menu.size40px-8items .menu-container .menu-button:nth-of-type(2) button > span {
+            -webkit-transform: "scale(1.5) rotate(75deg)";
+            -ms-transform: "scale(1.5) rotate(75deg)";
+            transform: "scale(1.5) rotate(75deg)"; }
+          .betterangels.actor .radial-menu.size40px-8items .menu-container .menu-button:nth-of-type(2):hover button > span {
+            -webkit-transform: "scale(5) rotate(75deg)";
+            -ms-transform: "scale(5) rotate(75deg)";
+            transform: "scale(5) rotate(75deg)"; }
+        .betterangels.actor .radial-menu.size40px-8items .menu-container .menu-button:nth-of-type(3) {
+          -webkit-transform: rotate(90deg) translate(30px) rotate(-90deg) translateX(0px) translateY(0px);
+          -ms-transform: rotate(90deg) translate(30px) rotate(-90deg) translateX(0px) translateY(0px);
+          transform: rotate(90deg) translate(30px) rotate(-90deg) translateX(0px) translateY(0px); }
+          .betterangels.actor .radial-menu.size40px-8items .menu-container .menu-button:nth-of-type(3) button > span {
+            -webkit-transform: "scale(1.5) rotate(75deg)";
+            -ms-transform: "scale(1.5) rotate(75deg)";
+            transform: "scale(1.5) rotate(75deg)"; }
+          .betterangels.actor .radial-menu.size40px-8items .menu-container .menu-button:nth-of-type(3):hover button > span {
+            -webkit-transform: "scale(5) rotate(75deg)";
+            -ms-transform: "scale(5) rotate(75deg)";
+            transform: "scale(5) rotate(75deg)"; }
+        .betterangels.actor .radial-menu.size40px-8items .menu-container .menu-button:nth-of-type(4) {
+          -webkit-transform: rotate(135deg) translate(30px) rotate(-135deg) translateX(0px) translateY(-0px);
+          -ms-transform: rotate(135deg) translate(30px) rotate(-135deg) translateX(0px) translateY(-0px);
+          transform: rotate(135deg) translate(30px) rotate(-135deg) translateX(0px) translateY(-0px); }
+          .betterangels.actor .radial-menu.size40px-8items .menu-container .menu-button:nth-of-type(4) button > span {
+            -webkit-transform: "scale(1.5) rotate(170deg)";
+            -ms-transform: "scale(1.5) rotate(170deg)";
+            transform: "scale(1.5) rotate(170deg)"; }
+          .betterangels.actor .radial-menu.size40px-8items .menu-container .menu-button:nth-of-type(4):hover button > span {
+            -webkit-transform: "scale(5) rotate(170deg)";
+            -ms-transform: "scale(5) rotate(170deg)";
+            transform: "scale(5) rotate(170deg)"; }
+        .betterangels.actor .radial-menu.size40px-8items .menu-container .menu-button:nth-of-type(5) {
+          -webkit-transform: rotate(180deg) translate(30px) rotate(-180deg) translateX(-0px);
+          -ms-transform: rotate(180deg) translate(30px) rotate(-180deg) translateX(-0px);
+          transform: rotate(180deg) translate(30px) rotate(-180deg) translateX(-0px); }
+          .betterangels.actor .radial-menu.size40px-8items .menu-container .menu-button:nth-of-type(5) button > span {
+            -webkit-transform: "scale(1.5) rotate(170deg)";
+            -ms-transform: "scale(1.5) rotate(170deg)";
+            transform: "scale(1.5) rotate(170deg)"; }
+          .betterangels.actor .radial-menu.size40px-8items .menu-container .menu-button:nth-of-type(5):hover button > span {
+            -webkit-transform: "scale(5) rotate(170deg)";
+            -ms-transform: "scale(5) rotate(170deg)";
+            transform: "scale(5) rotate(170deg)"; }
+        .betterangels.actor .radial-menu.size40px-8items .menu-container .menu-button:nth-of-type(6) {
+          -webkit-transform: rotate(225deg) translate(30px) rotate(-225deg) translateX(-0px) translateY(-0px);
+          -ms-transform: rotate(225deg) translate(30px) rotate(-225deg) translateX(-0px) translateY(-0px);
+          transform: rotate(225deg) translate(30px) rotate(-225deg) translateX(-0px) translateY(-0px); }
+          .betterangels.actor .radial-menu.size40px-8items .menu-container .menu-button:nth-of-type(6) button > span {
+            -webkit-transform: "scale(1.5) rotate(75deg)";
+            -ms-transform: "scale(1.5) rotate(75deg)";
+            transform: "scale(1.5) rotate(75deg)"; }
+          .betterangels.actor .radial-menu.size40px-8items .menu-container .menu-button:nth-of-type(6):hover button > span {
+            -webkit-transform: "scale(5) rotate(75deg)";
+            -ms-transform: "scale(5) rotate(75deg)";
+            transform: "scale(5) rotate(75deg)"; }
+        .betterangels.actor .radial-menu.size40px-8items .menu-container .menu-button:nth-of-type(7) {
+          -webkit-transform: rotate(270deg) translate(30px) rotate(-270deg) translateX(-0px) translateY(-0px);
+          -ms-transform: rotate(270deg) translate(30px) rotate(-270deg) translateX(-0px) translateY(-0px);
+          transform: rotate(270deg) translate(30px) rotate(-270deg) translateX(-0px) translateY(-0px); }
+          .betterangels.actor .radial-menu.size40px-8items .menu-container .menu-button:nth-of-type(7) button > span {
+            -webkit-transform: "scale(1.5) rotate(75deg)";
+            -ms-transform: "scale(1.5) rotate(75deg)";
+            transform: "scale(1.5) rotate(75deg)"; }
+          .betterangels.actor .radial-menu.size40px-8items .menu-container .menu-button:nth-of-type(7):hover button > span {
+            -webkit-transform: "scale(5) rotate(75deg)";
+            -ms-transform: "scale(5) rotate(75deg)";
+            transform: "scale(5) rotate(75deg)"; }
+        .betterangels.actor .radial-menu.size40px-8items .menu-container .menu-button:nth-of-type(8) {
+          -webkit-transform: rotate(315deg) translate(30px) rotate(-315deg) translateX(-0px) translateY(0px);
+          -ms-transform: rotate(315deg) translate(30px) rotate(-315deg) translateX(-0px) translateY(0px);
+          transform: rotate(315deg) translate(30px) rotate(-315deg) translateX(-0px) translateY(0px); }
+          .betterangels.actor .radial-menu.size40px-8items .menu-container .menu-button:nth-of-type(8) button > span {
+            -webkit-transform: "scale(1.5) rotate(170deg)";
+            -ms-transform: "scale(1.5) rotate(170deg)";
+            transform: "scale(1.5) rotate(170deg)"; }
+          .betterangels.actor .radial-menu.size40px-8items .menu-container .menu-button:nth-of-type(8):hover button > span {
+            -webkit-transform: "scale(5) rotate(170deg)";
+            -ms-transform: "scale(5) rotate(170deg)";
+            transform: "scale(5) rotate(170deg)"; }
+        .betterangels.actor .radial-menu.size40px-8items .menu-container .menu-button button,
+        .betterangels.actor .radial-menu.size40px-8items .menu-container .menu-button label {
+          height: 14px;
+          line-height: 14px; }
+        .betterangels.actor .radial-menu.size40px-8items .menu-container .menu-button label {
+          font-size: 14px; }
+        .betterangels.actor .radial-menu.size40px-8items .menu-container .menu-button button {
+          font-size: 14px;
+          line-height: 14px; }
+    .betterangels.actor .radial-menu.size30px-8items {
+      --left-shift: -30px;
+      top: -30px;
+      left: -18.75px;
+      z-index: 2;
+      width: 60px;
+      height: 60px;
+      margin-left: calc(var(--margin-shift) - var(--left-shift)); }
+      .betterangels.actor .radial-menu.size30px-8items .menu-container .menu-button:nth-child(1) button,
+      .betterangels.actor .radial-menu.size30px-8items .menu-container .menu-button:nth-child(1) label {
+        -webkit-animation-delay: 0.125s;
+        animation-delay: 0.125s; }
+      .betterangels.actor .radial-menu.size30px-8items .menu-container .menu-button:nth-child(2) button,
+      .betterangels.actor .radial-menu.size30px-8items .menu-container .menu-button:nth-child(2) label {
+        -webkit-animation-delay: 0.25s;
+        animation-delay: 0.25s; }
+      .betterangels.actor .radial-menu.size30px-8items .menu-container .menu-button:nth-child(3) button,
+      .betterangels.actor .radial-menu.size30px-8items .menu-container .menu-button:nth-child(3) label {
+        -webkit-animation-delay: 0.375s;
+        animation-delay: 0.375s; }
+      .betterangels.actor .radial-menu.size30px-8items .menu-container .menu-button:nth-child(4) button,
+      .betterangels.actor .radial-menu.size30px-8items .menu-container .menu-button:nth-child(4) label {
+        -webkit-animation-delay: 0.5s;
+        animation-delay: 0.5s; }
+      .betterangels.actor .radial-menu.size30px-8items .menu-container .menu-button:nth-child(5) button,
+      .betterangels.actor .radial-menu.size30px-8items .menu-container .menu-button:nth-child(5) label {
+        -webkit-animation-delay: 0.625s;
+        animation-delay: 0.625s; }
+      .betterangels.actor .radial-menu.size30px-8items .menu-container .menu-button:nth-child(6) button,
+      .betterangels.actor .radial-menu.size30px-8items .menu-container .menu-button:nth-child(6) label {
+        -webkit-animation-delay: 0.75s;
+        animation-delay: 0.75s; }
+      .betterangels.actor .radial-menu.size30px-8items .menu-container .menu-button:nth-child(7) button,
+      .betterangels.actor .radial-menu.size30px-8items .menu-container .menu-button:nth-child(7) label {
+        -webkit-animation-delay: 0.875s;
+        animation-delay: 0.875s; }
+      .betterangels.actor .radial-menu.size30px-8items .menu-container .menu-button:nth-child(8) button,
+      .betterangels.actor .radial-menu.size30px-8items .menu-container .menu-button:nth-child(8) label {
+        -webkit-animation-delay: 1s;
+        animation-delay: 1s; }
+      .betterangels.actor .radial-menu.size30px-8items .menu-container .menu-button {
+        width: 15px;
+        height: auto;
+        margin-top: -7.5px;
+        margin-left: -7.5px; }
+        .betterangels.actor .radial-menu.size30px-8items .menu-container .menu-button:nth-of-type(1) {
+          -webkit-transform: rotate(0deg) translate(22.5px) rotate(0deg) translateX(0px);
+          -ms-transform: rotate(0deg) translate(22.5px) rotate(0deg) translateX(0px);
+          transform: rotate(0deg) translate(22.5px) rotate(0deg) translateX(0px); }
+          .betterangels.actor .radial-menu.size30px-8items .menu-container .menu-button:nth-of-type(1) button > span {
+            -webkit-transform: "scale(1.5) ";
+            -ms-transform: "scale(1.5) ";
+            transform: "scale(1.5) "; }
+          .betterangels.actor .radial-menu.size30px-8items .menu-container .menu-button:nth-of-type(1):hover button > span {
+            -webkit-transform: "scale(5) ";
+            -ms-transform: "scale(5) ";
+            transform: "scale(5) "; }
+        .betterangels.actor .radial-menu.size30px-8items .menu-container .menu-button:nth-of-type(2) {
+          -webkit-transform: rotate(45deg) translate(22.5px) rotate(-45deg) translateX(0px) translateY(0px);
+          -ms-transform: rotate(45deg) translate(22.5px) rotate(-45deg) translateX(0px) translateY(0px);
+          transform: rotate(45deg) translate(22.5px) rotate(-45deg) translateX(0px) translateY(0px); }
+          .betterangels.actor .radial-menu.size30px-8items .menu-container .menu-button:nth-of-type(2) button > span {
+            -webkit-transform: "scale(1.5) rotate(75deg)";
+            -ms-transform: "scale(1.5) rotate(75deg)";
+            transform: "scale(1.5) rotate(75deg)"; }
+          .betterangels.actor .radial-menu.size30px-8items .menu-container .menu-button:nth-of-type(2):hover button > span {
+            -webkit-transform: "scale(5) rotate(75deg)";
+            -ms-transform: "scale(5) rotate(75deg)";
+            transform: "scale(5) rotate(75deg)"; }
+        .betterangels.actor .radial-menu.size30px-8items .menu-container .menu-button:nth-of-type(3) {
+          -webkit-transform: rotate(90deg) translate(22.5px) rotate(-90deg) translateX(0px) translateY(0px);
+          -ms-transform: rotate(90deg) translate(22.5px) rotate(-90deg) translateX(0px) translateY(0px);
+          transform: rotate(90deg) translate(22.5px) rotate(-90deg) translateX(0px) translateY(0px); }
+          .betterangels.actor .radial-menu.size30px-8items .menu-container .menu-button:nth-of-type(3) button > span {
+            -webkit-transform: "scale(1.5) rotate(75deg)";
+            -ms-transform: "scale(1.5) rotate(75deg)";
+            transform: "scale(1.5) rotate(75deg)"; }
+          .betterangels.actor .radial-menu.size30px-8items .menu-container .menu-button:nth-of-type(3):hover button > span {
+            -webkit-transform: "scale(5) rotate(75deg)";
+            -ms-transform: "scale(5) rotate(75deg)";
+            transform: "scale(5) rotate(75deg)"; }
+        .betterangels.actor .radial-menu.size30px-8items .menu-container .menu-button:nth-of-type(4) {
+          -webkit-transform: rotate(135deg) translate(22.5px) rotate(-135deg) translateX(0px) translateY(-0px);
+          -ms-transform: rotate(135deg) translate(22.5px) rotate(-135deg) translateX(0px) translateY(-0px);
+          transform: rotate(135deg) translate(22.5px) rotate(-135deg) translateX(0px) translateY(-0px); }
+          .betterangels.actor .radial-menu.size30px-8items .menu-container .menu-button:nth-of-type(4) button > span {
+            -webkit-transform: "scale(1.5) rotate(170deg)";
+            -ms-transform: "scale(1.5) rotate(170deg)";
+            transform: "scale(1.5) rotate(170deg)"; }
+          .betterangels.actor .radial-menu.size30px-8items .menu-container .menu-button:nth-of-type(4):hover button > span {
+            -webkit-transform: "scale(5) rotate(170deg)";
+            -ms-transform: "scale(5) rotate(170deg)";
+            transform: "scale(5) rotate(170deg)"; }
+        .betterangels.actor .radial-menu.size30px-8items .menu-container .menu-button:nth-of-type(5) {
+          -webkit-transform: rotate(180deg) translate(22.5px) rotate(-180deg) translateX(-0px);
+          -ms-transform: rotate(180deg) translate(22.5px) rotate(-180deg) translateX(-0px);
+          transform: rotate(180deg) translate(22.5px) rotate(-180deg) translateX(-0px); }
+          .betterangels.actor .radial-menu.size30px-8items .menu-container .menu-button:nth-of-type(5) button > span {
+            -webkit-transform: "scale(1.5) rotate(170deg)";
+            -ms-transform: "scale(1.5) rotate(170deg)";
+            transform: "scale(1.5) rotate(170deg)"; }
+          .betterangels.actor .radial-menu.size30px-8items .menu-container .menu-button:nth-of-type(5):hover button > span {
+            -webkit-transform: "scale(5) rotate(170deg)";
+            -ms-transform: "scale(5) rotate(170deg)";
+            transform: "scale(5) rotate(170deg)"; }
+        .betterangels.actor .radial-menu.size30px-8items .menu-container .menu-button:nth-of-type(6) {
+          -webkit-transform: rotate(225deg) translate(22.5px) rotate(-225deg) translateX(-0px) translateY(-0px);
+          -ms-transform: rotate(225deg) translate(22.5px) rotate(-225deg) translateX(-0px) translateY(-0px);
+          transform: rotate(225deg) translate(22.5px) rotate(-225deg) translateX(-0px) translateY(-0px); }
+          .betterangels.actor .radial-menu.size30px-8items .menu-container .menu-button:nth-of-type(6) button > span {
+            -webkit-transform: "scale(1.5) rotate(75deg)";
+            -ms-transform: "scale(1.5) rotate(75deg)";
+            transform: "scale(1.5) rotate(75deg)"; }
+          .betterangels.actor .radial-menu.size30px-8items .menu-container .menu-button:nth-of-type(6):hover button > span {
+            -webkit-transform: "scale(5) rotate(75deg)";
+            -ms-transform: "scale(5) rotate(75deg)";
+            transform: "scale(5) rotate(75deg)"; }
+        .betterangels.actor .radial-menu.size30px-8items .menu-container .menu-button:nth-of-type(7) {
+          -webkit-transform: rotate(270deg) translate(22.5px) rotate(-270deg) translateX(-0px) translateY(-0px);
+          -ms-transform: rotate(270deg) translate(22.5px) rotate(-270deg) translateX(-0px) translateY(-0px);
+          transform: rotate(270deg) translate(22.5px) rotate(-270deg) translateX(-0px) translateY(-0px); }
+          .betterangels.actor .radial-menu.size30px-8items .menu-container .menu-button:nth-of-type(7) button > span {
+            -webkit-transform: "scale(1.5) rotate(75deg)";
+            -ms-transform: "scale(1.5) rotate(75deg)";
+            transform: "scale(1.5) rotate(75deg)"; }
+          .betterangels.actor .radial-menu.size30px-8items .menu-container .menu-button:nth-of-type(7):hover button > span {
+            -webkit-transform: "scale(5) rotate(75deg)";
+            -ms-transform: "scale(5) rotate(75deg)";
+            transform: "scale(5) rotate(75deg)"; }
+        .betterangels.actor .radial-menu.size30px-8items .menu-container .menu-button:nth-of-type(8) {
+          -webkit-transform: rotate(315deg) translate(22.5px) rotate(-315deg) translateX(-0px) translateY(0px);
+          -ms-transform: rotate(315deg) translate(22.5px) rotate(-315deg) translateX(-0px) translateY(0px);
+          transform: rotate(315deg) translate(22.5px) rotate(-315deg) translateX(-0px) translateY(0px); }
+          .betterangels.actor .radial-menu.size30px-8items .menu-container .menu-button:nth-of-type(8) button > span {
+            -webkit-transform: "scale(1.5) rotate(170deg)";
+            -ms-transform: "scale(1.5) rotate(170deg)";
+            transform: "scale(1.5) rotate(170deg)"; }
+          .betterangels.actor .radial-menu.size30px-8items .menu-container .menu-button:nth-of-type(8):hover button > span {
+            -webkit-transform: "scale(5) rotate(170deg)";
+            -ms-transform: "scale(5) rotate(170deg)";
+            transform: "scale(5) rotate(170deg)"; }
+        .betterangels.actor .radial-menu.size30px-8items .menu-container .menu-button button,
+        .betterangels.actor .radial-menu.size30px-8items .menu-container .menu-button label {
+          height: 14px;
+          line-height: 14px; }
+        .betterangels.actor .radial-menu.size30px-8items .menu-container .menu-button label {
+          font-size: 14px; }
+        .betterangels.actor .radial-menu.size30px-8items .menu-container .menu-button button {
+          font-size: 14px;
+          line-height: 14px; }
+    .betterangels.actor .radial-menu.depth-1 {
+      z-index: 2; }
+    .betterangels.actor .radial-menu.depth-2 {
+      z-index: 4; }
+    .betterangels.actor .radial-menu.depth-3 {
+      z-index: 6; }
+    .betterangels.actor .radial-menu.depth-4 {
+      z-index: 8; }
+    .betterangels.actor .radial-menu.tactic {
+      --spacing: 16px ; }
+    .betterangels.actor .radial-menu.strategy {
+      --spacing: 20px ; }
+    .betterangels.actor .radial-menu video {
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      opacity: 100%;
+      -webkit-transform: scale(2);
+      -ms-transform: scale(2);
+      transform: scale(2); }
+    .betterangels.actor .radial-menu .menu-container {
+      position: absolute;
+      top: -20%;
+      left: -20%;
+      width: 140%;
+      height: 140%;
+      list-style: none; }
+      .betterangels.actor .radial-menu .menu-container .menu-button {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        -webkit-transition: 0.5s;
+        -o-transition: 0.5s;
+        transition: 0.5s; }
+
+@-webkit-keyframes slow-bob {
+  from {
+    top: -3px; }
+  to {
+    top: 3px; } }
+
+@keyframes slow-bob {
+  from {
+    top: -3px; }
+  to {
+    top: 3px; } }
+        .betterangels.actor .radial-menu .menu-container .menu-button button {
+          position: absolute;
+          padding: 0;
+          margin: 0;
+          font-weight: bold;
+          color: var(--button-color);
+          text-shadow: -1px -1px 2px #000000, 1px -1px 2px #000000, -1px 1px 2px #000000, 1px 1px 2px #000000;
+          background: transparent;
+          border: none;
+          outline: none;
+          -webkit-box-shadow: none;
+          box-shadow: none;
+          -webkit-transition: 0.5s;
+          -o-transition: 0.5s;
+          transition: 0.5s;
+          -webkit-animation: slow-bob 2s cubic-bezier(0.36, 0, 0.63, 1) infinite alternate;
+          animation: slow-bob 2s cubic-bezier(0.36, 0, 0.63, 1) infinite alternate; }
+          .betterangels.actor .radial-menu .menu-container .menu-button button.button-green {
+            --button-color: #00c800;
+            --button-bright: lime;
+            --button-bg: rgba(0, 100, 0, 0.5); }
+          .betterangels.actor .radial-menu .menu-container .menu-button button.button-blue {
+            --button-color: cyan;
+            --button-bright: cyan;
+            --button-bg: rgba(0, 0, 128, 0.5); }
+          .betterangels.actor .radial-menu .menu-container .menu-button button.button-red {
+            --button-color: red;
+            --button-bright: red;
+            --button-bg: rgba(77, 0, 0, 0.5); }
+          .betterangels.actor .radial-menu .menu-container .menu-button button > span {
+            display: block;
+            -webkit-transition: 0.25s;
+            -o-transition: 0.25s;
+            transition: 0.25s;
+            -webkit-transform: scale(1.5);
+            -ms-transform: scale(1.5);
+            transform: scale(1.5); }
+        .betterangels.actor .radial-menu .menu-container .menu-button label {
+          position: relative;
+          display: block !important;
+          width: 200%;
+          height: auto !important;
+          margin-left: -50%;
+          text-align: center;
+          letter-spacing: 10px;
+          opacity: 0%;
+          -webkit-transition: 0.25s !important;
+          -o-transition: 0.25s !important;
+          transition: 0.25s !important;
+          -webkit-transform: scale(2);
+          -ms-transform: scale(2);
+          transform: scale(2);
+          -webkit-animation: slow-bob 2s cubic-bezier(0.36, 0, 0.63, 1) infinite alternate;
+          animation: slow-bob 2s cubic-bezier(0.36, 0, 0.63, 1) infinite alternate;
+          font-family: "DigitalStrip BB", sans-serif;
+          font-weight: bold;
+          text-transform: uppercase;
+          text-align: center;
+          text-shadow: -1px -1px 2px #000000, 1px -1px 2px #000000, -1px 1px 2px #000000, 1px 1px 2px #000000; }
+          .betterangels.actor .radial-menu .menu-container .menu-button label.label-green {
+            color: #00c800; }
+          .betterangels.actor .radial-menu .menu-container .menu-button label.label-blue {
+            color: cyan; }
+          .betterangels.actor .radial-menu .menu-container .menu-button label.label-red {
+            color: red; }
+        .betterangels.actor .radial-menu .menu-container .menu-button.empty {
+          opacity: 50%; }
+          .betterangels.actor .radial-menu .menu-container .menu-button.empty button,
+          .betterangels.actor .radial-menu .menu-container .menu-button.empty label {
+            color: gray;
+            pointer-events: none !important; }
+    .betterangels.actor .radial-menu.active {
+      z-index: 20;
+      opacity: 100%;
+      -webkit-transform: scale(1) rotate(0deg);
+      -ms-transform: scale(1) rotate(0deg);
+      transform: scale(1) rotate(0deg); }
+      .betterangels.actor .radial-menu.active .menu-container {
+        padding: 0;
+        margin: 0;
+        list-style: none;
+        pointer-events: all; }
+        .betterangels.actor .radial-menu.active .menu-container .menu-button:not(.empty) {
+          pointer-events: all; }
+        .betterangels.actor .radial-menu.active .menu-container .menu-button:hover {
+          z-index: 10; }
+          .betterangels.actor .radial-menu.active .menu-container .menu-button:hover button {
+            pointer-events: all;
+            background: var(--button-bg);
+            -webkit-box-shadow: 0 0 2px var(--button-bright), 0 0 2px var(--button-bright), 0 0 2px var(--button-bright);
+            box-shadow: 0 0 2px var(--button-bright), 0 0 2px var(--button-bright), 0 0 2px var(--button-bright);
+            -webkit-transform: scaleY(1.25) scaleX(2);
+            -ms-transform: scaleY(1.25) scaleX(2);
+            transform: scaleY(1.25) scaleX(2); }
+            .betterangels.actor .radial-menu.active .menu-container .menu-button:hover button > span {
+              display: block;
+              opacity: 0%;
+              -webkit-transition: 0.5s;
+              -o-transition: 0.5s;
+              transition: 0.5s;
+              -webkit-transform: scale(5);
+              -ms-transform: scale(5);
+              transform: scale(5); }
+            .betterangels.actor .radial-menu.active .menu-container .menu-button:hover button + label {
+              letter-spacing: normal;
+              opacity: 100%;
+              -webkit-transform: scale(1);
+              -ms-transform: scale(1);
+              transform: scale(1); }
+  .betterangels.actor .trait-pair.tactic .radial-menu {
+    margin-top: 16px; }
+  .betterangels.actor .trait-pair.strategy .radial-menu {
+    --margin-shift: -86px;
+    margin-top: 20px; }

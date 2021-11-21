@@ -23,8 +23,6 @@ export {default as registerHelpers} from "./handlebar-helpers.mjs";
 export {default as BetterAngelsActor} from "../documents/actor.mjs";
 export {default as BetterAngelsActorSheet} from "../sheets/actor-sheet.mjs";
 export {default as HellboundActorSheet} from "../sheets/actor-hellbound-sheet.mjs";
-export {default as DemonCompanionSheet} from "../sheets/actor-demon-sheet.mjs";
-export {default as MajorNPCSheet} from "../sheets/actor-majornpc-sheet.mjs";
 export {default as MinorNPCSheet} from "../sheets/actor-minornpc-sheet.mjs";
 export {default as MobNPCSheet} from "../sheets/actor-mobnpc-sheet.mjs";
 export {default as BetterAngelsItem} from "../documents/item.mjs";

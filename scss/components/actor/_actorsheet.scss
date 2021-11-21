@@ -1,11 +1,13 @@
-@mixin radial-menu($radius, $num-buttons, $line-height, $depth: 1) {
+@mixin radial-menu($radius, $num-buttons, $height, $depth: 1) {
+	$horiz-shift: 0; // 10;
+	$vert-shift: 0; // 3;
 	$menu-size: $radius * 2;
 
 	&.size#{$radius}-#{$num-buttons}items {
 		--left-shift: #{-$radius};
 
 		top: -($radius);
-		left: -($radius);
+		left: -($radius * 25 / 40);
 		z-index: $depth + 1;
 		width: $menu-size;
 		height: $menu-size;
@@ -27,13 +29,48 @@
 
 				$angle: (360 / $num-buttons);
 				$rot: 0;
+				$transform-translate: "";
+				$transform-rotate: "";
+				$transform-children: "";
 
 				@for $i from 1 through $num-buttons {
+					@if $num-buttons == 8 {
+						@if $i == 1 { // Cyan
+							$transform-translate: "translateX(#{$horiz-shift}px)";
+						} @else if $i == 2 { // Red  rotate(170deg)
+							$transform-translate: "translateX(#{$horiz-shift}px) translateY(#{$vert-shift}px)";
+							$transform-rotate: "rotate(75deg)";
+							$transform-children: "rotate(-75deg)";
+						} @else if $i == 4 { // Green  rotate(170deg)
+							$transform-translate: "translateX(#{$horiz-shift}px) translateY(-#{$vert-shift}px)";
+							$transform-rotate: "rotate(170deg)";
+							$transform-children: "rotate(-170deg)";
+						} @else if $i == 5 {
+							$transform-translate: "translateX(-#{$horiz-shift}px)";
+						} @else if $i == 6 {
+							$transform-translate: "translateX(-#{$horiz-shift}px) translateY(-#{$vert-shift}px)";
+							$transform-rotate: "rotate(75deg)";
+							$transform-children: "rotate(-75deg)";
+						} @else if $i == 8 {
+							$transform-translate: "translateX(-#{$horiz-shift}px) translateY(#{$vert-shift}px)";
+							$transform-rotate: "rotate(170deg)";
+							$transform-children: "rotate(-170deg)";
+						}
+					}
 					&:nth-of-type(#{$i}) {
 						transform:
 							rotate($rot * 1deg)
 							translate(0.75 * $menu-size / 2)
-							rotate($rot * -1deg);
+							rotate($rot * -1deg)
+							#{$transform-translate};
+
+						button > span {
+							transform: "scale(1.5) #{$transform-rotate}";
+						}
+
+						&:hover button > span {
+							transform: "scale(5) #{$transform-rotate}";
+						}
 					}
 
 					$rot: $rot + $angle;
@@ -41,185 +78,43 @@
 
 				button,
 				label {
-					height: $line-height;
-					line-height: $line-height;
+					height: $height;
+					line-height: $height;
 				}
 
-				label { font-size: $line-height * 4 / 5 }
+				label { font-size: $height }
 
 				button {
-					font-size: $line-height;
-					line-height: $line-height;
-					height: $line-height * 1.5;
-					width: $line-height * 1.5;
+					font-size: $height;
+					line-height: $height;
+
+					// height: $height * 0.8;
+					// width: $height * 0.8;
 				}
-
-
 			}
 		}
 	}
 }
+
+$tactic-dot-size: 15px;
+$strategy-dot-size: 19px;
+$tactic-spacing: $tactic-dot-size + 1px;
+$strategy-spacing: $strategy-dot-size + 1px;
 
 &.hellbound {
 	width: auto !important;
 	max-height: calc(100% - 2px);
 }
 
-.radial-hover {
-
-	> .radial-menu {
-		position: relative;
-		display: block;
-		padding: 0;
-		pointer-events: all;
-		background: transparent;
-		border-radius: 50%;
-		opacity: 0%;
-		transition: 0.5s;
-		transform: scale(0.3) rotate(-125deg);
-	
-		@include radial-menu(60px, 8, 18px);
-		@include radial-menu(50px, 8, 18px);
-		@include radial-menu(40px, 8, 18px);
-	
-		&.depth-1 { z-index: 2 }
-		&.depth-2 { z-index: 4 }
-		&.depth-3 { z-index: 6 }
-		&.depth-4 { z-index: 8 }
-	
-		.menu-container {
-			position: absolute;
-			width: 100%;
-			height: 100%;
-			list-style: none;
-	
-			.menu-button {
-				position: absolute;
-				top: 50%;
-				left: 50%;
-				display: block;
-				width: 100%;
-				height: 100%;
-				transition: 0.5s;
-	
-				@keyframes slow-bob {
-					from { top: -3px; }
-					to { top: 3px; }
-				}
-	
-				button {
-					position: absolute;
-					padding: 0;
-					margin: 0;
-					color: var(--button-color);
-					// background: radial-gradient(ellipse, $c-white, var(--button-color) 90%);
-					background: transparent;
-					border: none;
-					outline: none;
-					// outline: 2px solid var(--button-color);
-					box-shadow: none;
-					transition: 0.5s;
-					animation: slow-bob 2s cubic-bezier(0.36, 0, 0.63, 1) infinite alternate;
-					text-shadow: -1px -1px 2px #000000, 1px -1px 2px #000000, -1px 1px 2px #000000, 1px 1px 2px #000000;
-	
-					&.button-green {
-						--button-color: #{$c-green};
-					}
-	
-					&.button-blue {
-						--button-color: #{$c-cyan};
-					}
-	
-					&.button-red {
-						--button-color: #{$c-red};
-					}
-				}
-	
-				label {
-					position: relative;
-					display: block !important;
-					width: 200%;
-					height: auto !important;
-					margin-left: -50%;
-					text-align: center;
-					letter-spacing: 10px;
-					pointer-events: none;
-					opacity: 0%;
-					transition: 0.25s !important;
-					transform: scale(2);
-					animation: slow-bob 2s cubic-bezier(0.36, 0, 0.63, 1) infinite alternate;
-					font: {
-						family: $font-primary;
-						weight: bold;
-					}
-					text: {
-						transform: uppercase;
-						align: center;
-						shadow: -1px -1px 2px #000000, 1px -1px 2px #000000, -1px 1px 2px #000000, 1px 1px 2px #000000;
-					}
-	
-					&.label-green {
-						color: $c-green;
-					}
-	
-					&.label-blue {
-						color: $c-cyan;
-					}
-	
-					&.label-red {
-						color: $c-red;
-					}
-				}
-
-				&.empty {
-					opacity: 0.5;
-					pointer-events: none;
-
-					button,
-					label {
-						color: $c-grey5;
-					}
-					// display: none;
-				}
-			}
-		}
-	}
-
-	&:hover > .radial-menu {
-		z-index: 20;
-		opacity: 100%;
-		transform: scale(1) rotate(0deg);
-	
-		.menu-container {
-			padding: 0;
-			margin: 0;
-			list-style: none;
-	
-			.menu-button:hover button {
-				opacity: 0%;
-				transform: scale(1.5);
-	
-				+ label {
-					letter-spacing: normal;
-					opacity: 100%;
-					transform: scale(1);
-				}
-			}
-		}
-	}	
-}
-
 .trait-line {
-	$tactic-dot-size: 15px;
-	$strategy-dot-size: 19px;
-	$tactic-spacing: $tactic-dot-size + 1px;
-	$strategy-spacing: $strategy-dot-size + 1px;
-
 	display: grid;
 	grid-template-columns: #{9 * $tactic-spacing} #{7 * $strategy-spacing} #{9 * $tactic-spacing};
 	grid-gap: $tactic-spacing;
 
-	* { transform-origin: 50% 50% }
+	* {
+		pointer-events: none;
+		transform-origin: 50% 50%;
+	}
 
 	.trait-pair {
 		display: grid;
@@ -228,36 +123,80 @@
 		margin-top: auto;
 		margin-bottom: auto;
 
-		label {
+		> label {
 			position: relative;
-			z-index: 5;
+			transition: 3;
+
+			> span {
+				position: absolute;
+				display: inline-block;
+				color: black;
+				background-color: transparent;
+				border-radius: 10px;
+				outline: 0;
+				transition: 3;
+				transform: scale(1);
+
+				&.draggable {
+					color: gold;
+					text-shadow: none;
+					text-shadow: 0 0 3px black, 0 0 3px black, 0 0 3px black, 0 0 3px black;
+					pointer-events: all;
+					border-radius: 10px;
+					outline: 3px solid yellow;
+					opacity: 0%;
+					transform: scale(1);
+
+					&.click-through {
+						pointer-events: none !important;
+					}
+				}
+			}
 
 			&.sinister {
 				grid-row: 1;
 				margin-left: -20px;
+
+				> span {
+					left: 0;
+				}
 			}
 
 			&.virtuous {
 				grid-row: 4;
 				margin-right: -20px;
 				text-align: right;
+
+				> span {
+					right: 0;
+				}
+			}
+
+			&:hover > span:not(.draggable) {
+				color: lime;
+				text-shadow: 0 0 3px orange, 0 0 3px orange, 0 0 3px orange, 0 0 3px orange;
+				background-color: gold;
+				transition: 3;
+				transform: scale(1.2);
 			}
 		}
 
 		.trait-grid {
-			grid-row: 2 / span 2;
 			display: grid;
 			grid-template-rows: repeat(2, var(--dot-size));
 			grid-template-columns: repeat(7, var(--dot-size));
+			grid-row: 2 / span 2;
 			grid-gap: 1px;
 			margin-top: auto;
 			margin-bottom: auto;
+			pointer-events: all;
 
 			.dot {
-				background-color: $c-black;
-				border-radius: 50%;
-				border: 1px solid $c-black;
+				position: relative;
 				box-sizing: border-box;
+				background-color: $c-black;
+				border: 1px solid $c-black;
+				border-radius: 50%;
 
 				&.empty { background-color: transparent }
 
@@ -312,27 +251,23 @@
 				}
 			}
 		}
-		
+
 		&.tactic {
-		--dot-size: #{$tactic-dot-size};
+			--dot-size: #{$tactic-dot-size};
+			--spacing: #{$tactic-spacing};
 
-		width: 7 * $tactic-spacing + 2 * $tactic-spacing;
-		padding: $tactic-spacing;
+			width: 7 * $tactic-spacing + 2 * $tactic-spacing;
+			padding: $tactic-spacing;
 
-			> label {				
+			> label {
 				font-family: $font-primary;
 				line-height: $tactic-dot-size - 1px;
 			}
-
-			.radial-hover > .radial-menu {
-				--margin-shift: #{-(7 * $tactic-spacing) / 2 - $tactic-spacing};
-
-				margin-top: $tactic-spacing;
-			}
-		}		
+		}
 
 		&.strategy {
 			--dot-size: #{$strategy-dot-size};
+			--spacing: #{$strategy-spacing};
 
 			width: 7 * $strategy-spacing;
 
@@ -340,12 +275,215 @@
 				font-family: $font-secondary;
 				line-height: $strategy-dot-size - 1px;
 			}
-
-			.radial-hover > .radial-menu {
-				--margin-shift: #{-(7 * $strategy-spacing) / 2 - $tactic-spacing};
-
-				margin-top: $strategy-spacing;
-			}				
 		}
 	}
+}
+
+.radial-menu {
+	--margin-shift: calc(-7 * var(--spacing) / 2 - var(--spacing));
+
+	position: relative;
+	display: block;
+	padding: 0;
+	margin-top: var(--spacing);
+	background: transparent;
+	border-radius: 50%;
+	opacity: 0%;
+	transition: 0.5s;
+	transform: scale(0.3) rotate(-125deg);
+
+	@include radial-menu(60px, 8, 14px);
+	@include radial-menu(50px, 8, 14px);
+	@include radial-menu(40px, 8, 14px);
+	@include radial-menu(30px, 8, 14px);
+
+	&.depth-1 { z-index: 2 }
+	&.depth-2 { z-index: 4 }
+	&.depth-3 { z-index: 6 }
+	&.depth-4 { z-index: 8 }
+
+	&.tactic { --spacing: #{$tactic-spacing} }
+	&.strategy { --spacing: #{$strategy-spacing} }
+
+	video {
+		position: absolute;
+		top: -50%;
+		left: -50%;
+		width: 200%;
+		height: 200%;
+		opacity: 100%;
+		transform: scale(2);
+	}
+
+	.menu-container {
+		position: absolute;
+		top: -20%;
+		left: -20%;
+		width: 140%;
+		height: 140%;
+		list-style: none;
+
+		// pointer-events: all;
+
+		// background-color: rgba(0, 255, 0, 0.25);
+		// outline: 2px solid rgba(0, 255, 0, 0.5);
+
+		.menu-button {
+			position: absolute;
+			top: 50%;
+			left: 50%;
+			transition: 0.5s;
+
+			// background-color: rgba(0, 255, 255, 0.25);
+			// outline: 2px solid rgba(0, 255, 255, 0.5);
+
+			@keyframes slow-bob {
+				from { top: -3px; }
+				to { top: 3px; }
+			}
+
+			button {
+				position: absolute;
+				padding: 0;
+				margin: 0;
+
+				// background-color: rgba(255, 0, 255, 0.5);
+				// outline: 2px solid rgba(255, 0, 255, 1);
+				font-weight: bold;
+				color: var(--button-color);
+				text-shadow: -1px -1px 2px #000000, 1px -1px 2px #000000, -1px 1px 2px #000000, 1px 1px 2px #000000;
+				background: transparent;
+				border: none;
+				outline: none;
+				box-shadow: none;
+				transition: 0.5s;
+				animation: slow-bob 2s cubic-bezier(0.36, 0, 0.63, 1) infinite alternate;
+
+				&.button-green {
+					--button-color: #{$c-green};
+					--button-bright: #{$c-lime};
+					--button-bg: #{$c-darkgreen5};
+				}
+
+				&.button-blue {
+					--button-color: #{$c-cyan};
+					--button-bright: #{$c-cyan};
+					--button-bg: #{$c-navy5};
+				}
+
+				&.button-red {
+					--button-color: #{$c-red};
+					--button-bright: #{$c-red};
+					--button-bg: #{$c-darkred5};
+				}
+
+				> span {
+					display: block;
+					transition: 0.25s;
+					transform: scale(1.5);
+				}
+			}
+
+			label {
+				position: relative;
+				display: block !important;
+				width: 200%;
+				height: auto !important;
+				margin-left: -50%;
+				text-align: center;
+				letter-spacing: 10px;
+				opacity: 0%;
+				transition: 0.25s !important;
+				transform: scale(2);
+				animation: slow-bob 2s cubic-bezier(0.36, 0, 0.63, 1) infinite alternate;
+				font: {
+					family: $font-primary;
+					weight: bold;
+				}
+				text: {
+					transform: uppercase;
+					align: center;
+					shadow: -1px -1px 2px #000000, 1px -1px 2px #000000, -1px 1px 2px #000000, 1px 1px 2px #000000;
+				}
+
+				// background-color: rgba(255, 0, 0, 0.25);
+				// outline: 2px solid rgba(255, 0, 0, 0.5);
+
+				&.label-green {
+					color: $c-green;
+				}
+
+				&.label-blue {
+					color: $c-cyan;
+				}
+
+				&.label-red {
+					color: $c-red;
+				}
+			}
+
+			&.empty {
+				opacity: 50%;
+
+				// pointer-events: none !important;
+
+				button,
+				label {
+					color: $c-grey5;
+					pointer-events: none !important;
+				}
+
+				// display: none;
+			}
+		}
+	}
+
+	&.active {
+		z-index: 20;
+		opacity: 100%;
+		transform: scale(1) rotate(0deg);
+
+		.menu-container {
+			padding: 0;
+			margin: 0;
+			list-style: none;
+			pointer-events: all;
+
+			.menu-button:not(.empty) { pointer-events: all }
+
+			.menu-button:hover {
+				z-index: 10;
+
+				button {
+					pointer-events: all;
+					background: var(--button-bg);
+					box-shadow: 0 0 2px var(--button-bright), 0 0 2px var(--button-bright), 0 0 2px var(--button-bright);
+					transform: scaleY(1.25) scaleX(2);
+
+					> span {
+						display: block;
+						opacity: 0%;
+						transition: 0.5s;
+						transform: scale(5);
+					}
+
+					+ label {
+						letter-spacing: normal;
+						opacity: 100%;
+						transform: scale(1);
+					}
+				}
+			}
+		}
+	}
+}
+
+.trait-pair.tactic .radial-menu {
+	margin-top: $tactic-spacing;
+}
+
+.trait-pair.strategy .radial-menu {
+	--margin-shift: #{-(7 * $strategy-spacing) / 2 - $tactic-spacing};
+
+	margin-top: $strategy-spacing;
 }

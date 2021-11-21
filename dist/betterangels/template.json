@@ -2,8 +2,6 @@
 	"Actor": {
 		"types": [
 			"hellbound",
-			"demon",
-			"majornpc",
 			"minornpc",
 			"mobnpc"
 		],
@@ -104,24 +102,6 @@
 			}
 		},
 		"hellbound": {
-			"templates": [
-				"strategies",
-				"tactics"
-			],
-			"humanname": "",
-			"villainname": "",
-			"demonname": ""
-		},
-		"demon": {
-			"templates": [
-				"strategies",
-				"tactics"
-			],
-			"humanname": "",
-			"villainname": "",
-			"demonname": ""
-		},
-		"majornpc": {
 			"templates": [
 				"strategies",
 				"tactics"

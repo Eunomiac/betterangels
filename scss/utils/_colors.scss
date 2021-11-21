@@ -13,6 +13,9 @@ $c-black: rgb(0, 0, 0);
 
 // Red
 $c-red: rgb(255, 0, 0);
+$c-medred: rgb(155, 0, 0);
+$c-darkred: rgb(77, 0, 0);
+$c-darkred5: rgba(77, 0, 0, 0.5);
 
 // Magenta, Pink
 $c-magenta: rgb(255, 0, 255);
@@ -20,9 +23,9 @@ $c-pink: rgb(255, 192, 203);
 
 // Orange, Gold
 $c-gold: rgb(255, 215, 0);
-$c-gold-50: rgba(255, 215, 0, 50%);
+$c-gold5: rgba(255, 215, 0, 50%);
 $c-orange: rgb(255, 166, 0);
-$c-orange-50: rgba(255, 166, 0, 50%);
+$c-orange5: rgba(255, 166, 0, 50%);
 
 // Brown, Tan
 
@@ -32,10 +35,14 @@ $c-yellow: rgb(255, 255, 0);
 // Green
 $c-lime: rgb(0, 255, 0);
 $c-green: rgb(0, 200, 0);
+$c-darkgreen: rgb(0, 100, 0);
+$c-darkgreen5: rgba(0, 100, 0, 0.5);
 
 // Blue, Cyan
 $c-cyan: rgb(0, 255, 255);
 $c-darkblue: rgb(0, 0, 255);
+$c-navy: rgb(0, 0, 128);
+$c-navy5: rgba(0, 0, 128, 0.5);
 
 // Purple
 $c-purple: rgb(128, 0, 128);

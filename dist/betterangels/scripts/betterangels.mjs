@@ -24,8 +24,6 @@ import {
 	BetterAngelsActor,
 	BetterAngelsActorSheet,
 	HellboundActorSheet,
-	DemonCompanionSheet,
-	MajorNPCSheet,
 	MinorNPCSheet,
 	MobNPCSheet,
 	// ▮▮▮▮▮▮▮[Items]▮▮▮▮▮▮▮
@@ -61,16 +59,6 @@ Hooks.once("init", async () => {
 		makeDefault: true,
 		types: ["hellbound"],
 		label: "ba.sheet.hellboundSheet"
-	});
-	Actors.registerSheet("betterangels", DemonCompanionSheet, {
-		makeDefault: false,
-		types: ["hellbound"],
-		label: "ba.sheet.demonSheet"
-	});
-	Actors.registerSheet("betterangels", MajorNPCSheet, {
-		makeDefault: false,
-		types: ["majornpc"],
-		label: "ba.sheet.majorNPCSheet"
 	});
 	Actors.registerSheet("betterangels", MinorNPCSheet, {
 		makeDefault: false,

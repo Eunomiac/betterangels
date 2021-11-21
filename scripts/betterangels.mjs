@@ -20,8 +20,6 @@ import {
 	BetterAngelsActor,
 	BetterAngelsActorSheet,
 	HellboundActorSheet,
-	DemonCompanionSheet,
-	MajorNPCSheet,
 	MinorNPCSheet,
 	MobNPCSheet,
 	// #endregion ▮▮▮▮[Actors]▮▮▮▮
@@ -37,6 +35,7 @@ import {
 	XSnap
 	// #endregion ▮▮▮▮[XCircles]▮▮▮▮
 } from "./helpers/bundler.mjs";
+
 /*DEVCODE*/ import BA_DB from "./helpers/debug.mjs"; /*!DEVCODE*/
 
 gsap.registerPlugin(Dragger, InertiaPlugin, MotionPathPlugin, GSDevTools);
@@ -67,16 +66,6 @@ Hooks.once("init", async () => {
 		types: ["hellbound"],
 		label: "ba.sheet.hellboundSheet"
 	});
-	Actors.registerSheet("betterangels", DemonCompanionSheet, {
-		makeDefault: false,
-		types: ["hellbound"],
-		label: "ba.sheet.demonSheet"
-	});
-	Actors.registerSheet("betterangels", MajorNPCSheet, {
-		makeDefault: false,
-		types: ["majornpc"],
-		label: "ba.sheet.majorNPCSheet"
-	});
 	Actors.registerSheet("betterangels", MinorNPCSheet, {
 		makeDefault: false,
 		types: ["minornpc"],
@@ -103,6 +92,8 @@ Hooks.once("init", async () => {
 
 /*DEVCODE*/
 Hooks.once("ready", () => {
+
+	$(".notification.error.permanent").remove();
 	window.REF = game.betterangels;
 	window.DB = new BA_DB({
 		topLeft: 10,
@@ -115,8 +106,6 @@ Hooks.once("ready", () => {
 		BetterAngelsActor,
 		BetterAngelsActorSheet,
 		HellboundActorSheet,
-		DemonCompanionSheet,
-		MajorNPCSheet,
 		MinorNPCSheet,
 		BetterAngelsItem,
 		BetterAngelsItemSheet,
@@ -133,7 +122,6 @@ Hooks.once("ready", () => {
 	}).forEach(([key, ref]) => {
 		window[key] = ref;
 	});
-
 	return;
 
 	window.DB.setDBCircle(window.CIRCLES[0]);

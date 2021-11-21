@@ -8,15 +8,19 @@
 import {U} from "./bundler.mjs";
 
 const HELPERS = {
-	"for": (n, options) => {
+	"for": (targetNum, ...args) => { // targetNum, startVal = 0, stepVal = 1, options) => {
+		const options = args.pop();
+		const startVal = U.pInt(args.shift() ?? 0);
+		const stepVal = U.pInt(args.shift() ?? 1);
 		const results = [];
 		const data = Handlebars.createFrame(options.data);
-		for (let i = 0; i < n; i++) {
+		console.log({targetNum, startVal, stepVal});
+		for (let i = startVal; stepVal < 0 ? i >= targetNum : i < targetNum; i += stepVal) {
 			data.index = i;
 			try {
 				results.push(options.fn(i, {data}));
 			} catch {
-				results.push(`Bad For at ${i} of ${n}`);
+				results.push(`Bad For at ${i} of ${targetNum}`);
 			}
 		}
 		return results.join("");
@@ -30,6 +34,7 @@ const HELPERS = {
 		}
 		return bundle;
 	},
+	"concat": (...args) => args.slice(0, -1).join(" "),
 	"case": (...args) => {
 		switch (args.shift()) {
 			case "upper": return U.uCase(args.shift());
