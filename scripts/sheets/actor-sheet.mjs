@@ -1,4 +1,5 @@
 import {
+
 	// #region ▮▮▮▮▮▮▮[External Libraries]▮▮▮▮▮▮▮ ~
 	gsap,
 	Dragger,
@@ -80,13 +81,153 @@ export default class extends MIX(ActorSheet).with(UpdateQueue) {
 	}
 
 	_openRadialMenu(event) {
-		console.log(event);
-		$(event.currentTarget).find(".radial-menu")?.addClass("active");
+		// console.log("Open Menu", event);
+		const [posElem] = $(event.currentTarget).find(".menu-positioner");
+		if ($(posElem).find(".radial-menu").hasClass("active")) {
+			this._closeRadialMenu(event);
+		} else {
+			gsap.set(posElem, {xPercent: -50, yPercent: -50, x: event.offsetX, y: event.offsetY});
+			$(posElem).find("video").each(function playVideo() { this.play() });
+			$(posElem).find(".radial-menu").addClass("active");
+		}
 	}
 
 	_closeRadialMenu(event) {
-		$(".radial-menu.active").removeClass("active");
+		// console.log("Close Menu", event);
+		const [posElem] = $(event.currentTarget).find(".menu-positioner");
+		$(posElem).find("video").each(function stopVideo() { this.pause() });
+		$(posElem).find(".radial-menu").removeClass("active");
 		setTimeout(() => this.pushUpdates(), 500);
+	}
+
+	_updateLabelVideo(event) {
+		// console.log("Update Label Video", event);
+		const [videoElem] = $(event.currentTarget).find("video");
+
+	}
+
+	_playLabelVideo(event) {
+		// console.log("Play Label Video", event);
+		const [videoElem] = $(event.currentTarget).find("video");
+		videoElem.play();
+		setTimeout(() => videoElem.play(), 150);
+		gsap.fromTo(videoElem,
+														{
+															opacity: 0
+														},
+														{
+															opacity: 1,
+															duration: 0.5,
+															ease: "sine",
+															onComplete() {
+																videoElem.play();
+															}
+														});
+	}
+
+	_pauseLabelVideo(event) {
+		// console.log("Pause Label Video", event);
+		const [videoElem] = $(event.currentTarget).find("video");
+		gsap.to(videoElem, {opacity: 0,
+																						duration: 0.5,
+																						ease: "sine",
+																						onComplete() {
+																							videoElem.pause();
+																						}});
+	}
+
+	_launchRoll(dragged, dropped) {
+		const {target: targetA, value: valueA} = dragged.dataset;
+		const [{dataset: {target: targetB, value: valueB}}] = $(dropped)?.find(".draggable") ?? [{dataset: {}}];
+		const sheetContext = this;
+		const [dropDisplay] = $(dropped).find(".display");
+		$(dropDisplay).addClass("big-gold click-through");
+
+		gsap.to(dragged, {
+			scale: 5,
+			y: "-=75px",
+			opacity: 0,
+			duration: 1,
+			ease: "power.out",
+			onComplete() {
+				$(dragged).removeClass("click-through");
+				gsap.set(dragged, {
+					opacity: 0,
+					x: 0,
+					y: 0,
+					scale: 1
+				});
+			}
+		});
+		gsap.to(dropDisplay, {
+			scale: 5,
+			y: "+=75px",
+			opacity: 0,
+			duration: 1,
+			ease: "power.out",
+			onComplete() {
+				$(dropDisplay).removeClass("big-gold");
+				gsap.set(dropDisplay, {scale: 1, y: "-=75px"});
+				gsap.fromTo(dropDisplay, {
+					opacity: 0
+				}, {
+					opacity: 1,
+					duration: 0.25,
+					ease: "sine",
+					onComplete() {
+						$(dropDisplay).removeClass("click-through");
+						gsap.set(dropDisplay, {y: 0});
+						gsap.set(dragged, {opacity: 0});
+					}
+				});
+			}
+		});
+
+		const rollPoolParts = [];
+		if (CONFIG.BETTERANGELS.strategies.includes(targetA)) {
+			rollPoolParts.push(`<h1><span style="color: darkgreen !important; font-weight: bold !important; font-style: normal !important;">${U.tCase(targetA)}</span> ${valueA} + `);
+			rollPoolParts.push(`<span style="color: purple !important; font-weight: normal !important; font-style: italic !important;">${U.tCase(targetB)}</span> ${valueB}</h1>`);
+		} else {
+			rollPoolParts.push(`<h1><span style="color: darkgreen !important; font-weight: bold !important; font-style: normal !important;">${U.tCase(targetB)}</span> ${valueB} + `);
+			rollPoolParts.push(`<span style="color: purple !important; font-weight: normal !important; font-style: italic !important;">${U.tCase(targetA)}</span> ${valueA}</h1>`);
+		}
+		rollPoolParts.push(`<h3>(${U.pInt(valueA) + U.pInt(valueB)} Dice Total)`);
+
+		$("#sheet-message").html(rollPoolParts.join(""));
+
+		const [rollPool] = $("#sheet-message").find("h1");
+		const [rollSummary] = $("#sheet-message").find("h3");
+
+		gsap.fromTo(rollPool, {
+			scale: 10,
+			opacity: 0
+		}, {
+			scale: 1,
+			opacity: 1,
+			duration: 0.5,
+			ease: "power4.out"
+		});
+		gsap.fromTo(rollSummary, {
+			scale: 1,
+			y: "+=300px",
+			opacity: 0
+		}, {
+			y: 0,
+			opacity: 1,
+			duration: 1,
+			ease: "power4.in",
+			onComplete() {
+				gsap.to("#sheet-message *", {
+					opacity: 0,
+					scale: 5,
+					duration: 0.5,
+					delay: 1,
+					stagger: 0.2,
+					ease: "power4.out"
+				});
+			}
+		});
+
 	}
 
 	fillDot(trait, dot) {
@@ -105,16 +246,15 @@ export default class extends MIX(ActorSheet).with(UpdateQueue) {
 			scale: 1,
 			opacity: 1,
 			backgroundColor: "rgb(0, 0, 0)",
-			ease: "power4.in",
+			ease: "sine",
 			duration: 0.5
-		}, 0.25);
+		});
 	}
 	emptyDot(trait, dot) {
 		const [dotElem] = $(`#${trait}-${dot} > .dot-animation`);
 		const [menuElem] = $(dotElem).closest(".radial-hover").find(".radial-menu");
 		const [videoElem] = $(menuElem).find("video");
 		const videoScale = gsap.getProperty(videoElem, "scale");
-		console.log(`Scale: ${videoScale}`);
 		const tl = gsap.timeline({
 			onComplete() { $(dotElem).addClass("empty") }
 		});
@@ -126,13 +266,13 @@ export default class extends MIX(ActorSheet).with(UpdateQueue) {
 			scale: 10,
 			opacity: 0,
 			backgroundColor: "rgb(0, 0, 0)",
-			ease: "power4.out",
+			ease: "sine",
 			duration: 0.75
-		}, 0.25);
+		});
 	}
 	slideDot(toTrait, toDot, fromTrait, fromDot) {
-		this.fillDot(toTrait, toDot);
 		this.emptyDot(fromTrait, fromDot);
+		setTimeout(() => this.fillDot(toTrait, toDot), 250);
 	}
 
 	_prepareItems(context) {
@@ -160,19 +300,20 @@ export default class extends MIX(ActorSheet).with(UpdateQueue) {
 	activateListeners(html) {
 		super.activateListeners(html);
 
-		Hooks.once("renderActorSheet", () => html.find(".radial-menu video").each(function playMenuVideos() { this.play() }));
-
 		if (!this.isEditable) { return }
 
 		const sheetContext = this;
 
 		html.find(".radial-hover").contextmenu(this._openRadialMenu.bind(this));
 		html.find(".radial-hover").mouseleave(this._closeRadialMenu.bind(this));
+		html.find(".trait-pair > label").hover(this._playLabelVideo.bind(this), this._pauseLabelVideo.bind(this));
 
 		html.find(".trait-button").click(this._changeTrait.bind(this));
 
-		Dragger.create(".trait-pair > label > span", {
+		Dragger.create(".trait-pair .draggable", {
 			onDragStart() {
+				this.droppables = Array.from($(".droppable")).filter((elem) => !new RegExp(`${this.target.dataset.target}$`).test(elem.id));
+				// console.log("Droppables", this.droppables);
 				gsap.to(this.target, {
 					scale: 2,
 					opacity: 1,
@@ -180,18 +321,42 @@ export default class extends MIX(ActorSheet).with(UpdateQueue) {
 					ease: "elastic"
 				});
 			},
-			onDragEnd() {
-				$(this.target).addClass("click-through");
-				gsap.to(this.target, {
-					scale: 5,
-					opacity: 0,
-					duration: 1,
-					ease: "power.out",
-					onComplete() {
-						$(this.target).removeClass("click-through");
-						sheetContext.render(true);
+			onDrag() {
+				this.droppables.forEach((elem) => {
+					if (this.hitTest(elem, "50%")) {
+						const [displayElem] = $(elem).find(".display");
+						$(displayElem).addClass("highlight");
+						gsap.to(displayElem, {
+							y: -10,
+							scale: 3,
+							ease: "power4.out",
+							duration: 0.5
+						});
+						this.dropTarget = elem;
+					} else if (this.dropTarget?.id !== elem.id) {
+						const [displayElem] = $(elem).find(".display");
+						$(displayElem).removeClass("highlight");
+						gsap.to(displayElem, {
+							y: 0,
+							scale: 1,
+							ease: "power4.out",
+							duration: 0.5
+						});
 					}
 				});
+			},
+			onDragEnd() {
+				$(".droppable .display.highlight").each((_, elem) => {
+					$(elem).removeClass("highlight");
+					gsap.to(elem, {
+						y: 0,
+						scale: 1,
+						ease: "power4.out",
+						duration: 0.5
+					});
+				});
+				$(this.target).addClass("click-through");
+				sheetContext._launchRoll(this.target, this.dropTarget);
 			}
 		});
 	}

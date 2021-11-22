@@ -4,7 +4,7 @@
 	$menu-size: $radius * 2;
 
 	&.size#{$radius}-#{$num-buttons}items {
-		top: -($radius);
+		top: calc(50% - #{$radius});
 		left: calc(50% - #{$radius});
 		z-index: $depth + 1;
 		width: $menu-size;
@@ -100,6 +100,27 @@ $strategy-spacing: $strategy-dot-size + 1px;
 	max-height: calc(100% - 2px);
 }
 
+#sheet-message {
+	display: block;
+	width: 100%;
+	line-height: 20px;
+	font-size: 20px;
+	font-family: $font-primary;
+	font-weight: bold;
+	color: black;
+	text-align: center;
+	margin-top: 50px;
+
+	h1, h2, h3 {
+		display: block;
+		border: none;
+		margin: 20px 0;
+		opacity: 0;
+		width: 130%;
+		margin-left: -15%;
+	}
+}
+
 .trait-line {
 	display: grid;
 	grid-template-columns: #{9 * $tactic-spacing} #{7 * $strategy-spacing} #{9 * $tactic-spacing};
@@ -112,6 +133,7 @@ $strategy-spacing: $strategy-dot-size + 1px;
 
 	.trait-pair {
 		display: grid;
+		position: relative;
 		grid-template-rows: repeat(4, var(--dot-size));
 		grid-gap: 1px;
 		margin-top: auto;
@@ -120,6 +142,16 @@ $strategy-spacing: $strategy-dot-size + 1px;
 		> label {
 			position: relative;
 			transition: 3;
+			--video-horiz-shift: 0px;
+
+			> video {
+				position: absolute;
+				width: 160px;
+				height: 100%;
+				transform: scale(6) scaleY(2);
+				display: none;
+				z-index: 1;
+			}
 
 			> span {
 				position: absolute;
@@ -128,16 +160,18 @@ $strategy-spacing: $strategy-dot-size + 1px;
 				background-color: transparent;
 				border-radius: 10px;
 				outline: 0;
-				transition: 3;
 				transform: scale(1);
+				z-index: 2;
+				padding: 0 5px;
+
+				&.big-gold {
+					color: gold;
+					text-shadow: 0 0 3px black, 0 0 3px black, 0 0 3px black, 0 0 3px black;
+					border-radius: 10px;
+				}
 
 				&.draggable {
-					color: gold;
-					text-shadow: none;
-					text-shadow: 0 0 3px black, 0 0 3px black, 0 0 3px black, 0 0 3px black;
 					pointer-events: all;
-					border-radius: 10px;
-					outline: 3px solid yellow;
 					opacity: 0%;
 					transform: scale(1);
 
@@ -145,12 +179,23 @@ $strategy-spacing: $strategy-dot-size + 1px;
 						pointer-events: none !important;
 					}
 				}
+
+				&.highlight {
+					// border-radius: 20px;
+					// background: radial-gradient(ellipse, purple 50%, transparent 95%);
+					color: gold;
+					text-shadow: 0 0 3px black, 0 0 3px black, 0 0 3px black, 0 0 3px black;
+					// transform: scale(3);
+					font-size: 10px;
+					// line-height: 15px;
+					// box-shadow: 0 0 5px purple, 0 0 5px purple, 0 0 5px purple, 0 0 5px purple;
+				}
 			}
 
 			&.sinister {
 				grid-row: 1;
 				margin-left: -20px;
-
+				> video { left: calc(-40px + var(--video-horiz-shift)) }
 				> span {
 					left: 0;
 				}
@@ -161,17 +206,20 @@ $strategy-spacing: $strategy-dot-size + 1px;
 				margin-right: -20px;
 				text-align: right;
 
+				> video { right: calc(-40px + var(--video-horiz-shift)) }
 				> span {
 					right: 0;
 				}
 			}
 
-			&:hover > span:not(.draggable) {
-				color: lime;
-				text-shadow: 0 0 3px orange, 0 0 3px orange, 0 0 3px orange, 0 0 3px orange;
-				background-color: gold;
-				transition: 3;
-				transform: scale(1.2);
+			&:hover {
+				> video {
+					display: initial;
+				}
+
+				> span.display {
+					transform: scale(1.2);
+				}
 			}
 		}
 
@@ -212,52 +260,52 @@ $strategy-spacing: $strategy-dot-size + 1px;
 
 				&.empty > span.dot-animation { background-color: transparent }
 
-				&:nth-of-type(1) {
+				&.top-1 {
 					grid-row: 1;
 					grid-column: 1;
 				}
 
-				&:nth-of-type(2) {
+				&.top-2 {
 					grid-row: 1;
 					grid-column: 2;
 				}
 
-				&:nth-of-type(3) {
+				&.top-3 {
 					grid-row: 1;
 					grid-column: 3;
 				}
 
-				&:nth-of-type(4) {
+				&.top-4 {
 					grid-row: 1;
 					grid-column: 4;
 				}
 
-				&:nth-of-type(5) {
+				&.top-5 {
 					grid-row: 1;
 					grid-column: 5;
 				}
 
-				&:nth-of-type(6) {
+				&.bottom-5 {
 					grid-row: 2;
 					grid-column: 3;
 				}
 
-				&:nth-of-type(7) {
+				&.bottom-4 {
 					grid-row: 2;
 					grid-column: 4;
 				}
 
-				&:nth-of-type(8) {
+				&.bottom-3 {
 					grid-row: 2;
 					grid-column: 5;
 				}
 
-				&:nth-of-type(9) {
+				&.bottom-2 {
 					grid-row: 2;
 					grid-column: 6;
 				}
 
-				&:nth-of-type(10) {
+				&.bottom-1 {
 					grid-row: 2;
 					grid-column: 7;
 				}
@@ -266,7 +314,6 @@ $strategy-spacing: $strategy-dot-size + 1px;
 
 		&.tactic {
 			--dot-size: #{$tactic-dot-size};
-			--spacing: #{$tactic-spacing};
 
 			width: 7 * $tactic-spacing + 2 * $tactic-spacing;
 			padding: $tactic-spacing;
@@ -274,207 +321,231 @@ $strategy-spacing: $strategy-dot-size + 1px;
 			> label {
 				font-family: $font-primary;
 				line-height: $tactic-dot-size - 1px;
+
+				> video { top: 3px }
+
+				&#trait-label-contempt { --video-horiz-shift: -7px }
+				&#trait-label-corruption { --video-horiz-shift: 0px }
+				&#trait-label-courage { --video-horiz-shift: -10px }
+				&#trait-label-cruelty { --video-horiz-shift: -15px }
+				&#trait-label-deceit { --video-horiz-shift: -20px }
+				&#trait-label-endurance { --video-horiz-shift: 0px }
+				&#trait-label-espionage { --video-horiz-shift: -7px }
+				&#trait-label-generosity { --video-horiz-shift: 0px }
+				&#trait-label-greed { --video-horiz-shift: -25px }
+				&#trait-label-honesty { --video-horiz-shift: -5px }
+				&#trait-label-knowledge { --video-horiz-shift: 0px }
+				&#trait-label-nurture { --video-horiz-shift: -10px }
 			}
 		}
 
 		&.strategy {
 			--dot-size: #{$strategy-dot-size};
-			--spacing: #{$strategy-spacing};
 
 			width: 7 * $strategy-spacing;
 
 			> label {
 				font-family: $font-secondary;
 				line-height: $strategy-dot-size - 1px;
+
+				> video { top: 5px }
+				
+				&#trait-label-cunning { --video-horiz-shift: -10px }
+				&#trait-label-devious { --video-horiz-shift: -10px }
+				&#trait-label-insightful { --video-horiz-shift: 5px }
+				&#trait-label-open { --video-horiz-shift: -15px }
+				&#trait-label-patient { --video-horiz-shift: 0px }
+				&#trait-label-sly { --video-horiz-shift: -30px }
 			}
 		}
 	}
 }
 
-.radial-menu {
+.menu-positioner {
 	position: absolute;
-	display: block;
-	padding: 0;
-	margin-top: var(--spacing);
-	background: transparent;
-	border-radius: 50%;
-	opacity: 0%;
-	transition: 0.5s;
-	transform: scale(0.3) rotate(-125deg);
 
-	@include radial-menu(50px, 8, 14px);
-	@include radial-menu(40px, 8, 14px);
-
-	&.depth-1 { z-index: 2 }
-	&.depth-2 { z-index: 4 }
-	&.depth-3 { z-index: 6 }
-	&.depth-4 { z-index: 8 }
-
-	&.tactic { --spacing: #{$tactic-spacing} }
-	&.strategy { --spacing: #{$strategy-spacing} }
-
-	video {
+	.radial-menu {
 		position: absolute;
-		top: -50%;
-		left: -50%;
-		width: 200%;
-		height: 200%;
-		opacity: 100%;
-		transform: scale(2);
-	}
+		display: block;
+		padding: 0;
+		background: transparent;
+		border-radius: 50%;
+		opacity: 0%;
+		transition: 0.5s;
+		transform: scale(0.3) rotate(-125deg);
 
-	.menu-container {
-		position: absolute;
-		top: -20%;
-		left: -20%;
-		width: 140%;
-		height: 140%;
-		list-style: none;
+		@include radial-menu(50px, 8, 14px);
+		@include radial-menu(40px, 8, 14px);
 
-		// pointer-events: all;
+		&.depth-1 { z-index: 2 }
+		&.depth-2 { z-index: 4 }
+		&.depth-3 { z-index: 6 }
+		&.depth-4 { z-index: 8 }
 
-		// background-color: rgba(0, 255, 0, 0.25);
-		// outline: 2px solid rgba(0, 255, 0, 0.5);
-
-		.menu-button {
+		video {
 			position: absolute;
-			top: 50%;
-			left: 50%;
-			transition: 0.5s;
-
-			// background-color: rgba(0, 255, 255, 0.25);
-			// outline: 2px solid rgba(0, 255, 255, 0.5);
-
-			@keyframes slow-bob {
-				from { top: -3px; }
-				to { top: 3px; }
-			}
-
-			button {
-				position: absolute;
-				padding: 0;
-				margin: 0;
-
-				// background-color: rgba(255, 0, 255, 0.5);
-				// outline: 2px solid rgba(255, 0, 255, 1);
-				font-weight: bold;
-				color: var(--button-color);
-				text-shadow: -1px -1px 2px #000000, 1px -1px 2px #000000, -1px 1px 2px #000000, 1px 1px 2px #000000;
-				background: transparent;
-				border: none;
-				outline: none;
-				box-shadow: none;
-				transition: 0.5s;
-				animation: slow-bob 2s cubic-bezier(0.36, 0, 0.63, 1) infinite alternate;
-
-				&.button-green {
-					--button-color: #{$c-green};
-					--button-bright: #{$c-lime};
-					--button-bg: #{$c-darkgreen5};
-				}
-
-				&.button-blue {
-					--button-color: #{$c-cyan};
-					--button-bright: #{$c-cyan};
-					--button-bg: #{$c-navy5};
-				}
-
-				&.button-red {
-					--button-color: #{$c-red};
-					--button-bright: #{$c-red};
-					--button-bg: #{$c-darkred5};
-				}
-
-				> span {
-					display: block;
-					transition: 0.25s;
-					transform: scale(1.5);
-				}
-			}
-
-			label {
-				position: relative;
-				display: block !important;
-				width: 200%;
-				height: auto !important;
-				margin-left: -50%;
-				text-align: center;
-				letter-spacing: 10px;
-				opacity: 0%;
-				transition: 0.25s !important;
-				transform: scale(2);
-				animation: slow-bob 2s cubic-bezier(0.36, 0, 0.63, 1) infinite alternate;
-				font: {
-					family: $font-primary;
-					weight: bold;
-				}
-				text: {
-					transform: uppercase;
-					align: center;
-					shadow: -1px -1px 2px #000000, 1px -1px 2px #000000, -1px 1px 2px #000000, 1px 1px 2px #000000;
-				}
-
-				// background-color: rgba(255, 0, 0, 0.25);
-				// outline: 2px solid rgba(255, 0, 0, 0.5);
-
-				&.label-green {
-					color: $c-green;
-				}
-
-				&.label-blue {
-					color: $c-cyan;
-				}
-
-				&.label-red {
-					color: $c-red;
-				}
-			}
-
-			&.empty {
-				opacity: 50%;
-
-				button,
-				label {
-					color: $c-grey5;
-					pointer-events: none !important;
-				}
-			}
+			top: -50%;
+			left: -50%;
+			width: 200%;
+			height: 200%;
+			opacity: 100%;
+			transform: scale(2);
+			opacity: 0.75;
 		}
-	}
-
-	&.active {
-		z-index: 20;
-		opacity: 100%;
-		transform: scale(1) rotate(0deg);
 
 		.menu-container {
-			padding: 0;
-			margin: 0;
+			position: absolute;
+			top: -20%;
+			left: -20%;
+			width: 140%;
+			height: 140%;
 			list-style: none;
-			pointer-events: all;
 
-			.menu-button:not(.empty) { pointer-events: all }
+			// pointer-events: all;
 
-			.menu-button:hover {
-				z-index: 10;
+			// background-color: rgba(0, 255, 0, 0.25);
+			// outline: 2px solid rgba(0, 255, 0, 0.5);
+
+			.menu-button {
+				position: absolute;
+				top: 50%;
+				left: 50%;
+				transition: 0.5s;
+
+				// background-color: rgba(0, 255, 255, 0.25);
+				// outline: 2px solid rgba(0, 255, 255, 0.5);
+
+				@keyframes slow-bob {
+					from { top: -3px; }
+					to { top: 3px; }
+				}
 
 				button {
-					pointer-events: all;
-					background: var(--button-bg);
-					box-shadow: 0 0 2px var(--button-bright), 0 0 2px var(--button-bright), 0 0 2px var(--button-bright);
-					transform: scaleY(1.25) scaleX(2);
+					position: absolute;
+					padding: 0;
+					margin: 0;
+
+					// background-color: rgba(255, 0, 255, 0.5);
+					// outline: 2px solid rgba(255, 0, 255, 1);
+					font-weight: bold;
+					color: var(--button-color);
+					text-shadow: -1px -1px 2px #000000, 1px -1px 2px #000000, -1px 1px 2px #000000, 1px 1px 2px #000000;
+					background: transparent;
+					border: none;
+					outline: none;
+					box-shadow: none;
+					transition: 0.5s;
+					animation: slow-bob 2s cubic-bezier(0.36, 0, 0.63, 1) infinite alternate;
+
+					&.button-green {
+						--button-color: #{$c-green};
+						--button-bright: #{$c-lime};
+						--button-bg: #{$c-darkgreen5};
+					}
+
+					&.button-blue {
+						--button-color: #{$c-cyan};
+						--button-bright: #{$c-cyan};
+						--button-bg: #{$c-navy5};
+					}
+
+					&.button-red {
+						--button-color: #{$c-red};
+						--button-bright: #{$c-red};
+						--button-bg: #{$c-darkred5};
+					}
 
 					> span {
 						display: block;
-						opacity: 0%;
-						transition: 0.5s;
-						transform: scale(5);
+						transition: 0.25s;
+						transform: scale(1.5);
+					}
+				}
+
+				label {
+					position: relative;
+					display: block !important;
+					width: 200%;
+					height: auto !important;
+					margin-left: -50%;
+					text-align: center;
+					letter-spacing: 10px;
+					opacity: 0%;
+					transition: 0.25s !important;
+					transform: scale(2);
+					animation: slow-bob 2s cubic-bezier(0.36, 0, 0.63, 1) infinite alternate;
+					font: {
+						family: $font-primary;
+						weight: bold;
+					}
+					text: {
+						transform: uppercase;
+						align: center;
+						shadow: -1px -1px 2px #000000, 1px -1px 2px #000000, -1px 1px 2px #000000, 1px 1px 2px #000000;
 					}
 
-					+ label {
-						letter-spacing: normal;
-						opacity: 100%;
-						transform: scale(1);
+					// background-color: rgba(255, 0, 0, 0.25);
+					// outline: 2px solid rgba(255, 0, 0, 0.5);
+
+					&.label-green {
+						color: $c-green;
+					}
+
+					&.label-blue {
+						color: $c-cyan;
+					}
+
+					&.label-red {
+						color: $c-red;
+					}
+				}
+
+				&.empty {
+					opacity: 50%;
+
+					button,
+					label {
+						color: $c-grey5;
+						pointer-events: none !important;
+					}
+				}
+			}
+		}
+
+		&.active {
+			z-index: 20;
+			opacity: 100%;
+			transform: scale(1) rotate(0deg);
+
+			.menu-container {
+				padding: 0;
+				margin: 0;
+				list-style: none;
+				pointer-events: all;
+
+				.menu-button:not(.empty) { pointer-events: all }
+
+				.menu-button:hover {
+					z-index: 10;
+
+					button {
+						pointer-events: all;
+						// background: var(--button-bg);
+						// box-shadow: 0 0 2px var(--button-bright), 0 0 2px var(--button-bright), 0 0 2px var(--button-bright);
+						transform: scaleY(1.25) scaleX(2);
+
+						> span {
+							display: block;
+							opacity: 0%;
+							transition: 0.5s;
+							transform: scale(5);
+						}
+
+						+ label {
+							letter-spacing: normal;
+							opacity: 100%;
+							transform: scale(1);
+						}
 					}
 				}
 			}

@@ -1,6 +1,6 @@
 <form class="{{cssClass}} {{actor.type}} flexcol" autocomplete="off">
 
-	{{log (bundle "this" this "actor" actor "data" data)}}
+	{{!-- {{log (bundle "this" this "actor" actor "data" data)}} --}}
 
     <!-- Sheet Header -->
     <header class="sheet-header">
@@ -25,6 +25,7 @@
         <!-- Strategies & Tactics Tab-->
         <div class="tab front" data-group="primary" data-tab="stats">
 					{{> "/systems/betterangels/templates/actor/sections/actor-human.hbs" data}}
+					<div id="sheet-message"></div>
 				</div>
 
         <!-- Notes & Details Tab -->

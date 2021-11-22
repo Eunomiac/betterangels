@@ -1,37 +1,39 @@
-<section id="menu-{{top}}-{{bottom}}" class="radial-menu size{{size}}px-8items depth-2">	
-	<video width="200" height="200" autoplay muted loop>
-		<source src="/systems/betterangels/assets/animations/radial-menu-bg-trait.webm" type="video/webm">
-	</video>
-	{{#with (lookup data top) as | topData |}}
-	{{#with (lookup ../data ../bottom) as | botData |}}
-	<ul class="menu-container">
-		<li id="menu-slide-{{botData.name}}" class="menu-button {{~#unless botData.canSlideTo}} empty{{/unless}}">
-			<button class="trait-button button-blue" data-action="slide" data-target="{{botData.name}}"><span>⇘</span></button>
-			<label class="label-blue">Slide◢</label>
-		</li>
-		<li id="menu-drop-{{botData.name}}" class="menu-button {{~#unless botData.canDrop}} empty{{/unless}}">
-			<button class="trait-button button-red" data-action="drop" data-target="{{botData.name}}"><span>↷</span></button>
-			<label class="label-red">Drop▶</label>
-		</li>
-		<li class="menu-button"></li>
-		<li id="menu-add-{{botData.name}}" class="menu-button {{~#unless botData.canAdd}} empty{{/unless}}">
-			<button class="trait-button button-green" data-action="add" data-target="{{botData.name}}"><span>↫</span></button>
-			<label class="label-green">◀Add</label>
-		</li>	
-		<li id="menu-slide-{{topData.name}}" class="menu-button {{~#unless topData.canSlideTo}} empty{{/unless}}">
-			<button class="trait-button button-blue" data-action="slide" data-target="{{topData.name}}"><span>⇖</span></button>
-			<label class="label-blue">◤Slide</label>
-		</li>
-		<li id="menu-drop-{{topData.name}}" class="menu-button {{~#unless topData.canDrop}} empty{{/unless}}">
-			<button class="trait-button button-red" data-action="drop" data-target="{{topData.name}}"><span>↶</span></button>
-			<label class="label-red">◀Drop</label>
-		</li>
-		<li class="menu-button"></li>
-		<li id="menu-add-{{topData.name}}" class="menu-button {{~#unless topData.canAdd}} empty{{/unless}}">
-			<button class="trait-button button-green" data-action="add" data-target="{{topData.name}}"><span>↬</span></button>
-			<label class="label-green">Add▶</label>
-		</li>
-	</ul>
-	{{/with}}
-	{{/with}}
-</section>
+<div class="menu-positioner">
+	<section id="menu-{{top}}-{{bottom}}" class="radial-menu size{{size}}px-8items depth-2">	
+		<video width="200" height="200" autoplay muted loop>
+			<source src="/systems/betterangels/assets/animations/radial-menu-bg-trait.webm" type="video/webm">
+		</video>
+		{{#with (lookup data top) as | topData |}}
+		{{#with (lookup ../data ../bottom) as | botData |}}
+		<ul class="menu-container">
+			<li id="menu-slide-{{botData.name}}" class="menu-button {{~#unless botData.canSlideTo}} empty{{/unless}}">
+				<button class="trait-button button-blue" data-action="slide" data-target="{{botData.name}}"><span>⇘</span></button>
+				<label class="label-blue">Slide◢</label>
+			</li>
+			<li id="menu-drop-{{botData.name}}" class="menu-button {{~#unless botData.canDrop}} empty{{/unless}}">
+				<button class="trait-button button-red" data-action="drop" data-target="{{botData.name}}"><span>↷</span></button>
+				<label class="label-red">Drop▶</label>
+			</li>
+			<li class="menu-button"></li>
+			<li id="menu-add-{{botData.name}}" class="menu-button {{~#unless botData.canAdd}} empty{{/unless}}">
+				<button class="trait-button button-green" data-action="add" data-target="{{botData.name}}"><span>↫</span></button>
+				<label class="label-green">◀Add</label>
+			</li>	
+			<li id="menu-slide-{{topData.name}}" class="menu-button {{~#unless topData.canSlideTo}} empty{{/unless}}">
+				<button class="trait-button button-blue" data-action="slide" data-target="{{topData.name}}"><span>⇖</span></button>
+				<label class="label-blue">◤Slide</label>
+			</li>
+			<li id="menu-drop-{{topData.name}}" class="menu-button {{~#unless topData.canDrop}} empty{{/unless}}">
+				<button class="trait-button button-red" data-action="drop" data-target="{{topData.name}}"><span>↶</span></button>
+				<label class="label-red">◀Drop</label>
+			</li>
+			<li class="menu-button"></li>
+			<li id="menu-add-{{topData.name}}" class="menu-button {{~#unless topData.canAdd}} empty{{/unless}}">
+				<button class="trait-button button-green" data-action="add" data-target="{{topData.name}}"><span>↬</span></button>
+				<label class="label-green">Add▶</label>
+			</li>
+		</ul>
+		{{/with}}
+		{{/with}}
+	</section>
+</div>

@@ -1,42 +1,47 @@
 <div class="trait-pair {{type}}">
-	<label id="trait-label-{{top}}" class="sinister">
-		<span>{{case "title" top}}</span>
-		<span class="draggable">{{case "title" top}}</span>
+	<label id="trait-label-{{top}}" class="droppable sinister">
+		<video width="200" height="200" autoplay muted loop>
+			<source src="/systems/betterangels/assets/animations/sheet-aurora.webm" type="video/webm">
+		</video>
+		<span class="display">{{case "title" top}}</span>
+		<span class="draggable big-gold" data-target="{{top}}" data-value={{lookup (lookup data top) "value"}}>{{case "title" top}}</span>
 	</label>
 	<div class="trait-grid radial-hover">
-		{{> "/systems/betterangels/templates/actor/parts/radial-menu.html" this}}
-
 		{{#with (lookup data top) as | topData |}}
 		{{#with (lookup ../data ../bottom) as | botData |}}
 		{{#for topData.value}}
-			<div id="{{topData.name}}-{{math @index "++"}}" class="dot sinister">
+			<div id="{{topData.name}}-{{math @index "++"}}" class="dot top-{{math @index "++"}} sinister">
 				<span class="dot-animation">&nbsp;</span>
 				<span class="dot-slot">&nbsp;</span>
 			</div>
 		{{/for}}
 		{{#for topData.max topData.value}}
-			<div id="{{topData.name}}-{{math @index "++"}}" class="dot sinister empty">
+			<div id="{{topData.name}}-{{math @index "++"}}" class="dot top-{{math @index "++"}} sinister empty">
 				<span class="dot-animation">&nbsp;</span>
 				<span class="dot-slot">&nbsp;</span>
 			</div>
 		{{/for}}
 		{{#for botData.value (math botData.max "--") -1}}
-			<div id="{{botData.name}}-{{math @index "++"}}" class="dot virtuous empty">
+			<div id="{{botData.name}}-{{math @index "++"}}" class="dot bottom-{{math @index "++"}} virtuous empty">
 				<span class="dot-animation">&nbsp;</span>
 				<span class="dot-slot">&nbsp;</span>
 			</div>
 		{{/for}}
 		{{#for botData.min (math botData.value "--") -1}}
-			<div id="{{botData.name}}-{{math @index "++"}}" class="dot virtuous">
+			<div id="{{botData.name}}-{{math @index "++"}}" class="dot bottom-{{math @index "++"}} virtuous">
 				<span class="dot-animation">&nbsp;</span>
 				<span class="dot-slot">&nbsp;</span>
 			</div>
 		{{/for}}
 		{{/with}}
 		{{/with}}
+		{{> "/systems/betterangels/templates/actor/parts/radial-menu.html" this}}
 	</div>
-	<label id="trait-label-{{bottom}}" class="virtuous">
-		<span>{{case "title" bottom}}</span>
-		<span class="draggable">{{case "title" bottom}}</span>
+	<label id="trait-label-{{bottom}}" class="droppable virtuous">
+		<video width="200" height="200" autoplay muted loop>
+			<source src="/systems/betterangels/assets/animations/sheet-aurora.webm" type="video/webm">
+		</video>
+		<span class="display">{{case "title" bottom}}</span>
+		<span class="draggable big-gold" data-target="{{bottom}}" data-value={{lookup (lookup data bottom) "value"}}>{{case "title" bottom}}</span>
 	</label>
 </div>
