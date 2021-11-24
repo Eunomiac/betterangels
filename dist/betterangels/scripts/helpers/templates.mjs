@@ -9,9 +9,7 @@ const getPath = (fileTitle, subPath) => `/systems/betterangels/templates/${subPa
 	.replace(/(\..{2,})\.html$/, "$1").split(/[\\/]+/).join("/");
 const TEMPLATES = {
 	actorSections: [  // Actor Character Sheet Sections
-		"actor-human",
-		"actor-demon",
-		"actor-assets",
+		"actor-front",
 		"actor-notes"
 	].map((title) => getPath(title, "actor/sections")),
 	actorPartials: [  // Actor Partials

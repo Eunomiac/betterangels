@@ -1,21 +1,17 @@
 {
     "ACTOR": {
         "TypeHellbound": "Hellbound",
-        "TypeDemon": "Demon Companion",
-        "TypeMajornpc": "NPC (Major)",
         "TypeMinornpc": "NPC (Minor)",
         "TypeMobnpc": "NPC (Mob)"
     },
     "ITEM": {
-        "TypePower": "Demonic Power",
+        "TypePower": "Power",
         "TypeAspect": "Demonic Aspect",
         "TypeDevice": "Devilish Device"
     },
     "ba": {
         "sheet": {
             "hellboundSheet": "Hellbound Sheet",
-            "demonSheet": "Demon Companion Sheet",
-            "majorNPCSheet": "NPC Sheet (Major)",
             "minorNPCSheet": "NPC Sheet (Minor)",
             "mobNPCSheet": "NPC Sheet (Mob)"
         }

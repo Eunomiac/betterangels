@@ -6,14 +6,11 @@
 \* ****▌███████████████████████████████████████████████████████████████████████████▐**** */
 
 import {
-
+	// ▮▮▮▮▮▮▮[Constants]▮▮▮▮▮▮▮
+	C,
 	// ▮▮▮▮▮▮▮[External Libraries]▮▮▮▮▮▮▮
-	gsap,
-	Dragger,
-	InertiaPlugin,
-	MotionPathPlugin,
-	GSDevTools,
-	RoughEase, // GreenSock Animation Platform
+	// GreenSock Animation Platform
+	gsap, Dragger, MotionPathPlugin,
 	// ▮▮▮▮▮▮▮[Utility]▮▮▮▮▮▮▮
 	U,
 	// ▮▮▮▮▮▮▮[Mixins]▮▮▮▮▮▮▮
@@ -28,7 +25,7 @@ export default class extends MIX(ActorSheet).with(UpdateQueue) {
 			template: "systems/betterangels/templates/actor/actor-sheet.html",
 			width: 700,
 			height: 700,
-			tabs: [{navSelector: ".sheet-tabs", contentSelector: ".sheet-body", initial: "stats"}]
+			tabs: [{navSelector: ".sheet-tabs", contentSelector: ".sheet-body", initial: "front"}]
 		});
 	}
 
@@ -53,84 +50,75 @@ export default class extends MIX(ActorSheet).with(UpdateQueue) {
 		return context;
 	}
 
-	_prepareCharacterData(context) {
-		// Data for trait radial menus
-
-		// For each trait, define data for rendering of dots and radial menu
-		Object.entries(CONFIG.BETTERANGELS.sinisterTraitPairs).forEach(([top, bottom]) => {
-			const {min: topMin, max: topMax, value: topVal} = context.data[top];
-			const {min: botMin, max: botMax, value: botVal} = context.data[bottom];
-			Object.assign(context.data[top], {
-				name: top,
-				emptyDots: topMax - topVal,
-				canSlideTo: topVal < topMax && botVal > botMin && (topVal + botVal) < 7,
-				canAdd: topVal < topMax && (topVal + botVal) < 7,
-				canDrop: topVal > topMin
-			});
-			Object.assign(context.data[bottom], {
-				name: bottom,
-				emptyDots: botMax - botVal,
-				canSlideTo: botVal < botMax && topVal > topMin && (topVal + botVal) < 7,
-				canAdd: botVal < botMax && (topVal + botVal) < 7,
-				canDrop: botVal > botMin
-			});
-		});
-	}
-
 	_openRadialMenu(event) {
+		event.preventDefault();
 		// console.log("Open Menu", event);
 		const [posElem] = $(event.currentTarget).find(".menu-positioner");
-		if ($(posElem).find(".radial-menu").hasClass("active")) {
-			this._closeRadialMenu(event);
-		} else {
-			gsap.set(posElem, {xPercent: -50, yPercent: -50, x: event.offsetX, y: event.offsetY});
-			$(posElem).find("video").each(function playVideo() { this.play() });
-			$(posElem).find(".radial-menu").addClass("active");
-		}
+		// if ($(posElem).find(".radial-menu").hasClass("active")) {
+		// this._closeRadialMenu(event);
+		// } else {
+		gsap.set(posElem, {xPercent: -50, yPercent: -50, x: event.offsetX, y: event.offsetY});
+		$(posElem).find("video").each(function playVideo() { this.play() });
+		$(posElem).find(".radial-menu").addClass("active");
+		// }
 	}
 
 	_closeRadialMenu(event) {
+		event.preventDefault();
 		// console.log("Close Menu", event);
 		const [posElem] = $(event.currentTarget).find(".menu-positioner");
 		$(posElem).find("video").each(function stopVideo() { this.pause() });
-		$(posElem).find(".radial-menu").removeClass("active");
+
+			$(posElem).find(".radial-menu").removeClass("active");
+
 		setTimeout(() => this.pushUpdates(), 500);
 	}
 
-	_updateLabelVideo(event) {
-		// console.log("Update Label Video", event);
-		const [videoElem] = $(event.currentTarget).find("video");
+	// _updateLabelVideo(event) {
+	//  // console.log("Update Label Video", event);
+	//  const [videoElem] = $(event.currentTarget).find("video");
 
-	}
+	// }
 
 	_playLabelVideo(event) {
+		event.preventDefault();
 		// console.log("Play Label Video", event);
 		const [videoElem] = $(event.currentTarget).find("video");
+		videoElem.status = "fade-in";
+		gsap.fromTo(videoElem, {
+			opacity: 0.1
+		}, {
+			opacity: 1,
+			duration: 0.5,
+			ease: "sine"/* ,
+			onComplete() {
+				if (videoElem.status === "fade-in") {
+					videoElem.play();
+					videoElem.status = false;
+				}
+			} */
+		});
 		videoElem.play();
-		setTimeout(() => videoElem.play(), 150);
-		gsap.fromTo(videoElem,
-														{
-															opacity: 0
-														},
-														{
-															opacity: 1,
-															duration: 0.5,
-															ease: "sine",
-															onComplete() {
-																videoElem.play();
-															}
-														});
+		// videoElem.play();
+		// setTimeout(() => videoElem.play(), 150);
 	}
 
 	_pauseLabelVideo(event) {
+		event.preventDefault();
 		// console.log("Pause Label Video", event);
 		const [videoElem] = $(event.currentTarget).find("video");
-		gsap.to(videoElem, {opacity: 0,
-																						duration: 0.5,
-																						ease: "sine",
-																						onComplete() {
-																							videoElem.pause();
-																						}});
+		videoElem.status = "fade-out";
+		gsap.to(videoElem, {
+			opacity: 0,
+			duration: 0.5,
+			ease: "sine"/* ,
+			onComplete() {
+				if (videoElem.status === "fade-out") {
+					videoElem.pause();
+					videoElem.status = false;
+				}
+			} */
+		});
 	}
 
 	_launchRoll(dragged, dropped) {
@@ -140,21 +128,23 @@ export default class extends MIX(ActorSheet).with(UpdateQueue) {
 		const [dropDisplay] = $(dropped).find(".display");
 		$(dropDisplay).addClass("big-gold click-through");
 
+		function clearAnimation() {
+			$(this).removeClass("click-through");
+			gsap.set(this, {
+				opacity: 0,
+				x: 0,
+				y: 0,
+				scale: 1
+			});
+		}
+
 		gsap.to(dragged, {
 			scale: 5,
 			y: "-=75px",
 			opacity: 0,
 			duration: 1,
 			ease: "power.out",
-			onComplete() {
-				$(dragged).removeClass("click-through");
-				gsap.set(dragged, {
-					opacity: 0,
-					x: 0,
-					y: 0,
-					scale: 1
-				});
-			}
+			onComplete: clearAnimation.bind(dragged)
 		});
 		gsap.to(dropDisplay, {
 			scale: 5,
@@ -181,7 +171,7 @@ export default class extends MIX(ActorSheet).with(UpdateQueue) {
 		});
 
 		const rollPoolParts = [];
-		if (CONFIG.BETTERANGELS.strategies.includes(targetA)) {
+		if (C.strategies.includes(targetA)) {
 			rollPoolParts.push(`<h1><span style="color: darkgreen !important; font-weight: bold !important; font-style: normal !important;">${U.tCase(targetA)}</span> ${valueA} + `);
 			rollPoolParts.push(`<span style="color: purple !important; font-weight: normal !important; font-style: italic !important;">${U.tCase(targetB)}</span> ${valueB}</h1>`);
 		} else {
@@ -229,9 +219,9 @@ export default class extends MIX(ActorSheet).with(UpdateQueue) {
 
 	fillDot(trait, dot) {
 		const [dotElem] = $(`#${trait}-${dot} > .dot-animation`);
-		const [menuElem] = $(dotElem).closest(".radial-hover").find(".radial-menu");
-		const [videoElem] = $(menuElem).find("video");
-		const videoScale = gsap.getProperty(videoElem, "scale");
+		// const [menuElem] = $(dotElem).closest(".radial-hover").find(".radial-menu");
+		// const [videoElem] = $(menuElem).find("video");
+		// const videoScale = gsap.getProperty(videoElem, "scale");
 		const tl = gsap.timeline({
 			onComplete() { $(dotElem).removeClass("empty") }
 		});
@@ -249,9 +239,9 @@ export default class extends MIX(ActorSheet).with(UpdateQueue) {
 	}
 	emptyDot(trait, dot) {
 		const [dotElem] = $(`#${trait}-${dot} > .dot-animation`);
-		const [menuElem] = $(dotElem).closest(".radial-hover").find(".radial-menu");
-		const [videoElem] = $(menuElem).find("video");
-		const videoScale = gsap.getProperty(videoElem, "scale");
+		// const [menuElem] = $(dotElem).closest(".radial-hover").find(".radial-menu");
+		// const [videoElem] = $(menuElem).find("video");
+		// const videoScale = gsap.getProperty(videoElem, "scale");
 		const tl = gsap.timeline({
 			onComplete() { $(dotElem).addClass("empty") }
 		});
@@ -272,24 +262,42 @@ export default class extends MIX(ActorSheet).with(UpdateQueue) {
 		setTimeout(() => this.fillDot(toTrait, toDot), 250);
 	}
 
+	_prepareCharacterData(context) {
+		// Data for trait radial menus
+
+		// For each trait, define data for rendering of dots and radial menu
+		Object.entries(C.sinisterTraitPairs).forEach(([top, bottom]) => {
+			const {min: topMin, max: topMax, value: topVal} = context.data[top];
+			const {min: botMin, max: botMax, value: botVal} = context.data[bottom];
+			Object.assign(context.data[top], {
+				name: top,
+				emptyDots: topMax - topVal,
+				canSlideTo: topVal < topMax && botVal > botMin && (topVal + botVal) < 7,
+				canAdd: topVal < topMax && (topVal + botVal) < 7,
+				canDrop: topVal > topMin
+			});
+			Object.assign(context.data[bottom], {
+				name: bottom,
+				emptyDots: botMax - botVal,
+				canSlideTo: botVal < botMax && topVal > topMin && (topVal + botVal) < 7,
+				canAdd: botVal < botMax && (topVal + botVal) < 7,
+				canDrop: botVal > botMin
+			});
+		});
+	}
+
 	_prepareItems(context) {
-
-		const gear = [];
-		const features = [];
-
-		for (const i of context.items) {
-			i.img = i.img || DEFAULT_TOKEN;
-			if (i.type === "item") {
-				// Append to gear.
-				gear.push(i);
-			} else if (i.type === "feature") {
-				// Append to features.
-				features.push(i);
-			}
-		}
-
-		context.gear = gear;
-		context.features = features;
+		Object.assign(context, {
+			powers: context.items
+				.filter((item) => item.type === "power")
+				.forEach((item) => { item.path = C.svg.powers[item.key] }),
+			aspects: context.items
+				.filter((item) => item.type === "aspect")
+				.forEach((item) => { item.path = C.svg.aspects[item.key] }),
+			devices: context.items
+				.filter((item) => item.type === "device")
+				.forEach((item) => { item.path = item.data.data.path || C.svg.device })
+		});
 	}
 
 	activateListeners(html) {
@@ -313,15 +321,15 @@ export default class extends MIX(ActorSheet).with(UpdateQueue) {
 					scale: 2,
 					opacity: 1,
 					duration: 2,
-					ease: "elastic"
+					ease: "elastic.out"
 				});
 			},
 			onDrag() {
 				this.droppables.forEach((elem) => {
 					if (this.hitTest(elem, "50%")) {
-						const [displayElem] = $(elem).find(".display");
-						$(displayElem).addClass("highlight");
-						gsap.to(displayElem, {
+						// const displayElem = $(elem).find(".display");
+						// displayElem.addClass("highlight");
+						gsap.to($(elem).find(".display").addClass("highlight"), {
 							y: -10,
 							scale: 3,
 							ease: "power4.out",
@@ -341,24 +349,26 @@ export default class extends MIX(ActorSheet).with(UpdateQueue) {
 				});
 			},
 			onDragEnd() {
+				const dragContext = this;
 				$(".droppable .display.highlight").each((_, elem) => {
 					$(elem).removeClass("highlight");
 					gsap.to(elem, {
 						y: 0,
 						scale: 1,
 						ease: "power4.out",
-						duration: 0.5
+						duration: 0.5,
+						onComplete() { sheetContext._launchRoll(dragContext.target, dragContext.dropTarget) }
 					});
 				});
 				$(this.target).addClass("click-through");
-				sheetContext._launchRoll(this.target, this.dropTarget);
+				// sheetContext._launchRoll(this.target, this.dropTarget);
 			}
 		});
 	}
 
 	updateRadialButtons(trait) {
-		trait = CONFIG.BETTERANGELS.virtuousTraitPairs[trait] ?? trait;
-		const [top, bottom] = [trait, CONFIG.BETTERANGELS.traitPairs[trait]];
+		trait = C.virtuousTraitPairs[trait] ?? trait;
+		const [top, bottom] = [trait, C.traitPairs[trait]];
 		const {min: topMin, max: topMax, value: topVal} = this.actorData.data[top];
 		const {min: botMin, max: botMax, value: botVal} = this.actorData.data[bottom];
 		Object.entries({
@@ -378,6 +388,7 @@ export default class extends MIX(ActorSheet).with(UpdateQueue) {
 	}
 
 	async _changeTrait(event) {
+		event.preventDefault();
 		console.log({CHANGETRAIT: event});
 		const {action, target} = event.target.dataset;
 		const {data} = this.actorData;
@@ -394,7 +405,7 @@ export default class extends MIX(ActorSheet).with(UpdateQueue) {
 				break;
 			}
 			case "slide": {
-				const fromTarget = CONFIG.BETTERANGELS.traitPairs[target];
+				const fromTarget = C.traitPairs[target];
 				const targetVal = Math.min(data[target].max, data[target].value + 1);
 				this.slideDot(target, targetVal, fromTarget, data[fromTarget].value);
 				this.updateSync({

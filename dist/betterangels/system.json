@@ -23,7 +23,14 @@
       "name": "English",
       "path": "lang/en.json"
     }
-  ],
+  ],	
+	"dependencies": [
+		{
+			"name": "pdfoundry",
+			"type": "module",
+			"manifest": "https://raw.githubusercontent.com/Djphoenix719/PDFoundry/master/module.json"
+		}
+	],
   "socket": true,
   "url": "",
   "manifest": "",

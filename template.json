@@ -107,7 +107,6 @@
 				"tactics"
 			],
 			"humanname": "",
-			"villainname": "",
 			"demonname": ""
 		},
 		"minornpc": {
@@ -125,23 +124,35 @@
 		],
 		"templates": {
 			"base": {
-				"description": ""
+				"key": "",
+				"description": ""				
+			},
+			"pdf": {
+				"book": "BA",
+				"page": 3
 			}
 		},
 		"power": {
 			"templates": [
-				"base"
-			]
+				"base",
+				"pdf"
+			],
+			"book": "BA-P"
 		},
 		"aspect": {
 			"templates": [
-				"base"
-			]
+				"base",
+				"pdf"
+			],
+			"book": "BA-DA"
 		},
 		"device": {
 			"templates": [
-				"base"
-			]
+				"base",
+				"pdf"
+			],
+			"book": "BA",
+			"page": 63
 		}
 	}
 }

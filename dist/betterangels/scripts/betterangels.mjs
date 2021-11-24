@@ -8,7 +8,7 @@
 // ████████ IMPORTS ████████
 import {
 	// ▮▮▮▮▮▮▮[Constants]▮▮▮▮▮▮▮
-	BETTERANGELS,
+	BETTERANGELS, C,
 	// ▮▮▮▮▮▮▮[External Libraries]▮▮▮▮▮▮▮
 	gsap,
 	Dragger,
@@ -46,7 +46,7 @@ Hooks.once("init", async () => {
 	// ▮▮▮▮▮▮▮[Configuration] Apply Configuration Settings ▮▮▮▮▮▮▮
 	CONFIG.BETTERANGELS = BETTERANGELS;
 
-	// ▮▮▮▮▮▮▮[Classes] Register & Apply Class Extensions ▮▮▮▮▮▮▮
+	// ▮▮▮▮▮▮▮[Documents] Register & Apply Document & Sheet Extensions ▮▮▮▮▮▮▮
 	game.betterangels = {
 		BetterAngelsActor,
 		BetterAngelsItem
@@ -79,4 +79,9 @@ Hooks.once("init", async () => {
 	// ▮▮▮▮▮▮▮[Handlebars] Preload Handlebars Templates & Register Custom Helpers ▮▮▮▮▮▮▮
 	await registerHelpers();
 	return preloadTemplates();
+});
+
+// ████████ ONDROPACTORSHEETDATA: on-dropActorSheetData Hook ████████
+Hooks.on("preCreateItem", async (item, itemData) => {
+
 });

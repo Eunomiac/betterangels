@@ -1,7 +1,7 @@
 // #region ████████ IMPORTS ████████ ~
 import {
 	// #region ▮▮▮▮▮▮▮[Constants]▮▮▮▮▮▮▮ ~
-	BETTERANGELS,
+	BETTERANGELS, C,
 	// #endregion ▮▮▮▮[Constants]▮▮▮▮
 	// #region ▮▮▮▮▮▮▮[External Libraries]▮▮▮▮▮▮▮ ~
 	gsap,
@@ -52,7 +52,7 @@ Hooks.once("init", async () => {
 	CONFIG.BETTERANGELS = BETTERANGELS;
 	// #endregion ▮▮▮▮[Configuration]▮▮▮▮
 
-	// #region ▮▮▮▮▮▮▮[Classes] Register & Apply Class Extensions ▮▮▮▮▮▮▮
+	// #region ▮▮▮▮▮▮▮[Documents] Register & Apply Document & Sheet Extensions ▮▮▮▮▮▮▮
 	game.betterangels = {
 		BetterAngelsActor,
 		BetterAngelsItem
@@ -134,13 +134,13 @@ Hooks.once("ready", () => {
 	// DB.showDieData(window.CIRCLES[1]);
 });
 /*!DEVCODE*/
-/**
-// #region ████████ ON READY: On-Ready Hook ████████ ~
-Hooks.once("ready", async () => {
+
+// #region ████████ ONDROPACTORSHEETDATA: on-dropActorSheetData Hook ████████ ~
+Hooks.on("preCreateItem", async (item, itemData) => {
 
 });
 // #endregion ▄▄▄▄▄ ON READY ▄▄▄▄▄
-
+/**
 // #region ████████ HANDLEBARS: Custom Handlebar Helpers ████████ ~
 Handlebars.registerHelper("concat", (...args) => {
     let outStr = "";

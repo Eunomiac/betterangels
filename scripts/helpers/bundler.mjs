@@ -9,6 +9,7 @@ export {default as gsap,
 } from "/scripts/greensock/esm/all.js"; // eslint-disable-line import/no-unresolved
 
 export {default as U} from "./utilities.mjs";
+export {default as C} from "./constants.mjs";
 export * from "./mixins.mjs";
 
 export {default as preloadTemplates} from "./templates.mjs";

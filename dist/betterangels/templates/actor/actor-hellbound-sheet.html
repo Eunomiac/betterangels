@@ -6,7 +6,7 @@
     <header class="sheet-header">
         <img class="profile-img" src="{{actor.img}}" data-edit="img" title="{{actor.name}}" height="100" width="100" />
         <div class="header-fields">
-            <h2 class="villainname"><input name="data.villainname" type="text" value="{{data.villainname}}" placeholder="Villainous Identity" /></h2>
+            <h2 class="villainname"><input name="actor.name" type="text" value="{{actor.name}}" /></h2>
             <h2 class="humanname"><input name="data.humanname" type="text" value="{{data.humanname}}" placeholder="Human Name" /></h2>
             <h2 class="demonname"><input name="data.demonname" type="text" value="{{data.demonname}}" placeholder="Demon Name" /></h2>
         </div>
@@ -15,7 +15,7 @@
     <!-- Sheet Tab Navigation -->
     <nav class="sheet-tabs tabs" data-group="primary">
         <!-- Default tab is specified in actor-sheet.mjs -->
-        <a class="item" data-tab="stats">Stats</a>
+        <a class="item" data-tab="front">Stats</a>
         <a class="item" data-tab="notes">Notes</a>
     </nav>
 
@@ -23,8 +23,8 @@
     <section class="sheet-body">
 
         <!-- Strategies & Tactics Tab-->
-        <div class="tab front" data-group="primary" data-tab="stats">
-					{{> "/systems/betterangels/templates/actor/sections/actor-human.html" data}}
+        <div class="tab front" data-group="primary" data-tab="front">
+					{{> "/systems/betterangels/templates/actor/sections/actor-front.html" data}}
 					<div id="sheet-message"></div>
 				</div>
 
