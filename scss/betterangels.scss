@@ -11,9 +11,13 @@
 /* Styles limited to betterangels sheets */
 .betterangels {
   @import "components/forms";
-  @import "components/items";
+  // @import "components/items";
 
   &.actor {
     @import "components/actor/actorsheet";
   }
+
+	&.item {
+		@import "components/item/itemsheet";
+	}
 }

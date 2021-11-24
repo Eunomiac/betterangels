@@ -1,0 +1,23 @@
+.window-content form {
+
+	.feature-pdf-link { display: none }
+
+	.feature-description {
+		margin: 10px 50px;
+
+		.inline-trait.strategy {
+			color: $c-darkgreen;
+			font-weight: bold;
+		}
+
+		.inline-trait.tactic {
+			color: $c-purple;
+			font-style: italic;
+		}
+	}
+
+	.pdf-link {
+		text-align: center;
+	}
+
+}

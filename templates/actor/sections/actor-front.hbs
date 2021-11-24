@@ -25,32 +25,30 @@
 		type="tactic" size=50 top="deceit" bottom="honesty" data=this }}
 </div>
 
-{{log this}}
-{{log powers}}
 <section class="features-list">
 	<div class="feature-row powers-list">
 		{{#each powers}}
-		<div class="feature power" data-item-id="{{id}}">
+		<div class="feature power" data-item-id="{{_id}}">
 			<svg viewBox="0 0 512 512">
-				<path d="{{path}}"></path>
+				<path d="{{data.path}}"></path>
 			</svg>
 		</div>
 		{{/each}}
 	</div>
 	<div class="feature-row aspects-list">
 		{{#each aspects}}
-		<div class="feature aspect" data-item-id="{{id}}">
+		<div class="feature aspect" data-item-id="{{_id}}">
 			<svg viewBox="0 0 512 512">
-				<path d="{{path}}"></path>
+				<path d="{{data.path}}"></path>
 			</svg>
 		</div>
 		{{/each}}
 	</div>
 	<div class="feature-row devices-list">
 		{{#each devices}}
-		<div class="feature device" data-item-id="{{id}}">
+		<div class="feature device" data-item-id="{{_id}}">
 			<svg viewBox="0 0 512 512">
-				<path d="{{path}}"></path>
+				<path d="{{data.path}}"></path>
 			</svg>
 		</div>
 		{{/each}}

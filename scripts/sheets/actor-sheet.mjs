@@ -78,11 +78,28 @@ export default class extends MIX(ActorSheet).with(UpdateQueue) {
 		setTimeout(() => this.pushUpdates(), 500);
 	}
 
-	// _updateLabelVideo(event) {
-	//  // console.log("Update Label Video", event);
-	//  const [videoElem] = $(event.currentTarget).find("video");
+	/* <script>
+  // Show loading animation.
+  var playPromise = video.play();
 
-	// }
+  if (playPromise !== undefined) {
+    playPromise.then(_ => {
+      // Automatic playback started!
+      // Show playing UI.
+    })
+    .catch(error => {
+      // Auto-play was prevented
+      // Show paused UI.
+    });
+  }
+</script>
+
+Danger zone
+<source> within <video> makes play() promise never rejects
+For <video src="not-existing-video.mp4"\>, the play() promise
+rejects as expected as the video doesn't exist. For
+<video><source src="not-existing-video.mp4" type='video/mp4'></video>,
+ the play() promise never rejects. It only happens if there are no valid sources. */
 
 	_playLabelVideo(event) {
 		event.preventDefault();
