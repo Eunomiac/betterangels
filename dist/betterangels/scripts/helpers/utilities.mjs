@@ -11,6 +11,8 @@ import gsap from "/scripts/greensock/esm/all.js";
 // import Fuse from "/scripts/fuse.js/dist/fuse.esm.js"; // https://fusejs.io/api/options.html
 // import Hyphenopoly from "/scripts/hyphenopoly/min/Hyphenopoly.js"; // https://github.com/mnater/Hyphenopoly/blob/master/docs/Node-Module.md
 
+import C from "./constants.mjs";
+
 // ▮▮▮▮▮▮▮[IMPORT CONFIG] Initialization Function for Imports ▮▮▮▮▮▮▮
 const _hyph = (str) => str; /* Hyphenopoly.config(
   {
@@ -558,15 +560,13 @@ const loremIpsum = (numWords = 200) => {
 };
 const randWord = (numWords = 1, wordList = _randomWords) => [...Array(numWords)].map(() => randElem(wordList)).join(" ");
 // ░░░░░░░[Localization]░░░░ Simplified Localization Functionality ░░░░░░░
-/* const Loc = (locRef, formatDict = {}) => {
-  if (/^"?scion\./u.test(JSON.stringify(locRef)) && typeof game.i18n.localize(locRef) === "string") {
-    for (const [key, val] of Object.entries(formatDict)) {
-      formatDict[key] = Loc(val);
-    }
-    return game.i18n.format(locRef, formatDict) || "";
-  }
-  return locRef;
-}; */
+const localize = (locRef, formatDict = {}) => {
+	if (new RegExp(`/^"?${C.systemname}\\.`, "u").test(JSON.stringify(locRef)) && typeof game.i18n.localize(locRef) === "string") {
+		Object.entries(formatDict).forEach(([key, val]) => { formatDict[key] = localize(val) });
+		return game.i18n.format(locRef, formatDict) || "";
+	}
+	return locRef;
+};
 
 // ████████ SEARCHING: Searching Various Data Types w/ Fuzzy Matching ████████
 const isIn = (needle, haystack = [], fuzziness = 0) => {
@@ -887,6 +887,7 @@ export default {
 	// ░░░░░░░ Content ░░░░░░░
 	loremIpsum, randWord,
 	// ░░░░░░░ Localization ░░░░░░░
+	localize,
 
 	// ████████ SEARCHING: Searching Various Data Types w/ Fuzzy Matching ████████
 	isIn, isInExact,

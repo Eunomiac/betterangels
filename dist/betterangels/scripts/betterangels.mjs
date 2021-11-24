@@ -17,8 +17,7 @@ import {
 	GSDevTools,
 	RoughEase, // GreenSock Animation Platform
 	// ▮▮▮▮▮▮▮[Utility]▮▮▮▮▮▮▮
-	preloadTemplates,
-	registerHelpers,
+	loadHandlebars,
 	U,
 	// ▮▮▮▮▮▮▮[Actors]▮▮▮▮▮▮▮
 	BetterAngelsActor,
@@ -77,8 +76,7 @@ Hooks.once("init", async () => {
 	});
 
 	// ▮▮▮▮▮▮▮[Handlebars] Preload Handlebars Templates & Register Custom Helpers ▮▮▮▮▮▮▮
-	await registerHelpers();
-	return preloadTemplates();
+	return loadHandlebars();
 });
 
 // ████████ ONDROPACTORSHEETDATA: on-dropActorSheetData Hook ████████

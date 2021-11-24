@@ -124,8 +124,8 @@
 		],
 		"templates": {
 			"base": {
-				"key": "",
-				"description": ""				
+				"description": "",
+				"path": ""
 			},
 			"pdf": {
 				"book": "BA",
@@ -137,14 +137,20 @@
 				"base",
 				"pdf"
 			],
-			"book": "BA-P"
+			"book": "BA-P",
+			"page": 15,
+			"tactic": "",
+			"roll": ""
 		},
 		"aspect": {
 			"templates": [
 				"base",
 				"pdf"
 			],
-			"book": "BA-DA"
+			"book": "BA-DA",
+			"page": 3,
+			"strategy": "",
+			"roll": ""
 		},
 		"device": {
 			"templates": [

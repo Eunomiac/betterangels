@@ -291,16 +291,10 @@ export default class extends MIX(ActorSheet).with(UpdateQueue) {
 	}
 
 	_prepareItems(context) {
-		Object.assign(context, {
-			powers: context.items
-				.filter((item) => item.type === "power")
-				.forEach((item) => { item.path = C.svg.powers[item.key] }),
-			aspects: context.items
-				.filter((item) => item.type === "aspect")
-				.forEach((item) => { item.path = C.svg.aspects[item.key] }),
-			devices: context.items
-				.filter((item) => item.type === "device")
-				.forEach((item) => { item.path = item.data.data.path || C.svg.device })
+		Object.assign(context.data, {
+			powers: context.items.filter((item) => item.type === "power"),
+			aspects: context.items.filter((item) => item.type === "aspect"),
+			devices: context.items.filter((item) => item.type === "device")
 		});
 	}
 

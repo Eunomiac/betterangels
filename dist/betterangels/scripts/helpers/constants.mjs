@@ -6,6 +6,7 @@
 \* ****▌███████████████████████████████████████████████████████████████████████████▐**** */
 
 export default {
+	systemname: "betterangels",
 	strategies: ["cunning", "patient", "sly", "open", "devious", "insightful"],
 	tactics: ["greed", "generosity", "espionage", "knowledge", "cruelty", "courage", "contempt", "endurance", "corruption", "nurture", "deceit", "honesty"],
 	traitPairs: {

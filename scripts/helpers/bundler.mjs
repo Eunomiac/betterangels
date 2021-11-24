@@ -12,8 +12,7 @@ export {default as U} from "./utilities.mjs";
 export {default as C} from "./constants.mjs";
 export * from "./mixins.mjs";
 
-export {default as preloadTemplates} from "./templates.mjs";
-export {default as registerHelpers} from "./handlebar-helpers.mjs";
+export {default as loadHandlebars, TEMPLATES} from "./handlebars.mjs";
 export {default as BetterAngelsActor} from "../documents/actor.mjs";
 export {default as BetterAngelsActorSheet} from "../sheets/actor-sheet.mjs";
 export {default as HellboundActorSheet} from "../sheets/actor-hellbound-sheet.mjs";

@@ -1,0 +1,58 @@
+<div class="trait-line">
+	{{> "/systems/betterangels/templates/actor/parts/trait-grid.html" 
+		type="tactic" size=50 top="greed" bottom="generosity" data=this }}
+	{{> "/systems/betterangels/templates/actor/parts/trait-grid.html" 
+		type="strategy" size=50 top="cunning" bottom="patient" data=this }}
+	{{> "/systems/betterangels/templates/actor/parts/trait-grid.html"  
+		type="tactic" size=50 top="espionage" bottom="knowledge" data=this }}
+</div>
+
+<div class="trait-line">
+	{{> "/systems/betterangels/templates/actor/parts/trait-grid.html" 
+		type="tactic" size=50 top="cruelty" bottom="courage" data=this }}
+	{{> "/systems/betterangels/templates/actor/parts/trait-grid.html" 
+		type="strategy" size=50 top="sly" bottom="open" data=this }}
+	{{> "/systems/betterangels/templates/actor/parts/trait-grid.html" 
+		type="tactic" size=50 top="contempt" bottom="endurance" data=this }}
+</div>
+
+<div class="trait-line">
+	{{> "/systems/betterangels/templates/actor/parts/trait-grid.html" 
+		type="tactic" size=50 top="corruption" bottom="nurture" data=this }}
+	{{> "/systems/betterangels/templates/actor/parts/trait-grid.html" 
+		type="strategy" size=50 top="devious" bottom="insightful" data=this }}
+	{{> "/systems/betterangels/templates/actor/parts/trait-grid.html" 
+		type="tactic" size=50 top="deceit" bottom="honesty" data=this }}
+</div>
+
+{{log this}}
+{{log powers}}
+<section class="features-list">
+	<div class="feature-row powers-list">
+		{{#each powers}}
+		<div class="feature power" data-item-id="{{id}}">
+			<svg viewBox="0 0 512 512">
+				<path d="{{path}}"></path>
+			</svg>
+		</div>
+		{{/each}}
+	</div>
+	<div class="feature-row aspects-list">
+		{{#each aspects}}
+		<div class="feature aspect" data-item-id="{{id}}">
+			<svg viewBox="0 0 512 512">
+				<path d="{{path}}"></path>
+			</svg>
+		</div>
+		{{/each}}
+	</div>
+	<div class="feature-row devices-list">
+		{{#each devices}}
+		<div class="feature device" data-item-id="{{id}}">
+			<svg viewBox="0 0 512 512">
+				<path d="{{path}}"></path>
+			</svg>
+		</div>
+		{{/each}}
+	</div>
+</section>

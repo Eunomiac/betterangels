@@ -16,7 +16,15 @@
     "css/betterangels.css"
   ],
   "scripts": [],
-  "packs": [],
+  "packs": [
+		{
+			"name": "pdfs",
+			"label": "PDFs",
+			"path": "packs/pdfs.db",
+			"entity": "JournalEntry",
+			"module": "BetterAngels"
+		}
+	],
   "languages": [
     {
       "lang": "en",

@@ -12,8 +12,7 @@ import {
 	RoughEase, // GreenSock Animation Platform
 	// #endregion ▮▮▮▮[External Libraries]▮▮▮▮
 	// #region ▮▮▮▮▮▮▮[Utility]▮▮▮▮▮▮▮ ~
-	preloadTemplates,
-	registerHelpers,
+	loadHandlebars,
 	U,
 	// #endregion ▮▮▮▮[Utility]▮▮▮▮
 	// #region ▮▮▮▮▮▮▮[Actors]▮▮▮▮▮▮▮ ~
@@ -84,8 +83,7 @@ Hooks.once("init", async () => {
 	// #endregion ▮▮▮▮[Classes]▮▮▮▮
 
 	// #region ▮▮▮▮▮▮▮[Handlebars] Preload Handlebars Templates & Register Custom Helpers ▮▮▮▮▮▮▮
-	await registerHelpers();
-	return preloadTemplates();
+	return loadHandlebars();
 	// #endregion ▮▮▮▮[Handlebars]▮▮▮▮
 });
 // #endregion ▄▄▄▄▄ ON INIT ▄▄▄▄▄
