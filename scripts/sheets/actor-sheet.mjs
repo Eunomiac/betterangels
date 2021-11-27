@@ -20,8 +20,8 @@ export default class extends MIX(ActorSheet).with(UpdateQueue) {
 		return mergeObject(super.defaultOptions, {
 			classes: ["betterangels", "sheet", "actor"],
 			template: "systems/betterangels/templates/actor/actor-sheet.hbs",
-			width: 700,
-			height: 700,
+			width: 476,
+			height: 786,
 			tabs: [{navSelector: ".sheet-tabs", contentSelector: ".sheet-body", initial: "front"}]
 		});
 	}
@@ -54,17 +54,17 @@ export default class extends MIX(ActorSheet).with(UpdateQueue) {
 		return context;
 	}
 
+	// #region ████████ Trait Radial Menu: Radial Menu for Trait Lines ████████ ~
 	_openRadialMenu(event) {
 		event.preventDefault();
-		// console.log("Open Menu", event);
+		console.log("Open Menu", event);
 		const [posElem] = $(event.currentTarget).find(".menu-positioner");
-		// if ($(posElem).find(".radial-menu").hasClass("active")) {
-		// this._closeRadialMenu(event);
-		// } else {
+		if ($(posElem).find(".radial-menu").hasClass("active")) {
+			return;
+		}
 		gsap.set(posElem, {xPercent: -50, yPercent: -50, x: event.offsetX, y: event.offsetY});
 		$(posElem).find("video").each(function playVideo() { this.play() });
 		$(posElem).find(".radial-menu").addClass("active");
-		// }
 	}
 
 	_closeRadialMenu(event) {
@@ -77,6 +77,7 @@ export default class extends MIX(ActorSheet).with(UpdateQueue) {
 		/*DEVCODE*/ } /*!DEVCODE*/
 		setTimeout(() => this.pushUpdates(), 500);
 	}
+	// #endregion ▄▄▄▄▄ Trait Radial Menu ▄▄▄▄▄
 
 	/* <script>
   // Show loading animation.
@@ -248,12 +249,12 @@ rejects as expected as the video doesn't exist. For
 		});
 		tl.fromTo(dotElem, {
 			scale: 7,
-			backgroundColor: "rgb(0, 0, 0)",
+			backgroundColor: "#FFFFFF",
 			opacity: 0
 		}, {
 			scale: 1,
 			opacity: 1,
-			backgroundColor: "rgb(0, 0, 0)",
+			backgroundColor: "#FFFFFF",
 			ease: "sine",
 			duration: 0.5
 		});
@@ -268,17 +269,18 @@ rejects as expected as the video doesn't exist. For
 		});
 		tl.fromTo(dotElem, {
 			scale: 1,
-			backgroundColor: "rgb(0, 0, 0)",
+			backgroundColor: "#FFFFFF",
 			opacity: 1
 		}, {
 			scale: 10,
 			opacity: 0,
-			backgroundColor: "rgb(0, 0, 0)",
+			backgroundColor: "#FFFFFF",
 			ease: "sine",
 			duration: 0.75
 		});
 	}
 	slideDot(toTrait, toDot, fromTrait, fromDot) {
+		console.log({toTrait, toDot, fromTrait, fromDot});
 		this.emptyDot(fromTrait, fromDot);
 		setTimeout(() => this.fillDot(toTrait, toDot), 250);
 	}
@@ -288,21 +290,23 @@ rejects as expected as the video doesn't exist. For
 
 		// For each trait, define data for rendering of dots and radial menu
 		Object.entries(C.sinisterTraitPairs).forEach(([top, bottom]) => {
-			const {min: topMin, max: topMax, value: topVal} = context.data[top];
-			const {min: botMin, max: botMax, value: botVal} = context.data[bottom];
+			const [topState, bottomState] = this._getButtonStates(top);
+
+			// const {min: topMin, max: topMax, value: topVal} = context.data[top];
+			// const {min: botMin, max: botMax, value: botVal} = context.data[bottom];
 			Object.assign(context.data[top], {
-				name: top,
-				emptyDots: topMax - topVal,
-				canSlideTo: topVal < topMax && botVal > botMin && (topVal + botVal) < 7,
-				canAdd: topVal < topMax && (topVal + botVal) < 7,
-				canDrop: topVal > topMin
+				name: topState.name,
+				emptyDots: topState.max - topState.value,
+				canSlideTo: topState.slide/*  && (topVal + botVal) < 7 */,
+				canAdd: topState.add,
+				canDrop: topState.drop
 			});
 			Object.assign(context.data[bottom], {
-				name: bottom,
-				emptyDots: botMax - botVal,
-				canSlideTo: botVal < botMax && topVal > topMin && (topVal + botVal) < 7,
-				canAdd: botVal < botMax && (topVal + botVal) < 7,
-				canDrop: botVal > botMin
+				name: bottomState.name,
+				emptyDots: bottomState.max - bottomState.value,
+				canSlideTo: bottomState.slide/*  && (topVal + botVal) < 7 */,
+				canAdd: bottomState.add,
+				canDrop: bottomState.drop
 			});
 		});
 	}
@@ -327,6 +331,7 @@ rejects as expected as the video doesn't exist. For
 		html.find(".trait-pair > label").hover(this._playLabelVideo.bind(this), this._pauseLabelVideo.bind(this));
 
 		html.find(".trait-button").click(this._changeTrait.bind(this));
+		html.find(".trait-button").contextmenu(this._changeTrait.bind(this));
 
 		Dragger.create(".trait-pair .draggable", {
 			onDragStart() {
@@ -381,23 +386,55 @@ rejects as expected as the video doesn't exist. For
 		});
 	}
 
+	_getButtonStates(trait) {
+		const [main, opp] = [trait, C.traitPairs[trait]];
+		const {min: mainMin, max: mainMax, value: mainVal} = this.actorData.data[main];
+		const {min: oppMin, max: oppMax, value: oppVal} = this.actorData.data[opp];
+		return [
+			{
+				name: main,
+				min: mainMin,
+				max: mainMax,
+				value: mainVal,
+				add: mainVal < mainMax && (mainVal + oppVal) < 7,
+				drop: mainVal > mainMin,
+				slide: mainVal < mainMax && oppVal > oppMin
+			},
+			{
+				name: opp,
+				min: oppMin,
+				max: oppMax,
+				value: oppVal,
+				add: oppVal < oppMax && (mainVal + oppVal) < 7,
+				drop: oppVal > oppMin,
+				slide: oppVal < oppMax && mainVal > mainMin
+			}
+		];
+	}
+
+	_canTrait(trait, action) {
+		return this._getButtonStates(trait)[0][action];
+	}
+
 	updateRadialButtons(trait) {
 		trait = C.virtuousTraitPairs[trait] ?? trait;
-		const [top, bottom] = [trait, C.traitPairs[trait]];
-		const {min: topMin, max: topMax, value: topVal} = this.actorData.data[top];
-		const {min: botMin, max: botMax, value: botVal} = this.actorData.data[bottom];
+		const [top, bottom] = this._getButtonStates(trait);
 		Object.entries({
-			[`#menu-add-${top}`]: topVal < topMax && (topVal + botVal) < 7,
-			[`#menu-add-${bottom}`]: botVal < botMax && (topVal + botVal) < 7,
-			[`#menu-drop-${top}`]: topVal > topMin,
-			[`#menu-drop-${bottom}`]: botVal > botMin,
-			[`#menu-slide-${top}`]: topVal < topMax && botVal > botMin && (topVal + botVal) < 7,
-			[`#menu-slide-${bottom}`]: botVal < botMax && topVal > topMin && (topVal + botVal) < 7
+			[`#menu-add-${top.name}`]: top.add,
+			[`#menu-add-${bottom.name}`]: bottom.add,
+			[`#menu-drop-${top.name}`]: top.drop,
+			[`#menu-drop-${bottom.name}`]: bottom.drop,
+			[`#menu-slide-${top.name}`]: top.slide,
+			[`#menu-slide-${bottom.name}`]: bottom.slide,
+			[`#menu-add-drop-${top.name}`]: top.add || top.drop,
+			[`#menu-add-drop-${bottom.name}`]: bottom.add || bottom.drop,
+			[`#menu-slash-${top.name}`]: top.add && top.drop,
+			[`#menu-slash-${bottom.name}`]: bottom.add && bottom.drop
 		}).forEach(([id, isActive]) => {
 			if (isActive) {
-				$(id).removeClass("empty");
+				$(id).removeClass("off");
 			} else {
-				$(id).addClass("empty");
+				$(id).addClass("off");
 			}
 		});
 	}
@@ -405,34 +442,41 @@ rejects as expected as the video doesn't exist. For
 	async _changeTrait(event) {
 		event.preventDefault();
 		console.log({CHANGETRAIT: event});
-		const {action, target} = event.target.dataset;
+		const {clickaction, contextaction, target} = event.target.dataset;
 		const {data} = this.actorData;
-		switch (action) {
-			case "add": {
-				const targetVal = Math.min(data[target].max, data[target].value + 1);
-				this.updateSync({[`data.${target}.value`]: targetVal});
-				this.fillDot(target, targetVal);
-				break;
+		const action = {
+			click: clickaction,
+			contextmenu: contextaction
+		}[event.type];
+		if (this._canTrait(target, action)) {
+			switch (action) {
+				case "add": {
+					const targetVal = Math.min(data[target].max, data[target].value + 1);
+					this.updateSync({[`data.${target}.value`]: targetVal});
+					this.fillDot(target, targetVal);
+					break;
+				}
+				case "drop": {
+					this.emptyDot(target, data[target].value);
+					this.updateSync({[`data.${target}.value`]: Math.max(data[target].min, data[target].value - 1)});
+					break;
+				}
+				case "slide": {
+					const fromTarget = C.traitPairs[target];
+					const targetVal = Math.min(data[target].max, data[target].value + 1);
+					this.slideDot(target, targetVal, fromTarget, data[fromTarget].value);
+					this.updateSync({
+						[`data.${target}.value`]: targetVal,
+						[`data.${fromTarget}.value`]: Math.max(data[fromTarget].min, data[fromTarget].value - 1)
+					});
+					break;
+				}
+				default: return false;
 			}
-			case "drop": {
-				this.emptyDot(target, data[target].value);
-				this.updateSync({[`data.${target}.value`]: Math.max(data[target].min, data[target].value - 1)});
-				break;
-			}
-			case "slide": {
-				const fromTarget = C.traitPairs[target];
-				const targetVal = Math.min(data[target].max, data[target].value + 1);
-				this.slideDot(target, targetVal, fromTarget, data[fromTarget].value);
-				this.updateSync({
-					[`data.${target}.value`]: targetVal,
-					[`data.${fromTarget}.value`]: Math.max(data[fromTarget].min, data[fromTarget].value - 1)
-				});
-				break;
-			}
-			default: return false;
+			this.updateRadialButtons(target);
+			return true;
 		}
-		this.updateRadialButtons(target);
-		return true;
+		return false;
 	}
 
 	async _onItemCreate(event) { //~ Handle creating a new Owned Item for the actor using initial data defined in the HTML dataset

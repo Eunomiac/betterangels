@@ -1,14 +1,58 @@
-.notification.error.permanent { display: none !important; }
-
+// .notification.error.permanent { display: none !important; }
 .window-app {
     font-family: $font-primary;
+		color: $c-fg-primary;
+		background: $c-bg-primary;
+
+		a:hover {
+			text-shadow: 0 0 18px #{$c-glow-primary}, 0 0 18px #{$c-glow-primary}, 0 0 18px #{$c-glow-primary};
+			color: $c-fg-primary-bright;
+		}
+
+		a.pdfoundry-link:hover {
+			color: $c-bg-primary-dark;
+		}
+
+		* {
+			font-family: inherit;
+			color: inherit;
+		}
+
+		.window-content {
+			font-family: inherit;
+			color: inherit;
+			background: inherit;
+
+			input[type="text"],
+			input[type="number"],
+			input[type="date"],
+			input[type="time"] {
+				color: $c-fg-primary;
+				border: 0;
+				background: transparent;
+			}
+
+			.directory {
+				.directory-header {
+
+				}
+				.directory-list {
+					.directory-item {
+						> * {
+							overflow: unset !important;
+						}
+					}
+				}
+
+			}
+		}
 }
 
 .rollable {
     &:hover,
     &:focus {
-        color: #000000;
-        text-shadow: 0 0 10px #FF0000;
+        color: $c-fg-primary-bright;
+        text-shadow: 0 0 18px #{$c-glow-primary}, 0 0 18px #{$c-glow-primary}, 0 0 18px #{$c-glow-primary};
         cursor: pointer;
     }
 }

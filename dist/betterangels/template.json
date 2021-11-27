@@ -125,7 +125,7 @@
 		"templates": {
 			"base": {
 				"description": "",
-				"path": ""
+				"key": ""
 			},
 			"pdf": {
 				"book": "BA",

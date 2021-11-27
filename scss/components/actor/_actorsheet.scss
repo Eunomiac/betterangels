@@ -90,37 +90,24 @@
 	}
 }
 
+& {
+	
 $tactic-dot-size: 15px;
 $strategy-dot-size: 19px;
 $tactic-spacing: $tactic-dot-size + 1px;
 $strategy-spacing: $strategy-dot-size + 1px;
 
+text-shadow: 0 0 5px $c-bg-primary-dark, 0 0 2px $c-bg-primary-dark, 0 0 5px $c-bg-primary;
+
 &.hellbound {
-	width: auto !important;
-	max-height: calc(100% - 2px);
+	width: 476px !important;
+	height: 786px !important;
+	overflow: hidden;
+	border-radius: 25px;
+
+	.window-content { overflow: hidden }
+	.window-resizable-handle { display: none }
 }
-
-#sheet-message {
-	display: block;
-	width: 100%;
-	line-height: 20px;
-	font-size: 20px;
-	font-family: $font-primary;
-	font-weight: bold;
-	color: black;
-	text-align: center;
-	margin-top: 50px;
-
-	h1, h2, h3 {
-		display: block;
-		border: none;
-		margin: 20px 0;
-		opacity: 0;
-		width: 130%;
-		margin-left: -15%;
-	}
-}
-
 .trait-line {
 	display: grid;
 	grid-template-columns: #{9 * $tactic-spacing} #{7 * $strategy-spacing} #{9 * $tactic-spacing};
@@ -157,7 +144,7 @@ $strategy-spacing: $strategy-dot-size + 1px;
 			> span {
 				position: absolute;
 				display: inline-block;
-				color: black;
+				color: $c-fg-primary;
 				background-color: transparent;
 				border-radius: 10px;
 				outline: 0;
@@ -166,7 +153,7 @@ $strategy-spacing: $strategy-dot-size + 1px;
 				padding: 0 5px;
 
 				&.big-gold {
-					color: gold;
+					color: $c-gold;
 					text-shadow: 0 0 3px black, 0 0 3px black, 0 0 3px black, 0 0 3px black;
 					border-radius: 10px;
 				}
@@ -184,7 +171,7 @@ $strategy-spacing: $strategy-dot-size + 1px;
 				&.highlight {
 					// border-radius: 20px;
 					// background: radial-gradient(ellipse, purple 50%, transparent 95%);
-					color: gold;
+					color: $c-gold;
 					text-shadow: 0 0 3px black, 0 0 3px black, 0 0 3px black, 0 0 3px black;
 					// transform: scale(3);
 					font-size: 10px;
@@ -219,6 +206,9 @@ $strategy-spacing: $strategy-dot-size + 1px;
 				}
 
 				> span.display {
+					color: $c-bg-primary-dark;
+					text-shadow: none;
+					transition: 0.5s;
 					transform: scale(1.2);
 				}
 			}
@@ -247,19 +237,19 @@ $strategy-spacing: $strategy-dot-size + 1px;
 					height: 100%;
 					width: 100%;
 					box-sizing: border-box;
-					border: 1px solid $c-black;
+					border: 1px solid $c-fg-primary;
 					border-radius: 50%;
 
 					&.dot-slot {
-						background-color: transparent;
+						background: transparent;
 					}
 
 					&.dot-animation {
-						background-color: $c-black;
+						background: radial-gradient(ellipse, $c-fg-primary-bright, $c-fg-primary 70%);
 
 						&.empty {
 							border: 0;
-							background-color: transparent;
+							background: transparent;
 						}
 					}
 				}
@@ -441,22 +431,14 @@ $strategy-spacing: $strategy-dot-size + 1px;
 					transition: 0.5s;
 					animation: slow-bob 2s cubic-bezier(0.36, 0, 0.63, 1) infinite alternate;
 
-					&.button-green {
-						--button-color: #{$c-green};
-						--button-bright: #{$c-lime};
-						--button-bg: #{$c-darkgreen5};
+					&.button-gold {
+						--button-color: #{$c-gold5};
+						--button-bright: #{$c-gold};
 					}
 
 					&.button-blue {
-						--button-color: #{$c-cyan};
+						--button-color: #{$c-cyan5};
 						--button-bright: #{$c-cyan};
-						--button-bg: #{$c-navy5};
-					}
-
-					&.button-red {
-						--button-color: #{$c-red};
-						--button-bright: #{$c-red};
-						--button-bg: #{$c-darkred5};
 					}
 
 					> span {
@@ -488,27 +470,39 @@ $strategy-spacing: $strategy-dot-size + 1px;
 						shadow: -1px -1px 2px #000000, 1px -1px 2px #000000, -1px 1px 2px #000000, 1px 1px 2px #000000;
 					}
 
-					// background-color: rgba(255, 0, 0, 0.25);
-					// outline: 2px solid rgba(255, 0, 0, 0.5);
-
-					&.label-green {
-						color: $c-green;
-					}
-
 					&.label-blue {
 						color: $c-cyan;
 					}
 
-					&.label-red {
-						color: $c-red;
+					&.label-gold {
+						transform: scale(4);
+
+						> span {
+							&.label-green {
+								color: $c-lime;
+							}
+							&.label-black {
+								color: $c-black;
+							}
+							&.label-red {
+								color: $c-red;
+							}
+
+							&.off {
+								opacity: 0.5;
+								color: $c-grey5;
+							}
+						}
 					}
 				}
 
-				&.empty {
+				&.off {
+					color: $c-grey5;
 					opacity: 50%;
 
 					button,
-					label {
+					label,
+					span {
 						color: $c-grey5;
 						pointer-events: none !important;
 					}
@@ -567,14 +561,63 @@ $strategy-spacing: $strategy-dot-size + 1px;
 		padding: 10px 0;
 
 		.feature {
-			height: 75px;
-			width: 75px;
-			overflow: hidden;
-			border-radius: 50%;
-			background-color: $c-grey5;
+			height: 125px;
+			width: 125px;
+
+			img {
+				position: relative;
+				display: block;
+				border: 0;
+				margin-bottom: -125px;
+
+				&.aspect-coin {
+					filter: drop-shadow(16px 16px 16px #{$c-bg-primary-dark});
+				}
+
+				&.active {
+					display: none;
+				}
+			}
+
+			video {
+				height: 125px;
+				width: 125px;
+				transform: translateY(5px) scale(2.6);
+				position: relative;
+				z-index: 5;
+				pointer-events: none;
+				display: none;
+			}
+
+			&:hover {
+				.active { display: block }
+				.base { display: none }
+				video { display: block }
+
+			}
 		}
+	}
+}
+}
 
 
+#sheet-message {
+	display: block;
+	width: 100%;
+	line-height: 20px;
+	font-size: 20px;
+	font-family: $font-primary;
+	font-weight: bold;
+	color: $c-fg-primary;
+	text-align: center;
+	margin-top: 50px;
 
+	h1, h2, h3 {
+		display: block;
+		border: none;
+		margin: 20px 0;
+		opacity: 0;
+		width: 130%;
+		margin-left: -15%;
 	}
 }

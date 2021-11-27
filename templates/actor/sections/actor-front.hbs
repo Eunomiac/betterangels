@@ -1,3 +1,5 @@
+{{> "/systems/betterangels/templates/actor/parts/radial-menu.hbs" data}}
+
 <div class="trait-line">
 	{{> "/systems/betterangels/templates/actor/parts/trait-grid.hbs" 
 		type="tactic" size=50 top="greed" bottom="generosity" data=this }}
@@ -29,27 +31,24 @@
 	<div class="feature-row powers-list">
 		{{#each powers}}
 		<div class="feature power" data-item-id="{{_id}}">
-			<svg viewBox="0 0 512 512">
-				<path d="{{data.path}}"></path>
-			</svg>
+			<img class="power-sigil active" src="systems/betterangels/assets/images/powers/{{data.key}}_hover.webp" />
+			<img class="power-sigil base" src="{{img}}" />
 		</div>
 		{{/each}}
 	</div>
 	<div class="feature-row aspects-list">
 		{{#each aspects}}
 		<div class="feature aspect" data-item-id="{{_id}}">
-			<svg viewBox="0 0 512 512">
-				<path d="{{data.path}}"></path>
-			</svg>
+			<img class="aspect-coin active" src="systems/betterangels/assets/images/aspects/{{data.key}}_hover.webp" />
+			<img class="aspect-coin base" src="{{img}}" />
+			<video src="systems/betterangels/assets/animations/aspect-active-fg.webm" autoplay loop mute />
 		</div>
 		{{/each}}
 	</div>
 	<div class="feature-row devices-list">
 		{{#each devices}}
 		<div class="feature device" data-item-id="{{_id}}">
-			<svg viewBox="0 0 512 512">
-				<path d="{{data.path}}"></path>
-			</svg>
+			<img class="device-img" src="{{img}}" />
 		</div>
 		{{/each}}
 	</div>

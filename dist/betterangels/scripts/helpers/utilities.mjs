@@ -830,6 +830,13 @@ const getDynamicFunc = (funcName, func, context) => {
 	const dFunc = {[funcName](...args) { return func(...args) }}[funcName];
 	return context ? dFunc.bind(context) : dFunc;
 };
+const awaitSerial = async (params, func) => {
+	await [params].flat().reduce(async (promise, param) => {
+		await promise;
+		return func(...[param].flat());
+	}, Promise.resolve());
+};
+const awaitParallel = async (params, func) => await Promise.all([params].flat().map(async (param) => func(...[param].flat())));
 
 // ████████ HTML: Parsing HTML Code, Manipulating DOM Objects ████████
 // ░░░░░░░[GreenSock]░░░░ Wrappers for GreenSock Functions ░░░░░░░
@@ -914,6 +921,7 @@ export default {
 
 	// ████████ FUNCTIONS: Function Wrapping, Queuing, Manipulation ████████
 	getDynamicFunc,
+	awaitSerial, awaitParallel,
 
 	// ████████ HTML: Parsing HTML Code, Manipulating DOM Objects ████████
 	// ░░░░░░░ GreenSock ░░░░░░░

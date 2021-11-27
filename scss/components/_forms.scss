@@ -1,20 +1,11 @@
-.item-form {
-    font-family: $font-primary;
-}
-
-.sheet-header {
-    display: flex;
-    flex: 0 auto;
-    flex-direction: row;
-    flex-wrap: wrap;
-    justify-content: flex-start;
+/* .sheet-header {
     margin-bottom: 10px;
-    overflow: hidden;
 
     .profile-img {
-        flex: 0 0 100px;
-        height: 100px;
-        margin-right: 10px;
+        flex: 0 0 75px;
+        height: 75px;
+				border: 0;
+				margin: -4px 0;
     }
 
     .header-fields {
@@ -31,6 +22,8 @@
             width: 100%;
             height: 100%;
             margin: 0;
+						font-size: 38px;
+						border: 0;
         }
     }
 }
@@ -42,7 +35,7 @@
 .sheet-body,
 .sheet-body .tab,
 .sheet-body .tab .editor {
-    height: 100%;
+    height: auto;
 }
 
 .sheet-body .tab {
@@ -52,10 +45,10 @@
 
 .tox {
     .tox-editor-container {
-        background: $c-white;
+        background: $c-bg-primary;
     }
 
     .tox-edit-area {
         padding: 0 8px;
     }
-}
+} */
