@@ -140,7 +140,8 @@
 			"book": "BA-P",
 			"page": 15,
 			"tactic": "",
-			"roll": ""
+			"roll": "",
+			"duration": ""
 		},
 		"aspect": {
 			"templates": [

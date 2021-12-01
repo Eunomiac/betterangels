@@ -56,7 +56,9 @@
   top: 50px;
   left: 100px;
   width: calc(100% - 450px);
-  height: calc(100% - 150px); }
+  height: calc(100% - 150px);
+  z-index: 1000;
+  pointer-events: none; }
   .x-container * {
     position: absolute;
     -webkit-box-sizing: border-box;
@@ -100,6 +102,39 @@
   .x-container .x-item.x-snap {
     pointer-events: none;
     opacity: 0%; }
+
+/* Styles that extend to draggable items parented to global space */
+span.trait {
+  position: absolute;
+  display: inline-block;
+  color: #b3b3b3;
+  background-color: transparent;
+  border-radius: 10px;
+  outline: 0;
+  -webkit-transform: scale(1);
+  -ms-transform: scale(1);
+  transform: scale(1);
+  -webkit-transform-origin: 50% 50%;
+  -ms-transform-origin: 50% 50%;
+  transform-origin: 50% 50%;
+  z-index: 2;
+  padding: 0 5px; }
+  span.trait.big-gold {
+    color: gold;
+    text-shadow: 0 0 3px black, 0 0 3px black, 0 0 3px black, 0 0 3px black;
+    border-radius: 10px; }
+  span.trait.draggable {
+    pointer-events: all !important;
+    opacity: 0%;
+    -webkit-transform: scale(1);
+    -ms-transform: scale(1);
+    transform: scale(1); }
+    span.trait.draggable.click-through {
+      pointer-events: none !important; }
+  span.trait.highlight {
+    color: gold;
+    text-shadow: 0 0 3px black, 0 0 3px black, 0 0 3px black, 0 0 3px black;
+    font-size: 10px; }
 
 /* Styles limited to betterangels sheets */
 .betterangels {
@@ -200,34 +235,6 @@
             transform: scale(6) scaleY(2);
             display: none;
             z-index: 1; }
-          .betterangels.actor .trait-line .trait-pair > label > span {
-            position: absolute;
-            display: inline-block;
-            color: #b3b3b3;
-            background-color: transparent;
-            border-radius: 10px;
-            outline: 0;
-            -webkit-transform: scale(1);
-            -ms-transform: scale(1);
-            transform: scale(1);
-            z-index: 2;
-            padding: 0 5px; }
-            .betterangels.actor .trait-line .trait-pair > label > span.big-gold {
-              color: gold;
-              text-shadow: 0 0 3px black, 0 0 3px black, 0 0 3px black, 0 0 3px black;
-              border-radius: 10px; }
-            .betterangels.actor .trait-line .trait-pair > label > span.draggable {
-              pointer-events: all;
-              opacity: 0%;
-              -webkit-transform: scale(1);
-              -ms-transform: scale(1);
-              transform: scale(1); }
-              .betterangels.actor .trait-line .trait-pair > label > span.draggable.click-through {
-                pointer-events: none !important; }
-            .betterangels.actor .trait-line .trait-pair > label > span.highlight {
-              color: gold;
-              text-shadow: 0 0 3px black, 0 0 3px black, 0 0 3px black, 0 0 3px black;
-              font-size: 10px; }
           .betterangels.actor .trait-line .trait-pair > label.sinister {
             grid-row: 1;
             margin-left: -20px; }
@@ -987,3 +994,5 @@
       text-align: right; }
       .betterangels.item .window-content .sheet-body .pdf-link .pdfoundry-link {
         border-radius: 25px; }
+  .betterangels.item .window-resizable-handle {
+    display: none; }

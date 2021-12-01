@@ -8,6 +8,48 @@
 /* Styles for created DOM objects */
 @import "components/xcircles/xcircles";
 
+/* Styles that extend to draggable items parented to global space */
+
+span.trait {
+		position: absolute;
+		display: inline-block;
+		color: $c-fg-primary;
+		background-color: transparent;
+		border-radius: 10px;
+		outline: 0;
+		transform: scale(1);
+		transform-origin: 50% 50%;
+		z-index: 2;
+		padding: 0 5px;
+
+		&.big-gold {
+			color: $c-gold;
+			text-shadow: 0 0 3px black, 0 0 3px black, 0 0 3px black, 0 0 3px black;
+			border-radius: 10px;
+		}
+
+		&.draggable {
+			pointer-events: all !important;
+			opacity: 0%;
+			transform: scale(1);
+
+			&.click-through {
+				pointer-events: none !important;
+			}
+		}
+
+		&.highlight {
+			// border-radius: 20px;
+			// background: radial-gradient(ellipse, purple 50%, transparent 95%);
+			color: $c-gold;
+			text-shadow: 0 0 3px black, 0 0 3px black, 0 0 3px black, 0 0 3px black;
+			// transform: scale(3);
+			font-size: 10px;
+			// line-height: 15px;
+			// box-shadow: 0 0 5px purple, 0 0 5px purple, 0 0 5px purple, 0 0 5px purple;
+		}
+	}
+
 /* Styles limited to betterangels sheets */
 .betterangels {
   @import "components/forms";

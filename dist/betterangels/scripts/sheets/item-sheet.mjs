@@ -7,44 +7,44 @@
 
 export default class extends ItemSheet {
 
-  static get defaultOptions() {
-    return mergeObject(super.defaultOptions, {
-      classes: ["betterangels", "sheet", "item"],
-      width: 520,
-      height: 480,
-      tabs: [{navSelector: ".sheet-tabs", contentSelector: ".sheet-body", initial: "description"}]
-    });
-  }
+	static get defaultOptions() {
+		return mergeObject(super.defaultOptions, {
+			classes: ["betterangels", "sheet", "item"],
+			width: 520,
+			height: "auto",
+			tabs: [{navSelector: ".sheet-tabs", contentSelector: ".sheet-body", initial: "description"}]
+		});
+	}
 
-  get template() {
-    const path = "systems/betterangels/templates/item";
+	get template() {
+		const path = "systems/betterangels/templates/item";
 
-    return `${path}/item-${this.item.data.type}-sheet.html`;
-  }
+		return `${path}/item-${this.item.data.type}-sheet.html`;
+	}
 
-  getData() {
+	getData() {
 
-    const context = super.getData();
+		const context = super.getData();
 
-    const itemData = context.item.data;
+		const itemData = context.item.data;
 
-    context.rollData = {};
-    const actor = this.object?.parent ?? null;
-    if (actor) {
-      context.rollData = actor.getRollData();
-    }
+		context.rollData = {};
+		const actor = this.object?.parent ?? null;
+		if (actor) {
+			context.rollData = actor.getRollData();
+		}
 
-    context.data = itemData.data;
-    context.flags = itemData.flags;
+		context.data = itemData.data;
+		context.flags = itemData.flags;
 
-    return context;
-  }
+		return context;
+	}
 
-  activateListeners(html) {
-    super.activateListeners(html);
+	activateListeners(html) {
+		super.activateListeners(html);
 
-    if (this.isEditable) { return }
+		if (this.isEditable) { return }
 
-  }
+	}
 
 }

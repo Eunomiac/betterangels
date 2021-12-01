@@ -1,6 +1,6 @@
 // #region ████████ IMPORTS ████████ ~
 /* eslint-disable import/no-unresolved */
-import gsap from "/scripts/greensock/esm/all.js";
+import gsap, {MotionPathPlugin, Draggable as Dragger} from "/scripts/greensock/esm/all.js";
 // import Fuse from "/scripts/fuse.js/dist/fuse.esm.js"; // https://fusejs.io/api/options.html
 // import Hyphenopoly from "/scripts/hyphenopoly/min/Hyphenopoly.js"; // https://github.com/mnater/Hyphenopoly/blob/master/docs/Node-Module.md
 /* eslint-enable import/no-unresolved */
@@ -878,6 +878,27 @@ const drawCirclePath = (radius, origin) => {
 };
 const formatAsClass = (str) => `${str}`.replace(/([A-Z])|\s/g, "-$1").replace(/^-/, "").trim().toLowerCase();
 const getGSAngleDelta = (startAngle, endAngle) => signNum(roundNum(getAngleDelta(startAngle, endAngle), 2)).replace(/^(.)/, "$1=");
+const convertCoords = ({x, y}, contextA, contextB) => MotionPathPlugin.convertCoordinates(contextA, contextB, {x, y});
+const getNewPos = (elem, newContext, point) => {
+	point = point ?? {
+		x: gsap.getProperty(elem, "x"),
+		y: gsap.getProperty(elem, "y")
+	};
+	const [fromSpace] = $(elem).parent();
+	return convertCoords(point, fromSpace, newContext);
+};
+const getGlobalPos = (elem, point) => getNewPos(elem, $("body")[0], point);
+const reparent = (elem, newParent) => {
+	newParent = newParent ?? $("body")[0];
+	const newPos = getNewPos(elem, newParent);
+	console.log({
+		oldPosition: {x: gsap.getProperty(elem, "x"), y: gsap.getProperty(elem, "y")},
+		newPosition: newPos
+	});
+	$(elem).appendTo(newParent);
+	gsap.set(elem, newPos);
+	Dragger.get(elem)?.update(false, true);
+};
 
 // #endregion ▄▄▄▄▄ HTML ▄▄▄▄▄
 
@@ -943,6 +964,7 @@ export default {
 
 	getRawCirclePath, drawCirclePath,
 	formatAsClass,
-	getGSAngleDelta
+	getGSAngleDelta,
+	convertCoords, getNewPos, getGlobalPos, reparent
 };
 // #endregion ▄▄▄▄▄ EXPORTS ▄▄▄▄▄

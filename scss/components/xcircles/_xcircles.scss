@@ -14,6 +14,8 @@ $padding-right: 350px;
   left: $padding-left;
   width: calc(100% - #{$padding-left + $padding-right});
   height: calc(100% - #{$padding-top + $padding-bottom});
+	z-index: 1000;
+	pointer-events: none;
 
   * {
     position: absolute;

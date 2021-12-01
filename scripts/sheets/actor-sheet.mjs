@@ -239,8 +239,8 @@ rejects as expected as the video doesn't exist. For
 
 	}
 
-	fillDot(trait, dot) {
-		const [dotElem] = $(`#${trait}-${dot} > .dot-animation`);
+	_fillDot(trait, dot) {
+		const [dotElem] = $(`.app.betterangels #${trait}-${dot} > .dot-animation`);
 		// const [menuElem] = $(dotElem).closest(".radial-hover").find(".radial-menu");
 		// const [videoElem] = $(menuElem).find("video");
 		// const videoScale = gsap.getProperty(videoElem, "scale");
@@ -259,7 +259,7 @@ rejects as expected as the video doesn't exist. For
 			duration: 0.5
 		});
 	}
-	emptyDot(trait, dot) {
+	_emptyDot(trait, dot) {
 		const [dotElem] = $(`#${trait}-${dot} > .dot-animation`);
 		// const [menuElem] = $(dotElem).closest(".radial-hover").find(".radial-menu");
 		// const [videoElem] = $(menuElem).find("video");
@@ -279,10 +279,33 @@ rejects as expected as the video doesn't exist. For
 			duration: 0.75
 		});
 	}
-	slideDot(toTrait, toDot, fromTrait, fromDot) {
+	_slideDot(toTrait, toDot, fromTrait, fromDot) {
 		console.log({toTrait, toDot, fromTrait, fromDot});
-		this.emptyDot(fromTrait, fromDot);
-		setTimeout(() => this.fillDot(toTrait, toDot), 250);
+		const [slideElem] = $(`.app.betterangels #${fromTrait}-${fromDot} > .dot-animation`);
+		const [destElem] = $(`.app.betterangels #${toTrait}-${toDot} > .dot-animation`);
+		const slideToPos = U.convertCoords({x: 0, y: 0}, $(destElem).parent()[0], $(slideElem).parent()[0]);
+		console.log(slideElem, destElem, slideToPos);
+		gsap.to(slideElem, {
+			...slideToPos,
+			duration: 1,
+			ease: "elastic.inOut",
+			onComplete() {
+				$(destElem).removeClass("empty");
+				$(slideElem).addClass("empty");
+				gsap.set(slideElem, {x: 0, y: 0});
+			}
+		});
+		gsap.to(slideElem, {
+			scale: 3,
+			duration: 0.5,
+			repeat: 1,
+			yoyo: true,
+			ease: "elastic.inOut"
+		});
+		// return;
+		// console.log({toTrait, toDot, fromTrait, fromDot});
+		// this._emptyDot(fromTrait, fromDot);
+		// setTimeout(() => this._fillDot(toTrait, toDot), 250);
 	}
 
 	_prepareCharacterData(context) {
@@ -296,14 +319,14 @@ rejects as expected as the video doesn't exist. For
 			// const {min: botMin, max: botMax, value: botVal} = context.data[bottom];
 			Object.assign(context.data[top], {
 				name: topState.name,
-				emptyDots: topState.max - topState.value,
+				_emptyDots: topState.max - topState.value,
 				canSlideTo: topState.slide/*  && (topVal + botVal) < 7 */,
 				canAdd: topState.add,
 				canDrop: topState.drop
 			});
 			Object.assign(context.data[bottom], {
 				name: bottomState.name,
-				emptyDots: bottomState.max - bottomState.value,
+				_emptyDots: bottomState.max - bottomState.value,
 				canSlideTo: bottomState.slide/*  && (topVal + botVal) < 7 */,
 				canAdd: bottomState.add,
 				canDrop: bottomState.drop
@@ -322,6 +345,11 @@ rejects as expected as the video doesn't exist. For
 	activateListeners(html) {
 		super.activateListeners(html);
 
+		html.find(".feature").click((event) => {
+			const item = this.actor.items.get(event.currentTarget.dataset.itemId);
+			item.sheet.render(true);
+		});
+
 		if (!this.isEditable) { return }
 
 		const sheetContext = this;
@@ -333,10 +361,34 @@ rejects as expected as the video doesn't exist. For
 		html.find(".trait-button").click(this._changeTrait.bind(this));
 		html.find(".trait-button").contextmenu(this._changeTrait.bind(this));
 
-		Dragger.create(".trait-pair .draggable", {
+		Hooks.on("preCreateItem", (item, itemData) => {
+			const {type} = itemData;
+			switch (itemData.type) {
+				case "power": {
+					const powerItems = Array.from(this.actor.items.values()).filter((ownedItem) => ownedItem.data.type === "power");
+					if (powerItems.length === 3) {
+						powerItems[0].delete();
+					}
+					break;
+				}
+				case "aspect": {
+					const aspectItems = Array.from(this.actor.items.values()).filter((ownedItem) => ownedItem.data.type === "aspect");
+					if (aspectItems.length === 2) {
+						aspectItems[0].delete();
+					}
+					break;
+				}
+				// no default
+			}
+		});
+
+		Dragger.create(".draggable.trait", {
 			onDragStart() {
 				this.droppables = Array.from($(".droppable")).filter((elem) => !new RegExp(`${this.target.dataset.target}$`).test(elem.id));
 				// console.log("Droppables", this.droppables);
+				[this.startParent] = $(this.target).parent();
+				U.reparent(this.target, $("#x-container")[0]);
+				this.update(false, true);
 				gsap.to(this.target, {
 					scale: 2,
 					opacity: 1,
@@ -372,6 +424,7 @@ rejects as expected as the video doesn't exist. For
 				const dragContext = this;
 				$(".droppable .display.highlight").each((_, elem) => {
 					$(elem).removeClass("highlight");
+					U.reparent(this.target, this.startParent);
 					gsap.to(elem, {
 						y: 0,
 						scale: 1,
@@ -453,18 +506,18 @@ rejects as expected as the video doesn't exist. For
 				case "add": {
 					const targetVal = Math.min(data[target].max, data[target].value + 1);
 					this.updateSync({[`data.${target}.value`]: targetVal});
-					this.fillDot(target, targetVal);
+					this._fillDot(target, targetVal);
 					break;
 				}
 				case "drop": {
-					this.emptyDot(target, data[target].value);
+					this._emptyDot(target, data[target].value);
 					this.updateSync({[`data.${target}.value`]: Math.max(data[target].min, data[target].value - 1)});
 					break;
 				}
 				case "slide": {
 					const fromTarget = C.traitPairs[target];
 					const targetVal = Math.min(data[target].max, data[target].value + 1);
-					this.slideDot(target, targetVal, fromTarget, data[fromTarget].value);
+					this._slideDot(target, targetVal, fromTarget, data[fromTarget].value);
 					this.updateSync({
 						[`data.${target}.value`]: targetVal,
 						[`data.${fromTarget}.value`]: Math.max(data[fromTarget].min, data[fromTarget].value - 1)
@@ -480,6 +533,8 @@ rejects as expected as the video doesn't exist. For
 	}
 
 	async _onItemCreate(event) { //~ Handle creating a new Owned Item for the actor using initial data defined in the HTML dataset
+		console.log("On Item Create Called");
+		return;
 		event.preventDefault();
 		const header = event.currentTarget;
 		//~ Get the type of item to create.

@@ -141,45 +141,6 @@ text-shadow: 0 0 5px $c-bg-primary-dark, 0 0 2px $c-bg-primary-dark, 0 0 5px $c-
 				z-index: 1;
 			}
 
-			> span {
-				position: absolute;
-				display: inline-block;
-				color: $c-fg-primary;
-				background-color: transparent;
-				border-radius: 10px;
-				outline: 0;
-				transform: scale(1);
-				z-index: 2;
-				padding: 0 5px;
-
-				&.big-gold {
-					color: $c-gold;
-					text-shadow: 0 0 3px black, 0 0 3px black, 0 0 3px black, 0 0 3px black;
-					border-radius: 10px;
-				}
-
-				&.draggable {
-					pointer-events: all;
-					opacity: 0%;
-					transform: scale(1);
-
-					&.click-through {
-						pointer-events: none !important;
-					}
-				}
-
-				&.highlight {
-					// border-radius: 20px;
-					// background: radial-gradient(ellipse, purple 50%, transparent 95%);
-					color: $c-gold;
-					text-shadow: 0 0 3px black, 0 0 3px black, 0 0 3px black, 0 0 3px black;
-					// transform: scale(3);
-					font-size: 10px;
-					// line-height: 15px;
-					// box-shadow: 0 0 5px purple, 0 0 5px purple, 0 0 5px purple, 0 0 5px purple;
-				}
-			}
-
 			&.sinister {
 				grid-row: 1;
 				margin-left: -20px;

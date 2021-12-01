@@ -116,7 +116,8 @@ Hooks.once("ready", () => {
 		MotionPathPlugin,
 		GSDevTools,
 		pause: () => gsap.globalTimeline.pause(),
-		play: () => gsap.globalTimeline.play()
+		play: () => gsap.globalTimeline.play(),
+		XContainer: XElem.CONTAINER
 	}).forEach(([key, ref]) => {
 		window[key] = ref;
 	});
