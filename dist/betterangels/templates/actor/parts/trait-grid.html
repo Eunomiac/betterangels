@@ -11,26 +11,22 @@
 		{{#with (lookup ../data ../bottom) as | botData |}}
 		{{#for topData.value}}
 			<div id="{{topData.name}}-{{math @index "++"}}" class="dot top-{{math @index "++"}} sinister">
-				<span class="dot-animation">&nbsp;</span>
-				<span class="dot-slot">&nbsp;</span>
+				<span class="dot-slot full">&nbsp;</span>
 			</div>
 		{{/for}}
 		{{#for topData.max topData.value}}
 			<div id="{{topData.name}}-{{math @index "++"}}" class="dot top-{{math @index "++"}} sinister">
-				<span class="dot-animation empty">&nbsp;</span>
 				<span class="dot-slot">&nbsp;</span>
 			</div>
 		{{/for}}
 		{{#for botData.value (math botData.max "--") -1}}
 			<div id="{{botData.name}}-{{math @index "++"}}" class="dot bottom-{{math @index "++"}} virtuous">
-				<span class="dot-animation empty">&nbsp;</span>
 				<span class="dot-slot">&nbsp;</span>
 			</div>
 		{{/for}}
 		{{#for botData.min (math botData.value "--") -1}}
 			<div id="{{botData.name}}-{{math @index "++"}}" class="dot bottom-{{math @index "++"}} virtuous">
-				<span class="dot-animation">&nbsp;</span>
-				<span class="dot-slot">&nbsp;</span>
+				<span class="dot-slot full">&nbsp;</span>
 			</div>
 		{{/for}}
 		{{/with}}

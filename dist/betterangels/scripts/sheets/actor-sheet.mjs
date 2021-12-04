@@ -235,72 +235,96 @@ rejects as expected as the video doesn't exist. For
 	}
 
 	_fillDot(trait, dot) {
-		const [dotElem] = $(`.app.betterangels #${trait}-${dot} > .dot-animation`);
-		// const [menuElem] = $(dotElem).closest(".radial-hover").find(".radial-menu");
-		// const [videoElem] = $(menuElem).find("video");
-		// const videoScale = gsap.getProperty(videoElem, "scale");
-		const tl = gsap.timeline({
-			onComplete() { $(dotElem).removeClass("empty") }
-		});
-		tl.fromTo(dotElem, {
-			scale: 7,
-			backgroundColor: "#FFFFFF",
-			opacity: 0
-		}, {
-			scale: 1,
-			opacity: 1,
-			backgroundColor: "#FFFFFF",
-			ease: "sine",
-			duration: 0.5
-		});
-	}
-	_emptyDot(trait, dot) {
-		const [dotElem] = $(`#${trait}-${dot} > .dot-animation`);
-		// const [menuElem] = $(dotElem).closest(".radial-hover").find(".radial-menu");
-		// const [videoElem] = $(menuElem).find("video");
-		// const videoScale = gsap.getProperty(videoElem, "scale");
-		const tl = gsap.timeline({
-			onComplete() { $(dotElem).addClass("empty") }
-		});
-		tl.fromTo(dotElem, {
-			scale: 1,
-			backgroundColor: "#FFFFFF",
-			opacity: 1
-		}, {
-			scale: 10,
-			opacity: 0,
-			backgroundColor: "#FFFFFF",
-			ease: "sine",
-			duration: 0.75
-		});
-	}
-	_slideDot(toTrait, toDot, fromTrait, fromDot) {
-		console.log({toTrait, toDot, fromTrait, fromDot});
-		const [slideElem] = $(`.app.betterangels #${fromTrait}-${fromDot} > .dot-animation`);
-		const [destElem] = $(`.app.betterangels #${toTrait}-${toDot} > .dot-animation`);
-		const slideToPos = U.convertCoords({x: 0, y: 0}, $(destElem).parent()[0], $(slideElem).parent()[0]);
-		console.log(slideElem, destElem, slideToPos);
-		gsap.to(slideElem, {
-			...slideToPos,
-			duration: 1,
-			ease: "elastic.inOut",
+		const [dotElem] = $(`.app.betterangels #${trait}-${dot} > .dot-slot`);
+		const timeline = gsap.timeline({
+			onStart() {
+				$(dotElem).addClass("full top-layer");
+			},
+			onInterrupt() {
+				$(dotElem).addClass("full");
+				$(dotElem).removeClass("top-layer");
+				gsap.set(dotElem, {clearProps: "all"});
+			},
 			onComplete() {
-				$(destElem).removeClass("empty");
-				$(slideElem).addClass("empty");
-				gsap.set(slideElem, {x: 0, y: 0});
+				$(dotElem).addClass("full");
+				$(dotElem).removeClass("top-layer");
+				gsap.set(dotElem, {clearProps: "all"});
 			}
 		});
-		gsap.to(slideElem, {
-			scale: 3,
-			duration: 0.5,
-			repeat: 1,
-			yoyo: true,
-			ease: "elastic.inOut"
+		timeline.fromTo(
+			dotElem,
+			{
+				scale: 10,
+				opacity: 0
+			},
+			{
+				scale: 1,
+				opacity: 1,
+				ease: "sine",
+				duration: 0.75,
+				clearProps: true
+			}
+		);
+	}
+	_emptyDot(trait, dot) {
+		const [dotElem] = $(`#${trait}-${dot} > .dot-slot`);
+		const timeline = gsap.timeline({
+			onStart() {
+				$(dotElem).addClass("top-layer");
+			},
+			onInterrupt() {
+				$(dotElem).removeClass("full top-layer");
+				gsap.set(dotElem, {clearProps: "all"});
+			},
+			onComplete() {
+				$(dotElem).removeClass("full top-layer");
+				gsap.set(dotElem, {clearProps: "all"});
+			}
 		});
-		// return;
-		// console.log({toTrait, toDot, fromTrait, fromDot});
-		// this._emptyDot(fromTrait, fromDot);
-		// setTimeout(() => this._fillDot(toTrait, toDot), 250);
+		timeline.fromTo(
+			dotElem,
+			{
+				scale: 1,
+				opacity: 1
+			},
+			{
+				scale: 10,
+				opacity: 0,
+				ease: "sine",
+				duration: 0.75,
+				clearProps: true
+			}
+		);
+	}
+	_slideDot(toTrait, toDot, fromTrait, fromDot) {
+		const [fromElem] = $(`.app.betterangels #${fromTrait}-${fromDot} > .dot-slot`);
+		const [toElem] = $(`.app.betterangels #${toTrait}-${toDot} > .dot-slot`);
+		const [animElem] = $("<span class=\"dot-slot full top-layer\">&nbsp;</span>").appendTo(`.app.betterangels #${fromTrait}-${fromDot}`);
+		gsap.to(animElem, {
+			...U.convertCoords(
+				{x: 0, y: 0},
+				$(toElem).parent()[0],
+				$(fromElem).parent()[0]
+			),
+			duration: 0.5,
+			ease: "slow(0.7, 0.7)",
+			onStart() {
+				$(fromElem).removeClass("full");
+			},
+			onInterrupt() {
+				$(toElem).addClass("full");
+				$(animElem).remove();
+			},
+			onComplete() {
+				$(toElem).addClass("full");
+				$(animElem).remove();
+			}
+		});
+		gsap.to(animElem, {
+			scale: 5,
+			duration: 0.5,
+			ease: "slow(0.7, 0.7, true)"
+		});
 	}
 
 	_prepareCharacterData(context) {
@@ -467,24 +491,31 @@ rejects as expected as the video doesn't exist. For
 	updateRadialButtons(trait) {
 		trait = C.virtuousTraitPairs[trait] ?? trait;
 		const [top, bottom] = this._getButtonStates(trait);
-		Object.entries({
-			[`#menu-add-${top.name}`]: top.add,
-			[`#menu-add-${bottom.name}`]: bottom.add,
-			[`#menu-drop-${top.name}`]: top.drop,
-			[`#menu-drop-${bottom.name}`]: bottom.drop,
-			[`#menu-slide-${top.name}`]: top.slide,
-			[`#menu-slide-${bottom.name}`]: bottom.slide,
-			[`#menu-add-drop-${top.name}`]: top.add || top.drop,
-			[`#menu-add-drop-${bottom.name}`]: bottom.add || bottom.drop,
-			[`#menu-slash-${top.name}`]: top.add && top.drop,
-			[`#menu-slash-${bottom.name}`]: bottom.add && bottom.drop
-		}).forEach(([id, isActive]) => {
-			if (isActive) {
-				$(id).removeClass("off");
-			} else {
-				$(id).addClass("off");
+		U.objForEach({
+			[`#menu-add-drop-${top.name}`]: {
+				"active-add": top.add,
+				"active-drop": top.drop
+			},
+			[`#menu-add-drop-${bottom.name}`]: {
+				"active-add": bottom.add,
+				"active-drop": bottom.drop
+			},
+			[`#menu-slide-${top.name}`]: {
+				"active-slide-left": top.slide
+			},
+			[`#menu-slide-${bottom.name}`]: {
+				"active-slide-right": bottom.slide
 			}
-		});
+		}, (classes, id) => U.objForEach(
+			classes,
+			(isActive, className) => {
+				if (isActive) {
+					$(id).addClass(className);
+				} else {
+					$(id).removeClass(className);
+				}
+			}
+		));
 	}
 
 	async _changeTrait(event) {

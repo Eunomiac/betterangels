@@ -6,31 +6,33 @@
 		{{#with (lookup data top) as | topData |}}
 		{{#with (lookup ../data ../bottom) as | botData |}}
 		<ul class="menu-container">
-			<li id="menu-slide-{{botData.name}}" class="menu-button {{~#unless botData.canSlideTo}} off{{/unless}}">
-				<button class="trait-button button-blue" data-clickaction="slide" data-target="{{botData.name}}"><span>⇘</span></button>
-				<label class="label-blue">Slide◢</label>
+			<li class="menu-button button-slide-right">
+				<button id="menu-slide-{{botData.name}}" class="trait-button button-slide-right
+					{{~#if botData.canSlideTo}} active-slide-right{{/if}}"
+					data-clickaction="slide" data-target="{{botData.name}}">
+				</button>
 			</li>
-			<li class="menu-button {{~#unless (test botData.canAdd "||" botData.canDrop)}} off{{/unless}}">
-				<button class="trait-button button-gold" data-clickaction="add" data-contextaction="drop" data-target="{{botData.name}}"><span>↷</span></button>
-				<label id="menu-add-drop-{{botData.name}}" class="label-gold">
-					<span id="menu-add-{{botData.name}}" class="label-green {{~#unless botData.canAdd}} off{{/unless}}">+</span>
-					<span id="menu-slash-{{botData.name}}" class="label-black {{~#unless (test botData.canAdd "&&" botData.canDrop)}} off{{/unless}}">/</span>
-					<span id="menu-drop-{{botData.name}}" class="label-red {{~#unless botData.canDrop}} off{{/unless}}">-</span>
-				</label>
+			<li class="menu-button">
+				<button id="menu-add-drop-{{botData.name}}" class="trait-button button-add-drop
+					{{~#if botData.canAdd}} active-add{{/if}}
+					{{~#if botData.canDrop}} active-drop{{/if}}"
+					data-clickaction="add" data-contextaction="drop" data-target="{{botData.name}}">
+				</button>
 			</li>
 			<li class="menu-button"></li>
 			<li class="menu-button"></li>
-			<li id="menu-slide-{{topData.name}}" class="menu-button {{~#unless topData.canSlideTo}} off{{/unless}}">
-				<button class="trait-button button-blue" data-clickaction="slide" data-target="{{topData.name}}"><span>⇖</span></button>
-				<label class="label-blue">◤Slide</label>
+			<li class="menu-button button-slide-left">
+				<button id="menu-slide-{{topData.name}}" class="trait-button button-slide-left
+					{{~#if topData.canSlideTo}} active-slide-left{{/if}}"
+					data-clickaction="slide" data-target="{{topData.name}}">
+				</button>
 			</li>
-			<li class="menu-button {{~#unless (test topData.canAdd "||" topData.canDrop)}} off{{/unless}}">
-				<button class="trait-button button-gold" data-clickaction="add" data-contextaction="drop" data-target="{{topData.name}}"><span>↷</span></button>
-				<label id="menu-add-drop-{{topData.name}}" class="label-gold">
-					<span id="menu-add-{{topData.name}}" class="label-green {{~#unless topData.canAdd}} off{{/unless}}">+</span>
-					<span id="menu-slash-{{topData.name}}" class="label-black {{~#unless (test topData.canAdd "&&" topData.canDrop)}} off{{/unless}}">/</span>
-					<span id="menu-drop-{{topData.name}}" class="label-red {{~#unless topData.canDrop}} off{{/unless}}">-</span>
-				</label>
+			<li class="menu-button">
+				<button id="menu-add-drop-{{topData.name}}" class="trait-button button-add-drop
+					{{~#if topData.canAdd}} active-add{{/if}}
+					{{~#if topData.canDrop}} active-drop{{/if}}"
+					data-clickaction="add" data-contextaction="drop" data-target="{{topData.name}}">
+				</button>
 			</li>
 			<li class="menu-button"></li>
 			<li class="menu-button"></li>

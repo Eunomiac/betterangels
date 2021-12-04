@@ -9,7 +9,8 @@ import {
 	InertiaPlugin,
 	MotionPathPlugin,
 	GSDevTools,
-	RoughEase, // GreenSock Animation Platform
+	RoughEase,
+	SlowMo, // GreenSock Animation Platform
 	// #endregion ▮▮▮▮[External Libraries]▮▮▮▮
 	// #region ▮▮▮▮▮▮▮[Utility]▮▮▮▮▮▮▮ ~
 	loadHandlebars,
@@ -37,7 +38,14 @@ import {
 
 /*DEVCODE*/ import BA_DB from "./helpers/debug.mjs"; /*!DEVCODE*/
 
-gsap.registerPlugin(Dragger, InertiaPlugin, MotionPathPlugin, GSDevTools);
+gsap.registerPlugin(
+	Dragger,
+	InertiaPlugin,
+	MotionPathPlugin,
+	GSDevTools,
+	RoughEase,
+	SlowMo
+);
 
 // #endregion ▄▄▄▄▄ IMPORTS ▄▄▄▄▄
 

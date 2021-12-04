@@ -15,7 +15,8 @@ import {
 	InertiaPlugin,
 	MotionPathPlugin,
 	GSDevTools,
-	RoughEase, // GreenSock Animation Platform
+	RoughEase,
+	SlowMo, // GreenSock Animation Platform
 	// ▮▮▮▮▮▮▮[Utility]▮▮▮▮▮▮▮
 	loadHandlebars,
 	U,
@@ -36,7 +37,14 @@ import {
 	XSnap
 } from "./helpers/bundler.mjs";
 
-gsap.registerPlugin(Dragger, InertiaPlugin, MotionPathPlugin, GSDevTools);
+gsap.registerPlugin(
+	Dragger,
+	InertiaPlugin,
+	MotionPathPlugin,
+	GSDevTools,
+	RoughEase,
+	SlowMo
+);
 
 // ████████ ON INIT: On-Initialization Hook ████████
 Hooks.once("init", async () => {

@@ -10,6 +10,11 @@
 
 /* Styles that extend to draggable items parented to global space */
 
+.db-green { outline: 4px solid lime !important; opacity: 1 !important; }
+.db-red { outline: 4px solid red !important; opacity: 1 !important; }
+.db-cyan { outline: 4px solid cyan !important; opacity: 1 !important; }
+.db-gold { outline: 4px solid gold !important; opacity: 1 !important; }
+
 span.trait {
 		position: absolute;
 		display: inline-block;

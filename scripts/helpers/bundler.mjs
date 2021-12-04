@@ -5,6 +5,7 @@ export {default as gsap,
 	InertiaPlugin,
 	MotionPathPlugin,
 	GSDevTools,
+	SlowMo,
 	RoughEase
 } from "/scripts/greensock/esm/all.js"; // eslint-disable-line import/no-unresolved
 

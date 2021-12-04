@@ -19,8 +19,8 @@
 			}
 
 			.menu-button {
-				width: $radius / 2;
-				height: auto;
+				// width: $radius / 2;
+				// height: auto;
 				margin-top: -($height / 2);
 				margin-left: -($radius / 4);
 
@@ -57,33 +57,12 @@
 					&:nth-of-type(#{$i}) {
 						transform:
 							rotate($rot * 1deg)
-							translate(0.75 * $menu-size / 2)
+							translate(0.5 * $menu-size / 2)
 							rotate($rot * -1deg)
 							#{$transform-translate};
-
-						button > span {
-							transform: "scale(1.5) #{$transform-rotate}";
-						}
-
-						&:hover button > span {
-							transform: "scale(5) #{$transform-rotate}";
-						}
 					}
 
 					$rot: $rot + $angle;
-				}
-
-				button,
-				label {
-					height: $height;
-					line-height: $height;
-				}
-
-				label { font-size: $height }
-
-				button {
-					font-size: $height;
-					line-height: $height;
 				}
 			}
 		}
@@ -108,6 +87,7 @@ text-shadow: 0 0 5px $c-bg-primary-dark, 0 0 2px $c-bg-primary-dark, 0 0 5px $c-
 	.window-content { overflow: hidden }
 	.window-resizable-handle { display: none }
 }
+
 .trait-line {
 	display: grid;
 	grid-template-columns: #{9 * $tactic-spacing} #{7 * $strategy-spacing} #{9 * $tactic-spacing};
@@ -189,29 +169,26 @@ text-shadow: 0 0 5px $c-bg-primary-dark, 0 0 2px $c-bg-primary-dark, 0 0 5px $c-
 
 			.dot {
 				position: relative;
+				border: 1px solid $c-fg-primary;
+				border-radius: 50%;
 
-				> span {
+				> .dot-slot {
 					position: absolute;
-					display: block;
-					left: 0;
-					top: 0;
+					// display: block;
+					// left: 0;
+					// top: 0;
 					height: 100%;
 					width: 100%;
-					box-sizing: border-box;
-					border: 1px solid $c-fg-primary;
 					border-radius: 50%;
+					background: transparent;
 
-					&.dot-slot {
-						background: transparent;
+					&.full {
+						background: radial-gradient(ellipse, $c-fg-primary-bright, $c-fg-primary 70%);
 					}
 
-					&.dot-animation {
-						background: radial-gradient(ellipse, $c-fg-primary-bright, $c-fg-primary 70%);
-
-						&.empty {
-							border: 0;
-							background: transparent;
-						}
+					&.top-layer {
+						z-index: 10000;
+						pointer-events: none !important;
 					}
 				}
 
@@ -328,14 +305,25 @@ text-shadow: 0 0 5px $c-bg-primary-dark, 0 0 2px $c-bg-primary-dark, 0 0 5px $c-
 		opacity: 0%;
 		transition: 0.5s;
 		transform: scale(0.3) rotate(-125deg);
+		pointer-events: all;
 
+		@include radial-menu(60px, 8, 14px);
 		@include radial-menu(50px, 8, 14px);
-		@include radial-menu(40px, 8, 14px);
+		@include radial-menu(100px, 8, 14px);
+		@include radial-menu(150px, 8, 14px);
 
 		&.depth-1 { z-index: 2 }
 		&.depth-2 { z-index: 4 }
 		&.depth-3 { z-index: 6 }
 		&.depth-4 { z-index: 8 }
+
+		&:not(.active) {
+			pointer-events: none !important;
+
+			* {
+				pointer-events: none !important;
+			}
+		}
 
 		video {
 			position: absolute;
@@ -344,7 +332,7 @@ text-shadow: 0 0 5px $c-bg-primary-dark, 0 0 2px $c-bg-primary-dark, 0 0 5px $c-
 			width: 200%;
 			height: 200%;
 			opacity: 100%;
-			transform: scale(2);
+			transform: scale(1.75);
 			opacity: 0.75;
 		}
 
@@ -356,19 +344,14 @@ text-shadow: 0 0 5px $c-bg-primary-dark, 0 0 2px $c-bg-primary-dark, 0 0 5px $c-
 			height: 140%;
 			list-style: none;
 
-			// pointer-events: all;
-
-			// background-color: rgba(0, 255, 0, 0.25);
-			// outline: 2px solid rgba(0, 255, 0, 0.5);
-
 			.menu-button {
 				position: absolute;
+				display: block;
 				top: 50%;
 				left: 50%;
-				transition: 0.5s;
-
-				// background-color: rgba(0, 255, 255, 0.25);
-				// outline: 2px solid rgba(0, 255, 255, 0.5);
+				height: 20px;
+				width: 30px;
+				// transition: 0.5s;
 
 				@keyframes slow-bob {
 					from { top: -3px; }
@@ -379,94 +362,54 @@ text-shadow: 0 0 5px $c-bg-primary-dark, 0 0 2px $c-bg-primary-dark, 0 0 5px $c-
 					position: absolute;
 					padding: 0;
 					margin: 0;
+					height: 100%;
+					width: 100%;
 
 					// background-color: rgba(255, 0, 255, 0.5);
 					// outline: 2px solid rgba(255, 0, 255, 1);
-					font-weight: bold;
-					color: var(--button-color);
-					text-shadow: -1px -1px 2px #000000, 1px -1px 2px #000000, -1px 1px 2px #000000, 1px 1px 2px #000000;
+					// font-weight: bold;
+					// color: var(--button-color);
+					// text-shadow: -1px -1px 2px #000000, 1px -1px 2px #000000, -1px 1px 2px #000000, 1px 1px 2px #000000;
 					background: transparent;
+					background-size: 30px 20px;
 					border: none;
 					outline: none;
 					box-shadow: none;
 					transition: 0.5s;
 					animation: slow-bob 2s cubic-bezier(0.36, 0, 0.63, 1) infinite alternate;
+					
+					&.button-add-drop {
+						background-image: url("/systems/betterangels/assets/icons/add-drop-bg.webp");
 
-					&.button-gold {
-						--button-color: #{$c-gold5};
-						--button-bright: #{$c-gold};
-					}
-
-					&.button-blue {
-						--button-color: #{$c-cyan5};
-						--button-bright: #{$c-cyan};
-					}
-
-					> span {
-						display: block;
-						transition: 0.25s;
-						transform: scale(1.5);
-					}
-				}
-
-				label {
-					position: relative;
-					display: block !important;
-					width: 200%;
-					height: auto !important;
-					margin-left: -50%;
-					text-align: center;
-					letter-spacing: 10px;
-					opacity: 0%;
-					transition: 0.25s !important;
-					transform: scale(2);
-					animation: slow-bob 2s cubic-bezier(0.36, 0, 0.63, 1) infinite alternate;
-					font: {
-						family: $font-primary;
-						weight: bold;
-					}
-					text: {
-						transform: uppercase;
-						align: center;
-						shadow: -1px -1px 2px #000000, 1px -1px 2px #000000, -1px 1px 2px #000000, 1px 1px 2px #000000;
-					}
-
-					&.label-blue {
-						color: $c-cyan;
-					}
-
-					&.label-gold {
-						transform: scale(4);
-
-						> span {
-							&.label-green {
-								color: $c-lime;
-							}
-							&.label-black {
-								color: $c-black;
-							}
-							&.label-red {
-								color: $c-red;
-							}
-
-							&.off {
-								opacity: 0.5;
-								color: $c-grey5;
-							}
+						&.active-add {
+							background-image: url("/systems/betterangels/assets/icons/add-active.webp");
+							pointer-events: all;
+						}										
+						&.active-drop {
+							background-image: url("/systems/betterangels/assets/icons/drop-active.webp");
+							pointer-events: all;
+						}
+						&.active-add.active-drop {
+							background-image: url("/systems/betterangels/assets/icons/add-drop-active.webp");
+							pointer-events: all;
 						}
 					}
-				}
+					&.button-slide-left {
+						background-image: url("/systems/betterangels/assets/icons/slide-left-bg.webp");		
 
-				&.off {
-					color: $c-grey5;
-					opacity: 50%;
-
-					button,
-					label,
-					span {
-						color: $c-grey5;
-						pointer-events: none !important;
+						&.active-slide-left {
+							background-image: url("/systems/betterangels/assets/icons/slide-left.webp");
+							pointer-events: all;
+						}
 					}
+					&.button-slide-right {
+						background-image: url("/systems/betterangels/assets/icons/slide-right-bg.webp");
+
+						&.active-slide-right {
+							background-image: url("/systems/betterangels/assets/icons/slide-right.webp");
+							pointer-events: all;
+						}
+					}		
 				}
 			}
 		}
@@ -480,31 +423,18 @@ text-shadow: 0 0 5px $c-bg-primary-dark, 0 0 2px $c-bg-primary-dark, 0 0 5px $c-
 				padding: 0;
 				margin: 0;
 				list-style: none;
-				pointer-events: all;
+				// pointer-events: all;
 
-				.menu-button:not(.empty) { pointer-events: all }
+				// .menu-button:not(.empty) { pointer-events: all }
 
 				.menu-button:hover {
 					z-index: 10;
 
 					button {
-						pointer-events: all;
+						// pointer-events: all;
 						// background: var(--button-bg);
 						// box-shadow: 0 0 2px var(--button-bright), 0 0 2px var(--button-bright), 0 0 2px var(--button-bright);
-						transform: scaleY(1.25) scaleX(2);
-
-						> span {
-							display: block;
-							opacity: 0%;
-							transition: 0.5s;
-							transform: scale(5);
-						}
-
-						+ label {
-							letter-spacing: normal;
-							opacity: 100%;
-							transform: scale(1);
-						}
+						transform: scale(2);
 					}
 				}
 			}
