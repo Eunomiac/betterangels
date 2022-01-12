@@ -97,6 +97,21 @@ Hooks.once("init", async () => {
 // #endregion ▄▄▄▄▄ ON INIT ▄▄▄▄▄
 
 /*DEVCODE*/
+const initDragTest = (traitName = "courage") => {
+	gsap.set(".trait-pair .draggable", {opacity: 0});
+	const [elem, newParent, oldParent] = [
+		$(`#trait-label-${U.lCase(traitName)} .draggable`)[0],
+		$("#x-container")[0],
+		$(`#trait-label-${U.lCase(traitName)}`)[0]
+	];
+	gsap.set(elem, {opacity: 1});
+	const dragElem = Dragger.get(elem);
+	window.elem = elem;
+	window.newParent = newParent;
+	window.oldParent = oldParent;
+	window.dragElem = dragElem;
+};
+
 Hooks.once("ready", () => {
 
 	$(".notification.error.permanent").remove();
@@ -109,6 +124,7 @@ Hooks.once("ready", () => {
 	});
 	Object.entries({
 		U,
+		initDragTest,
 		BetterAngelsActor,
 		BetterAngelsActorSheet,
 		HellboundActorSheet,
@@ -122,13 +138,16 @@ Hooks.once("ready", () => {
 		XSnap,
 		gsap,
 		MotionPathPlugin,
+		Dragger,
 		GSDevTools,
+		getPos: U.getNewPos,
 		pause: () => gsap.globalTimeline.pause(),
 		play: () => gsap.globalTimeline.play(),
 		XContainer: XElem.CONTAINER
 	}).forEach(([key, ref]) => {
 		window[key] = ref;
 	});
+
 	return;
 
 	window.DB.setDBCircle(window.CIRCLES[0]);

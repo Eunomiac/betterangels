@@ -866,7 +866,13 @@ const drawCirclePath = (radius, origin) => {
 };
 const formatAsClass = (str) => `${str}`.replace(/([A-Z])|\s/g, "-$1").replace(/^-/, "").trim().toLowerCase();
 const getGSAngleDelta = (startAngle, endAngle) => signNum(roundNum(getAngleDelta(startAngle, endAngle), 2)).replace(/^(.)/, "$1=");
-const convertCoords = ({x, y}, contextA, contextB) => MotionPathPlugin.convertCoordinates(contextA, contextB, {x, y});
+const convertCoords = ({x, y}, contextA, contextB) => {
+	const convCoords = MotionPathPlugin.convertCoordinates(contextA, contextB, {x, y});
+	return {
+		x: convCoords.x,
+		y: convCoords.y
+	};
+};
 const getNewPos = (elem, newContext, point) => {
 	point = point ?? {
 		x: gsap.getProperty(elem, "x"),
@@ -875,17 +881,36 @@ const getNewPos = (elem, newContext, point) => {
 	const [fromSpace] = $(elem).parent();
 	return convertCoords(point, fromSpace, newContext);
 };
-const getGlobalPos = (elem, point) => getNewPos(elem, $("body")[0], point);
+const getGlobalPos = (elem, point) => getNewPos(elem, $("#x-container")[0], point);
 const reparent = (elem, newParent) => {
-	newParent = newParent ?? $("body")[0];
+	newParent = newParent ?? $("#x-container")[0];
+	const oldPos = {x: gsap.getProperty(elem, "x"), y: gsap.getProperty(elem, "y")};
 	const newPos = getNewPos(elem, newParent);
-	console.log({
-		oldPosition: {x: gsap.getProperty(elem, "x"), y: gsap.getProperty(elem, "y")},
-		newPosition: newPos
-	});
+	const dbData = {
+		elem,
+		newParent
+	};
+	const dragElem = Dragger.get(elem);
+	if (dragElem) {
+		dbData.dragElem = dragElem;
+	}
+	dbData.oldPos = oldPos;
+	dbData.newPos = newPos;
+	dbData.newPosCheck = null;
+	if (dragElem) {
+		dbData.oldDragPos = {x: dragElem.x, y: dragElem.y};
+	}
 	$(elem).appendTo(newParent);
-	gsap.set(elem, newPos);
-	Dragger.get(elem)?.update(false, true);
+	gsap.set(elem, {x: newPos.x, y: newPos.y});
+	dbData.newPosCheck = {x: gsap.getProperty(elem, "x"), y: gsap.getProperty(elem, "y")};
+	if (dragElem) {
+		dbData.newDragPos = {x: dragElem.x, y: dragElem.y};
+		// dragElem.update();
+		dbData.dragPosUpdate = {x: dragElem.x, y: dragElem.y};
+		dragElem.update(false, true);
+		// dbData.dragPosStickyUpdate = {x: dragElem.x, y: dragElem.y};
+	}
+	console.log(dbData);
 };
 
 // ████████ EXPORTS ████████

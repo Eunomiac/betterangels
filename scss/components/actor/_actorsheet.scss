@@ -76,15 +76,18 @@ $strategy-dot-size: 19px;
 $tactic-spacing: $tactic-dot-size + 1px;
 $strategy-spacing: $strategy-dot-size + 1px;
 
-text-shadow: 0 0 5px $c-bg-primary-dark, 0 0 2px $c-bg-primary-dark, 0 0 5px $c-bg-primary;
+text-shadow: 0 0 5px $c-bg-dark, 0 0 2px $c-bg-dark, 0 0 5px $c-bg;
 
 &.hellbound {
 	width: 476px !important;
 	height: 786px !important;
-	overflow: hidden;
+	overflow: visible !important;
 	border-radius: 25px;
 
-	.window-content { overflow: hidden }
+	.window-content { 
+		max-height: calc(100% - (2 * 25px));
+		overflow: visible !important;
+	}
 	.window-resizable-handle { display: none }
 }
 
@@ -121,6 +124,8 @@ text-shadow: 0 0 5px $c-bg-primary-dark, 0 0 2px $c-bg-primary-dark, 0 0 5px $c-
 				z-index: 1;
 			}
 
+			> span { position: absolute }
+
 			&.sinister {
 				grid-row: 1;
 				margin-left: -20px;
@@ -133,12 +138,8 @@ text-shadow: 0 0 5px $c-bg-primary-dark, 0 0 2px $c-bg-primary-dark, 0 0 5px $c-
 			&.virtuous {
 				grid-row: 4;
 				margin-right: -20px;
-				text-align: right;
 
 				> video { right: calc(-40px + var(--video-horiz-shift)) }
-				> span {
-					right: 0;
-				}
 			}
 
 			&:hover {
@@ -147,7 +148,7 @@ text-shadow: 0 0 5px $c-bg-primary-dark, 0 0 2px $c-bg-primary-dark, 0 0 5px $c-
 				}
 
 				> span.display {
-					color: $c-bg-primary-dark;
+					color: $c-bg-dark;
 					text-shadow: none;
 					transition: 0.5s;
 					transform: scale(1.2);
@@ -169,7 +170,7 @@ text-shadow: 0 0 5px $c-bg-primary-dark, 0 0 2px $c-bg-primary-dark, 0 0 5px $c-
 
 			.dot {
 				position: relative;
-				border: 1px solid $c-fg-primary;
+				border: 1px solid $c-fg;
 				border-radius: 50%;
 
 				> .dot-slot {
@@ -183,7 +184,7 @@ text-shadow: 0 0 5px $c-bg-primary-dark, 0 0 2px $c-bg-primary-dark, 0 0 5px $c-
 					background: transparent;
 
 					&.full {
-						background: radial-gradient(ellipse, $c-fg-primary-bright, $c-fg-primary 70%);
+						background: radial-gradient(ellipse, $c-fg-bright, $c-fg 70%);
 					}
 
 					&.top-layer {
@@ -462,7 +463,11 @@ text-shadow: 0 0 5px $c-bg-primary-dark, 0 0 2px $c-bg-primary-dark, 0 0 5px $c-
 				margin-bottom: -125px;
 
 				&.aspect-coin {
-					filter: drop-shadow(16px 16px 16px #{$c-bg-primary-dark});
+					filter: drop-shadow(16px 16px 16px #{$c-bg-dark});
+
+					&:nth-of-type(3) {
+						display: none;
+					}
 				}
 
 				&.active {
@@ -499,7 +504,7 @@ text-shadow: 0 0 5px $c-bg-primary-dark, 0 0 2px $c-bg-primary-dark, 0 0 5px $c-
 	font-size: 20px;
 	font-family: $font-primary;
 	font-weight: bold;
-	color: $c-fg-primary;
+	color: $c-fg;
 	text-align: center;
 	margin-top: 50px;
 

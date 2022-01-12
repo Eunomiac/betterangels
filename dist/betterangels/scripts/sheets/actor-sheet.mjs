@@ -32,20 +32,17 @@ export default class extends MIX(ActorSheet).with(UpdateQueue) {
 	get template() { return `systems/betterangels/templates/actor/actor-${this.actor.data.type}-sheet.html` }
 
 	getData() {
+		const context = ((rootData) => ({
+			...rootData,
+			type: rootData.actor.data.type,
+			data: rootData.actor.data.data,
+			flags: rootData.actor.data.flags
+		}))(super.getData());
 
-		const context = super.getData();
-
-		const actorData = U.cloneObj(context.actor.data);
-
-		context.data = actorData.data;
-		context.flags = actorData.flags;
-
-		if (["hellbound", "minornpc", "mobnpc"].includes(actorData.type)) {
+		if (["hellbound", "minornpc", "mobnpc"].includes(context.type)) {
 			this._prepareItems(context);
 			this._prepareCharacterData(context);
 		}
-
-		context.rollData = context.actor.getRollData();
 
 		return context;
 	}
@@ -97,13 +94,14 @@ rejects as expected as the video doesn't exist. For
 <video><source src="not-existing-video.mp4" type='video/mp4'></video>,
  the play() promise never rejects. It only happens if there are no valid sources. */
 
-	_playLabelVideo(event) {
+	_onVideoHover(event) {
 		event.preventDefault();
 		// console.log("Play Label Video", event);
 		const [videoElem] = $(event.currentTarget).find("video");
 		videoElem.status = "fade-in";
 		gsap.fromTo(videoElem, {
-			opacity: 0.1
+			opacity: 0/* ,
+			opacity: 0.1 */
 		}, {
 			opacity: 1,
 			duration: 0.5,
@@ -120,7 +118,7 @@ rejects as expected as the video doesn't exist. For
 		// setTimeout(() => videoElem.play(), 150);
 	}
 
-	_pauseLabelVideo(event) {
+	_offVideoHover(event) {
 		event.preventDefault();
 		// console.log("Pause Label Video", event);
 		const [videoElem] = $(event.currentTarget).find("video");
@@ -375,10 +373,18 @@ rejects as expected as the video doesn't exist. For
 
 		html.find(".radial-hover").contextmenu(this._openRadialMenu.bind(this));
 		html.find(".radial-hover").mouseleave(this._closeRadialMenu.bind(this));
-		html.find(".trait-pair > label").hover(this._playLabelVideo.bind(this), this._pauseLabelVideo.bind(this));
+		html.find(".trait-pair > label").hover(this._onVideoHover.bind(this), this._offVideoHover.bind(this));
 
 		html.find(".trait-button").click(this._changeTrait.bind(this));
 		html.find(".trait-button").contextmenu(this._changeTrait.bind(this));
+
+		$(".trait-pair .virtuous").each((_, label) => {
+			const fullWidth = gsap.getProperty(label, "width");
+			$(label).find(".trait").each((__, span) => {
+				const spanWidth = gsap.getProperty(span, "width");
+				gsap.set(span, {x: fullWidth - (1.1 * spanWidth)});
+			});
+		});
 
 		Hooks.on("preCreateItem", (item, itemData) => {
 			const {type} = itemData;
@@ -401,10 +407,27 @@ rejects as expected as the video doesn't exist. For
 			}
 		});
 
+		// Construct lookup object for trait livesnap points
+		const getSnapPoints = (traitName) => {
+			traitName = U.lCase(traitName);
+			const snapPoints = new Map();
+			const [homeTarget] = $(`#trait-label-${traitName} .display`);
+			const globalHomePos = U.getGlobalPos(homeTarget);
+			snapPoints.set(globalHomePos, homeTarget);
+			C[C.strategies.includes(traitName) ? "tactics" : "strategies"].forEach((trait) => {
+				const [dropTarget] = $(`#trait-label-${trait} .display`);
+				const globalDropPos = U.getGlobalPos(dropTarget);
+				globalDropPos.y += 15;
+				snapPoints.set(globalDropPos, dropTarget);
+			});
+			console.log(`***SNAP POINTS for ${U.uCase(traitName)} ***`);
+			console.log(snapPoints);
+			console.log("===================");
+			return snapPoints;
+		};
+
 		Dragger.create(".draggable.trait", {
 			onDragStart() {
-				this.droppables = Array.from($(".droppable")).filter((elem) => !new RegExp(`${this.target.dataset.target}$`).test(elem.id));
-				// console.log("Droppables", this.droppables);
 				[this.startParent] = $(this.target).parent();
 				U.reparent(this.target, $("#x-container")[0]);
 				this.update(false, true);
@@ -415,45 +438,75 @@ rejects as expected as the video doesn't exist. For
 					ease: "elastic.out"
 				});
 			},
-			onDrag() {
-				this.droppables.forEach((elem) => {
-					if (this.hitTest(elem, "50%")) {
-						// const displayElem = $(elem).find(".display");
-						// displayElem.addClass("highlight");
-						gsap.to($(elem).find(".display").addClass("highlight"), {
-							y: -10,
+			liveSnap: {
+				points(point) {
+					if (!this.snapPoints) {
+						const [, , traitName] = this.target.id.split("-");
+						this.snapPoints = getSnapPoints(traitName);
+					}
+					const snapPoint = gsap.utils.snap(
+						{
+							values: Array.from(this.snapPoints.keys()),
+							radius: 25
+						},
+						point
+					);
+					const snapElem = this.snapPoints.get(snapPoint);
+					let isUnsnapping = false;
+					if (snapElem && snapElem.id !== this.snapElem?.id) {
+						isUnsnapping = this.snapElem;
+						this.snapElem = snapElem;
+						gsap.to(snapElem, {
+							y: -25,
+							color: "rgb(255, 215, 0)",
+							textShadow: "0 0 3px black, 0 0 3px black, 0 0 3px black, 0 0 3px black",
+							fontSize: 10,
 							scale: 3,
 							ease: "power4.out",
 							duration: 0.5
 						});
-						this.dropTarget = elem;
-					} else if (this.dropTarget?.id !== elem.id) {
-						const [displayElem] = $(elem).find(".display");
-						$(displayElem).removeClass("highlight");
-						gsap.to(displayElem, {
+					} else if (!snapElem && this.snapElem) {
+						isUnsnapping = this.snapElem;
+						delete this.snapElem;
+					}
+					if (isUnsnapping) {
+						gsap.to(isUnsnapping, {
 							y: 0,
+							color: "rgb(179, 179, 179)",
+							textShadow: "none",
+							fontSize: 14,
 							scale: 1,
 							ease: "power4.out",
 							duration: 0.5
 						});
 					}
-				});
+					return snapElem ? snapPoint : point;
+				}
 			},
 			onDragEnd() {
-				const dragContext = this;
-				$(".droppable .display.highlight").each((_, elem) => {
-					$(elem).removeClass("highlight");
-					U.reparent(this.target, this.startParent);
-					gsap.to(elem, {
-						y: 0,
-						scale: 1,
-						ease: "power4.out",
-						duration: 0.5,
-						onComplete() { sheetContext._launchRoll(dragContext.target, dragContext.dropTarget) }
-					});
-				});
 				$(this.target).addClass("click-through");
-				// sheetContext._launchRoll(this.target, this.dropTarget);
+				U.reparent(this.target, this.startParent);
+				const dragContext = this;
+				gsap.to(this.target, {
+					scale: 1,
+					opacity: 0,
+					duration: 1,
+					ease: "elastic.out",
+					onComplete() {
+						// sheetContext._launchRoll(dragContext.target, dragContext.snapElem);
+					}
+				});
+				gsap.to(this.snapElem, {
+					y: 0,
+					color: "rgb(179, 179, 179)",
+					textShadow: "none",
+					fontSize: 14,
+					scale: 1,
+					ease: "power4.out",
+					duration: 0.5
+				});
+				delete this.snapElem;
+				delete this.snapPoints;
 			}
 		});
 	}
@@ -484,9 +537,7 @@ rejects as expected as the video doesn't exist. For
 		];
 	}
 
-	_canTrait(trait, action) {
-		return this._getButtonStates(trait)[0][action];
-	}
+	_canTrait(trait, action) { return this._getButtonStates(trait)[0][action] }
 
 	updateRadialButtons(trait) {
 		trait = C.virtuousTraitPairs[trait] ?? trait;

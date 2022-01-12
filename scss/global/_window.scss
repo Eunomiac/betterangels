@@ -1,16 +1,16 @@
 // .notification.error.permanent { display: none !important; }
 .window-app {
     font-family: $font-primary;
-		color: $c-fg-primary;
-		background: $c-bg-primary;
+		color: $c-fg;
+		background: $c-bg;
 
 		a:hover {
 			text-shadow: 0 0 18px #{$c-glow-primary}, 0 0 18px #{$c-glow-primary}, 0 0 18px #{$c-glow-primary};
-			color: $c-fg-primary-bright;
+			color: $c-fg-bright;
 		}
 
 		a.pdfoundry-link:hover {
-			color: $c-bg-primary-dark;
+			color: $c-bg-dark;
 		}
 
 		* {
@@ -27,7 +27,7 @@
 			input[type="number"],
 			input[type="date"],
 			input[type="time"] {
-				color: $c-fg-primary;
+				color: $c-fg;
 				border: 0;
 				background: transparent;
 			}
@@ -51,7 +51,7 @@
 .rollable {
     &:hover,
     &:focus {
-        color: $c-fg-primary-bright;
+        color: $c-fg-bright;
         text-shadow: 0 0 18px #{$c-glow-primary}, 0 0 18px #{$c-glow-primary}, 0 0 18px #{$c-glow-primary};
         cursor: pointer;
     }

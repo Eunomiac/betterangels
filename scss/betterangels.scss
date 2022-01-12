@@ -16,9 +16,9 @@
 .db-gold { outline: 4px solid gold !important; opacity: 1 !important; }
 
 span.trait {
-		position: absolute;
+		position: relative;
 		display: inline-block;
-		color: $c-fg-primary;
+		color: $c-fg;
 		background-color: transparent;
 		border-radius: 10px;
 		outline: 0;
@@ -65,6 +65,7 @@ span.trait {
   }
 
 	&.item {
+		border-radius: 15px;
 		@import "components/item/itemsheet";
 	}
 }
