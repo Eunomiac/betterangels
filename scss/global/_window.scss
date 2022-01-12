@@ -13,15 +13,13 @@
 			color: $c-bg-dark;
 		}
 
-		* {
-			font-family: inherit;
-			color: inherit;
-		}
+		* { color: inherit }
 
 		.window-content {
 			font-family: inherit;
-			color: inherit;
 			background: inherit;
+
+			* { font-family: inherit }
 
 			input[type="text"],
 			input[type="number"],

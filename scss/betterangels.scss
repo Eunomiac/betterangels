@@ -57,7 +57,9 @@ span.trait {
 
 /* Styles limited to betterangels sheets */
 .betterangels {
-  @import "components/forms";
+	border-radius: 15px;
+
+  @import "components/sheets";
   // @import "components/items";
 
   &.actor {
@@ -65,7 +67,6 @@ span.trait {
   }
 
 	&.item {
-		border-radius: 15px;
 		@import "components/item/itemsheet";
 	}
 }

@@ -13,7 +13,10 @@
         "sheet": {
             "hellboundSheet": "Hellbound Sheet",
             "minorNPCSheet": "NPC Sheet (Minor)",
-            "mobNPCSheet": "NPC Sheet (Mob)"
+            "mobNPCSheet": "NPC Sheet (Mob)",
+            "powerSheet": "Power",
+            "aspectSheet": "Demonic Aspect",
+            "deviceSheet": "Devilish Device"
         }
     }
 }

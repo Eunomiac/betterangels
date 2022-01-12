@@ -1,5 +1,64 @@
 .window-content {
 	padding-top: 0;
+
+	.aspect {
+		$horiz-scale: 0.66;
+
+		.background-img {
+			height: 75px;
+			position: absolute;
+			transform: scale(3);
+			pointer-events: none;
+			left: calc(100% - (75px / #{$horiz-scale}));
+			border: none;
+		}
+
+		.sheet-header .header-fields .item-name {
+			width: calc(100% / #{$horiz-scale});
+			height: auto;
+			padding: 20px 0 0 0;
+			font-size: 64px;
+			transform: scaleX(#{$horiz-scale}) scaleY(1.5);
+			line-height: 28px;
+			text-align: left;
+			transform-origin: left;
+		}
+	}
+
+	.power {
+
+		.background-img {
+			height: 75px;
+			top: calc(50% - (75px / 2));
+			left: calc((100% - 75px) / 2);
+			position: absolute;
+			transform: scale(3);
+			filter: blur(0.6px)
+				brightness(1.5)
+				drop-shadow(0px 0px 4px #{$c-bg-dark})
+				drop-shadow(0px 0px 4px #{$c-bg-dark})
+				drop-shadow(0px 0px 14px #{$c-bg-dark})
+				drop-shadow(0px 0px 14px #{$c-bg-dark});
+			pointer-events: none;
+			border: none;
+		}
+
+		.background-img.faded-img {
+			transform: scale(7);
+			filter: brightness(0.75) blur(2px);
+		}
+
+		.sheet-header .header-fields .item-name {
+			text-align: left;
+			text-indent: 8px;
+			height: 75px;
+			margin-top: 20px;
+			font-size: 32px;
+			font-family: $font-secondary;
+			resize: none;
+			line-height: 70px;
+		}
+	}
 		
 	.sheet-header {
 		margin-bottom: 10px;
@@ -17,96 +76,43 @@
 			position: relative;
 
 			.item-name {
+				display: block;
 				height: 100px;
+				width: 100%;
 				padding: 0;
 				margin: 5px 0;
 				border: 0;
 				position: relative;
+				color: $c-fg-bright;
+				background: transparent;
+				transform-origin: 50% 50%;
+				text-align: center;
+				text-shadow:  0 0 5px #{$c-bg-dark},
+					0 0 5px #{$c-bg-dark},
+					0 0 5px #{$c-bg-dark},
+					0 0 5px #{$c-bg-dark},
+					0 0 5px #{$c-bg-dark},
+					0 0 5px #{$c-bg-dark},
+					0 0 5px #{$c-bg-dark};
 
-				textarea, input {
-					display: block;
-					width: 100%;
-					height: 100%;
-					margin: 0;
-					padding: 10px 0;
-					border: 0;
-					color: $c-fg-primary-bright;
-					background: transparent;
-					transform-origin: 50% 50%;
-					text-align: center;
-					text-shadow:  0 0 5px #{$c-bg-primary-dark},
-						0 0 5px #{$c-bg-primary-dark},
-						0 0 5px #{$c-bg-primary-dark},
-						0 0 5px #{$c-bg-primary-dark},
-						0 0 5px #{$c-bg-primary-dark},
-						0 0 5px #{$c-bg-primary-dark},
-						0 0 5px #{$c-bg-primary-dark};
-				}
-
-				textarea {
-					pointer-events: none;
-				}
+				&.read-only { pointer-events: none }
 			}
 		}
 	}
 
-	.aspect .sheet-header {
-		$horiz-scale: 0.66;
-
-		.profile-img {
-			height: 75px;
-			position: absolute;
-			transform: scale(3);
-			pointer-events: none;
-			left: calc(100% - (75px / #{$horiz-scale}));
-		}
-
-		.header-fields .item-name textarea {
-			width: calc(100% / #{$horiz-scale});
-			padding: 40px 0 0 0;
-			font-size: 64px;
-			transform: scaleX(#{$horiz-scale}) scaleY(1.5);
-			line-height: 28px;
-			position: absolute;
-			text-align: left;
-			transform-origin: left;
-		}
-	}
-
-	.power .sheet-header {
-		.profile-img {
-			height: 75px;
-			top: calc(50% - (75px / 2));
-			left: calc((100% - 75px) / 2);
-			position: absolute;
-			transform: scale(3);
-			filter: blur(0.6px)
-				brightness(1.5)
-				drop-shadow(0px 0px 4px #{$c-bg-primary-dark})
-				drop-shadow(0px 0px 4px #{$c-bg-primary-dark})
-				drop-shadow(0px 0px 14px #{$c-bg-primary-dark})
-				drop-shadow(0px 0px 14px #{$c-bg-primary-dark});
-			pointer-events: none;
-		}
-
-		.profile-img.faded-img {
-			transform: scale(7);
-			filter: brightness(0.75) blur(2px);
-		}
-
-		.header-fields .item-name textarea {
-			font-size: 32px;
-			font-family: $font-secondary;
-			resize: none;
-			line-height: 70px;
-		}
-	}
-
 	.sheet-body {
+		padding: 0 5px;
 
 		.feature-description {
+			color: $c-fg-bright;
+			text-shadow: 0 0 2px #{$c-bg-dark},
+					0 0 2px #{$c-bg-dark},
+					0 0 2px #{$c-bg-dark},
+					0 0 2px #{$c-bg-dark},
+					0 0 2px #{$c-bg-dark};
 			margin: 10px 0px;
 			text-align: justify;
+			position: relative;
 
 			.inline-trait.strategy {
 				color: $c-lime;
@@ -121,13 +127,13 @@
 
 		.pdf-link {
 			text-align: right;
+			
 
 			.pdfoundry-link {
 				border-radius: 25px;
+				position: relative;
 			}
 		}
 	}
 
 }
-
-.window-resizable-handle { display: none }

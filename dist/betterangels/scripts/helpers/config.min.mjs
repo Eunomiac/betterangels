@@ -1,1 +1,0 @@
-export default{t:.8};

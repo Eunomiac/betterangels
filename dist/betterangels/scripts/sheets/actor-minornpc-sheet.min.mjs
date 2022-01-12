@@ -1,1 +1,0 @@
-import e from"./actor-sheet.mjs";export default class extends e{static get t(){return mergeObject(super.t,{p:[...super.t.p,"npc","minornpc"],width:400,height:400})}getData(){const e=super.getData();e.u.data;return e}i(e){super.i(e)}o(e){super.o(e)}m(e){super.m(e)}}

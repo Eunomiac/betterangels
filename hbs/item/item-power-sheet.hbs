@@ -1,0 +1,24 @@
+<form class="{{cssClass}} {{item.type}}" autocomplete="off">
+	
+	<img class="background-img" src="{{item.img}}" data-edit="img" title="{{item.name}}"/>
+	<img class="background-img faded-img" src="{{item.img}}" data-edit="img" title="{{item.name}}"/>
+  
+	<header class="sheet-header">   
+		<div class="header-fields">
+      <textarea class="item-name {{~#if item.name}} read-only{{/if}}" name="name" value="{{item.name}}" placeholder="(item name)">{{item.name}}</textarea>
+		</div>
+  </header>
+
+  {{!-- Sheet Body --}}
+  <section class="sheet-body">
+		{{{data.description}}}
+		{{#if data.page}}
+		<p class="pdf-link">
+			<a class="pdfoundry-link" data-ref="{{data.book}}" data-page="{{data.page}}">
+				Compiled Powers: {{item.name}}
+			</a>
+		</p>
+		{{/if}}
+  </section>
+
+</form>
