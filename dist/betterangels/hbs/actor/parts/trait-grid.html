@@ -1,0 +1,37 @@
+<div class="trait-pair {{type}}">
+	<label id="trait-label-{{top}}" class="droppable sinister {{type}}">
+		<span class="display trait {{type}}" data-type="{{type}}" data-target="{{top}}" data-value={{lookup (lookup data top) "value"}}>{{case "title" top}}</span>
+		<span class="draggable trait {{type}}" data-type="{{type}}" data-target="{{top}}" data-value={{lookup (lookup data top) "value"}}>{{case "title" top}}</span>
+	</label>
+	<div class="trait-grid radial-hover" data-top="{{top}}" data-bottom="{{bottom}}">
+		{{#with (lookup data top) as | topData |}}
+		{{#with (lookup ../data ../bottom) as | botData |}}
+		{{#for topData.value}}
+			<div id="{{topData.name}}-{{math @index "++"}}" class="dot top-{{math @index "++"}} sinister">
+				<span class="dot-slot full">&nbsp;</span>
+			</div>
+		{{/for}}
+		{{#for topData.max topData.value}}
+			<div id="{{topData.name}}-{{math @index "++"}}" class="dot top-{{math @index "++"}} sinister">
+				<span class="dot-slot">&nbsp;</span>
+			</div>
+		{{/for}}
+		{{#for botData.value (math botData.max "--") -1}}
+			<div id="{{botData.name}}-{{math @index "++"}}" class="dot bottom-{{math @index "++"}} virtuous">
+				<span class="dot-slot">&nbsp;</span>
+			</div>
+		{{/for}}
+		{{#for botData.min (math botData.value "--") -1}}
+			<div id="{{botData.name}}-{{math @index "++"}}" class="dot bottom-{{math @index "++"}} virtuous">
+				<span class="dot-slot full">&nbsp;</span>
+			</div>
+		{{/for}}
+		{{/with}}
+		{{/with}}
+		{{> "/systems/betterangels/hbs/actor/parts/radial-menu.html" this}}
+	</div>
+	<label id="trait-label-{{bottom}}" class="droppable virtuous {{type}}">
+		<span class="display trait {{type}}" data-type="{{type}}" data-target="{{bottom}}" data-value={{lookup (lookup data bottom) "value"}}>{{case "title" bottom}}</span>
+		<span class="draggable trait {{type}}" data-type="{{type}}" data-target="{{bottom}}" data-value={{lookup (lookup data bottom) "value"}}>{{case "title" bottom}}</span>
+	</label>
+</div>

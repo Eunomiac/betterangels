@@ -89,7 +89,7 @@ const HELPERS = {
 // #endregion ▄▄▄▄▄ HELPERS ▄▄▄▄▄
 
 // #region ████████ TEMPLATES: Handlebars Templates ████████ ~
-const getPath = (fileTitle, subPath) => `/systems/betterangels/templates/${subPath}/${fileTitle}.hbs`
+const getPath = (fileTitle, subPath) => `/systems/betterangels/hbs/${subPath}/${fileTitle}.hbs`
 	.replace(/(\..{2,})\.hbs$/, "$1")
 	.split(/[\\/]+/)
 	.join("/");

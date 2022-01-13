@@ -7,7 +7,7 @@
   "minimumCoreVersion": "0.8",
   "compatibleCoreVersion": "~0.8",
   "esmodules": [
-    "scripts/betterangels.mjs",
+    "mjs/betterangels.mjs",
     "greensock/esm/all.js",
     "fuse.js/dist/fuse.esm.js",
     "hyphenopoly/min/Hyphenopoly.js"
@@ -23,6 +23,20 @@
 			"path": "packs/pdfs.db",
 			"entity": "JournalEntry",
 			"module": "BetterAngels"
+		},
+		{
+			"name": "powers",
+			"label": "Powers",
+			"path": "packs/powers.db",
+			"entity": "Item",
+			"module": "BetterAngels"
+		},
+		{
+			"name": "aspects",
+			"label": "Demonic Aspects",
+			"path": "packs/aspects.db",
+			"entity": "Item",
+			"module": "BetterAngels"
 		}
 	],
   "languages": [
@@ -37,6 +51,11 @@
 			"name": "pdfoundry",
 			"type": "module",
 			"manifest": "https://raw.githubusercontent.com/Djphoenix719/PDFoundry/master/module.json"
+		},
+		{
+			"name": "socketlib",
+			"type": "module",
+			"manifest": "https://raw.githubusercontent.com/manuelVo/foundryvtt-socketlib/develop/module.json"
 		}
 	],
   "socket": true,

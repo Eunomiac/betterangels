@@ -44,6 +44,9 @@ export default {
 		greed: "generosity",
 		sly: "open"
 	},
+	pixelProperties: [
+		"x", "y", "top", "left", "height", "width", "margin", "border"
+	],
 	get html() {
 		const C = this;
 		return {
@@ -56,7 +59,9 @@ export default {
 				filling: "rgb(0, 255, 0)",
 				fillingDark: "rgb(0, 128, 0)",
 				emptying: "rgb(255, 0, 0)",
-				emptyingDark: "rgb(128, 0, 0)"
+				emptyingDark: "rgb(128, 0, 0)",
+				strategy: "rgb(0, 200, 0)",
+				tactic: "rgb(200, 0, 200)"
 			},
 			get dots() {
 				return {

@@ -1,0 +1,58 @@
+{{> "/systems/betterangels/hbs/actor/parts/radial-menu.html" data}}
+
+{{!-- <h1 class="inset-shadow">Strategies & Tactics</h1> --}}
+<div class="trait-line">
+	{{> "/systems/betterangels/hbs/actor/parts/trait-grid.html" 
+		type="tactic" size=100 top="greed" bottom="generosity" data=this }}
+	{{> "/systems/betterangels/hbs/actor/parts/trait-grid.html" 
+		type="strategy" size=100 top="cunning" bottom="patient" data=this }}
+	{{> "/systems/betterangels/hbs/actor/parts/trait-grid.html"  
+		type="tactic" size=100 top="espionage" bottom="knowledge" data=this }}
+</div>
+
+<div class="trait-line">
+	{{> "/systems/betterangels/hbs/actor/parts/trait-grid.html" 
+		type="tactic" size=100 top="cruelty" bottom="courage" data=this }}
+	{{> "/systems/betterangels/hbs/actor/parts/trait-grid.html" 
+		type="strategy" size=100 top="sly" bottom="open" data=this }}
+	{{> "/systems/betterangels/hbs/actor/parts/trait-grid.html" 
+		type="tactic" size=100 top="contempt" bottom="endurance" data=this }}
+</div>
+
+<div class="trait-line">
+	{{> "/systems/betterangels/hbs/actor/parts/trait-grid.html" 
+		type="tactic" size=100 top="corruption" bottom="nurture" data=this }}
+	{{> "/systems/betterangels/hbs/actor/parts/trait-grid.html" 
+		type="strategy" size=100 top="devious" bottom="insightful" data=this }}
+	{{> "/systems/betterangels/hbs/actor/parts/trait-grid.html" 
+		type="tactic" size=100 top="deceit" bottom="honesty" data=this }}
+</div>
+
+<section class="features-list">
+	{{!-- <h1 class="inset-shadow">Powers</h1> --}}
+	<div class="feature-row powers-list">
+		{{#each powers}}
+		<div class="feature power" data-item-id="{{_id}}">
+			<img class="power-sigil active" src="systems/betterangels/assets/images/powers/{{data.key}}_hover.webp" />
+			<img class="power-sigil base" src="{{img}}" />
+		</div>
+		{{/each}}
+	</div>
+	{{!-- <h1 class="inset-shadow">Demonic Aspects</h1> --}}
+	<div class="feature-row aspects-list">
+		{{#each aspects}}
+		<div class="feature aspect" data-item-id="{{_id}}">
+			<img class="aspect-coin active" src="systems/betterangels/assets/images/aspects/{{data.key}}_hover.webp" />
+			<img class="aspect-coin base" src="{{img}}" />
+			<video src="systems/betterangels/assets/animations/aspect-active-fg.webm" autoplay loop mute />
+		</div>
+		{{/each}}
+	</div>
+	<div class="feature-row devices-list">
+		{{#each devices}}
+		<div class="feature device" data-item-id="{{_id}}">
+			<img class="device-img" src="{{img}}" />
+		</div>
+		{{/each}}
+	</div>
+</section>

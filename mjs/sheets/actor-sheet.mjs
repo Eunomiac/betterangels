@@ -19,14 +19,14 @@ export default class extends MIX(ActorSheet).with(UpdateQueue) {
 	static get defaultOptions() {
 		return mergeObject(super.defaultOptions, {
 			classes: ["betterangels", "sheet", "actor"],
-			template: "systems/betterangels/templates/actor/actor-sheet.hbs",
+			template: "systems/betterangels/hbs/actor/actor-sheet.hbs",
 			width: 476,
 			height: 786,
 			tabs: [{navSelector: ".sheet-tabs", contentSelector: ".sheet-body", initial: "front"}]
 		});
 	}
 
-	get template() { return `systems/betterangels/templates/actor/actor-${this.actor.data.type}-sheet.hbs` }
+	get template() { return `systems/betterangels/hbs/actor/actor-${this.actor.data.type}-sheet.hbs` }
 
 	getData() {
 		const context = ((rootData) => ({
@@ -95,6 +95,7 @@ rejects as expected as the video doesn't exist. For
 	_onVideoHover(event) {
 		event.preventDefault();
 		// console.log("Play Label Video", event);
+		console.log({PLAY: event.currentTarget});
 		const [videoElem] = $(event.currentTarget).find("video");
 		videoElem.status = "fade-in";
 		gsap.fromTo(videoElem, {
@@ -134,100 +135,60 @@ rejects as expected as the video doesn't exist. For
 		});
 	}
 
-	_launchRoll(dragged, dropped) {
-		const {target: targetA, value: valueA} = dragged.dataset;
-		const [{dataset: {target: targetB, value: valueB}}] = $(dropped)?.find(".draggable") ?? [{dataset: {}}];
-		const sheetContext = this;
-		const [dropDisplay] = $(dropped).find(".display");
-		$(dropDisplay).addClass("big-gold click-through");
-
-		function clearAnimation() {
-			$(this).removeClass("click-through");
-			gsap.set(this, {
-				opacity: 0,
-				x: 0,
-				y: 0,
-				scale: 1
-			});
-		}
-
-		gsap.to(dragged, {
-			scale: 5,
-			y: "-=75px",
-			opacity: 0,
-			duration: 1,
-			ease: "power.out",
-			onComplete: clearAnimation.bind(dragged)
-		});
-		gsap.to(dropDisplay, {
-			scale: 5,
-			y: "+=75px",
-			opacity: 0,
-			duration: 1,
-			ease: "power.out",
-			onComplete() {
-				$(dropDisplay).removeClass("big-gold");
-				gsap.set(dropDisplay, {scale: 1, y: "-=75px"});
-				gsap.fromTo(dropDisplay, {
-					opacity: 0
-				}, {
-					opacity: 1,
-					duration: 0.25,
-					ease: "sine",
-					onComplete() {
-						$(dropDisplay).removeClass("click-through");
-						gsap.set(dropDisplay, {y: 0});
-						gsap.set(dragged, {opacity: 0});
-					}
-				});
+	async _launchRoll(traitA, valueA, traitB, valueB, poolAdvantage = 0, widthAdvantage = 0) {
+		if (traitA === traitB) { return false }
+		const descParts = [];
+		for (const [trait, value] of [[traitA, valueA], [traitB, valueB]]) {
+			if (trait) {
+				const traitCode = [
+					`<span class="trait-name ${C.strategies.includes(trait) ? "strategy" : "tactic"}">${U.tCase(trait)}</span>`,
+					"<span class=\"character\">(</span>",
+					`<span class="trait-value">${value}</span>`,
+					"<span class=\"character\">)</span>"
+				].join("");
+				if (C.strategies.includes(trait)) {
+					descParts.unshift(traitCode);
+				} else {
+					descParts.push(traitCode);
+				}
 			}
-		});
-
-		const rollPoolParts = [];
-		if (C.strategies.includes(targetA)) {
-			rollPoolParts.push(`<h1><span style="color: darkgreen !important; font-weight: bold !important; font-style: normal !important;">${U.tCase(targetA)}</span> ${valueA} + `);
-			rollPoolParts.push(`<span style="color: purple !important; font-weight: normal !important; font-style: italic !important;">${U.tCase(targetB)}</span> ${valueB}</h1>`);
-		} else {
-			rollPoolParts.push(`<h1><span style="color: darkgreen !important; font-weight: bold !important; font-style: normal !important;">${U.tCase(targetB)}</span> ${valueB} + `);
-			rollPoolParts.push(`<span style="color: purple !important; font-weight: normal !important; font-style: italic !important;">${U.tCase(targetA)}</span> ${valueA}</h1>`);
 		}
-		rollPoolParts.push(`<h3>(${U.pInt(valueA) + U.pInt(valueB)} Dice Total)`);
-
-		$("#sheet-message").html(rollPoolParts.join(""));
-
-		const [rollPool] = $("#sheet-message").find("h1");
-		const [rollSummary] = $("#sheet-message").find("h3");
-
-		gsap.fromTo(rollPool, {
-			scale: 10,
-			opacity: 0
-		}, {
-			scale: 1,
-			opacity: 1,
-			duration: 0.5,
-			ease: "power4.out"
+		if (poolAdvantage) {
+			descParts.push(`<span class="advantage-value">${poolAdvantage}</span>`);
+		}
+		const poolTotal = U.pInt(valueA) + U.pInt(valueB) + U.pInt(poolAdvantage);
+		const descHTML = [
+			descParts.join("<span class=\"operator\">+</span>"),
+			"<span class=\"operator\">=</span>",
+			`<span class="pool-total">${poolTotal}</span>`
+		].join("");
+		const roll = game.oneRollEngine.createRawRoll(poolTotal);
+		const {sets, looseDice, flavorText: descLine} = game.oneRollEngine.parseRawRoll(roll, descHTML);
+		const sortedSets = sets.sort((setA, setB) => {
+			if (setA.width > setB.width) { return -10 }
+			if (setB.width > setA.width) { return 10 }
+			return setB.height - setA.height;
 		});
-		gsap.fromTo(rollSummary, {
-			scale: 1,
-			y: "+=300px",
-			opacity: 0
-		}, {
-			y: 0,
-			opacity: 1,
-			duration: 1,
-			ease: "power4.in",
-			onComplete() {
-				gsap.to("#sheet-message *", {
-					opacity: 0,
-					scale: 5,
-					duration: 0.5,
-					delay: 1,
-					stagger: 0.2,
-					ease: "power4.out"
-				});
-			}
-		});
-
+		const resultParts = [];
+		// if (sets.length) {
+		// 	resultParts.push("<span class=\"roll-results\">SETS:");
+		// 	for (const {width, height} of sets) {
+		// 		resultParts.push([
+		// 			`<span class="roll-set height-${height} width-${width}">`,
+		// 			`<span class="set-term width">${width}</span>`,
+		// 			"<span class=\"set-term operator\">×</span>",
+		// 			`<span class="set-term height">${height}</span>`,
+		// 			"</span>"].join(""));
+		// 	}
+		// 	resultParts.push("</span>");
+		// }
+		const data = {
+			content: await renderTemplate("systems/betterangels/hbs/chat/ORE-roll.hbs", {name: this.actor.name, sets: sortedSets, looseDice, descLine, resultSummary: resultParts.join("")}),
+			type: CONST.CHAT_MESSAGE_TYPES.ROLL,
+			roll,
+			flags: {core: {canPopout: true}}
+		};
+		return ChatMessage.create(data, {});
 	}
 
 	_fillDot(trait, dot) {
@@ -371,17 +332,14 @@ rejects as expected as the video doesn't exist. For
 
 		html.find(".radial-hover").contextmenu(this._openRadialMenu.bind(this));
 		html.find(".radial-hover").mouseleave(this._closeRadialMenu.bind(this));
-		html.find(".trait-pair > label").hover(this._onVideoHover.bind(this), this._offVideoHover.bind(this));
 
 		html.find(".trait-button").click(this._changeTrait.bind(this));
 		html.find(".trait-button").contextmenu(this._changeTrait.bind(this));
 
 		$(".trait-pair .virtuous").each((_, label) => {
-			const fullWidth = gsap.getProperty(label, "width");
-			$(label).find(".trait").each((__, span) => {
-				const spanWidth = gsap.getProperty(span, "width");
-				gsap.set(span, {x: fullWidth - (1.1 * spanWidth)});
-			});
+			$(label)
+				.find(".trait.draggable")
+				.each((__, span) => U.set([span, $(span).prev()], {x: U.get(label, "width") - (1.1 * U.get(span, "width"))}));
 		});
 
 		$(".feature").css({pointerEvents: "all"}).click((event) => {
@@ -413,103 +371,151 @@ rejects as expected as the video doesn't exist. For
 		// Construct lookup object for trait livesnap points
 		const getSnapPoints = (traitName) => {
 			traitName = U.lCase(traitName);
+			const traitType = C.strategies.includes(traitName) ? "strategy" : "tactic";
 			const snapPoints = new Map();
+			$(`#trait-label-${traitName}`).removeClass("faded-trait");
 			const [homeTarget] = $(`#trait-label-${traitName} .display`);
 			const globalHomePos = U.getGlobalPos(homeTarget);
 			snapPoints.set(globalHomePos, homeTarget);
-			C[C.strategies.includes(traitName) ? "tactics" : "strategies"].forEach((trait) => {
-				const [dropTarget] = $(`#trait-label-${trait} .display`);
-				const globalDropPos = U.getGlobalPos(dropTarget);
-				globalDropPos.y += 15;
-				snapPoints.set(globalDropPos, dropTarget);
+			C.strategies.forEach((trait) => {
+				if (trait !== traitName) {
+					if (traitType === "tactic") {
+						// We are dragging a TACTIC around ...
+						$(`#trait-label-${trait}`).removeClass("faded-trait");
+						const [dropTarget] = $(`#trait-label-${trait} .display`);
+						const globalDropPos = U.getGlobalPos(dropTarget);
+						// ... so, its drop point will be LOWER and RIGHT
+						globalDropPos.x += 15;
+						globalDropPos.y += 15;
+						snapPoints.set(globalDropPos, dropTarget);
+					} else {
+						$(`#trait-label-${trait}`).addClass("faded-trait");
+					}
+				}
 			});
-			console.log(`***SNAP POINTS for ${U.uCase(traitName)} ***`);
-			console.log(snapPoints);
-			console.log("===================");
+			C.tactics.forEach((trait) => {
+				if (trait !== traitName) {
+					if (traitType === "strategy") {
+						// We are dragging a STRATEGY around ...
+						$(`#trait-label-${trait}`).removeClass("faded-trait");
+						const [dropTarget] = $(`#trait-label-${trait} .display`);
+						const globalDropPos = U.getGlobalPos(dropTarget);
+						globalDropPos.x -= 15;
+						globalDropPos.y -= 15;
+						// ... so, its drop point will be UPPER and LEFT
+						snapPoints.set(globalDropPos, dropTarget);
+					} else {
+						$(`#trait-label-${trait}`).addClass("faded-trait");
+					}
+				}
+			});
+
+			C[traitType === "strategy" ? "tactics" : "strategies"].forEach((trait) => {
+			});
 			return snapPoints;
 		};
 
 		Dragger.create(".draggable.trait", {
 			onDragStart() {
+				this.snapElems = [];
+				const traitName = this.target.dataset.target;
+				this.snapPoints = getSnapPoints(traitName);
 				[this.startParent] = $(this.target).parent();
+				$("label.droppable").addClass("no-hover");
 				U.reparent(this.target, $("#x-container")[0]);
 				this.update(false, true);
 				gsap.to(this.target, {
 					scale: 2,
+					fontFamily: "Komikax, sans-serif",
+					color: C.html.colors[C.strategies.includes(traitName) ? "strategy" : "tactic"],
 					opacity: 1,
 					duration: 2,
+					textShadow: "0 0 3px black, 0 0 3px black, 0 0 3px black, 0 0 3px black",
 					ease: "elastic.out"
 				});
+				// console.log("DRAG START:", {["this"]: this, target: this.target, startParent: this.startParent});
 			},
 			liveSnap: {
 				points(point) {
+					const traitName = this.target.dataset.target;
 					if (!this.snapPoints) {
-						const [, , traitName] = this.target.id.split("-");
 						this.snapPoints = getSnapPoints(traitName);
 					}
-					const snapPoint = gsap.utils.snap(
-						{
-							values: Array.from(this.snapPoints.keys()),
-							radius: 25
-						},
-						point
-					);
-					const snapElem = this.snapPoints.get(snapPoint);
-					let isUnsnapping = false;
-					if (snapElem && snapElem.id !== this.snapElem?.id) {
-						isUnsnapping = this.snapElem;
-						this.snapElem = snapElem;
-						gsap.to(snapElem, {
-							y: -25,
-							color: "rgb(255, 215, 0)",
-							textShadow: "0 0 3px black, 0 0 3px black, 0 0 3px black, 0 0 3px black",
-							fontSize: 10,
-							scale: 3,
-							ease: "power4.out",
-							duration: 0.5
-						});
-					} else if (!snapElem && this.snapElem) {
-						isUnsnapping = this.snapElem;
-						delete this.snapElem;
+					const snapPoint = gsap.utils.snap({values: Array.from(this.snapPoints.keys()), radius: 25}, point);
+					const newSnapElem = this.snapPoints.get(snapPoint);
+					const curSnapElem = this.snapElem;
+
+					if (newSnapElem?.id !== curSnapElem?.id) {
+						if (curSnapElem) {
+							console.log(`UNSNAPPING ${curSnapElem.dataset.target}`);
+							gsap.set($(curSnapElem).parent(), {pointerEvents: "none"});
+							$(curSnapElem).parent()
+								.data("snapAnim").reverse()
+								.then(() => gsap.set($(curSnapElem).parent(), {pointerEvents: "all"}));
+							delete this.snapPoint;
+							delete this.snapElem;
+						}
+						if (newSnapElem) {
+							const [newSnapParent] = $(newSnapElem).parent();
+							gsap.set(newSnapParent, {pointerEvents: "none"});
+							const newSnapPos = newSnapParent.id === this.startParent.id
+								? {
+										x: "+=0",
+										y: "+=0"
+									}
+								: {
+										x: newSnapElem.dataset.type === "tactic" ? "+=25" : "-=25",
+										y: newSnapElem.dataset.type === "tactic" ? "+=15" : "-=15"
+									};
+							$(newSnapElem).parent()
+								.data({snapAnim: gsap.fromTo(newSnapElem, {zIndex: 1000}, {
+									...newSnapPos,
+									scale: 2,
+									fontFamily: "Komikax, sans-serif",
+									color: C.html.colors[C.strategies.includes(traitName) ? "tactic" : "strategy"],
+									opacity: 1,
+									ease: "back",
+									textShadow: "0 0 3px black, 0 0 3px black, 0 0 3px black, 0 0 3px black",
+									duration: 0.5
+								})});
+							this.snapPoint = snapPoint;
+							this.snapElem = newSnapElem;
+							console.log(`SNAPPING TO ${this.snapElem.dataset.target}`);
+						}
 					}
-					if (isUnsnapping) {
-						gsap.to(isUnsnapping, {
-							y: 0,
-							color: "rgb(179, 179, 179)",
-							textShadow: "none",
-							fontSize: 14,
-							scale: 1,
-							ease: "power4.out",
-							duration: 0.5
-						});
-					}
-					return snapElem ? snapPoint : point;
+
+					return this.snapPoint ?? point;
 				}
 			},
 			onDragEnd() {
-				$(this.target).addClass("click-through");
+				console.log("DRAG END");
+				console.log(`SNAP TARGET: ${this.snapElem?.dataset?.target}`);
+				const [dragTrait, dragValue] = [this.target.dataset.target, this.target.dataset.value];
+				const [snapTrait, snapValue] = [this.snapElem?.dataset?.target, this.snapElem?.dataset?.value];
+				this.disable();
 				U.reparent(this.target, this.startParent);
-				const dragContext = this;
 				gsap.to(this.target, {
 					scale: 1,
 					opacity: 0,
 					duration: 1,
 					ease: "elastic.out",
+					callbackScope: this,
 					onComplete() {
-						// sheetContext._launchRoll(dragContext.target, dragContext.snapElem);
+						gsap.set(this.target, {x: 0, y: 0});
+						this.enable();
+						$("label.droppable").removeClass("no-hover");
+						sheetContext._launchRoll(dragTrait, dragValue, snapTrait, snapValue);
 					}
 				});
 				gsap.to(this.snapElem, {
 					y: 0,
-					color: "rgb(179, 179, 179)",
+					color: C.html.colors.fg,
 					textShadow: "none",
 					fontSize: 14,
 					scale: 1,
 					ease: "power4.out",
 					duration: 0.5
 				});
-				delete this.snapElem;
-				delete this.snapPoints;
 			}
 		});
 	}

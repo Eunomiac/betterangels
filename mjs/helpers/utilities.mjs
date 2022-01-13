@@ -388,6 +388,9 @@ const testRegExp = (str, patterns = [], flags = "gui", isTestingAll = false) => 
 		: new RegExp(`\\b${pattern}\\b`, flags))
 )[isTestingAll ? "every" : "some"]((pattern) => pattern.test(str));
 const regExtract = (ref, pattern, flags = "u") => {
+	// Send it a ref to search and a pattern.
+	// If it finds capturing groups in the pattern, it will return an array of captured groups.
+	// Otherwise, it will return part of ref that matches pattern.
 	pattern = new RegExp(pattern, flags.replace(/g/g, ""));
 	const isGrouping = /[)(]/.test(pattern.toString());
 	const matches = ref.match(pattern) || [];
@@ -851,7 +854,12 @@ const awaitParallel = async (params, func) => await Promise.all([params].flat().
 
 // #region ████████ HTML: Parsing HTML Code, Manipulating DOM Objects ████████ ~
 // #region ░░░░░░░[GreenSock]░░░░ Wrappers for GreenSock Functions ░░░░░░░ ~
-const get = (...args) => gsap.getProperty(...args);
+const get = (targets, property) => {
+	if (C.pixelProperties.includes(regExtract(property, "^([a-z]+)"))) {
+		return pFloat(gsap.getProperty(targets, property, "px"), 2);
+	}
+	return gsap.getProperty(targets, property);
+};
 const set = (...args) => gsap.set(...args);
 // #endregion ░░░░[GreenSock]░░░░
 const getRawCirclePath = (r, {x: xO, y: yO} = {}) => {

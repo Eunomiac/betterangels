@@ -1,10 +1,7 @@
 <div class="trait-pair {{type}}">
-	<label id="trait-label-{{top}}" class="droppable sinister">
-		<video width="200" height="200" autoplay muted loop>
-			<source src="/systems/betterangels/assets/animations/sheet-horizon-aurora-orange.webm" type="video/webm">
-		</video>
-		<span class="display trait">{{case "title" top}}</span>
-		<span class="draggable trait big-gold" data-target="{{top}}" data-value={{lookup (lookup data top) "value"}}>{{case "title" top}}</span>
+	<label id="trait-label-{{top}}" class="droppable sinister {{type}}">
+		<span class="display trait {{type}}" data-type="{{type}}" data-target="{{top}}" data-value={{lookup (lookup data top) "value"}}>{{case "title" top}}</span>
+		<span class="draggable trait {{type}}" data-type="{{type}}" data-target="{{top}}" data-value={{lookup (lookup data top) "value"}}>{{case "title" top}}</span>
 	</label>
 	<div class="trait-grid radial-hover" data-top="{{top}}" data-bottom="{{bottom}}">
 		{{#with (lookup data top) as | topData |}}
@@ -31,13 +28,10 @@
 		{{/for}}
 		{{/with}}
 		{{/with}}
-		{{> "/systems/betterangels/templates/actor/parts/radial-menu.hbs" this}}
+		{{> "/systems/betterangels/hbs/actor/parts/radial-menu.hbs" this}}
 	</div>
-	<label id="trait-label-{{bottom}}" class="droppable virtuous">
-		<video width="200" height="200" autoplay muted loop>
-			<source src="/systems/betterangels/assets/animations/sheet-horizon-aurora-white.webm" type="video/webm">
-		</video>
-		<span class="display trait">{{case "title" bottom}}</span>
-		<span class="draggable trait big-gold" data-target="{{bottom}}" data-value={{lookup (lookup data bottom) "value"}}>{{case "title" bottom}}</span>
+	<label id="trait-label-{{bottom}}" class="droppable virtuous {{type}}">
+		<span class="display trait {{type}}" data-type="{{type}}" data-target="{{bottom}}" data-value={{lookup (lookup data bottom) "value"}}>{{case "title" bottom}}</span>
+		<span class="draggable trait {{type}}" data-type="{{type}}" data-target="{{bottom}}" data-value={{lookup (lookup data bottom) "value"}}>{{case "title" bottom}}</span>
 	</label>
 </div>

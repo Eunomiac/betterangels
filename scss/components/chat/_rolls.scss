@@ -1,0 +1,98 @@
+@mixin style-sets() {
+	$widthColors: $c-lime $c-cyan $c-magenta $c-magenta $c-magenta $c-magenta $c-magenta $c-magenta $c-magenta $c-magenta $c-magenta $c-magenta;
+	$heightGradients: 0.2 0.2 0.3 0.3 0.4 0.4 0.5 0.5 0.7 0.9;
+
+	@for $width from 1 through 12 {
+		$thisColor: nth($widthColors, $width);
+		@for $height from 1 through 10 {
+			$thisAlpha: nth($heightGradients, $height);
+			&.width-#{$width}.height-#{$height} {
+				--set-bg-shadow: #{change-color($thisColor, $lightness: 50%)};
+				background: change-color($thisColor, $alpha: $thisAlpha);
+			}
+		}
+	}
+}
+
+header.message-header {
+
+	.message-sender, .message-metadata {
+		position: absolute;
+		bottom: 0;
+		font-size: 10px;
+		height: 15px;
+		&.message-metadata { right: 0}
+	}
+	.message-metadata {
+		position: absolute;
+		bottom: 0;
+		font-size: 10px;
+		height: 15px;
+	}
+ }
+
+.message-content {
+	position: relative;
+	top: -5px;
+
+	.roll-name {
+		display: inline-block;
+		background: url(../ui/parchment.jpg);
+		font-family: $font-secondary;
+		font-size: 24px;
+		line-height: 24px;
+	}
+
+	.one-roll-engine-dice-roll {
+
+		.roll-summary {
+			font-family: $font-primary;
+			font-size: 16px;
+			font-weight: bold;
+			margin-left: -5px;
+			margin-top: -15px;
+
+			.trait-name {
+				margin: 0 5px;
+
+				&.strategy { color: $c-darkgreen }
+				&.tactic { color: $c-purple }
+			}
+
+			.trait-value, .pool-total {
+				font-family: $font-secondary;
+				font-size: 24px;
+				line-height: inherit;
+				position: relative;
+				top: 4px;
+
+				&.trait-value {
+					font-size: 16px;
+					top: 2px;
+					margin-left: 2px;
+				}
+
+				&.pool-total {
+					margin: 0 5px;
+				}
+			}
+
+			.operator {
+				margin-left: 5px;
+			}
+		}
+
+		.ore-sets {
+			.ore-set-roll {
+				@include style-sets();
+				border-radius: 25px;
+				background: var(--set-bg-fade);
+				box-shadow: inset 0 0 5px var(--set-bg-shadow);
+				padding: 2px;
+			}
+		}
+		
+		.ore-single-roll.in-set { filter: drop-shadow(0 0 4px black) }
+		.ore-single-roll.loose { filter: drop-shadow(0 0 3px black) }
+	}
+}

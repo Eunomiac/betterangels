@@ -66,6 +66,7 @@ Hooks.once("init", async () => {
 	};
 	CONFIG.Actor.documentClass = BetterAngelsActor;
 	CONFIG.Item.documentClass = BetterAngelsItem;
+	CONFIG.TinyMCE.content_css = ["systems/betterangels/tinymce.css"];
 
 	Actors.unregisterSheet("core", ActorSheet);
 	Actors.registerSheet("betterangels", HellboundActorSheet, {
@@ -114,7 +115,7 @@ const initDragTest = (traitName = "courage") => {
 
 Hooks.once("ready", () => {
 
-	$(".notification.error.permanent").remove();
+
 	window.REF = game.betterangels;
 	window.DB = new BA_DB({
 		topLeft: 10,
@@ -140,6 +141,7 @@ Hooks.once("ready", () => {
 		MotionPathPlugin,
 		Dragger,
 		GSDevTools,
+		ORE: game.oneRollEngine,
 		getPos: U.getNewPos,
 		pause: () => gsap.globalTimeline.pause(),
 		play: () => gsap.globalTimeline.play(),

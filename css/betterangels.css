@@ -19,8 +19,15 @@
   src: url("../assets/fonts/KOMIKAX_.ttf"); }
 
 /* Global styles */
+h1, h2, h3, h4 {
+  border: none; }
+
+i.fas {
+  font-family: "Font Awesome 5 Free" !important; }
+
 .window-app {
   font-family: "DigitalStrip", sans-serif;
+  --color-text-dark-primary: DigitalStrip, sans-serif;
   color: #b3b3b3;
   background: #222222; }
   .window-app a:hover {
@@ -123,7 +130,6 @@
 span.trait {
   position: relative;
   display: inline-block;
-  color: #b3b3b3;
   background-color: transparent;
   border-radius: 10px;
   outline: 0;
@@ -132,83 +138,21 @@ span.trait {
   transform: scale(1);
   -webkit-transform-origin: 50% 50%;
   -ms-transform-origin: 50% 50%;
-  transform-origin: 50% 50%;
-  z-index: 2;
-  padding: 0 5px; }
-  span.trait.big-gold {
-    color: gold;
-    text-shadow: 0 0 3px black, 0 0 3px black, 0 0 3px black, 0 0 3px black;
-    border-radius: 10px; }
+  transform-origin: 50% 50%; }
   span.trait.draggable {
     pointer-events: all !important;
-    opacity: 0%;
+    opacity: 0;
     -webkit-transform: scale(1);
     -ms-transform: scale(1);
     transform: scale(1); }
-    span.trait.draggable.click-through {
-      pointer-events: none !important; }
-  span.trait.highlight {
-    color: gold;
-    text-shadow: 0 0 3px black, 0 0 3px black, 0 0 3px black, 0 0 3px black;
-    font-size: 10px; }
+    span.trait.draggable.strategy {
+      font-family: "Komikax", sans-serif; }
+    span.trait.draggable.tactic {
+      font-family: "DigitalStrip", sans-serif; }
 
 /* Styles limited to betterangels sheets */
 .betterangels {
-  border-radius: 15px;
-  /* .sheet-header {
-    margin-bottom: 10px;
-
-    .profile-img {
-        flex: 0 0 75px;
-        height: 75px;
-				border: 0;
-				margin: -4px 0;
-    }
-
-    .header-fields {
-        flex: 1;
-    }
-
-    .charname {
-        height: 50px;
-        padding: 0;
-        margin: 5px 0;
-        border-bottom: 0;
-
-        input {
-            width: 100%;
-            height: 100%;
-            margin: 0;
-						font-size: 38px;
-						border: 0;
-        }
-    }
-}
-
-.sheet-tabs {
-    flex: 0;
-}
-
-.sheet-body,
-.sheet-body .tab,
-.sheet-body .tab .editor {
-    height: auto;
-}
-
-.sheet-body .tab {
-	margin-left: 50px;
-	margin-right: 50px;
-}
-
-.tox {
-    .tox-editor-container {
-        background: $c-bg;
-    }
-
-    .tox-edit-area {
-        padding: 0 8px;
-    }
-} */ }
+  border-radius: 15px; }
   .betterangels .window-header {
     position: absolute;
     width: 100%;
@@ -244,8 +188,22 @@ span.trait {
     .betterangels .window-content textarea:not(.read-only) {
       pointer-events: all; }
     .betterangels .window-content form.editable {
-      position: relative;
-      overflow: hidden; }
+      position: relative; }
+      .betterangels .window-content form.editable .sheet-header {
+        -webkit-box-flex: 0;
+        -ms-flex-positive: 0;
+        flex-grow: 0; }
+      .betterangels .window-content form.editable h1 {
+        border: none;
+        background-color: transparent;
+        text-align: center;
+        font-family: "Komikax", sans-serif;
+        font-size: 32px;
+        margin: 0; }
+        .betterangels .window-content form.editable h1.inset-shadow {
+          color: #1A1A1A;
+          letter-spacing: 0.1em;
+          text-shadow: -1px -1px 1px #000000, 2px 2px 1px #262626; }
   .betterangels .window-resizable-handle {
     display: none; }
   .betterangels.actor {
@@ -260,6 +218,23 @@ span.trait {
         overflow: visible !important; }
       .betterangels.actor.hellbound .window-resizable-handle {
         display: none; }
+      .betterangels.actor.hellbound.minimized {
+        height: 20px !important;
+        min-height: 20px !important;
+        width: 200px !important;
+        border-radius: 15px;
+        -webkit-box-shadow: 2px 2px 3px black, -0.5px -0.5px 2px white, 2px 2px 3px black;
+        box-shadow: 2px 2px 3px black, -0.5px -0.5px 2px white, 2px 2px 3px black; }
+        .betterangels.actor.hellbound.minimized .window-header {
+          width: 200px;
+          height: 20px;
+          border: 0; }
+          .betterangels.actor.hellbound.minimized .window-header .window-title {
+            display: block;
+            color: white;
+            position: relative;
+            font-size: 24px;
+            line-height: 20px; }
     .betterangels.actor .trait-line {
       display: grid;
       grid-template-columns: 144px 140px 144px;
@@ -279,44 +254,72 @@ span.trait {
         z-index: 5; }
         .betterangels.actor .trait-line .trait-pair > label {
           position: relative;
-          -webkit-transition: 3;
-          -o-transition: 3;
-          transition: 3;
-          --video-horiz-shift: 0px; }
-          .betterangels.actor .trait-line .trait-pair > label > video {
-            position: absolute;
-            width: 160px;
-            height: 100%;
-            -webkit-transform: scale(6) scaleY(2);
-            -ms-transform: scale(6) scaleY(2);
-            transform: scale(6) scaleY(2);
-            display: none;
-            z-index: 1; }
+          -webkit-transition: 3s;
+          -o-transition: 3s;
+          transition: 3s; }
           .betterangels.actor .trait-line .trait-pair > label > span {
             position: absolute; }
           .betterangels.actor .trait-line .trait-pair > label.sinister {
             grid-row: 1;
-            margin-left: -20px; }
-            .betterangels.actor .trait-line .trait-pair > label.sinister > video {
-              left: calc(-40px + var(--video-horiz-shift)); }
+            margin-left: -15px; }
             .betterangels.actor .trait-line .trait-pair > label.sinister > span {
               left: 0; }
           .betterangels.actor .trait-line .trait-pair > label.virtuous {
-            grid-row: 4;
-            margin-right: -20px; }
-            .betterangels.actor .trait-line .trait-pair > label.virtuous > video {
-              right: calc(-40px + var(--video-horiz-shift)); }
-          .betterangels.actor .trait-line .trait-pair > label:hover > video {
-            display: initial; }
-          .betterangels.actor .trait-line .trait-pair > label:hover > span.display {
-            color: black;
-            text-shadow: none;
-            -webkit-transition: 0.5s;
-            -o-transition: 0.5s;
-            transition: 0.5s;
-            -webkit-transform: scale(1.2);
-            -ms-transform: scale(1.2);
-            transform: scale(1.2); }
+            grid-row: 4; }
+          .betterangels.actor .trait-line .trait-pair > label.strategy:not(.no-hover):hover > span.display {
+            color: #b3b3b3;
+            -webkit-animation: neonGlow-strategy 1.5s ease-in-out infinite alternate;
+            animation: neonGlow-strategy 1.5s ease-in-out infinite alternate;
+            -webkit-transition: all 0.5s;
+            -o-transition: all 0.5s;
+            transition: all 0.5s; }
+
+@-webkit-keyframes neonGlow-strategy {
+  from {
+    color: #00bf00;
+    text-shadow: 0 0 3px white, 0 0 6px white, 0 0 9px white, 0 0 12px #00ff00, 0 0 21px #00ff00, 0 0 24px #00ff00, 0 0 30px #00ff00, 0 0 45px #00ff00;
+    scale: 1; }
+  to {
+    color: green;
+    text-shadow: 0 0 1px white, 0 0 2px white, 0 0 3px white, 0 0 4px #00ff00, 0 0 7px #00ff00, 0 0 8px #00ff00, 0 0 10px #00ff00, 0 0 15px #00ff00;
+    scale: 1.5; } }
+
+@keyframes neonGlow-strategy {
+  from {
+    color: #00bf00;
+    text-shadow: 0 0 3px white, 0 0 6px white, 0 0 9px white, 0 0 12px #00ff00, 0 0 21px #00ff00, 0 0 24px #00ff00, 0 0 30px #00ff00, 0 0 45px #00ff00;
+    scale: 1; }
+  to {
+    color: green;
+    text-shadow: 0 0 1px white, 0 0 2px white, 0 0 3px white, 0 0 4px #00ff00, 0 0 7px #00ff00, 0 0 8px #00ff00, 0 0 10px #00ff00, 0 0 15px #00ff00;
+    scale: 1.5; } }
+          .betterangels.actor .trait-line .trait-pair > label.tactic:not(.no-hover):hover > span.display {
+            color: #b3b3b3;
+            -webkit-animation: neonGlow-tactic 1.5s ease-in-out infinite alternate;
+            animation: neonGlow-tactic 1.5s ease-in-out infinite alternate;
+            -webkit-transition: all 0.5s;
+            -o-transition: all 0.5s;
+            transition: all 0.5s; }
+
+@-webkit-keyframes neonGlow-tactic {
+  from {
+    color: #bf00bf;
+    text-shadow: 0 0 3px white, 0 0 6px white, 0 0 9px white, 0 0 12px #ff00ff, 0 0 21px #ff00ff, 0 0 24px #ff00ff, 0 0 30px #ff00ff, 0 0 45px #ff00ff;
+    scale: 1; }
+  to {
+    color: purple;
+    text-shadow: 0 0 1px white, 0 0 2px white, 0 0 3px white, 0 0 4px #ff00ff, 0 0 7px #ff00ff, 0 0 8px #ff00ff, 0 0 10px #ff00ff, 0 0 15px #ff00ff;
+    scale: 1.5; } }
+
+@keyframes neonGlow-tactic {
+  from {
+    color: #bf00bf;
+    text-shadow: 0 0 3px white, 0 0 6px white, 0 0 9px white, 0 0 12px #ff00ff, 0 0 21px #ff00ff, 0 0 24px #ff00ff, 0 0 30px #ff00ff, 0 0 45px #ff00ff;
+    scale: 1; }
+  to {
+    color: purple;
+    text-shadow: 0 0 1px white, 0 0 2px white, 0 0 3px white, 0 0 4px #ff00ff, 0 0 7px #ff00ff, 0 0 8px #ff00ff, 0 0 10px #ff00ff, 0 0 15px #ff00ff;
+    scale: 1.5; } }
         .betterangels.actor .trait-line .trait-pair .trait-grid {
           display: grid;
           position: relative;
@@ -381,52 +384,12 @@ span.trait {
           .betterangels.actor .trait-line .trait-pair.tactic > label {
             font-family: "DigitalStrip", sans-serif;
             line-height: 14px; }
-            .betterangels.actor .trait-line .trait-pair.tactic > label > video {
-              top: 3px; }
-            .betterangels.actor .trait-line .trait-pair.tactic > label#trait-label-contempt {
-              --video-horiz-shift: -7px ; }
-            .betterangels.actor .trait-line .trait-pair.tactic > label#trait-label-corruption {
-              --video-horiz-shift: 0px ; }
-            .betterangels.actor .trait-line .trait-pair.tactic > label#trait-label-courage {
-              --video-horiz-shift: -10px ; }
-            .betterangels.actor .trait-line .trait-pair.tactic > label#trait-label-cruelty {
-              --video-horiz-shift: -15px ; }
-            .betterangels.actor .trait-line .trait-pair.tactic > label#trait-label-deceit {
-              --video-horiz-shift: -20px ; }
-            .betterangels.actor .trait-line .trait-pair.tactic > label#trait-label-endurance {
-              --video-horiz-shift: 0px ; }
-            .betterangels.actor .trait-line .trait-pair.tactic > label#trait-label-espionage {
-              --video-horiz-shift: -7px ; }
-            .betterangels.actor .trait-line .trait-pair.tactic > label#trait-label-generosity {
-              --video-horiz-shift: 0px ; }
-            .betterangels.actor .trait-line .trait-pair.tactic > label#trait-label-greed {
-              --video-horiz-shift: -25px ; }
-            .betterangels.actor .trait-line .trait-pair.tactic > label#trait-label-honesty {
-              --video-horiz-shift: -5px ; }
-            .betterangels.actor .trait-line .trait-pair.tactic > label#trait-label-knowledge {
-              --video-horiz-shift: 0px ; }
-            .betterangels.actor .trait-line .trait-pair.tactic > label#trait-label-nurture {
-              --video-horiz-shift: -10px ; }
         .betterangels.actor .trait-line .trait-pair.strategy {
           --dot-size: 19px;
           width: 140px; }
           .betterangels.actor .trait-line .trait-pair.strategy > label {
             font-family: "Komikax", sans-serif;
             line-height: 18px; }
-            .betterangels.actor .trait-line .trait-pair.strategy > label > video {
-              top: 5px; }
-            .betterangels.actor .trait-line .trait-pair.strategy > label#trait-label-cunning {
-              --video-horiz-shift: -10px ; }
-            .betterangels.actor .trait-line .trait-pair.strategy > label#trait-label-devious {
-              --video-horiz-shift: -10px ; }
-            .betterangels.actor .trait-line .trait-pair.strategy > label#trait-label-insightful {
-              --video-horiz-shift: 5px ; }
-            .betterangels.actor .trait-line .trait-pair.strategy > label#trait-label-open {
-              --video-horiz-shift: -15px ; }
-            .betterangels.actor .trait-line .trait-pair.strategy > label#trait-label-patient {
-              --video-horiz-shift: 0px ; }
-            .betterangels.actor .trait-line .trait-pair.strategy > label#trait-label-sly {
-              --video-horiz-shift: -30px ; }
     .betterangels.actor .menu-positioner {
       position: absolute; }
       .betterangels.actor .menu-positioner .radial-menu {
@@ -849,7 +812,9 @@ span.trait {
         justify-content: space-evenly;
         -ms-flex-line-pack: distribute;
         align-content: space-around;
-        padding: 10px 0; }
+        padding: 10px 0;
+        pointer-events: all;
+        min-height: 70px; }
         .betterangels.actor .features-list .feature-row .feature {
           height: 125px;
           width: 125px; }
@@ -881,6 +846,14 @@ span.trait {
             display: none; }
           .betterangels.actor .features-list .feature-row .feature:hover video {
             display: block; }
+    .betterangels.actor .tab.background.active {
+      height: 100%;
+      pointer-events: all; }
+      .betterangels.actor .tab.background.active .editor {
+        height: 100%;
+        pointer-events: all; }
+        .betterangels.actor .tab.background.active .editor * {
+          pointer-events: all; }
   .betterangels.actor #sheet-message {
     display: block;
     width: 100%;
@@ -900,55 +873,59 @@ span.trait {
       margin-left: -15%; }
   .betterangels.item .window-content {
     padding-top: 0; }
-    .betterangels.item .window-content .aspect .background-img {
-      height: 75px;
-      position: absolute;
-      -webkit-transform: scale(3);
-      -ms-transform: scale(3);
-      transform: scale(3);
-      pointer-events: none;
-      left: calc(100% - (75px / 0.66));
-      border: none; }
-    .betterangels.item .window-content .aspect .sheet-header .header-fields .item-name {
-      width: calc(100% / 0.66);
-      height: auto;
-      padding: 20px 0 0 0;
-      font-size: 64px;
-      -webkit-transform: scaleX(0.66) scaleY(1.5);
-      -ms-transform: scaleX(0.66) scaleY(1.5);
-      transform: scaleX(0.66) scaleY(1.5);
-      line-height: 28px;
-      text-align: left;
-      -webkit-transform-origin: left;
-      -ms-transform-origin: left;
-      transform-origin: left; }
-    .betterangels.item .window-content .power .background-img {
-      height: 75px;
-      top: calc(50% - (75px / 2));
-      left: calc((100% - 75px) / 2);
-      position: absolute;
-      -webkit-transform: scale(3);
-      -ms-transform: scale(3);
-      transform: scale(3);
-      -webkit-filter: blur(0.6px) brightness(1.5) drop-shadow(0px 0px 4px black) drop-shadow(0px 0px 4px black) drop-shadow(0px 0px 14px black) drop-shadow(0px 0px 14px black);
-      filter: blur(0.6px) brightness(1.5) drop-shadow(0px 0px 4px black) drop-shadow(0px 0px 4px black) drop-shadow(0px 0px 14px black) drop-shadow(0px 0px 14px black);
-      pointer-events: none;
-      border: none; }
-    .betterangels.item .window-content .power .background-img.faded-img {
-      -webkit-transform: scale(7);
-      -ms-transform: scale(7);
-      transform: scale(7);
-      -webkit-filter: brightness(0.75) blur(2px);
-      filter: brightness(0.75) blur(2px); }
-    .betterangels.item .window-content .power .sheet-header .header-fields .item-name {
-      text-align: left;
-      text-indent: 8px;
-      height: 75px;
-      margin-top: 20px;
-      font-size: 32px;
-      font-family: "Komikax", sans-serif;
-      resize: none;
-      line-height: 70px; }
+    .betterangels.item .window-content .aspect {
+      overflow: hidden; }
+      .betterangels.item .window-content .aspect .background-img {
+        height: 75px;
+        position: absolute;
+        -webkit-transform: scale(3);
+        -ms-transform: scale(3);
+        transform: scale(3);
+        pointer-events: none;
+        left: calc(100% - (75px / 0.66));
+        border: none; }
+      .betterangels.item .window-content .aspect .sheet-header .header-fields .item-name {
+        width: calc(100% / 0.66);
+        height: auto;
+        padding: 20px 0 0 0;
+        font-size: 64px;
+        -webkit-transform: scaleX(0.66) scaleY(1.5);
+        -ms-transform: scaleX(0.66) scaleY(1.5);
+        transform: scaleX(0.66) scaleY(1.5);
+        line-height: 28px;
+        text-align: left;
+        -webkit-transform-origin: left;
+        -ms-transform-origin: left;
+        transform-origin: left; }
+    .betterangels.item .window-content .power {
+      overflow: hidden; }
+      .betterangels.item .window-content .power .background-img {
+        height: 75px;
+        top: calc(50% - (75px / 2));
+        left: calc((100% - 75px) / 2);
+        position: absolute;
+        -webkit-transform: scale(3);
+        -ms-transform: scale(3);
+        transform: scale(3);
+        -webkit-filter: blur(0.6px) brightness(1.5) drop-shadow(0px 0px 4px black) drop-shadow(0px 0px 4px black) drop-shadow(0px 0px 14px black) drop-shadow(0px 0px 14px black);
+        filter: blur(0.6px) brightness(1.5) drop-shadow(0px 0px 4px black) drop-shadow(0px 0px 4px black) drop-shadow(0px 0px 14px black) drop-shadow(0px 0px 14px black);
+        pointer-events: none;
+        border: none; }
+      .betterangels.item .window-content .power .background-img.faded-img {
+        -webkit-transform: scale(7);
+        -ms-transform: scale(7);
+        transform: scale(7);
+        -webkit-filter: brightness(0.75) blur(2px);
+        filter: brightness(0.75) blur(2px); }
+      .betterangels.item .window-content .power .sheet-header .header-fields .item-name {
+        text-align: left;
+        text-indent: 8px;
+        height: 75px;
+        margin-top: 20px;
+        font-size: 32px;
+        font-family: "Komikax", sans-serif;
+        resize: none;
+        line-height: 70px; }
     .betterangels.item .window-content .sheet-header {
       margin-bottom: 10px;
       overflow: hidden;
@@ -998,3 +975,427 @@ span.trait {
         .betterangels.item .window-content .sheet-body .pdf-link .pdfoundry-link {
           border-radius: 25px;
           position: relative; }
+
+/* Styles limited to chat messages */
+#chat-log .chat-message {
+  position: relative;
+  display: block; }
+  #chat-log .chat-message header.message-header .message-sender, #chat-log .chat-message header.message-header .message-metadata {
+    position: absolute;
+    bottom: 0;
+    font-size: 10px;
+    height: 15px; }
+    #chat-log .chat-message header.message-header .message-sender.message-metadata, #chat-log .chat-message header.message-header .message-metadata.message-metadata {
+      right: 0; }
+  #chat-log .chat-message header.message-header .message-metadata {
+    position: absolute;
+    bottom: 0;
+    font-size: 10px;
+    height: 15px; }
+  #chat-log .chat-message .message-content {
+    position: relative;
+    top: -5px; }
+    #chat-log .chat-message .message-content .roll-name {
+      display: inline-block;
+      background: url(../ui/parchment.jpg);
+      font-family: "Komikax", sans-serif;
+      font-size: 24px;
+      line-height: 24px; }
+    #chat-log .chat-message .message-content .one-roll-engine-dice-roll .roll-summary {
+      font-family: "DigitalStrip", sans-serif;
+      font-size: 16px;
+      font-weight: bold;
+      margin-left: -5px;
+      margin-top: -15px; }
+      #chat-log .chat-message .message-content .one-roll-engine-dice-roll .roll-summary .trait-name {
+        margin: 0 5px; }
+        #chat-log .chat-message .message-content .one-roll-engine-dice-roll .roll-summary .trait-name.strategy {
+          color: darkgreen; }
+        #chat-log .chat-message .message-content .one-roll-engine-dice-roll .roll-summary .trait-name.tactic {
+          color: purple; }
+      #chat-log .chat-message .message-content .one-roll-engine-dice-roll .roll-summary .trait-value, #chat-log .chat-message .message-content .one-roll-engine-dice-roll .roll-summary .pool-total {
+        font-family: "Komikax", sans-serif;
+        font-size: 24px;
+        line-height: inherit;
+        position: relative;
+        top: 4px; }
+        #chat-log .chat-message .message-content .one-roll-engine-dice-roll .roll-summary .trait-value.trait-value, #chat-log .chat-message .message-content .one-roll-engine-dice-roll .roll-summary .pool-total.trait-value {
+          font-size: 16px;
+          top: 2px;
+          margin-left: 2px; }
+        #chat-log .chat-message .message-content .one-roll-engine-dice-roll .roll-summary .trait-value.pool-total, #chat-log .chat-message .message-content .one-roll-engine-dice-roll .roll-summary .pool-total.pool-total {
+          margin: 0 5px; }
+      #chat-log .chat-message .message-content .one-roll-engine-dice-roll .roll-summary .operator {
+        margin-left: 5px; }
+    #chat-log .chat-message .message-content .one-roll-engine-dice-roll .ore-sets .ore-set-roll {
+      border-radius: 25px;
+      background: var(--set-bg-fade);
+      -webkit-box-shadow: inset 0 0 5px var(--set-bg-shadow);
+      box-shadow: inset 0 0 5px var(--set-bg-shadow);
+      padding: 2px; }
+      #chat-log .chat-message .message-content .one-roll-engine-dice-roll .ore-sets .ore-set-roll.width-1.height-1 {
+        --set-bg-shadow: lime;
+        background: rgba(0, 255, 0, 0.2); }
+      #chat-log .chat-message .message-content .one-roll-engine-dice-roll .ore-sets .ore-set-roll.width-1.height-2 {
+        --set-bg-shadow: lime;
+        background: rgba(0, 255, 0, 0.2); }
+      #chat-log .chat-message .message-content .one-roll-engine-dice-roll .ore-sets .ore-set-roll.width-1.height-3 {
+        --set-bg-shadow: lime;
+        background: rgba(0, 255, 0, 0.3); }
+      #chat-log .chat-message .message-content .one-roll-engine-dice-roll .ore-sets .ore-set-roll.width-1.height-4 {
+        --set-bg-shadow: lime;
+        background: rgba(0, 255, 0, 0.3); }
+      #chat-log .chat-message .message-content .one-roll-engine-dice-roll .ore-sets .ore-set-roll.width-1.height-5 {
+        --set-bg-shadow: lime;
+        background: rgba(0, 255, 0, 0.4); }
+      #chat-log .chat-message .message-content .one-roll-engine-dice-roll .ore-sets .ore-set-roll.width-1.height-6 {
+        --set-bg-shadow: lime;
+        background: rgba(0, 255, 0, 0.4); }
+      #chat-log .chat-message .message-content .one-roll-engine-dice-roll .ore-sets .ore-set-roll.width-1.height-7 {
+        --set-bg-shadow: lime;
+        background: rgba(0, 255, 0, 0.5); }
+      #chat-log .chat-message .message-content .one-roll-engine-dice-roll .ore-sets .ore-set-roll.width-1.height-8 {
+        --set-bg-shadow: lime;
+        background: rgba(0, 255, 0, 0.5); }
+      #chat-log .chat-message .message-content .one-roll-engine-dice-roll .ore-sets .ore-set-roll.width-1.height-9 {
+        --set-bg-shadow: lime;
+        background: rgba(0, 255, 0, 0.7); }
+      #chat-log .chat-message .message-content .one-roll-engine-dice-roll .ore-sets .ore-set-roll.width-1.height-10 {
+        --set-bg-shadow: lime;
+        background: rgba(0, 255, 0, 0.9); }
+      #chat-log .chat-message .message-content .one-roll-engine-dice-roll .ore-sets .ore-set-roll.width-2.height-1 {
+        --set-bg-shadow: cyan;
+        background: rgba(0, 255, 255, 0.2); }
+      #chat-log .chat-message .message-content .one-roll-engine-dice-roll .ore-sets .ore-set-roll.width-2.height-2 {
+        --set-bg-shadow: cyan;
+        background: rgba(0, 255, 255, 0.2); }
+      #chat-log .chat-message .message-content .one-roll-engine-dice-roll .ore-sets .ore-set-roll.width-2.height-3 {
+        --set-bg-shadow: cyan;
+        background: rgba(0, 255, 255, 0.3); }
+      #chat-log .chat-message .message-content .one-roll-engine-dice-roll .ore-sets .ore-set-roll.width-2.height-4 {
+        --set-bg-shadow: cyan;
+        background: rgba(0, 255, 255, 0.3); }
+      #chat-log .chat-message .message-content .one-roll-engine-dice-roll .ore-sets .ore-set-roll.width-2.height-5 {
+        --set-bg-shadow: cyan;
+        background: rgba(0, 255, 255, 0.4); }
+      #chat-log .chat-message .message-content .one-roll-engine-dice-roll .ore-sets .ore-set-roll.width-2.height-6 {
+        --set-bg-shadow: cyan;
+        background: rgba(0, 255, 255, 0.4); }
+      #chat-log .chat-message .message-content .one-roll-engine-dice-roll .ore-sets .ore-set-roll.width-2.height-7 {
+        --set-bg-shadow: cyan;
+        background: rgba(0, 255, 255, 0.5); }
+      #chat-log .chat-message .message-content .one-roll-engine-dice-roll .ore-sets .ore-set-roll.width-2.height-8 {
+        --set-bg-shadow: cyan;
+        background: rgba(0, 255, 255, 0.5); }
+      #chat-log .chat-message .message-content .one-roll-engine-dice-roll .ore-sets .ore-set-roll.width-2.height-9 {
+        --set-bg-shadow: cyan;
+        background: rgba(0, 255, 255, 0.7); }
+      #chat-log .chat-message .message-content .one-roll-engine-dice-roll .ore-sets .ore-set-roll.width-2.height-10 {
+        --set-bg-shadow: cyan;
+        background: rgba(0, 255, 255, 0.9); }
+      #chat-log .chat-message .message-content .one-roll-engine-dice-roll .ore-sets .ore-set-roll.width-3.height-1 {
+        --set-bg-shadow: magenta;
+        background: rgba(255, 0, 255, 0.2); }
+      #chat-log .chat-message .message-content .one-roll-engine-dice-roll .ore-sets .ore-set-roll.width-3.height-2 {
+        --set-bg-shadow: magenta;
+        background: rgba(255, 0, 255, 0.2); }
+      #chat-log .chat-message .message-content .one-roll-engine-dice-roll .ore-sets .ore-set-roll.width-3.height-3 {
+        --set-bg-shadow: magenta;
+        background: rgba(255, 0, 255, 0.3); }
+      #chat-log .chat-message .message-content .one-roll-engine-dice-roll .ore-sets .ore-set-roll.width-3.height-4 {
+        --set-bg-shadow: magenta;
+        background: rgba(255, 0, 255, 0.3); }
+      #chat-log .chat-message .message-content .one-roll-engine-dice-roll .ore-sets .ore-set-roll.width-3.height-5 {
+        --set-bg-shadow: magenta;
+        background: rgba(255, 0, 255, 0.4); }
+      #chat-log .chat-message .message-content .one-roll-engine-dice-roll .ore-sets .ore-set-roll.width-3.height-6 {
+        --set-bg-shadow: magenta;
+        background: rgba(255, 0, 255, 0.4); }
+      #chat-log .chat-message .message-content .one-roll-engine-dice-roll .ore-sets .ore-set-roll.width-3.height-7 {
+        --set-bg-shadow: magenta;
+        background: rgba(255, 0, 255, 0.5); }
+      #chat-log .chat-message .message-content .one-roll-engine-dice-roll .ore-sets .ore-set-roll.width-3.height-8 {
+        --set-bg-shadow: magenta;
+        background: rgba(255, 0, 255, 0.5); }
+      #chat-log .chat-message .message-content .one-roll-engine-dice-roll .ore-sets .ore-set-roll.width-3.height-9 {
+        --set-bg-shadow: magenta;
+        background: rgba(255, 0, 255, 0.7); }
+      #chat-log .chat-message .message-content .one-roll-engine-dice-roll .ore-sets .ore-set-roll.width-3.height-10 {
+        --set-bg-shadow: magenta;
+        background: rgba(255, 0, 255, 0.9); }
+      #chat-log .chat-message .message-content .one-roll-engine-dice-roll .ore-sets .ore-set-roll.width-4.height-1 {
+        --set-bg-shadow: magenta;
+        background: rgba(255, 0, 255, 0.2); }
+      #chat-log .chat-message .message-content .one-roll-engine-dice-roll .ore-sets .ore-set-roll.width-4.height-2 {
+        --set-bg-shadow: magenta;
+        background: rgba(255, 0, 255, 0.2); }
+      #chat-log .chat-message .message-content .one-roll-engine-dice-roll .ore-sets .ore-set-roll.width-4.height-3 {
+        --set-bg-shadow: magenta;
+        background: rgba(255, 0, 255, 0.3); }
+      #chat-log .chat-message .message-content .one-roll-engine-dice-roll .ore-sets .ore-set-roll.width-4.height-4 {
+        --set-bg-shadow: magenta;
+        background: rgba(255, 0, 255, 0.3); }
+      #chat-log .chat-message .message-content .one-roll-engine-dice-roll .ore-sets .ore-set-roll.width-4.height-5 {
+        --set-bg-shadow: magenta;
+        background: rgba(255, 0, 255, 0.4); }
+      #chat-log .chat-message .message-content .one-roll-engine-dice-roll .ore-sets .ore-set-roll.width-4.height-6 {
+        --set-bg-shadow: magenta;
+        background: rgba(255, 0, 255, 0.4); }
+      #chat-log .chat-message .message-content .one-roll-engine-dice-roll .ore-sets .ore-set-roll.width-4.height-7 {
+        --set-bg-shadow: magenta;
+        background: rgba(255, 0, 255, 0.5); }
+      #chat-log .chat-message .message-content .one-roll-engine-dice-roll .ore-sets .ore-set-roll.width-4.height-8 {
+        --set-bg-shadow: magenta;
+        background: rgba(255, 0, 255, 0.5); }
+      #chat-log .chat-message .message-content .one-roll-engine-dice-roll .ore-sets .ore-set-roll.width-4.height-9 {
+        --set-bg-shadow: magenta;
+        background: rgba(255, 0, 255, 0.7); }
+      #chat-log .chat-message .message-content .one-roll-engine-dice-roll .ore-sets .ore-set-roll.width-4.height-10 {
+        --set-bg-shadow: magenta;
+        background: rgba(255, 0, 255, 0.9); }
+      #chat-log .chat-message .message-content .one-roll-engine-dice-roll .ore-sets .ore-set-roll.width-5.height-1 {
+        --set-bg-shadow: magenta;
+        background: rgba(255, 0, 255, 0.2); }
+      #chat-log .chat-message .message-content .one-roll-engine-dice-roll .ore-sets .ore-set-roll.width-5.height-2 {
+        --set-bg-shadow: magenta;
+        background: rgba(255, 0, 255, 0.2); }
+      #chat-log .chat-message .message-content .one-roll-engine-dice-roll .ore-sets .ore-set-roll.width-5.height-3 {
+        --set-bg-shadow: magenta;
+        background: rgba(255, 0, 255, 0.3); }
+      #chat-log .chat-message .message-content .one-roll-engine-dice-roll .ore-sets .ore-set-roll.width-5.height-4 {
+        --set-bg-shadow: magenta;
+        background: rgba(255, 0, 255, 0.3); }
+      #chat-log .chat-message .message-content .one-roll-engine-dice-roll .ore-sets .ore-set-roll.width-5.height-5 {
+        --set-bg-shadow: magenta;
+        background: rgba(255, 0, 255, 0.4); }
+      #chat-log .chat-message .message-content .one-roll-engine-dice-roll .ore-sets .ore-set-roll.width-5.height-6 {
+        --set-bg-shadow: magenta;
+        background: rgba(255, 0, 255, 0.4); }
+      #chat-log .chat-message .message-content .one-roll-engine-dice-roll .ore-sets .ore-set-roll.width-5.height-7 {
+        --set-bg-shadow: magenta;
+        background: rgba(255, 0, 255, 0.5); }
+      #chat-log .chat-message .message-content .one-roll-engine-dice-roll .ore-sets .ore-set-roll.width-5.height-8 {
+        --set-bg-shadow: magenta;
+        background: rgba(255, 0, 255, 0.5); }
+      #chat-log .chat-message .message-content .one-roll-engine-dice-roll .ore-sets .ore-set-roll.width-5.height-9 {
+        --set-bg-shadow: magenta;
+        background: rgba(255, 0, 255, 0.7); }
+      #chat-log .chat-message .message-content .one-roll-engine-dice-roll .ore-sets .ore-set-roll.width-5.height-10 {
+        --set-bg-shadow: magenta;
+        background: rgba(255, 0, 255, 0.9); }
+      #chat-log .chat-message .message-content .one-roll-engine-dice-roll .ore-sets .ore-set-roll.width-6.height-1 {
+        --set-bg-shadow: magenta;
+        background: rgba(255, 0, 255, 0.2); }
+      #chat-log .chat-message .message-content .one-roll-engine-dice-roll .ore-sets .ore-set-roll.width-6.height-2 {
+        --set-bg-shadow: magenta;
+        background: rgba(255, 0, 255, 0.2); }
+      #chat-log .chat-message .message-content .one-roll-engine-dice-roll .ore-sets .ore-set-roll.width-6.height-3 {
+        --set-bg-shadow: magenta;
+        background: rgba(255, 0, 255, 0.3); }
+      #chat-log .chat-message .message-content .one-roll-engine-dice-roll .ore-sets .ore-set-roll.width-6.height-4 {
+        --set-bg-shadow: magenta;
+        background: rgba(255, 0, 255, 0.3); }
+      #chat-log .chat-message .message-content .one-roll-engine-dice-roll .ore-sets .ore-set-roll.width-6.height-5 {
+        --set-bg-shadow: magenta;
+        background: rgba(255, 0, 255, 0.4); }
+      #chat-log .chat-message .message-content .one-roll-engine-dice-roll .ore-sets .ore-set-roll.width-6.height-6 {
+        --set-bg-shadow: magenta;
+        background: rgba(255, 0, 255, 0.4); }
+      #chat-log .chat-message .message-content .one-roll-engine-dice-roll .ore-sets .ore-set-roll.width-6.height-7 {
+        --set-bg-shadow: magenta;
+        background: rgba(255, 0, 255, 0.5); }
+      #chat-log .chat-message .message-content .one-roll-engine-dice-roll .ore-sets .ore-set-roll.width-6.height-8 {
+        --set-bg-shadow: magenta;
+        background: rgba(255, 0, 255, 0.5); }
+      #chat-log .chat-message .message-content .one-roll-engine-dice-roll .ore-sets .ore-set-roll.width-6.height-9 {
+        --set-bg-shadow: magenta;
+        background: rgba(255, 0, 255, 0.7); }
+      #chat-log .chat-message .message-content .one-roll-engine-dice-roll .ore-sets .ore-set-roll.width-6.height-10 {
+        --set-bg-shadow: magenta;
+        background: rgba(255, 0, 255, 0.9); }
+      #chat-log .chat-message .message-content .one-roll-engine-dice-roll .ore-sets .ore-set-roll.width-7.height-1 {
+        --set-bg-shadow: magenta;
+        background: rgba(255, 0, 255, 0.2); }
+      #chat-log .chat-message .message-content .one-roll-engine-dice-roll .ore-sets .ore-set-roll.width-7.height-2 {
+        --set-bg-shadow: magenta;
+        background: rgba(255, 0, 255, 0.2); }
+      #chat-log .chat-message .message-content .one-roll-engine-dice-roll .ore-sets .ore-set-roll.width-7.height-3 {
+        --set-bg-shadow: magenta;
+        background: rgba(255, 0, 255, 0.3); }
+      #chat-log .chat-message .message-content .one-roll-engine-dice-roll .ore-sets .ore-set-roll.width-7.height-4 {
+        --set-bg-shadow: magenta;
+        background: rgba(255, 0, 255, 0.3); }
+      #chat-log .chat-message .message-content .one-roll-engine-dice-roll .ore-sets .ore-set-roll.width-7.height-5 {
+        --set-bg-shadow: magenta;
+        background: rgba(255, 0, 255, 0.4); }
+      #chat-log .chat-message .message-content .one-roll-engine-dice-roll .ore-sets .ore-set-roll.width-7.height-6 {
+        --set-bg-shadow: magenta;
+        background: rgba(255, 0, 255, 0.4); }
+      #chat-log .chat-message .message-content .one-roll-engine-dice-roll .ore-sets .ore-set-roll.width-7.height-7 {
+        --set-bg-shadow: magenta;
+        background: rgba(255, 0, 255, 0.5); }
+      #chat-log .chat-message .message-content .one-roll-engine-dice-roll .ore-sets .ore-set-roll.width-7.height-8 {
+        --set-bg-shadow: magenta;
+        background: rgba(255, 0, 255, 0.5); }
+      #chat-log .chat-message .message-content .one-roll-engine-dice-roll .ore-sets .ore-set-roll.width-7.height-9 {
+        --set-bg-shadow: magenta;
+        background: rgba(255, 0, 255, 0.7); }
+      #chat-log .chat-message .message-content .one-roll-engine-dice-roll .ore-sets .ore-set-roll.width-7.height-10 {
+        --set-bg-shadow: magenta;
+        background: rgba(255, 0, 255, 0.9); }
+      #chat-log .chat-message .message-content .one-roll-engine-dice-roll .ore-sets .ore-set-roll.width-8.height-1 {
+        --set-bg-shadow: magenta;
+        background: rgba(255, 0, 255, 0.2); }
+      #chat-log .chat-message .message-content .one-roll-engine-dice-roll .ore-sets .ore-set-roll.width-8.height-2 {
+        --set-bg-shadow: magenta;
+        background: rgba(255, 0, 255, 0.2); }
+      #chat-log .chat-message .message-content .one-roll-engine-dice-roll .ore-sets .ore-set-roll.width-8.height-3 {
+        --set-bg-shadow: magenta;
+        background: rgba(255, 0, 255, 0.3); }
+      #chat-log .chat-message .message-content .one-roll-engine-dice-roll .ore-sets .ore-set-roll.width-8.height-4 {
+        --set-bg-shadow: magenta;
+        background: rgba(255, 0, 255, 0.3); }
+      #chat-log .chat-message .message-content .one-roll-engine-dice-roll .ore-sets .ore-set-roll.width-8.height-5 {
+        --set-bg-shadow: magenta;
+        background: rgba(255, 0, 255, 0.4); }
+      #chat-log .chat-message .message-content .one-roll-engine-dice-roll .ore-sets .ore-set-roll.width-8.height-6 {
+        --set-bg-shadow: magenta;
+        background: rgba(255, 0, 255, 0.4); }
+      #chat-log .chat-message .message-content .one-roll-engine-dice-roll .ore-sets .ore-set-roll.width-8.height-7 {
+        --set-bg-shadow: magenta;
+        background: rgba(255, 0, 255, 0.5); }
+      #chat-log .chat-message .message-content .one-roll-engine-dice-roll .ore-sets .ore-set-roll.width-8.height-8 {
+        --set-bg-shadow: magenta;
+        background: rgba(255, 0, 255, 0.5); }
+      #chat-log .chat-message .message-content .one-roll-engine-dice-roll .ore-sets .ore-set-roll.width-8.height-9 {
+        --set-bg-shadow: magenta;
+        background: rgba(255, 0, 255, 0.7); }
+      #chat-log .chat-message .message-content .one-roll-engine-dice-roll .ore-sets .ore-set-roll.width-8.height-10 {
+        --set-bg-shadow: magenta;
+        background: rgba(255, 0, 255, 0.9); }
+      #chat-log .chat-message .message-content .one-roll-engine-dice-roll .ore-sets .ore-set-roll.width-9.height-1 {
+        --set-bg-shadow: magenta;
+        background: rgba(255, 0, 255, 0.2); }
+      #chat-log .chat-message .message-content .one-roll-engine-dice-roll .ore-sets .ore-set-roll.width-9.height-2 {
+        --set-bg-shadow: magenta;
+        background: rgba(255, 0, 255, 0.2); }
+      #chat-log .chat-message .message-content .one-roll-engine-dice-roll .ore-sets .ore-set-roll.width-9.height-3 {
+        --set-bg-shadow: magenta;
+        background: rgba(255, 0, 255, 0.3); }
+      #chat-log .chat-message .message-content .one-roll-engine-dice-roll .ore-sets .ore-set-roll.width-9.height-4 {
+        --set-bg-shadow: magenta;
+        background: rgba(255, 0, 255, 0.3); }
+      #chat-log .chat-message .message-content .one-roll-engine-dice-roll .ore-sets .ore-set-roll.width-9.height-5 {
+        --set-bg-shadow: magenta;
+        background: rgba(255, 0, 255, 0.4); }
+      #chat-log .chat-message .message-content .one-roll-engine-dice-roll .ore-sets .ore-set-roll.width-9.height-6 {
+        --set-bg-shadow: magenta;
+        background: rgba(255, 0, 255, 0.4); }
+      #chat-log .chat-message .message-content .one-roll-engine-dice-roll .ore-sets .ore-set-roll.width-9.height-7 {
+        --set-bg-shadow: magenta;
+        background: rgba(255, 0, 255, 0.5); }
+      #chat-log .chat-message .message-content .one-roll-engine-dice-roll .ore-sets .ore-set-roll.width-9.height-8 {
+        --set-bg-shadow: magenta;
+        background: rgba(255, 0, 255, 0.5); }
+      #chat-log .chat-message .message-content .one-roll-engine-dice-roll .ore-sets .ore-set-roll.width-9.height-9 {
+        --set-bg-shadow: magenta;
+        background: rgba(255, 0, 255, 0.7); }
+      #chat-log .chat-message .message-content .one-roll-engine-dice-roll .ore-sets .ore-set-roll.width-9.height-10 {
+        --set-bg-shadow: magenta;
+        background: rgba(255, 0, 255, 0.9); }
+      #chat-log .chat-message .message-content .one-roll-engine-dice-roll .ore-sets .ore-set-roll.width-10.height-1 {
+        --set-bg-shadow: magenta;
+        background: rgba(255, 0, 255, 0.2); }
+      #chat-log .chat-message .message-content .one-roll-engine-dice-roll .ore-sets .ore-set-roll.width-10.height-2 {
+        --set-bg-shadow: magenta;
+        background: rgba(255, 0, 255, 0.2); }
+      #chat-log .chat-message .message-content .one-roll-engine-dice-roll .ore-sets .ore-set-roll.width-10.height-3 {
+        --set-bg-shadow: magenta;
+        background: rgba(255, 0, 255, 0.3); }
+      #chat-log .chat-message .message-content .one-roll-engine-dice-roll .ore-sets .ore-set-roll.width-10.height-4 {
+        --set-bg-shadow: magenta;
+        background: rgba(255, 0, 255, 0.3); }
+      #chat-log .chat-message .message-content .one-roll-engine-dice-roll .ore-sets .ore-set-roll.width-10.height-5 {
+        --set-bg-shadow: magenta;
+        background: rgba(255, 0, 255, 0.4); }
+      #chat-log .chat-message .message-content .one-roll-engine-dice-roll .ore-sets .ore-set-roll.width-10.height-6 {
+        --set-bg-shadow: magenta;
+        background: rgba(255, 0, 255, 0.4); }
+      #chat-log .chat-message .message-content .one-roll-engine-dice-roll .ore-sets .ore-set-roll.width-10.height-7 {
+        --set-bg-shadow: magenta;
+        background: rgba(255, 0, 255, 0.5); }
+      #chat-log .chat-message .message-content .one-roll-engine-dice-roll .ore-sets .ore-set-roll.width-10.height-8 {
+        --set-bg-shadow: magenta;
+        background: rgba(255, 0, 255, 0.5); }
+      #chat-log .chat-message .message-content .one-roll-engine-dice-roll .ore-sets .ore-set-roll.width-10.height-9 {
+        --set-bg-shadow: magenta;
+        background: rgba(255, 0, 255, 0.7); }
+      #chat-log .chat-message .message-content .one-roll-engine-dice-roll .ore-sets .ore-set-roll.width-10.height-10 {
+        --set-bg-shadow: magenta;
+        background: rgba(255, 0, 255, 0.9); }
+      #chat-log .chat-message .message-content .one-roll-engine-dice-roll .ore-sets .ore-set-roll.width-11.height-1 {
+        --set-bg-shadow: magenta;
+        background: rgba(255, 0, 255, 0.2); }
+      #chat-log .chat-message .message-content .one-roll-engine-dice-roll .ore-sets .ore-set-roll.width-11.height-2 {
+        --set-bg-shadow: magenta;
+        background: rgba(255, 0, 255, 0.2); }
+      #chat-log .chat-message .message-content .one-roll-engine-dice-roll .ore-sets .ore-set-roll.width-11.height-3 {
+        --set-bg-shadow: magenta;
+        background: rgba(255, 0, 255, 0.3); }
+      #chat-log .chat-message .message-content .one-roll-engine-dice-roll .ore-sets .ore-set-roll.width-11.height-4 {
+        --set-bg-shadow: magenta;
+        background: rgba(255, 0, 255, 0.3); }
+      #chat-log .chat-message .message-content .one-roll-engine-dice-roll .ore-sets .ore-set-roll.width-11.height-5 {
+        --set-bg-shadow: magenta;
+        background: rgba(255, 0, 255, 0.4); }
+      #chat-log .chat-message .message-content .one-roll-engine-dice-roll .ore-sets .ore-set-roll.width-11.height-6 {
+        --set-bg-shadow: magenta;
+        background: rgba(255, 0, 255, 0.4); }
+      #chat-log .chat-message .message-content .one-roll-engine-dice-roll .ore-sets .ore-set-roll.width-11.height-7 {
+        --set-bg-shadow: magenta;
+        background: rgba(255, 0, 255, 0.5); }
+      #chat-log .chat-message .message-content .one-roll-engine-dice-roll .ore-sets .ore-set-roll.width-11.height-8 {
+        --set-bg-shadow: magenta;
+        background: rgba(255, 0, 255, 0.5); }
+      #chat-log .chat-message .message-content .one-roll-engine-dice-roll .ore-sets .ore-set-roll.width-11.height-9 {
+        --set-bg-shadow: magenta;
+        background: rgba(255, 0, 255, 0.7); }
+      #chat-log .chat-message .message-content .one-roll-engine-dice-roll .ore-sets .ore-set-roll.width-11.height-10 {
+        --set-bg-shadow: magenta;
+        background: rgba(255, 0, 255, 0.9); }
+      #chat-log .chat-message .message-content .one-roll-engine-dice-roll .ore-sets .ore-set-roll.width-12.height-1 {
+        --set-bg-shadow: magenta;
+        background: rgba(255, 0, 255, 0.2); }
+      #chat-log .chat-message .message-content .one-roll-engine-dice-roll .ore-sets .ore-set-roll.width-12.height-2 {
+        --set-bg-shadow: magenta;
+        background: rgba(255, 0, 255, 0.2); }
+      #chat-log .chat-message .message-content .one-roll-engine-dice-roll .ore-sets .ore-set-roll.width-12.height-3 {
+        --set-bg-shadow: magenta;
+        background: rgba(255, 0, 255, 0.3); }
+      #chat-log .chat-message .message-content .one-roll-engine-dice-roll .ore-sets .ore-set-roll.width-12.height-4 {
+        --set-bg-shadow: magenta;
+        background: rgba(255, 0, 255, 0.3); }
+      #chat-log .chat-message .message-content .one-roll-engine-dice-roll .ore-sets .ore-set-roll.width-12.height-5 {
+        --set-bg-shadow: magenta;
+        background: rgba(255, 0, 255, 0.4); }
+      #chat-log .chat-message .message-content .one-roll-engine-dice-roll .ore-sets .ore-set-roll.width-12.height-6 {
+        --set-bg-shadow: magenta;
+        background: rgba(255, 0, 255, 0.4); }
+      #chat-log .chat-message .message-content .one-roll-engine-dice-roll .ore-sets .ore-set-roll.width-12.height-7 {
+        --set-bg-shadow: magenta;
+        background: rgba(255, 0, 255, 0.5); }
+      #chat-log .chat-message .message-content .one-roll-engine-dice-roll .ore-sets .ore-set-roll.width-12.height-8 {
+        --set-bg-shadow: magenta;
+        background: rgba(255, 0, 255, 0.5); }
+      #chat-log .chat-message .message-content .one-roll-engine-dice-roll .ore-sets .ore-set-roll.width-12.height-9 {
+        --set-bg-shadow: magenta;
+        background: rgba(255, 0, 255, 0.7); }
+      #chat-log .chat-message .message-content .one-roll-engine-dice-roll .ore-sets .ore-set-roll.width-12.height-10 {
+        --set-bg-shadow: magenta;
+        background: rgba(255, 0, 255, 0.9); }
+    #chat-log .chat-message .message-content .one-roll-engine-dice-roll .ore-single-roll.in-set {
+      -webkit-filter: drop-shadow(0 0 4px black);
+      filter: drop-shadow(0 0 4px black); }
+    #chat-log .chat-message .message-content .one-roll-engine-dice-roll .ore-single-roll.loose {
+      -webkit-filter: drop-shadow(0 0 3px black);
+      filter: drop-shadow(0 0 3px black); }

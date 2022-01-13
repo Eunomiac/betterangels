@@ -1,6 +1,12 @@
-// .notification.error.permanent { display: none !important; }
+h1, h2, h3, h4 {
+	border: none;
+}
+
+i.fas { font-family: "Font Awesome 5 Free" !important }
+
 .window-app {
     font-family: $font-primary;
+		--color-text-dark-primary: #{$font-primary};
 		color: $c-fg;
 		background: $c-bg;
 

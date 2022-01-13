@@ -69,431 +69,453 @@
 	}
 }
 
-& {
-	
-$tactic-dot-size: 15px;
-$strategy-dot-size: 19px;
-$tactic-spacing: $tactic-dot-size + 1px;
-$strategy-spacing: $strategy-dot-size + 1px;
+@function neonGlow($color, $minBlur) {
+	$result: ();
+	$brightMults: 1, 2, 3;
+	$glowMults: 4, 7, 8, 10, 15;
 
-text-shadow: 0 0 5px $c-bg-dark, 0 0 2px $c-bg-dark, 0 0 5px $c-bg;
-
-&.hellbound {
-	width: 476px !important;
-	height: 786px !important;
-	overflow: visible !important;
-	border-radius: 25px;
-
-	.window-content { 
-		max-height: calc(100% - (2 * 25px));
-		overflow: visible !important;
+	@each $brightMult in $brightMults {
+		$result: append($result, (0 0 #{$minBlur * $brightMult}px #{$c-fg-bright}), $separator: comma);
 	}
-	.window-resizable-handle { display: none }
+	@each $glowMult in $glowMults {
+		$result: append($result, (0 0 #{$minBlur * $glowMult}px #{$color}), $separator: comma);
+	}
+	
+	@return $result;
 }
 
-.trait-line {
-	display: grid;
-	grid-template-columns: #{9 * $tactic-spacing} #{7 * $strategy-spacing} #{9 * $tactic-spacing};
-	grid-gap: $tactic-spacing;
+@mixin neon-hover($name, $color, $minBlurStep: 2.5, $maxBlurStep: 5, $maxScale: 1.2) {
 
-	* {
-		pointer-events: none;
-		transform-origin: 50% 50%;
+	@keyframes neonGlow-#{$name} {
+		from {
+			color: scale-color($color, $lightness: -25%, $saturation: 50%);
+			text-shadow: neonGlow($color, $maxBlurStep);
+			scale: 1;
+		}
+		to {
+			color: scale-color($color, $lightness: -50%, $saturation: 50%);
+			text-shadow: neonGlow($color, $minBlurStep);
+			scale: $maxScale;
+		}
 	}
 
-	.trait-pair {
-		display: grid;
-		position: relative;
-		grid-template-rows: repeat(4, var(--dot-size));
-		grid-gap: 1px;
-		margin-top: auto;
-		margin-bottom: auto;
-		z-index: 5;
+	color: $c-fg;
+	animation: neonGlow-#{$name} 1.5s ease-in-out infinite alternate;
+	transition: all 0.5s;
+}
 
-		> label {
-			position: relative;
-			transition: 3;
-			--video-horiz-shift: 0px;
 
-			> video {
-				position: absolute;
-				width: 160px;
-				height: 100%;
-				transform: scale(6) scaleY(2);
-				display: none;
-				z-index: 1;
-			}
+& {	
+	$tactic-dot-size: 15px;
+	$strategy-dot-size: 19px;
+	$tactic-spacing: $tactic-dot-size + 1px;
+	$strategy-spacing: $strategy-dot-size + 1px;
 
-			> span { position: absolute }
+	text-shadow: 0 0 5px $c-bg-dark, 0 0 2px $c-bg-dark, 0 0 5px $c-bg;
 
-			&.sinister {
-				grid-row: 1;
-				margin-left: -20px;
-				> video { left: calc(-40px + var(--video-horiz-shift)) }
-				> span {
-					left: 0;
-				}
-			}
+	&.hellbound {
+		width: 476px !important;
+		height: 786px !important;
+		overflow: visible !important;
+		border-radius: 25px;
 
-			&.virtuous {
-				grid-row: 4;
-				margin-right: -20px;
+		.window-content { 
+			max-height: calc(100% - (2 * 25px));
+			overflow: visible !important;
+		}
+		.window-resizable-handle { display: none }
 
-				> video { right: calc(-40px + var(--video-horiz-shift)) }
-			}
+		&.minimized {
+			height: 20px !important;
+			min-height: 20px !important;
+			width: 200px !important;
+			border-radius: 15px;
+			box-shadow:  2px 2px 3px black, -0.5px -0.5px 2px white, 2px 2px 3px black;
 
-			&:hover {
-				> video {
-					display: initial;
-				}
+			.window-header {
+				width: 200px;
+				height: 20px;
+				border: 0;
 
-				> span.display {
-					color: $c-bg-dark;
-					text-shadow: none;
-					transition: 0.5s;
-					transform: scale(1.2);
+				.window-title {
+					display: block;
+					color: white;
+					position: relative;
+					font-size: 24px;
+					line-height: 20px;
 				}
 			}
 		}
+	}
 
-		.trait-grid {
+	.trait-line {
+		display: grid;
+		grid-template-columns: #{9 * $tactic-spacing} #{7 * $strategy-spacing} #{9 * $tactic-spacing};
+		grid-gap: $tactic-spacing;
+
+		* {
+			pointer-events: none;
+			transform-origin: 50% 50%;
+		}
+
+		.trait-pair {
 			display: grid;
 			position: relative;
-			grid-template-rows: repeat(2, var(--dot-size));
-			grid-template-columns: repeat(7, var(--dot-size));
-			grid-row: 2 / span 2;
+			grid-template-rows: repeat(4, var(--dot-size));
 			grid-gap: 1px;
 			margin-top: auto;
 			margin-bottom: auto;
-			pointer-events: all;
 			z-index: 5;
 
-			.dot {
+			> label {
 				position: relative;
-				border: 1px solid $c-fg;
-				border-radius: 50%;
+				transition: 3s;
 
-				> .dot-slot {
-					position: absolute;
-					// display: block;
-					// left: 0;
-					// top: 0;
-					height: 100%;
-					width: 100%;
+				> span { position: absolute }
+
+				&.sinister {
+					grid-row: 1;
+					margin-left: -15px;
+					> span { left: 0 }
+				}
+
+				&.virtuous {
+					grid-row: 4;
+				}
+
+				&.strategy:not(.no-hover):hover > span.display { @include neon-hover("strategy", #00ff00, 1, 3, 1.5) }
+				&.tactic:not(.no-hover):hover > span.display { @include neon-hover("tactic", #ff00ff, 1, 3, 1.5) }
+			}
+
+			.trait-grid {
+				display: grid;
+				position: relative;
+				grid-template-rows: repeat(2, var(--dot-size));
+				grid-template-columns: repeat(7, var(--dot-size));
+				grid-row: 2 / span 2;
+				grid-gap: 1px;
+				margin-top: auto;
+				margin-bottom: auto;
+				pointer-events: all;
+				z-index: 5;
+
+				.dot {
+					position: relative;
+					border: 1px solid $c-fg;
 					border-radius: 50%;
-					background: transparent;
 
-					&.full {
-						background: radial-gradient(ellipse, $c-fg-bright, $c-fg 70%);
+					> .dot-slot {
+						position: absolute;
+						// display: block;
+						// left: 0;
+						// top: 0;
+						height: 100%;
+						width: 100%;
+						border-radius: 50%;
+						background: transparent;
+
+						&.full {
+							background: radial-gradient(ellipse, $c-fg-bright, $c-fg 70%);
+						}
+
+						&.top-layer {
+							z-index: 10000;
+							pointer-events: none !important;
+						}
 					}
 
-					&.top-layer {
-						z-index: 10000;
-						pointer-events: none !important;
+					&.top-1 {
+						grid-row: 1;
+						grid-column: 1;
+					}
+
+					&.top-2 {
+						grid-row: 1;
+						grid-column: 2;
+					}
+
+					&.top-3 {
+						grid-row: 1;
+						grid-column: 3;
+					}
+
+					&.top-4 {
+						grid-row: 1;
+						grid-column: 4;
+					}
+
+					&.top-5 {
+						grid-row: 1;
+						grid-column: 5;
+					}
+
+					&.bottom-5 {
+						grid-row: 2;
+						grid-column: 3;
+					}
+
+					&.bottom-4 {
+						grid-row: 2;
+						grid-column: 4;
+					}
+
+					&.bottom-3 {
+						grid-row: 2;
+						grid-column: 5;
+					}
+
+					&.bottom-2 {
+						grid-row: 2;
+						grid-column: 6;
+					}
+
+					&.bottom-1 {
+						grid-row: 2;
+						grid-column: 7;
 					}
 				}
+			}
 
-				&.top-1 {
-					grid-row: 1;
-					grid-column: 1;
-				}
+			&.tactic {
+				--dot-size: #{$tactic-dot-size};
 
-				&.top-2 {
-					grid-row: 1;
-					grid-column: 2;
-				}
+				width: 7 * $tactic-spacing + 2 * $tactic-spacing;
+				padding: $tactic-spacing;
 
-				&.top-3 {
-					grid-row: 1;
-					grid-column: 3;
-				}
-
-				&.top-4 {
-					grid-row: 1;
-					grid-column: 4;
-				}
-
-				&.top-5 {
-					grid-row: 1;
-					grid-column: 5;
-				}
-
-				&.bottom-5 {
-					grid-row: 2;
-					grid-column: 3;
-				}
-
-				&.bottom-4 {
-					grid-row: 2;
-					grid-column: 4;
-				}
-
-				&.bottom-3 {
-					grid-row: 2;
-					grid-column: 5;
-				}
-
-				&.bottom-2 {
-					grid-row: 2;
-					grid-column: 6;
-				}
-
-				&.bottom-1 {
-					grid-row: 2;
-					grid-column: 7;
+				> label {
+					font-family: $font-primary;
+					line-height: $tactic-dot-size - 1px;
 				}
 			}
-		}
 
-		&.tactic {
-			--dot-size: #{$tactic-dot-size};
+			&.strategy {
+				--dot-size: #{$strategy-dot-size};
 
-			width: 7 * $tactic-spacing + 2 * $tactic-spacing;
-			padding: $tactic-spacing;
+				width: 7 * $strategy-spacing;
 
-			> label {
-				font-family: $font-primary;
-				line-height: $tactic-dot-size - 1px;
-
-				> video { top: 3px }
-
-				&#trait-label-contempt { --video-horiz-shift: -7px }
-				&#trait-label-corruption { --video-horiz-shift: 0px }
-				&#trait-label-courage { --video-horiz-shift: -10px }
-				&#trait-label-cruelty { --video-horiz-shift: -15px }
-				&#trait-label-deceit { --video-horiz-shift: -20px }
-				&#trait-label-endurance { --video-horiz-shift: 0px }
-				&#trait-label-espionage { --video-horiz-shift: -7px }
-				&#trait-label-generosity { --video-horiz-shift: 0px }
-				&#trait-label-greed { --video-horiz-shift: -25px }
-				&#trait-label-honesty { --video-horiz-shift: -5px }
-				&#trait-label-knowledge { --video-horiz-shift: 0px }
-				&#trait-label-nurture { --video-horiz-shift: -10px }
-			}
-		}
-
-		&.strategy {
-			--dot-size: #{$strategy-dot-size};
-
-			width: 7 * $strategy-spacing;
-
-			> label {
-				font-family: $font-secondary;
-				line-height: $strategy-dot-size - 1px;
-
-				> video { top: 5px }
-				
-				&#trait-label-cunning { --video-horiz-shift: -10px }
-				&#trait-label-devious { --video-horiz-shift: -10px }
-				&#trait-label-insightful { --video-horiz-shift: 5px }
-				&#trait-label-open { --video-horiz-shift: -15px }
-				&#trait-label-patient { --video-horiz-shift: 0px }
-				&#trait-label-sly { --video-horiz-shift: -30px }
+				> label {
+					font-family: $font-secondary;
+					line-height: $strategy-dot-size - 1px;
+				}
 			}
 		}
 	}
-}
 
-.menu-positioner {
-	position: absolute;
-
-	.radial-menu {
+	.menu-positioner {
 		position: absolute;
-		display: block;
-		padding: 0;
-		background: transparent;
-		border-radius: 50%;
-		opacity: 0%;
-		transition: 0.5s;
-		transform: scale(0.3) rotate(-125deg);
-		pointer-events: all;
 
-		@include radial-menu(60px, 8, 14px);
-		@include radial-menu(50px, 8, 14px);
-		@include radial-menu(100px, 8, 14px);
-		@include radial-menu(150px, 8, 14px);
+		.radial-menu {
+			position: absolute;
+			display: block;
+			padding: 0;
+			background: transparent;
+			border-radius: 50%;
+			opacity: 0%;
+			transition: 0.5s;
+			transform: scale(0.3) rotate(-125deg);
+			pointer-events: all;
 
-		&.depth-1 { z-index: 2 }
-		&.depth-2 { z-index: 4 }
-		&.depth-3 { z-index: 6 }
-		&.depth-4 { z-index: 8 }
+			@include radial-menu(60px, 8, 14px);
+			@include radial-menu(50px, 8, 14px);
+			@include radial-menu(100px, 8, 14px);
+			@include radial-menu(150px, 8, 14px);
 
-		&:not(.active) {
-			pointer-events: none !important;
+			&.depth-1 { z-index: 2 }
+			&.depth-2 { z-index: 4 }
+			&.depth-3 { z-index: 6 }
+			&.depth-4 { z-index: 8 }
 
-			* {
+			&:not(.active) {
 				pointer-events: none !important;
-			}
-		}
 
-		video {
-			position: absolute;
-			top: -50%;
-			left: -50%;
-			width: 200%;
-			height: 200%;
-			opacity: 100%;
-			transform: scale(1.75);
-			opacity: 0.75;
-		}
-
-		.menu-container {
-			position: absolute;
-			top: -20%;
-			left: -20%;
-			width: 140%;
-			height: 140%;
-			list-style: none;
-
-			.menu-button {
-				position: absolute;
-				display: block;
-				top: 50%;
-				left: 50%;
-				height: 20px;
-				width: 30px;
-				// transition: 0.5s;
-
-				@keyframes slow-bob {
-					from { top: -3px; }
-					to { top: 3px; }
-				}
-
-				button {
-					position: absolute;
-					padding: 0;
-					margin: 0;
-					height: 100%;
-					width: 100%;
-
-					// background-color: rgba(255, 0, 255, 0.5);
-					// outline: 2px solid rgba(255, 0, 255, 1);
-					// font-weight: bold;
-					// color: var(--button-color);
-					// text-shadow: -1px -1px 2px #000000, 1px -1px 2px #000000, -1px 1px 2px #000000, 1px 1px 2px #000000;
-					background: transparent;
-					background-size: 30px 20px;
-					border: none;
-					outline: none;
-					box-shadow: none;
-					transition: 0.5s;
-					animation: slow-bob 2s cubic-bezier(0.36, 0, 0.63, 1) infinite alternate;
-					
-					&.button-add-drop {
-						background-image: url("/systems/betterangels/assets/icons/add-drop-bg.webp");
-
-						&.active-add {
-							background-image: url("/systems/betterangels/assets/icons/add-active.webp");
-							pointer-events: all;
-						}										
-						&.active-drop {
-							background-image: url("/systems/betterangels/assets/icons/drop-active.webp");
-							pointer-events: all;
-						}
-						&.active-add.active-drop {
-							background-image: url("/systems/betterangels/assets/icons/add-drop-active.webp");
-							pointer-events: all;
-						}
-					}
-					&.button-slide-left {
-						background-image: url("/systems/betterangels/assets/icons/slide-left-bg.webp");		
-
-						&.active-slide-left {
-							background-image: url("/systems/betterangels/assets/icons/slide-left.webp");
-							pointer-events: all;
-						}
-					}
-					&.button-slide-right {
-						background-image: url("/systems/betterangels/assets/icons/slide-right-bg.webp");
-
-						&.active-slide-right {
-							background-image: url("/systems/betterangels/assets/icons/slide-right.webp");
-							pointer-events: all;
-						}
-					}		
-				}
-			}
-		}
-
-		&.active {
-			z-index: 20;
-			opacity: 100%;
-			transform: scale(1) rotate(0deg);
-
-			.menu-container {
-				padding: 0;
-				margin: 0;
-				list-style: none;
-				// pointer-events: all;
-
-				// .menu-button:not(.empty) { pointer-events: all }
-
-				.menu-button:hover {
-					z-index: 10;
-
-					button {
-						// pointer-events: all;
-						// background: var(--button-bg);
-						// box-shadow: 0 0 2px var(--button-bright), 0 0 2px var(--button-bright), 0 0 2px var(--button-bright);
-						transform: scale(2);
-					}
-				}
-			}
-		}
-	}
-}
-
-.features-list {
-	width: 100%;
-
-	.feature-row {
-		display: flex;
-		justify-content: space-evenly;
-		align-content: space-around;
-		padding: 10px 0;
-
-		.feature {
-			height: 125px;
-			width: 125px;
-
-			img {
-				position: relative;
-				display: block;
-				border: 0;
-				margin-bottom: -125px;
-
-				&.aspect-coin {
-					filter: drop-shadow(16px 16px 16px #{$c-bg-dark});
-
-					&:nth-of-type(3) {
-						display: none;
-					}
-				}
-
-				&.active {
-					display: none;
+				* {
+					pointer-events: none !important;
 				}
 			}
 
 			video {
-				height: 125px;
-				width: 125px;
-				transform: translateY(5px) scale(2.6);
-				position: relative;
-				z-index: 5;
-				pointer-events: none;
-				display: none;
+				position: absolute;
+				top: -50%;
+				left: -50%;
+				width: 200%;
+				height: 200%;
+				opacity: 100%;
+				transform: scale(1.75);
+				opacity: 0.75;
 			}
 
-			&:hover {
-				.active { display: block }
-				.base { display: none }
-				video { display: block }
+			.menu-container {
+				position: absolute;
+				top: -20%;
+				left: -20%;
+				width: 140%;
+				height: 140%;
+				list-style: none;
 
+				.menu-button {
+					position: absolute;
+					display: block;
+					top: 50%;
+					left: 50%;
+					height: 20px;
+					width: 30px;
+					// transition: 0.5s;
+
+					@keyframes slow-bob {
+						from { top: -3px; }
+						to { top: 3px; }
+					}
+
+					button {
+						position: absolute;
+						padding: 0;
+						margin: 0;
+						height: 100%;
+						width: 100%;
+
+						// background-color: rgba(255, 0, 255, 0.5);
+						// outline: 2px solid rgba(255, 0, 255, 1);
+						// font-weight: bold;
+						// color: var(--button-color);
+						// text-shadow: -1px -1px 2px #000000, 1px -1px 2px #000000, -1px 1px 2px #000000, 1px 1px 2px #000000;
+						background: transparent;
+						background-size: 30px 20px;
+						border: none;
+						outline: none;
+						box-shadow: none;
+						transition: 0.5s;
+						animation: slow-bob 2s cubic-bezier(0.36, 0, 0.63, 1) infinite alternate;
+						
+						&.button-add-drop {
+							background-image: url("/systems/betterangels/assets/icons/add-drop-bg.webp");
+
+							&.active-add {
+								background-image: url("/systems/betterangels/assets/icons/add-active.webp");
+								pointer-events: all;
+							}										
+							&.active-drop {
+								background-image: url("/systems/betterangels/assets/icons/drop-active.webp");
+								pointer-events: all;
+							}
+							&.active-add.active-drop {
+								background-image: url("/systems/betterangels/assets/icons/add-drop-active.webp");
+								pointer-events: all;
+							}
+						}
+						&.button-slide-left {
+							background-image: url("/systems/betterangels/assets/icons/slide-left-bg.webp");		
+
+							&.active-slide-left {
+								background-image: url("/systems/betterangels/assets/icons/slide-left.webp");
+								pointer-events: all;
+							}
+						}
+						&.button-slide-right {
+							background-image: url("/systems/betterangels/assets/icons/slide-right-bg.webp");
+
+							&.active-slide-right {
+								background-image: url("/systems/betterangels/assets/icons/slide-right.webp");
+								pointer-events: all;
+							}
+						}		
+					}
+				}
+			}
+
+			&.active {
+				z-index: 20;
+				opacity: 100%;
+				transform: scale(1) rotate(0deg);
+
+				.menu-container {
+					padding: 0;
+					margin: 0;
+					list-style: none;
+					// pointer-events: all;
+
+					// .menu-button:not(.empty) { pointer-events: all }
+
+					.menu-button:hover {
+						z-index: 10;
+
+						button {
+							// pointer-events: all;
+							// background: var(--button-bg);
+							// box-shadow: 0 0 2px var(--button-bright), 0 0 2px var(--button-bright), 0 0 2px var(--button-bright);
+							transform: scale(2);
+						}
+					}
+				}
 			}
 		}
 	}
-}
+
+	.features-list {
+		width: 100%;
+
+		.feature-row {
+			display: flex;
+			justify-content: space-evenly;
+			align-content: space-around;
+			padding: 10px 0;
+			pointer-events: all;
+			min-height: 70px;
+
+			.feature {
+				height: 125px;
+				width: 125px;
+
+				img {
+					position: relative;
+					display: block;
+					border: 0;
+					margin-bottom: -125px;
+
+					&.aspect-coin {
+						filter: drop-shadow(16px 16px 16px #{$c-bg-dark});
+
+						&:nth-of-type(3) {
+							display: none;
+						}
+					}
+
+					&.active {
+						display: none;
+					}
+				}
+
+				video {
+					height: 125px;
+					width: 125px;
+					transform: translateY(5px) scale(2.6);
+					position: relative;
+					z-index: 5;
+					pointer-events: none;
+					display: none;
+				}
+
+				&:hover {
+					.active { display: block }
+					.base { display: none }
+					video { display: block }
+
+				}
+			}
+		}
+	}
+
+	.tab.background.active {
+		height: 100%;
+		pointer-events: all;
+
+		.editor {
+			height: 100%;
+			pointer-events: all;
+			* {
+				pointer-events: all;
+			}
+		}
+	}
 }
 
 

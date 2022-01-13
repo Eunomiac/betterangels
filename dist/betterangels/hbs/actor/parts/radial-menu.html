@@ -1,0 +1,43 @@
+<div class="menu-positioner">
+	<section id="menu-{{top}}-{{bottom}}" class="radial-menu size{{size}}px-8items depth-2">	
+		<video width="200" height="200" autoplay muted loop>
+			<source src="/systems/betterangels/assets/animations/radial-menu-bg-trait-cyan.webm" type="video/webm">
+		</video>
+		{{#with (lookup data top) as | topData |}}
+		{{#with (lookup ../data ../bottom) as | botData |}}
+		<ul class="menu-container">
+			<li class="menu-button button-slide-right">
+				<button id="menu-slide-{{botData.name}}" class="trait-button button-slide-right
+					{{~#if botData.canSlideTo}} active-slide-right{{/if}}"
+					data-clickaction="slide" data-target="{{botData.name}}">
+				</button>
+			</li>
+			<li class="menu-button">
+				<button id="menu-add-drop-{{botData.name}}" class="trait-button button-add-drop
+					{{~#if botData.canAdd}} active-add{{/if}}
+					{{~#if botData.canDrop}} active-drop{{/if}}"
+					data-clickaction="add" data-contextaction="drop" data-target="{{botData.name}}">
+				</button>
+			</li>
+			<li class="menu-button"></li>
+			<li class="menu-button"></li>
+			<li class="menu-button button-slide-left">
+				<button id="menu-slide-{{topData.name}}" class="trait-button button-slide-left
+					{{~#if topData.canSlideTo}} active-slide-left{{/if}}"
+					data-clickaction="slide" data-target="{{topData.name}}">
+				</button>
+			</li>
+			<li class="menu-button">
+				<button id="menu-add-drop-{{topData.name}}" class="trait-button button-add-drop
+					{{~#if topData.canAdd}} active-add{{/if}}
+					{{~#if topData.canDrop}} active-drop{{/if}}"
+					data-clickaction="add" data-contextaction="drop" data-target="{{topData.name}}">
+				</button>
+			</li>
+			<li class="menu-button"></li>
+			<li class="menu-button"></li>
+		</ul>
+		{{/with}}
+		{{/with}}
+	</section>
+</div>

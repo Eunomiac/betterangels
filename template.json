@@ -107,13 +107,16 @@
 				"tactics"
 			],
 			"humanname": "",
-			"demonname": ""
+			"demonname": "",
+			"notes": ""
 		},
 		"minornpc": {
-			"templates": []
+			"templates": [],
+			"notes": ""
 		},
 		"mobnpc": {
-			"templates": []
+			"templates": [],
+			"notes": ""
 		}
 	},
 	"Item": {

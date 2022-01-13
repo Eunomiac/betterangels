@@ -31,7 +31,7 @@ export default class XElem {
 				parent: $(".vtt.game")[0],
 				classes: ["x-container"],
 				properties: {
-					position: "relative",
+					position: "absolute",
 					xPercent: 0,
 					yPercent: 0,
 					transformOrigin: "0% 0%"

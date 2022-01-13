@@ -186,14 +186,14 @@ const BANNERTEMPLATE = {
 };
 const BUILDFILES = {
 	js: {
-		"./dist/betterangels/scripts/": ["scripts/**/*.mjs", "scripts/**/*.js"]
+		"./dist/betterangels/mjs/": ["mjs/**/*.mjs", "mjs/**/*.js"]
 	},
 	css: {
 		"./dist/betterangels/css/": ["scss/**/*.scss"],
 		"./css/": ["scss/**/*.scss"]
 	},
 	hbs: {
-		"./dist/betterangels/templates/": ["templates/**/*.hbs"]
+		"./dist/betterangels/hbs/": ["hbs/**/*.hbs"]
 	},
 	assets: {
 		"./dist/betterangels/assets/": ["assets/**/*.*"],

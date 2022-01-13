@@ -4,6 +4,8 @@
 	.aspect {
 		$horiz-scale: 0.66;
 
+		overflow: hidden;
+
 		.background-img {
 			height: 75px;
 			position: absolute;
@@ -26,6 +28,7 @@
 	}
 
 	.power {
+		overflow: hidden;
 
 		.background-img {
 			height: 75px;

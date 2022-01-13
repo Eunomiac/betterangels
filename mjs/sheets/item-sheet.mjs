@@ -30,7 +30,7 @@ export default class extends ItemSheet {
 	}
 
 	get template() {
-		const path = "systems/betterangels/templates/item";
+		const path = "systems/betterangels/hbs/item";
 		//~ To return a single sheet for all item types:
 		//~ return `${path}/item-sheet.hbs`;
 
