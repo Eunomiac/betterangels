@@ -38,19 +38,21 @@ header.message-header {
 	.roll-name {
 		display: inline-block;
 		background: url(../ui/parchment.jpg);
-		font-family: $font-secondary;
+		font-family: $font-header;
 		font-size: 24px;
 		line-height: 24px;
 	}
 
 	.one-roll-engine-dice-roll {
 
-		.roll-summary {
-			font-family: $font-primary;
+		.roll-summary, .ore-summary {
+			font-family: $font-body;
 			font-size: 16px;
 			font-weight: bold;
 			margin-left: -5px;
 			margin-top: -15px;
+
+			&.ore-summary { margin: 0 0 5px 0 }
 
 			.trait-name {
 				margin: 0 5px;
@@ -60,7 +62,7 @@ header.message-header {
 			}
 
 			.trait-value, .pool-total {
-				font-family: $font-secondary;
+				font-family: $font-header;
 				font-size: 24px;
 				line-height: inherit;
 				position: relative;

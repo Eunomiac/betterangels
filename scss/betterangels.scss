@@ -29,14 +29,13 @@ span.trait {
 			opacity: 0;
 			transform: scale(1);
 
-			&.strategy { font-family: $font-secondary }
-			&.tactic { font-family: $font-primary }
+			&.strategy { font-family: $font-header }
+			&.tactic { font-family: $font-body }
 		}
 	}
 
 /* Styles limited to betterangels sheets */
 .betterangels {
-	border-radius: 15px;
 
   @import "components/sheets";
   // @import "components/items";

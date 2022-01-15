@@ -29,6 +29,8 @@ import {
 	// ▮▮▮▮▮▮▮[Items]▮▮▮▮▮▮▮
 	BetterAngelsItem,
 	BetterAngelsItemSheet,
+	// ▮▮▮▮▮▮▮[Hooks]▮▮▮▮▮▮▮
+	ActorSheetHooks,
 	// ▮▮▮▮▮▮▮[XCircles]▮▮▮▮▮▮▮
 	XElem,
 	XCircle,
@@ -60,7 +62,7 @@ Hooks.once("init", async () => {
 	};
 	CONFIG.Actor.documentClass = BetterAngelsActor;
 	CONFIG.Item.documentClass = BetterAngelsItem;
-	CONFIG.TinyMCE.content_css = ["systems/betterangels/tinymce.css"];
+	CONFIG.TinyMCE.content_css.push("systems/betterangels/tinymce.css");
 
 	Actors.unregisterSheet("core", ActorSheet);
 	Actors.registerSheet("betterangels", HellboundActorSheet, {
@@ -87,6 +89,11 @@ Hooks.once("init", async () => {
 	// ▮▮▮▮▮▮▮[Handlebars] Preload Handlebars Templates & Register Custom Helpers ▮▮▮▮▮▮▮
 	return loadHandlebars();
 });
+
+// ████████ REGISTER MODULAR HOOKS: Register Hooks From Other Modules ████████
+U.registerHooks([
+	ActorSheetHooks
+]);
 
 // ████████ ONDROPACTORSHEETDATA: on-dropActorSheetData Hook ████████
 Hooks.on("preCreateItem", async (item, itemData) => {

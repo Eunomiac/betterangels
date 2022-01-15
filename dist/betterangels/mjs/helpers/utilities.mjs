@@ -921,6 +921,15 @@ const reparent = (elem, newParent) => {
 	console.log(dbData);
 };
 
+// ████████ FOUNDRY: Foundry Extensions, Interfaces ████████
+const registerHooks = (hookDataSets = []) => {
+	[hookDataSets].flat().forEach((hookData) => Object.entries(hookData)
+		.forEach(([hookRef, hookFunc]) => {
+			const [call, hook] = regExtract(hookRef, /(^.*?)_(.*$)/);
+			Hooks[call](hook, hookFunc);
+		}));
+};
+
 // ████████ EXPORTS ████████
 
 export default {
@@ -984,5 +993,9 @@ export default {
 	getRawCirclePath, drawCirclePath,
 	formatAsClass,
 	getGSAngleDelta,
-	convertCoords, getNewPos, getGlobalPos, reparent
+	convertCoords, getNewPos, getGlobalPos, reparent,
+
+	// ████████ FOUNDRY: Extending, Interfacing Foundry Functionality ████████
+	registerHooks
+
 };

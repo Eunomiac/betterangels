@@ -1,13 +1,13 @@
-<form class="{{cssClass}} {{actor.type}} flexcol" autocomplete="off">
+<form class="{{cssClass}} {{~#if data.isDemonAwake}} demon-awake{{/if}}{{#if data.isDraggingToHell}} drag-to-hell{{/if}}{{#if data.isExorcising}} exorcising{{/if}} {{actor.type}} flexcol" autocomplete="off">
 
-	{{!-- {{log (bundle "this" this "actor" actor "data" data)}} --}}
+	{{log (bundle "this" this "actor" actor "data" data)}}
 
     <!-- Sheet Header -->
     <header class="sheet-header">
         <img class="profile-img" src="{{actor.img}}" data-edit="img" title="{{actor.name}}" height="100" width="100" />
         <div class="header-fields">
-            <h2 class="villainname"><input name="actor.name" type="text" value="{{actor.name}}" /></h2>
-            <h2 class="humanname"><input name="data.humanname" type="text" value="{{data.humanname}}" placeholder="Human Name" /></h2>
+            <h2 class="villainname"><input name="name" type="text" value="{{actor.name}}" /></h2>
+            <h3>a.k.a.</h3><h2 class="humanname"><input name="data.humanname" type="text" value="{{data.humanname}}" placeholder="Human Name" /></h2>
             <h2 class="demonname"><input name="data.demonname" type="text" value="{{data.demonname}}" placeholder="Demon Name" /></h2>
         </div>
     </header>

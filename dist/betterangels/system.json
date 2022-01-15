@@ -1,53 +1,50 @@
 {
-  "name": "betterangels",
-  "title": "Better Angels",
-  "description": "An implementation of the One Roll Engine by Greg Stolze: Play a supervillain compelled to do EEEEVIL by a demon riding your soul!",
-  "version": "0.0.1-prealpha",
-  "author": "Eunomiac",
-  "minimumCoreVersion": "0.8",
-  "compatibleCoreVersion": "~0.8",
-  "esmodules": [
-    "mjs/betterangels.mjs",
-    "greensock/esm/all.js",
-    "fuse.js/dist/fuse.esm.js",
-    "hyphenopoly/min/Hyphenopoly.js"
-  ],
-  "styles": [
-    "css/betterangels.css"
-  ],
-  "scripts": [],
-  "packs": [
+	"name": "betterangels",
+	"title": "Better Angels",
+	"description": "An implementation of the One Roll Engine by Greg Stolze: Play a supervillain compelled to do EEEEVIL by a demon riding your soul!",
+	"version": "0.0.1-prealpha",
+	"author": "Eunomiac",
+	"minimumCoreVersion": "0.8",
+	"compatibleCoreVersion": "~0.8",
+	"esmodules": [
+		"mjs/betterangels.mjs",
+		"greensock/esm/all.js",
+		"fuse.js/dist/fuse.esm.js",
+		"hyphenopoly/min/Hyphenopoly.js"
+	],
+	"styles": [
+		"css/betterangels.css"
+	],
+	"scripts": [],
+	"packs": [
 		{
 			"name": "pdfs",
 			"label": "PDFs",
 			"path": "packs/pdfs.db",
 			"entity": "JournalEntry",
-			"module": "BetterAngels"
+			"module": "betterangels"
 		},
 		{
 			"name": "powers",
 			"label": "Powers",
 			"path": "packs/powers.db",
 			"entity": "Item",
-			"module": "BetterAngels"
+			"module": "betterangels"
 		},
 		{
 			"name": "aspects",
 			"label": "Demonic Aspects",
 			"path": "packs/aspects.db",
 			"entity": "Item",
-			"module": "BetterAngels"
+			"module": "betterangels"
 		}
 	],
-  "languages": [
-    {
-      "lang": "en",
-      "name": "English",
-      "path": "lang/en.json"
-    }
-  ],	
-	"dependencies": [
-		{
+	"languages": [{
+		"lang": "en",
+		"name": "English",
+		"path": "lang/en.json"
+	}],
+	"dependencies": [{
 			"name": "pdfoundry",
 			"type": "module",
 			"manifest": "https://raw.githubusercontent.com/Djphoenix719/PDFoundry/master/module.json"
@@ -58,9 +55,9 @@
 			"manifest": "https://raw.githubusercontent.com/manuelVo/foundryvtt-socketlib/develop/module.json"
 		}
 	],
-  "socket": true,
-  "url": "",
-  "manifest": "",
-  "download": "",
-  "license": "LICENSE.txt"
+	"socket": true,
+	"url": "",
+	"manifest": "",
+	"download": "",
+	"license": "LICENSE.txt"
 }

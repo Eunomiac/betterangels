@@ -1,7 +1,8 @@
-@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=New+Rocker&family=Roboto:wght@400;700&display=swap");
 
-$font-primary: "DigitalStrip", sans-serif;
-$font-secondary: "Komikax", sans-serif;
+$font-body: "DigitalStrip", sans-serif;
+$font-header: "Komikax", sans-serif;
+$font-demon: "New Rocker", serif;
 
 @font-face {
   font-family: "DigitalStrip";
@@ -25,3 +26,4 @@ $font-secondary: "Komikax", sans-serif;
   font-family: Komikax;
   src: url("../assets/fonts/KOMIKAX_.ttf");
 }
+

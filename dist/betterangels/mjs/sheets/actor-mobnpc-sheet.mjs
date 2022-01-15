@@ -5,37 +5,66 @@
 |*     ▌████████░░░░░░░░ https://github.com/Eunomiac/betterangels ░░░░░░░░█████████▐     *|
 \* ****▌███████████████████████████████████████████████████████████████████████████▐**** */
 
-import BetterAngelsActorSheet from "./actor-sheet.mjs";
+import {
+	// ▮▮▮▮▮▮▮[Constants]▮▮▮▮▮▮▮
+	C,
+	// ▮▮▮▮▮▮▮[Utility]▮▮▮▮▮▮▮
+	U,
+	// ▮▮▮▮▮▮▮[Classes]▮▮▮▮▮▮▮
+	BetterAngelsActorSheet
+} from "../helpers/bundler.mjs";
 
 export default class extends BetterAngelsActorSheet {
 
-  static get defaultOptions() {
-    return mergeObject(super.defaultOptions, {
-      classes: [...super.defaultOptions.classes, "npc", "minornpc"],
-      width: 400,
-      height: 400
-    });
-  }
+	static get defaultOptions() {
+		return mergeObject(super.defaultOptions, {
+			classes: [...super.defaultOptions.classes, "npc", "mobnpc"],
+			width: 600,
+			height: 400
+		});
+	}
 
-  getData() {
+	_prepareCharacterData(context) {
+		// Determine mob size and flight parameters
+		context.data.curSize = context.data.size - context.data.sizeLost;
+		context.data.flightSize = Math.floor(context.data.size * (1 - context.data.resolve));
+		context.data.leftToLose = Math.max(0, context.data.curSize - context.data.flightSize);
+		context.data.isFleeing = context.data.leftToLose === 0;
+		context.config = context.config ?? {};
+		context.config.mobResolve = {...C.mobResolve};
 
-    const context = super.getData();
+		// Determine base mob dice pool
+		context.data.basePool = Math.min(10, context.data.curSize);
 
-    const thisActorData = context.actor.data;
+		// Determine mob weapon advantage
+		context.data.advantage.total = this.weaponAdvantage;
+		context.data.advantage.toPool = context.data.advantage.total - context.data.advantage.toWidth;
 
-    return context;
-  }
+		// Derive actual mob pool
+		context.data.dicePool = context.data.basePool + context.data.advantage.toPool;
+	}
 
-  _prepareCharacterData(context) {
-    super._prepareCharacterData(context);
-  }
+	activateListeners(html) {
+		super.activateListeners(html);
 
-  _prepareItems(context) {
-    super._prepareItems(context);
-  }
+		html.find("#mob-roll").click(this._makeMobRoll.bind(this));
+	}
 
-  activateListeners(html) {
-    super.activateListeners(html);
-  }
+	get weaponAdvantage() {
+		let total = 0;
+		const {factors} = this.actor.data.data;
+		if (factors.isLeaderArmed) { total++ }
+		if (factors.isHeavilyArmed) { total++ }
+		if (factors.isCornered) { total++ }
+		if (factors.isAlreadyMad) { total++ }
+		if (factors.isTrained || factors.isMotivated) { total++ }
+		return total;
+	}
+
+	_makeMobRoll(event) {
+		const dicePool = U.pInt(event.currentTarget.dataset.dicePool);
+		const weaponAdvantage = U.pInt(this.actor.data.data.advantage.toWidth);
+		this._launchRoll("strength", dicePool, false, 0, {weapon: {pool: this.weaponAdvantage - weaponAdvantage, width: weaponAdvantage}});
+	}
 
 }

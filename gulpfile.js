@@ -197,7 +197,7 @@ const BUILDFILES = {
 	},
 	assets: {
 		"./dist/betterangels/assets/": ["assets/**/*.*"],
-		"./dist/betterangels/": ["system.json", "template.json", "LICENSE.txt", "package.json"]
+		"./dist/betterangels/": ["system.json", "template.json", "LICENSE.txt", "package.json", "tinymce.css"]
 	}
 };
 const REGEXPPATTERNS = {

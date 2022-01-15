@@ -1,65 +1,126 @@
-.window-header {
-	position: absolute;
-	width: 100%;
-	height: 30px;
-	margin-bottom: -30px;
-	border: none;
-	font-size: 0;
+& {
+	text-shadow: 0 0 5px $c-bg-dark, 0 0 2px $c-bg-dark, 0 0 5px $c-bg;
 
-	> *:not(.header-button.close) { display: none }
+	.window-header {
+		position: absolute;
+		width: 100%;
+		height: 30px;
+		border: none;
+		font-size: 0;
+		margin-top: -20px;
+		overflow: visible;
+		z-index: 1;
 
-	.header-button.close::before {
-    display: block;
-    content: "X";
-    font-size: 14px;
-    background: #990000;
-    height: 15px;
-    width: 15px;
-    line-height: 13px;
-    text-align: center;
-    border-radius: 15px;
-    box-shadow: -1px -1px 2px rgba(0, 0, 0, 0.5), 1px 1px 2px rgba(255, 255, 255, 0.25);
-    position: absolute;
-    right: 3px;
-    top: 3px;
-		z-index: 200;
-}
+		> *:not(.header-button.close) { display: none !important }
 
+		.header-button.close {
+			text-shadow: none;
+			
+			&::before {
+				display: block;
+				content: "X";
+				font-size: 14px;
+				background: #AA0000;
+				height: 15px;
+				width: 15px;
+				line-height: 13px;
+				text-align: center;
+				border-radius: 15px;
+				box-shadow: -1px -1px 3px rgb(0, 0, 0), 1px 1px 3px rgb(255, 255, 255);
+				position: absolute;
+				right: 0px;
+				top: 20px;
+				transform-origin: 50% 50%;
+				transition: 0.25s all;
+			}
 
-
-}
-
-.window-content {
-	pointer-events: none;
-	border-radius: 25px;
-	padding: 0;
-
-	.draggable,
-	a,
-	input,
-	textarea:not(.read-only) { pointer-events: all }
-
-	form.editable {
-		position: relative;
-
-		.sheet-header { flex-grow: 0 }
-		
-		h1 {
-			border: none;
-			background-color: transparent;
-			text-align: center;
-			font-family: $font-secondary;
-			font-size: 32px;
-			margin: 0;
-
-			&.inset-shadow {
-				color: #1A1A1A;
-				letter-spacing: 0.1em;
-				text-shadow: -1px -1px 1px #000000, 2px 2px 1px #262626;
+			&:hover::before {
+				transform: scale(1.5);
+				box-shadow: 0 0 5px #ff0000, 0 0 5px #ff0000, 0 0 5px #ff0000;
 			}
 		}
 	}
+
+	&.minimized {
+		height: 20px !important;
+		min-height: 20px !important;
+		width: 200px !important;
+		border-radius: 15px;
+		box-shadow:  2px 2px 3px black, -0.5px -0.5px 2px white, 2px 2px 3px black;
+
+		.window-header {
+			width: 200px;
+			height: 20px;
+			border: 0;
+			margin-top: 0;
+
+			.window-title {
+				display: block;
+				color: white;
+				position: relative;
+				font-size: 24px;
+				line-height: 20px;
+				top: 0 !important;
+			}
+
+			.header-button.close::before {
+				top: 4px;
+			}
+		}
+	}
+
+	.window-content {
+		pointer-events: none;
+		border-radius: 25px;
+		padding: 0;
+
+		.draggable,
+		a,
+		input,
+		button,
+		textarea:not(.read-only) { pointer-events: all }
+
+		form.editable {
+			position: relative;
+
+			.sheet-header { 
+				flex-grow: 0;
+				max-height: 105px;
+			}
+			
+			h1 {
+				border: none;
+				background-color: transparent;
+				text-align: center;
+				font-family: $font-header;
+				font-size: 32px;
+				margin: 0;
+
+				&.inset-shadow {
+					color: #1A1A1A;
+					letter-spacing: 0.1em;
+					text-shadow: -1px -1px 1px #000000, 2px 2px 1px #262626;
+				}
+			}
+
+			.sheet-body {
+				.tab.active {
+					min-height: 500px;
+
+					&.background { pointer-events: all }
+					
+					.editor {
+						pointer-events: all;
+						min-height: 500px;
+
+						* {
+							pointer-events: all;
+						}
+					}
+				}
+			}
+		}
+	}
+
+	.window-resizable-handle { display: none }
 }
-
-
-.window-resizable-handle { display: none }

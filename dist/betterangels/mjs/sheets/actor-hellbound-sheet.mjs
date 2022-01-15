@@ -5,7 +5,14 @@
 |*     ▌████████░░░░░░░░ https://github.com/Eunomiac/betterangels ░░░░░░░░█████████▐     *|
 \* ****▌███████████████████████████████████████████████████████████████████████████▐**** */
 
-import BetterAngelsActorSheet from "./actor-sheet.mjs";
+import {
+	// ▮▮▮▮▮▮▮[Constants]▮▮▮▮▮▮▮
+	C,
+	// ▮▮▮▮▮▮▮[Utility]▮▮▮▮▮▮▮
+	U,
+	// ▮▮▮▮▮▮▮[Classes]▮▮▮▮▮▮▮
+	BetterAngelsActorSheet
+} from "../helpers/bundler.mjs";
 
 export default class extends BetterAngelsActorSheet {
 
@@ -19,7 +26,6 @@ export default class extends BetterAngelsActorSheet {
 	}
 
 	getData() {
-
 		const context = super.getData();
 
 		const thisActorData = context.actor.data;
@@ -29,6 +35,16 @@ export default class extends BetterAngelsActorSheet {
 
 	_prepareCharacterData(context) {
 		super._prepareCharacterData(context);
+
+		// Identify primary sinister strategy, if chosen, and determine status of demon:
+		const {primaryStrategy} = context.data;
+		if (C.strategies.includes(primaryStrategy) && primaryStrategy in C.sinisterTraitPairs) {
+			const sinisterValue = context.data[primaryStrategy].value;
+			const virtuousValue = context.data[C.sinisterTraitPairs[primaryStrategy]].value;
+			context.data.isDemonAwake = sinisterValue > virtuousValue;
+			context.data.isDraggingToHell = sinisterValue === 5;
+			context.data.isExorcising = virtuousValue === 5;
+		}
 	}
 
 	_prepareItems(context) {

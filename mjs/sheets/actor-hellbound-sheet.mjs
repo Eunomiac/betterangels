@@ -1,4 +1,14 @@
-import BetterAngelsActorSheet from "./actor-sheet.mjs";
+import {
+	// #region ▮▮▮▮▮▮▮[Constants]▮▮▮▮▮▮▮ ~
+	C,
+	// #endregion ▮▮▮▮[Constants]▮▮▮▮
+	// #region ▮▮▮▮▮▮▮[Utility]▮▮▮▮▮▮▮ ~
+	U,
+	// #endregion ▮▮▮▮[Utility]▮▮▮▮
+	// #region ▮▮▮▮▮▮▮[Classes]▮▮▮▮▮▮▮ ~
+	BetterAngelsActorSheet
+	// #endregion ▮▮▮▮[Classes]▮▮▮▮
+} from "../helpers/bundler.mjs";
 
 export default class extends BetterAngelsActorSheet {
 
@@ -12,10 +22,6 @@ export default class extends BetterAngelsActorSheet {
 	}
 
 	getData() {
-		/*~ Retrieve the data structure from the base sheet. You can inspect or log
-            the context variable to see the structure, but some key properties for
-            sheets are the actor object, the data object, whether or not it's
-            editable, the items array, and the effects array. */
 		const context = super.getData();
 
 		//~ Use a safe clone of the actor data for further operations.
@@ -35,6 +41,16 @@ export default class extends BetterAngelsActorSheet {
 
 	_prepareCharacterData(context) {
 		super._prepareCharacterData(context);
+
+		// Identify primary sinister strategy, if chosen, and determine status of demon:
+		const {primaryStrategy} = context.data;
+		if (C.strategies.includes(primaryStrategy) && primaryStrategy in C.sinisterTraitPairs) {
+			const sinisterValue = context.data[primaryStrategy].value;
+			const virtuousValue = context.data[C.sinisterTraitPairs[primaryStrategy]].value;
+			context.data.isDemonAwake = sinisterValue > virtuousValue;
+			context.data.isDraggingToHell = sinisterValue === 5;
+			context.data.isExorcising = virtuousValue === 5;
+		}
 	}
 
 	_prepareItems(context) {

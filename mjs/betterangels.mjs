@@ -27,6 +27,9 @@ import {
 	BetterAngelsItem,
 	BetterAngelsItemSheet,
 	// #endregion ▮▮▮▮[Items]▮▮▮▮
+	// #region ▮▮▮▮▮▮▮[Hooks]▮▮▮▮▮▮▮ ~
+	ActorSheetHooks,
+	// #endregion ▮▮▮▮[Hooks]▮▮▮▮
 	// #region ▮▮▮▮▮▮▮[XCircles]▮▮▮▮▮▮▮ ~
 	XElem,
 	XCircle,
@@ -66,7 +69,7 @@ Hooks.once("init", async () => {
 	};
 	CONFIG.Actor.documentClass = BetterAngelsActor;
 	CONFIG.Item.documentClass = BetterAngelsItem;
-	CONFIG.TinyMCE.content_css = ["systems/betterangels/tinymce.css"];
+	CONFIG.TinyMCE.content_css.push("systems/betterangels/tinymce.css");
 
 	Actors.unregisterSheet("core", ActorSheet);
 	Actors.registerSheet("betterangels", HellboundActorSheet, {
@@ -97,6 +100,13 @@ Hooks.once("init", async () => {
 });
 // #endregion ▄▄▄▄▄ ON INIT ▄▄▄▄▄
 
+// #region ████████ REGISTER MODULAR HOOKS: Register Hooks From Other Modules ████████
+U.registerHooks([
+	ActorSheetHooks
+]);
+
+// #endregion ▄▄▄▄▄ REGISTER MODULAR HOOKS ▄▄▄▄▄
+
 /*DEVCODE*/
 const initDragTest = (traitName = "courage") => {
 	gsap.set(".trait-pair .draggable", {opacity: 0});
@@ -115,7 +125,6 @@ const initDragTest = (traitName = "courage") => {
 
 Hooks.once("ready", () => {
 
-
 	window.REF = game.betterangels;
 	window.DB = new BA_DB({
 		topLeft: 10,
@@ -123,7 +132,9 @@ Hooks.once("ready", () => {
 		topRight: 6,
 		botRight: 4
 	});
+	/* eslint-disable sort-keys */
 	Object.entries({
+		C,
 		U,
 		initDragTest,
 		BetterAngelsActor,
@@ -149,6 +160,7 @@ Hooks.once("ready", () => {
 	}).forEach(([key, ref]) => {
 		window[key] = ref;
 	});
+	/* eslint-enable sort-keys */
 
 	return;
 

@@ -108,7 +108,10 @@
 			],
 			"humanname": "",
 			"demonname": "",
-			"notes": ""
+			"primaryStrategy": "",
+			"notes": "",
+			"playerID": false,
+			"isBigDemon": false
 		},
 		"minornpc": {
 			"templates": [],
@@ -116,6 +119,22 @@
 		},
 		"mobnpc": {
 			"templates": [],
+			"leadername": "",
+			"size": 0,
+			"sizeLost": 0,
+			"resolve": 0.33,
+			"factors": {
+				"isLeaderArmed": false,
+				"isHeavilyArmed": false,
+				"isCornered": false,
+				"isAlreadyMad": false,
+				"isTrained": false,
+				"isMotivated": false
+			},
+			"advantage": {
+				"toPool": 0,
+				"toWidth": 0
+			},
 			"notes": ""
 		}
 	},
