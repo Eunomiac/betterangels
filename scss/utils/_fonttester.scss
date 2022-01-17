@@ -1,0 +1,98 @@
+/* body * {
+  display: none;
+}
+
+#content,
+#content * {
+  display: unset;
+}
+
+#content {
+  display: table;
+} */
+
+#content {
+    tbody {
+        tr {
+            white-space: nowrap;
+            outline: 3px solid black;
+            td {
+                color: black;
+                user-select: none;
+                font-size: 32px;
+                border-left: 3px solid black;
+                padding: 3px;
+                &.style-test-format {
+                    font-family: "Arial Black" !important;
+                    border-right: none;
+                    background: #333333;
+                    color: white;
+                    text-align: center;
+                }
+                &.style-test {
+                    border-left: none;
+                    min-width: 500px;
+                }
+                &.bold {
+                    font-weight: bold;
+                }
+                &.italic {
+                    font-style: italic;
+                }
+                &.symbol {
+                    width: 50px;
+                    // text-align: center;
+                    padding: 0 10px;
+                    border-left: 2.5px dashed black;
+                }
+                .smallcaps {
+                    font-variant: small-caps
+                }
+                .upper {
+                    text-transform: uppercase
+                }
+            }
+            &:not(.hidden) {
+                td.font-name {
+                    font-size: 0;
+                    >span {
+                        font-size: 32px;
+                        font-variant: small-caps;
+                    }
+                }
+                .merge-base,
+                .merge-left {
+                    position: relative;
+                    display: inline-block;
+                    width: 0;
+                }
+            }
+            &.hidden {
+                font-size: 10px;
+                background-color: #666666;
+                max-height: 10px;
+                overflow: hidden;
+                td {
+                    height: unset;
+                    line-height: unset;
+                    font-size: 0px !important;
+                    border: none;
+                    outline: 3px solid #666666;
+                    background: transparent !important;
+                    >span {
+                        font-size: 0
+                    }
+                    &:nth-child(1)>span {
+                        font-weight: bold;
+                        font-size: 10px;
+                        font-family: Roboto;
+                        line-height: 5px;
+                    }
+                    .merge-left {
+                        display: none
+                    }
+                }
+            }
+        }
+    }
+}

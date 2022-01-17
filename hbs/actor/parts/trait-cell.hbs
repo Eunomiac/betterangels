@@ -1,0 +1,17 @@
+{{log data}}
+
+<div class="trait-cell cell-{{math num "++"}}">
+	{{#each data}}
+	<div class="trait-name" data-trait="{{name}}" data-value="{{value}}" data-type="{{type}}" data-sub-type="{{subType}}">
+		<label class="trait-label">{{displayName}}</label>
+	</div>
+	<div class="dot-line {{type}} {{subType}}">
+		{{#for value}}
+		<div id="{{../name}}-{{math @index "++"}}" class="dot dot-{{math @index "++"}} full"></div>
+		{{/for}}
+		{{#for emptyDots}}
+		<div id="{{../name}}-{{math (math @index "++") "+" value}}" class="dot dot-{{math (math @index "++") "+" ../value}} full"></div>
+		{{/for}}
+	</div>
+	{{/each}}
+</div>

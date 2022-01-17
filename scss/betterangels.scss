@@ -1,59 +1,80 @@
 // Import utilities.
 @import "utils/typography";
 @import "utils/colors";
+@import "utils/fonttester";
 
 /* Global styles */
+
 @import "global/window";
 
 /* Styles for created DOM objects */
+
 @import "components/xcircles/xcircles";
 
 /* Styles that extend to draggable items parented to global space */
 
-.db-green { outline: 4px solid lime !important; opacity: 1 !important; }
-.db-red { outline: 4px solid red !important; opacity: 1 !important; }
-.db-cyan { outline: 4px solid cyan !important; opacity: 1 !important; }
-.db-gold { outline: 4px solid gold !important; opacity: 1 !important; }
-
-span.trait {
-		position: relative;
-		display: inline-block;
-		background-color: transparent;
-		border-radius: 10px;
-		outline: 0;
-		transform: scale(1);
-		transform-origin: 50% 50%;
-
-		&.draggable {
-			pointer-events: all !important;
-			opacity: 0;
-			transform: scale(1);
-
-			&.strategy { font-family: $font-header }
-			&.tactic { font-family: $font-body }
-		}
-	}
-
-/* Styles limited to betterangels sheets */
-.betterangels {
-
-  @import "components/sheets";
-  // @import "components/items";
-
-  &.actor {
-    @import "components/actor/actorsheet";
-  }
-
-	&.item {
-		@import "components/item/itemsheet";
-	}
+.db-green {
+    outline: 4px solid lime !important;
+    opacity: 1 !important;
 }
 
+.db-red {
+    outline: 4px solid red !important;
+    opacity: 1 !important;
+}
+
+.db-cyan {
+    outline: 4px solid cyan !important;
+    opacity: 1 !important;
+}
+
+.db-gold {
+    outline: 4px solid gold !important;
+    opacity: 1 !important;
+}
+
+span.trait {
+    position: relative;
+    display: inline-block;
+    background-color: transparent;
+    border-radius: 10px;
+    outline: 0;
+    transform: scale(1);
+    transform-origin: 50% 50%;
+    &.draggable {
+        pointer-events: all !important;
+        opacity: 0;
+        transform: scale(1);
+        &.strategy {
+            font-family: $font-header
+        }
+        &.tactic {
+            font-family: $font-body
+        }
+    }
+}
+
+
+/* Styles limited to betterangels sheets */
+
+.betterangels {
+    @import "components/sheets";
+    // @import "components/items";
+    &.actor {
+        @import "components/actor/actorsheet";
+    }
+    &.item {
+        @import "components/item/itemsheet";
+    }
+}
+
+
 /* Styles limited to chat messages */
+
 #chat-log {
-	.chat-message {
-		position: relative;
-		display: block;
-		@import "components/chat/rolls";
-	}
+    .chat-message {
+        position: relative;
+        display: block;
+        @import "components/chat/rolls";
+    }
 }

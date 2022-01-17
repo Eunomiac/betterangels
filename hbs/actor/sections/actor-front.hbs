@@ -1,34 +1,10 @@
 {{> "/systems/betterangels/hbs/actor/parts/radial-menu.hbs" data}}
 
-{{log this}}
-{{log data}}
-{{!-- <h1 class="inset-shadow">Strategies & Tactics</h1> --}}
-<div class="trait-line {{~#if (test primaryStrategy "==" "cunning")}} primary{{/if}}">
-	{{> "/systems/betterangels/hbs/actor/parts/trait-grid.hbs" 
-		type="tactic" size=100 top="greed" bottom="generosity" data=this }}
-	{{> "/systems/betterangels/hbs/actor/parts/trait-grid.hbs" 
-		type="strategy" size=100 top="cunning" bottom="patient" data=this }}
-	{{> "/systems/betterangels/hbs/actor/parts/trait-grid.hbs"  
-		type="tactic" size=100 top="espionage" bottom="knowledge" data=this }}
-</div>
-
-<div class="trait-line {{~#if (test primaryStrategy "==" "sly")}} primary{{/if}}">
-	{{> "/systems/betterangels/hbs/actor/parts/trait-grid.hbs" 
-		type="tactic" size=100 top="cruelty" bottom="courage" data=this }}
-	{{> "/systems/betterangels/hbs/actor/parts/trait-grid.hbs" 
-		type="strategy" size=100 top="sly" bottom="open" data=this }}
-	{{> "/systems/betterangels/hbs/actor/parts/trait-grid.hbs" 
-		type="tactic" size=100 top="contempt" bottom="endurance" data=this }}
-</div>
-
-<div class="trait-line {{~#if (test primaryStrategy "==" "devious")}} primary{{/if}}">
-	{{> "/systems/betterangels/hbs/actor/parts/trait-grid.hbs" 
-		type="tactic" size=100 top="corruption" bottom="nurture" data=this }}
-	{{> "/systems/betterangels/hbs/actor/parts/trait-grid.hbs" 
-		type="strategy" size=100 top="devious" bottom="insightful" data=this }}
-	{{> "/systems/betterangels/hbs/actor/parts/trait-grid.hbs" 
-		type="tactic" size=100 top="deceit" bottom="honesty" data=this }}
-</div>
+<section class="trait-panel">
+	{{#each traitGrid}}
+	{{> "/systems/betterangels/hbs/actor/parts/trait-cell.hbs" data=this num=@index}}
+	{{/each}}
+</section>
 
 <section class="features-list">
 	{{!-- <h1 class="inset-shadow">Powers</h1> --}}

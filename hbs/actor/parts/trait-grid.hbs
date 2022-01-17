@@ -1,7 +1,6 @@
 <div class="trait-pair {{type}}">
 	<label id="trait-label-{{top}}" class="droppable sinister {{type}}">
 		<span class="display trait {{type}}" data-type="{{type}}" data-target="{{top}}" data-value={{lookup (lookup data top) "value"}}>{{case "title" top}}</span>
-		<span class="draggable trait {{type}}" data-type="{{type}}" data-target="{{top}}" data-value={{lookup (lookup data top) "value"}}>{{case "title" top}}</span>
 	</label>
 	<div class="trait-grid radial-hover" data-top="{{top}}" data-bottom="{{bottom}}">
 		{{#with (lookup data top) as | topData |}}

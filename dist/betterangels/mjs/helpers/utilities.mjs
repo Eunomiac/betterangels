@@ -883,9 +883,10 @@ const convertCoords = ({x, y}, contextA, contextB) => {
 };
 const getNewPos = (elem, newContext, point) => {
 	point = point ?? {
-		x: gsap.getProperty(elem, "x"),
-		y: gsap.getProperty(elem, "y")
+		x: gsap.getProperty($(elem)[0], "x"),
+		y: gsap.getProperty($(elem)[0], "y")
 	};
+	[elem] = $(elem); [newContext] = $(newContext);
 	const [fromSpace] = $(elem).parent();
 	return convertCoords(point, fromSpace, newContext);
 };

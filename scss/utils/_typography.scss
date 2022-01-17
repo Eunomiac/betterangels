@@ -1,29 +1,69 @@
 @import url("https://fonts.googleapis.com/css2?family=New+Rocker&family=Roboto:wght@400;700&display=swap");
-
+// Google Fonts: "New Rocker", "Roboto"
 $font-body: "DigitalStrip", sans-serif;
-$font-header: "Komikax", sans-serif;
+$font-header: "KomikaAxis", sans-serif;
 $font-demon: "New Rocker", serif;
+$font-list: (
+	(Adventure "adventure.otf")
+	(AdventureHollow "adventure_hollow.otf")
+	(AlexBold "alex-bold.ttf")
+	(AnimeAce "animeace2.otf")
+	(AnimeAce "animeace2_b.otf" "b")
+	(AnimeAce "animeace2_i.otf" "i")
+	(Avengeance "avengeance-mightiest-avenger.otf")
+	(Badaboom "badaboom.ttf")
+	(DigitalStrip "digitalstrip.otf")
+	(DigitalStrip "digitalstrip_bi.otf" "bi")
+	(DigitalStrip "digitalstrip_i.otf" "i")
+	(FightingSpirit "fighting-spirit.otf")
+	(FightingSpirit "fighting-spirit_b.otf" "b")
+	(FightingSpirit "fighting-spirit_i.otf" "i")
+	(Komika "komika-title.ttf")
+	(KomikaAxis "komika-title_axis.ttf")
+	(KomikaBrush "komika-title_brush.ttf")
+	(KomikaEmboss "komika-title_emboss.ttf")
+	(KomikaGhost "komika-title_ghost.ttf")
+	(KomikaKaps "komika-title_kaps.ttf")
+	(KomikaPaint "komika-title_paint.ttf")
+	(KomikaShadow "komika-title_shadow.ttf")
+	(KomikaTall "komika-title_tall.ttf")
+	(KomikaTilt "komika-title_tilt.ttf")
+	(KomikaWide "komika-title_wide.ttf")
+	(KomikaWired "komika-title_wired.ttf")
+	(MangaTemple "manga-temple.ttf")
+	(MangaTemple "manga-temple_b.ttf" "b")
+	(MangaTemple "mange-temple_i.ttf" "i")
+	(OutrunFuture "outrun-future.otf")
+	(OutrunFuture "outrun-future_b.otf" "b")
+	(OutrunFuture "outrun-future_bi.otf" "bi")
+	(ShakaPow "shaka-pow.ttf")
+	(ShakaPowHollow "shaka-pow_hollow.ttf")
+	(ShakaPowUpright "shaka-pow_upright.ttf")
+	(ShakaPowUprightHollow "shaka-pow_upright-hollow.ttf")
+	(Spiderman "the-amazing-spiderman.ttf")
+	(Unmasked "unmasked.ttf")
+	(Unmasked "unmasked_b.ttf" "b")
+	(Unmasked "unmasked_i.ttf" "i")
+	(Yikes "yikes.ttf")
+);
 
-@font-face {
-  font-family: "DigitalStrip";
-  src: url("../assets/fonts/DigitalStripBB_Reg.otf");
+@each $font-data in $font-list {
+    $font-family: nth($font-data, 1);
+    $font-file: nth($font-data, 2);
+    @font-face {
+        font-family: $font-family;
+        src: url("../assets/fonts/#{$font-file}");
+        @if length($font-data)>=3 {
+            $font-format: nth($font-data, 3);
+            @if $font-format=="b" or $font-format=="bi" {
+                font-weight: bold;
+            }
+            @if $font-format=="i" or $font-format=="bi" {
+                font-style: italic;
+            }
+        }
+    }
+    *[data-font=#{$font-family}] {
+        font-family: $font-family;
+    }
 }
-
-@font-face {
-  font-family: "DigitalStrip";
-  src: url("../assets/fonts/DigitalStripBB_Ital.otf");
-  font-style: italic;
-}
-
-@font-face {
-  font-family: "DigitalStrip";
-  font-style: italic;
-  font-weight: bold;
-  src: url("../assets/fonts/DigitalStripBB_BoldItal.otf");
-}
-
-@font-face {
-  font-family: Komikax;
-  src: url("../assets/fonts/KOMIKAX_.ttf");
-}
-

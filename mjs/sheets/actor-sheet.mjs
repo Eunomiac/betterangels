@@ -4,13 +4,16 @@ import {
 	// #endregion ▮▮▮▮[Constants]▮▮▮▮
 	// #region ▮▮▮▮▮▮▮[External Libraries]▮▮▮▮▮▮▮ ~
 	// GreenSock Animation Platform
-	gsap, Dragger, MotionPathPlugin,
+	gsap,
+	Dragger,
+	MotionPathPlugin,
 	// #endregion ▮▮▮▮[External Libraries]▮▮▮▮
 	// #region ▮▮▮▮▮▮▮[Utility]▮▮▮▮▮▮▮ ~
 	U,
 	// #endregion ▮▮▮▮[Utility]▮▮▮▮
 	// #region ▮▮▮▮▮▮▮[Mixins]▮▮▮▮▮▮▮ ~
-	MIX, UpdateQueue
+	MIX,
+	UpdateQueue
 	// #endregion ▮▮▮▮[Mixins]▮▮▮▮
 } from "../helpers/bundler.mjs";
 
@@ -47,27 +50,11 @@ export default class extends MIX(ActorSheet).with(UpdateQueue) {
 	_prepareCharacterData(context) {
 		// Data for trait radial menus
 
-		// For each trait, define data for rendering of dots and radial menu
-		Object.entries(C.sinisterTraitPairs).forEach(([top, bottom]) => {
-			const [topState, bottomState] = this._getButtonStates(top);
+		// Create array of trait pairs for grid creation
+		const sinisterTraits = ["greed", "cunning", "espionage", "cruelty", "sly", "contempt", "corruption", "devious", "deceit"];
+		context.data.traitGrid = sinisterTraits.map((trait) => this._getTraitPairData(trait));
 
-			// const {min: topMin, max: topMax, value: topVal} = context.data[top];
-			// const {min: botMin, max: botMax, value: botVal} = context.data[bottom];
-			Object.assign(context.data[top], {
-				name: topState.name,
-				_emptyDots: topState.max - topState.value,
-				canSlideTo: topState.slide/*  && (topVal + botVal) < 7 */,
-				canAdd: topState.add,
-				canDrop: topState.drop
-			});
-			Object.assign(context.data[bottom], {
-				name: bottomState.name,
-				_emptyDots: bottomState.max - bottomState.value,
-				canSlideTo: bottomState.slide/*  && (topVal + botVal) < 7 */,
-				canAdd: bottomState.add,
-				canDrop: bottomState.drop
-			});
-		});
+
 	}
 	// #endregion ▮▮▮▮[Data Prep]▮▮▮▮
 	// #region ▮▮▮▮▮▮▮[Item Prep]▮▮▮▮▮▮▮
@@ -88,10 +75,46 @@ export default class extends MIX(ActorSheet).with(UpdateQueue) {
 		window.html = html;
 		window.sheet = this;
 
-		// html.find(".feature").click((event) => {
-		// 	const item = this.actor.items.get(event.currentTarget.dataset.itemId);
-		// 	item.sheet.render(true);
-		// });
+		// Construct dynamic DOM elements
+
+		html.find(".trait-name").each((i, traitElem) => {
+			const label$ = $(traitElem).find(".trait-label");
+			const dragger$ = $(`<div class="trait-dragger" 
+							data-trait="${traitElem.dataset.trait}"
+							data-value="${traitElem.dataset.value}"
+							data-type="${traitElem.dataset.type}"
+							data-sub-type="${traitElem.dataset.subType}"
+				>`).appendTo(traitElem);
+			const display$ = $("<div class=\"trait-big-display\"></div>")
+				.appendTo(dragger$);
+			gsap.set([label$, dragger$, display$], {
+				position: "absolute",
+				display: "block",
+				xPercent: -50,
+				yPercent: -50,
+				height: gsap.getProperty(traitElem, "height"),
+				width: gsap.getProperty(traitElem, "width"),
+				x: 0.5 * U.get(traitElem, "width"),
+				y: 0.5 * U.get(traitElem, "height"),
+				transformOrigin: "50% 50%"
+			});
+			gsap.set(display$, {
+				height: 5 * gsap.getProperty(traitElem, "height"),
+				width: 2 * gsap.getProperty(traitElem, "width"),
+				pointerEvents: "none"
+			});
+			gsap.set(dragger$, {
+				width: 0.8 * gsap.getProperty(traitElem, "width"),
+				x: `${dragger$.data("subType") === "sinister" ? "-" : "+"}=${0.1 * gsap.getProperty(traitElem, "width")}`,
+				pointerEvents: "all"
+			});
+
+			const labelPos = {x: gsap.getProperty(label$[0], "x"), y: gsap.getProperty(label$[0], "y")};
+			const newPos = U.getNewPos(label$, display$);
+			console.log({labelPos, newPos, label: label$[0], display: display$[0]});
+	// 	<div class="trait-big-display"></div> {{!-- Much bigger, the frame in which animations play while dragging --}}
+	// </div>`
+		})
 
 		if (!this.isEditable) { return }
 
@@ -103,6 +126,13 @@ export default class extends MIX(ActorSheet).with(UpdateQueue) {
 		html.find(".trait-button").click(this._changeTrait.bind(this));
 		html.find(".trait-button").contextmenu(this._changeTrait.bind(this));
 
+		html.find(".feature").css({pointerEvents: "all"}).click((event) => {
+			const item = this.actor.items.get(event.currentTarget.dataset.itemId);
+			item.sheet.render(true);
+		});
+
+		// <span class="draggable trait {{type}}" data-type="{{type}}" data-target="{{top}}" data-value={{lookup (lookup data top) "value"}}>{{case "title" top}}</span>
+
 		html.find(".trait-pair.strategy label.sinister .draggable").dblclick(this._setPrimarySinister.bind(this));
 
 		html.find(".trait-pair .virtuous").each((_, label) => {
@@ -111,57 +141,7 @@ export default class extends MIX(ActorSheet).with(UpdateQueue) {
 				.each((__, span) => U.set([span, $(span).prev()], {x: U.get(label, "width") - (1.1 * U.get(span, "width"))}));
 		});
 
-		html.find(".feature").css({pointerEvents: "all"}).click((event) => {
-			const item = this.actor.items.get(event.currentTarget.dataset.itemId);
-			item.sheet.render(true);
-		});
-
-		// Construct lookup object for trait livesnap points
-		// const getSnapPoints = (traitName) => {
-		// 	traitName = U.lCase(traitName);
-		// 	const traitType = C.strategies.includes(traitName) ? "strategy" : "tactic";
-		// 	const snapPoints = new Map();
-		// 	html.find(`#trait-label-${traitName}`).removeClass("faded-trait");
-		// 	const [homeTarget] = html.find(`#trait-label-${traitName} .display`);
-		// 	const globalHomePos = U.getGlobalPos(homeTarget);
-		// 	snapPoints.set(globalHomePos, homeTarget);
-		// 	C.strategies.forEach((trait) => {
-		// 		if (trait !== traitName) {
-		// 			if (traitType === "tactic") {
-		// 				// We are dragging a TACTIC around ...
-		// 				html.find(`#trait-label-${trait}`).removeClass("faded-trait");
-		// 				const [dropTarget] = html.find(`#trait-label-${trait} .display`);
-		// 				const globalDropPos = U.getGlobalPos(dropTarget);
-		// 				// ... so, its drop point will be LOWER and RIGHT
-		// 				globalDropPos.x += 15;
-		// 				globalDropPos.y += 15;
-		// 				snapPoints.set(globalDropPos, dropTarget);
-		// 			} else {
-		// 				html.find(`#trait-label-${trait}`).addClass("faded-trait");
-		// 			}
-		// 		}
-		// 	});
-		// 	C.tactics.forEach((trait) => {
-		// 		if (trait !== traitName) {
-		// 			if (traitType === "strategy") {
-		// 				// We are dragging a STRATEGY around ...
-		// 				html.find(`#trait-label-${trait}`).removeClass("faded-trait");
-		// 				const [dropTarget] = html.find(`#trait-label-${trait} .display`);
-		// 				const globalDropPos = U.getGlobalPos(dropTarget);
-		// 				globalDropPos.x -= 15;
-		// 				globalDropPos.y -= 15;
-		// 				// ... so, its drop point will be UPPER and LEFT
-		// 				snapPoints.set(globalDropPos, dropTarget);
-		// 			} else {
-		// 				html.find(`#trait-label-${trait}`).addClass("faded-trait");
-		// 			}
-		// 		}
-		// 	});
-
-		// 	C[traitType === "strategy" ? "tactics" : "strategies"].forEach((trait) => {
-		// 	});
-		// 	return snapPoints;
-		// };
+		// Generate drag entities for each trait
 
 		Dragger.create(`#actor-${this.actor.id} .draggable.trait`, {
 			onDragStart() {
@@ -176,7 +156,7 @@ export default class extends MIX(ActorSheet).with(UpdateQueue) {
 				console.log({"DRAG START": this});
 				gsap.to(this.target, {
 					scale: 2,
-					fontFamily: "Komikax, sans-serif",
+					fontFamily: "KomikaAxis, sans-serif",
 					color: C.html.colors[this.type],
 					opacity: 1,
 					duration: 2,
@@ -186,8 +166,8 @@ export default class extends MIX(ActorSheet).with(UpdateQueue) {
 				// console.log("DRAG START:", {["this"]: this, target: this.target, startParent: this.startParent});
 			},
 			/* onDragUpdate() {
-				// Determine which of the snap points target is closest to, and animate that snap element without livesnapping
-			} */
+                	// Determine which of the snap points target is closest to, and animate that snap element without livesnapping
+                } */
 			liveSnap: {
 				points(point) {
 					if (!this.snapElems || this.snapElems.length === 0) {
@@ -218,7 +198,7 @@ export default class extends MIX(ActorSheet).with(UpdateQueue) {
 							gsap.set(this.snapElem, {zIndex: 1000});
 						},
 						scale: 2,
-						fontFamily: "Komikax, sans-serif",
+						fontFamily: "KomikaAxis, sans-serif",
 						color: C.html.colors[$(this.snapElem).hasClass("display") ? this.type : this.dropType],
 						opacity: 1,
 						ease: "back",
@@ -263,48 +243,87 @@ export default class extends MIX(ActorSheet).with(UpdateQueue) {
 	// #endregion ▄▄▄▄▄ ACTIVATE LISTENERS ▄▄▄▄▄
 
 	// #region ████████ Trait Radial Menu: Radial Menu for Trait Lines ████████ ~
-	_getButtonStates(trait) {
-		const [main, opp] = [trait, C.traitPairs[trait]];
-		const {min: mainMin, max: mainMax, value: mainVal} = this.actorData.data[main];
-		const {min: oppMin, max: oppMax, value: oppVal} = this.actorData.data[opp];
+	_getTraitPairData(trait) {
+		const [tNameA, tNameB] = [trait, C.traitPairs[trait]];
+		const {data} = this.actorData;
+		const [dataA, dataB] = [data[tNameA], data[tNameB]];
 		return [
 			{
-				name: main,
-				min: mainMin,
-				max: mainMax,
-				value: mainVal,
-				add: mainVal < mainMax && (mainVal + oppVal) < 7,
-				drop: mainVal > mainMin,
-				slide: mainVal < mainMax && oppVal > oppMin
+				name: tNameA,
+				displayName: U.tCase(tNameA),
+				type: C.strategies.includes(tNameA) ? "strategy" : "tactic",
+				subType: "sinister",
+				...dataA,
+				canSlideTo: dataA.value < dataA.max && dataB.value > dataB.min,
+				canAdd: dataA.value < dataA.max && (dataA.value + dataB.value) < 7,
+				canDrop: dataA.value > dataA.min,
+				emptyDots: dataA.max - dataA.value,
+				isPrimary: tNameA === data.primaryStrategy
 			},
 			{
-				name: opp,
-				min: oppMin,
-				max: oppMax,
-				value: oppVal,
-				add: oppVal < oppMax && (mainVal + oppVal) < 7,
-				drop: oppVal > oppMin,
-				slide: oppVal < oppMax && mainVal > mainMin
+				name: tNameB,
+				displayName: U.tCase(tNameB),
+				type: C.strategies.includes(tNameB) ? "strategy" : "tactic",
+				subType: "virtuous",
+				...dataB,
+				canSlideTo: dataB.value < dataB.max && dataA.value > dataA.min,
+				canAdd: dataB.value < dataB.max && (dataB.value + dataA.value) < 7,
+				canDrop: dataB.value > dataB.min,
+				emptyDots: dataB.max - dataB.value,
+				isPrimary: tNameB === data.primaryStrategy
 			}
 		];
 	}
+
+
+
+
+		/* const {min: mainMin, max: mainMax, value: mainVal} = this.actorData.data[tNameA];
+		const {min: oppMin, max: oppMax, value: oppVal} = this.actorData.data[tNameB];
+		return [
+			{
+				name: tNameA,
+				...data[tNameA],
+				canSlideTo: 
+			}
+			
+			{
+			name: tNameA,
+			min: mainMin,
+			max: mainMax,
+			value: mainVal,
+
+
+			slide: mainVal < mainMax && oppVal > oppMin
+		},
+										{
+											name: tNameB,
+											min: oppMin,
+											max: oppMax,
+											value: oppVal,
+											add: oppVal < oppMax && (mainVal + oppVal) < 7,
+											drop: oppVal > oppMin,
+											slide: oppVal < oppMax && mainVal > mainMin
+										}
+		];
+	} */
 	_updateRadialButtons(trait) {
 		trait = C.virtuousTraitPairs[trait] ?? trait;
-		const [top, bottom] = this._getButtonStates(trait);
+		const [top, bottom] = this._getTraitPairData(trait);
 		U.objForEach({
 			[`#menu-add-drop-${top.name}`]: {
-				"active-add": top.add,
-				"active-drop": top.drop
+				"active-add": top.canAdd,
+				"active-drop": top.canDrop
 			},
 			[`#menu-add-drop-${bottom.name}`]: {
-				"active-add": bottom.add,
-				"active-drop": bottom.drop
+				"active-add": bottom.canDdd,
+				"active-drop": bottom.canDrop
 			},
 			[`#menu-slide-${top.name}`]: {
-				"active-slide-left": top.slide
+				"active-slide-left": top.canSlideTo
 			},
 			[`#menu-slide-${bottom.name}`]: {
-				"active-slide-right": bottom.slide
+				"active-slide-right": bottom.canSlideTo
 			}
 		}, (classes, id) => U.objForEach(
 			classes,
@@ -333,9 +352,11 @@ export default class extends MIX(ActorSheet).with(UpdateQueue) {
 		// console.log("Close Menu", event);
 		const [posElem] = $(event.currentTarget).find(".menu-positioner");
 		$(posElem).find("video").each(function stopVideo() { this.pause() });
-		/*DEVCODE*/if (!CONFIG.BETTERANGELS.keepMenuOpen) { /*!DEVCODE*/
+		/*DEVCODE*/
+		if (!CONFIG.BETTERANGELS.keepMenuOpen) { /*!DEVCODE*/
 			$(posElem).find(".radial-menu").removeClass("active");
-		/*DEVCODE*/ } /*!DEVCODE*/
+			/*DEVCODE*/
+		} /*!DEVCODE*/
 		setTimeout(() => this.pushUpdates(), 500);
 	}
 	async _changeTrait(event) {
@@ -347,20 +368,25 @@ export default class extends MIX(ActorSheet).with(UpdateQueue) {
 			click: clickaction,
 			contextmenu: contextaction
 		}[event.type];
-		if (this._getButtonStates(target)[0][action]) {
+		if (this._getTraitPairData(target)[0][action]) {
 			switch (action) {
-				case "add": {
+				case "add":
+				{
 					const targetVal = Math.min(data[target].max, data[target].value + 1);
-					this.updateSync({[`data.${target}.value`]: targetVal});
+					this.updateSync({
+						[`data.${target}.value`]: targetVal});
 					this._fillDot(target, targetVal);
 					break;
 				}
-				case "drop": {
+				case "drop":
+				{
 					this._emptyDot(target, data[target].value);
-					this.updateSync({[`data.${target}.value`]: Math.max(data[target].min, data[target].value - 1)});
+					this.updateSync({
+						[`data.${target}.value`]: Math.max(data[target].min, data[target].value - 1)});
 					break;
 				}
-				case "slide": {
+				case "slide":
+				{
 					const fromTarget = C.traitPairs[target];
 					const targetVal = Math.min(data[target].max, data[target].value + 1);
 					this._slideDot(target, targetVal, fromTarget, data[fromTarget].value);
@@ -370,7 +396,8 @@ export default class extends MIX(ActorSheet).with(UpdateQueue) {
 					});
 					break;
 				}
-				default: return false;
+				default:
+					return false;
 			}
 			this._updateRadialButtons(target);
 			return true;
@@ -397,12 +424,10 @@ export default class extends MIX(ActorSheet).with(UpdateQueue) {
 			}
 		});
 		timeline.fromTo(
-			dotElem,
-			{
+			dotElem, {
 				scale: 10,
 				opacity: 0
-			},
-			{
+			}, {
 				scale: 1,
 				opacity: 1,
 				ease: "sine",
@@ -427,12 +452,10 @@ export default class extends MIX(ActorSheet).with(UpdateQueue) {
 			}
 		});
 		timeline.fromTo(
-			dotElem,
-			{
+			dotElem, {
 				scale: 1,
 				opacity: 1
-			},
-			{
+			}, {
 				scale: 10,
 				opacity: 0,
 				ease: "sine",
@@ -446,11 +469,9 @@ export default class extends MIX(ActorSheet).with(UpdateQueue) {
 		const [toElem] = $(`#actor-${this.actor.id} #${toTrait}-${toDot} > .dot-slot`);
 		const [animElem] = $("<span class=\"dot-slot full top-layer\">&nbsp;</span>").appendTo(`#actor-${this.actor.id} #${fromTrait}-${fromDot}`);
 		gsap.to(animElem, {
-			...U.convertCoords(
-				{x: 0, y: 0},
-				$(toElem).parent()[0],
-				$(fromElem).parent()[0]
-			),
+			...U.convertCoords({x: 0, y: 0},
+																						$(toElem).parent()[0],
+																						$(fromElem).parent()[0]),
 			duration: 0.5,
 			ease: "slow(0.7, 0.7)",
 			onStart() {
@@ -505,7 +526,8 @@ export default class extends MIX(ActorSheet).with(UpdateQueue) {
 				}
 			}
 		}
-		let poolAdvantage = 0, widthAdvantage = 0;
+		let poolAdvantage = 0,
+						widthAdvantage = 0;
 
 		for (const [advType, {pool, width}] of Object.entries(advantages)) {
 			const glyph = `<span class="advantage-glyph">${{
