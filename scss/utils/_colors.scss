@@ -1,59 +1,66 @@
 // White, Black, Greys
 $c-white: rgb(255, 255, 255);
-$c-grey9: rgb(230, 230, 230);
-$c-grey8: rgb(204, 204, 204);
-$c-grey7: rgb(179, 179, 179);
-$c-grey6: rgb(153, 153, 153);
-$c-grey5: rgb(128, 128, 128);
-$c-grey4: rgb(102, 102, 102);
-$c-grey3: rgb(77, 77, 77);
-$c-grey2: rgb(51, 51, 51);
-$c-grey1: rgb(34, 34, 34);
+$c-grey9: rgb(204, 204, 204);
+$c-grey8: rgb(153, 153, 153);
+$c-grey7: rgb(128, 128, 128);
+$c-grey6: rgb(102, 102, 102);
+$c-grey5: rgb(77, 77, 77);
+$c-grey4: rgb(51, 51, 51);
+$c-grey3: rgb(34, 34, 34);
+$c-grey2: rgb(25, 25, 25);
+$c-grey1: rgb(15, 15, 15);
 $c-black: rgb(0, 0, 0);
 
-// Red
+// Reds
 $c-red: rgb(255, 0, 0);
-$c-medred: rgb(155, 0, 0);
-$c-darkred: rgb(77, 0, 0);
-$c-darkred5: rgba(77, 0, 0, 0.5);
+$c-red9: rgb(204, 0, 0);
+$c-red8: rgb(153, 0, 0);
+$c-red7: rgb(128, 0, 0);
+$c-red6: rgb(102, 0, 0);
+$c-red5: rgb(77, 0, 0);
+$c-red4: rgb(51, 0, 0);
+$c-red3: rgb(34, 0, 0);
+$c-red2: rgb(25, 0, 0);
+$c-red1: rgb(15, 0, 0);
 
-// Magenta, Pink
+$c-medred: $c-red8;
+$c-darkred: $c-red5;
+
+// Magenta, Purple
 $c-magenta: rgb(255, 0, 255);
-$c-pink: rgb(255, 192, 203);
+$c-magenta7: rgb(128, 0, 128);
 
-// Orange, Gold
+$c-purple: $c-magenta7;
+
+// Yellow, Orange, Gold, Brown, Tan
 $c-gold: rgb(255, 215, 0);
-$c-gold5: rgba(255, 215, 0, 50%);
 $c-orange: rgb(255, 166, 0);
-$c-orange5: rgba(255, 166, 0, 50%);
-
-// Brown, Tan
-
-// Yellow
 $c-yellow: rgb(255, 255, 0);
 
-// Green
+// Greens
 $c-lime: rgb(0, 255, 0);
-$c-green: rgb(0, 200, 0);
-$c-darkgreen: rgb(0, 100, 0);
-$c-darkgreen5: rgba(0, 100, 0, 0.5);
+$c-lime9: rgb(0, 204, 0);
+$c-lime6: rgb(0, 102, 0);
+
+$c-green: $c-lime9;
+$c-darkgreen: $c-lime6;
 
 // Blue, Cyan
 $c-cyan: rgb(0, 255, 255);
-$c-cyan5: rgb(0, 255, 255);
-$c-brightcyan: rgb(156, 255, 255);
-$c-darkblue: rgb(0, 0, 255);
-$c-navy: rgb(0, 0, 128);
-$c-navy5: rgba(0, 0, 128, 0.5);
 
-// Purple
-$c-purple: rgb(128, 0, 128);
+$c-blue: rgb(0, 0, 255);
+$c-blue7: rgb(0, 0, 128);
+
+$c-darkblue: $c-blue;
+$c-navy: $c-blue7;
 
 // Primary Colors
-$c-fg: $c-grey7;
+$c-fg: $c-grey8;
 $c-fg-bright: $c-white;
-$c-fg-dim: $c-grey5;
-$c-bg: $c-grey1;
+$c-fg-dim: $c-grey7;
+
+$c-bg: $c-grey3;
+$c-bg-dim: $c-grey1;
 $c-bg-dark: $c-black;
 
-$c-glow-primary: $c-brightcyan;
+$c-glow-primary: saturate($c-cyan, 50%);

@@ -16,7 +16,8 @@ import {
 	MotionPathPlugin,
 	GSDevTools,
 	RoughEase,
-	SlowMo, // GreenSock Animation Platform
+	SlowMo,
+	CSSPlugin, // GreenSock Animation Platform
 	// ▮▮▮▮▮▮▮[Utility]▮▮▮▮▮▮▮
 	loadHandlebars,
 	U,
@@ -31,6 +32,8 @@ import {
 	BetterAngelsItemSheet,
 	// ▮▮▮▮▮▮▮[Hooks]▮▮▮▮▮▮▮
 	ActorSheetHooks,
+	// ▮▮▮▮▮▮▮[Hooks]▮▮▮▮▮▮▮
+	ActorSheetEffects,
 	// ▮▮▮▮▮▮▮[XCircles]▮▮▮▮▮▮▮
 	XElem,
 	XCircle,
@@ -45,7 +48,8 @@ gsap.registerPlugin(
 	MotionPathPlugin,
 	GSDevTools,
 	RoughEase,
-	SlowMo
+	SlowMo,
+	CSSPlugin
 );
 
 // ████████ ON INIT: On-Initialization Hook ████████
@@ -91,11 +95,7 @@ Hooks.once("init", async () => {
 });
 
 // ████████ REGISTER MODULAR HOOKS: Register Hooks From Other Modules ████████
-U.registerHooks([
-	ActorSheetHooks
-]);
+U.registerHooks([ActorSheetHooks]);
 
-// ████████ ONDROPACTORSHEETDATA: on-dropActorSheetData Hook ████████
-Hooks.on("preCreateItem", async (item, itemData) => {
-
-});
+// ████████ REGISTER MODULAR EFFECTS: Register GSAP Effects From Other Modules ████████
+U.registerEffects([ActorSheetEffects]);

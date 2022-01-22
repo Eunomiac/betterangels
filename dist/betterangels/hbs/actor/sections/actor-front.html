@@ -1,5 +1,3 @@
-{{> "/systems/betterangels/hbs/actor/parts/radial-menu.html" data}}
-
 <section class="trait-panel">
 	{{#each traitGrid}}
 	{{> "/systems/betterangels/hbs/actor/parts/trait-cell.html" data=this num=@index}}
@@ -7,7 +5,6 @@
 </section>
 
 <section class="features-list">
-	{{!-- <h1 class="inset-shadow">Powers</h1> --}}
 	<div class="feature-row powers-list">
 		{{#each powers}}
 		<div class="feature power" data-item-id="{{_id}}">
@@ -17,7 +14,6 @@
 		</div>
 		{{/each}}
 	</div>
-	{{!-- <h1 class="inset-shadow">Demonic Aspects</h1> --}}
 	<div class="feature-row aspects-list">
 		{{#each aspects}}
 		<div class="feature aspect" data-item-id="{{_id}}">
@@ -28,11 +24,4 @@
 		</div>
 		{{/each}}
 	</div>
-{{!-- 	<div class="feature-row devices-list">
-		{{#each devices}}
-		<div class="feature device" data-item-id="{{_id}}">
-			<img class="device-img" src="{{img}}" />
-		</div>
-		{{/each}}
-	</div> --}}
 </section>

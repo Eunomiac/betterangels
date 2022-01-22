@@ -1,48 +1,38 @@
 export default {
 	systemname: "betterangels",
-	strategies: ["cunning", "patient", "sly", "open", "devious", "insightful"],
-	tactics: ["greed", "generosity", "espionage", "knowledge", "cruelty", "courage", "contempt", "endurance", "corruption", "nurture", "deceit", "honesty"],
-	traitPairs: {
-		contempt: "endurance",
-		corruption: "nurture",
-		courage: "cruelty",
-		cruelty: "courage",
-		cunning: "patient",
-		deceit: "honesty",
-		devious: "insightful",
-		endurance: "contempt",
-		espionage: "knowledge",
-		generosity: "greed",
-		greed: "generosity",
-		honesty: "deceit",
-		insightful: "devious",
-		knowledge: "espionage",
-		nurture: "corruption",
-		open: "sly",
-		patient: "cunning",
-		sly: "open"
+	orderedTraits: [
+		{name: "greed", type: "tactic", subType: "sinister", opposite: "generosity"},
+		{name: "generosity", type: "tactic", subType: "virtuous", opposite: "greed"},
+		{name: "cunning", type: "strategy", subType: "sinister", opposite: "patient"},
+		{name: "patient", type: "strategy", subType: "virtuous", opposite: "cunning"},
+		{name: "espionage", type: "tactic", subType: "sinister", opposite: "knowledge"},
+		{name: "knowledge", type: "tactic", subType: "virtuous", opposite: "espionage"},
+		{name: "cruelty", type: "tactic", subType: "sinister", opposite: "courage"},
+		{name: "courage", type: "tactic", subType: "virtuous", opposite: "cruelty"},
+		{name: "sly", type: "strategy", subType: "sinister", opposite: "open"},
+		{name: "open", type: "strategy", subType: "virtuous", opposite: "sly"},
+		{name: "contempt", type: "tactic", subType: "sinister", opposite: "endurance"},
+		{name: "endurance", type: "tactic", subType: "virtuous", opposite: "contempt"},
+		{name: "corruption", type: "tactic", subType: "sinister", opposite: "nurture"},
+		{name: "nurture", type: "tactic", subType: "virtuous", opposite: "corruption"},
+		{name: "devious", type: "strategy", subType: "sinister", opposite: "insightful"},
+		{name: "insightful", type: "strategy", subType: "virtuous", opposite: "devious"},
+		{name: "deceit", type: "tactic", subType: "sinister", opposite: "honesty"},
+		{name: "honesty", type: "tactic", subType: "virtuous", opposite: "deceit"}
+	],
+	get traits() { return this.orderedTraits.map(({name}) => name) },
+	get strategies() { return this.orderedTraits.filter(({type}) => type === "strategy").map(({name}) => name) },
+	get tactics() { return this.orderedTraits.filter(({type}) => type === "tactic").map(({name}) => name) },
+	get sinister() { return this.orderedTraits.filter(({subType}) => subType === "sinister").map(({name}) => name) },
+	get virtuous() { return this.orderedTraits.filter(({subType}) => subType === "virtuous").map(({name}) => name) },
+	get traitPairs() { return Object.fromEntries(this.orderedTraits.map(({name, opposite}) => [name, opposite])) },
+	get sinisterTraitPairs() {
+		return Object.fromEntries(this.orderedTraits.filter(({subType}) => subType === "sinister")
+			.map(({name, opposite}) => [name, opposite]));
 	},
-	virtuousTraitPairs: {
-		courage: "cruelty",
-		endurance: "contempt",
-		generosity: "greed",
-		honesty: "deceit",
-		insightful: "devious",
-		knowledge: "espionage",
-		nurture: "corruption",
-		open: "sly",
-		patient: "cunning"
-	},
-	sinisterTraitPairs: {
-		contempt: "endurance",
-		corruption: "nurture",
-		cruelty: "courage",
-		cunning: "patient",
-		deceit: "honesty",
-		devious: "insightful",
-		espionage: "knowledge",
-		greed: "generosity",
-		sly: "open"
+	get virtuousTraitPairs() {
+		return Object.fromEntries(this.orderedTraits.filter(({subType}) => subType === "virtuous")
+			.map(({name, opposite}) => [name, opposite]));
 	},
 	aspects: {
 		"an-utmost-foulness": "An Utmost Foulness",
@@ -94,6 +84,10 @@ export default {
 	pixelProperties: [
 		"x", "y", "top", "left", "height", "width", "margin", "border"
 	],
+	menuRadius: {
+		strategy: 60,
+		tactic: 50
+	},
 	mobResolve: {
 		0.1: "Cowardly (10%)",
 		0.25: "Timid (25%)",
@@ -115,7 +109,11 @@ export default {
 				emptying: "rgb(255, 0, 0)",
 				emptyingDark: "rgb(128, 0, 0)",
 				strategy: "rgb(0, 200, 0)",
-				tactic: "rgb(200, 0, 200)"
+				tactic: "rgb(200, 0, 200)",
+				strategyBright: "rgb(0, 255, 0)",
+				tacticBright: "rgb(255, 0, 255)",
+				strategyDark: "rgb(0, 100, 0)",
+				tacticDark: "rgb(100, 0, 100)"
 			},
 			get dots() {
 				return {

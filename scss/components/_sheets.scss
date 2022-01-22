@@ -1,6 +1,4 @@
 & {
-	text-shadow: 0 0 5px $c-bg-dark, 0 0 2px $c-bg-dark, 0 0 5px $c-bg;
-
 	.window-header {
 		position: absolute;
 		width: 100%;
@@ -11,7 +9,7 @@
 		overflow: visible;
 		z-index: 1;
 
-		> *:not(.header-button.close) { display: none !important }
+		> *:not(.header-button.close) { display: none }
 
 		.header-button.close {
 			text-shadow: none;
@@ -19,7 +17,8 @@
 			&::before {
 				display: block;
 				content: "X";
-				font-size: 14px;
+				font-family: $font-close-button;
+				font-size: $font-size-h4;
 				background: #AA0000;
 				height: 15px;
 				width: 15px;
@@ -28,8 +27,8 @@
 				border-radius: 15px;
 				box-shadow: -1px -1px 3px rgb(0, 0, 0), 1px 1px 3px rgb(255, 255, 255);
 				position: absolute;
-				right: 0px;
-				top: 20px;
+				right: 15px;
+				top: 35px;
 				transform-origin: 50% 50%;
 				transition: 0.25s all;
 			}
@@ -42,6 +41,9 @@
 	}
 
 	&.minimized {
+		--border-width: 5px;
+		--main-padding: 0;
+
 		height: 20px !important;
 		min-height: 20px !important;
 		width: 200px !important;
@@ -56,29 +58,41 @@
 
 			.window-title {
 				display: block;
-				color: white;
+				color: $c-fg-bright;
 				position: relative;
-				font-size: 24px;
+				font-size: $font-size-b4;
 				line-height: 20px;
-				top: 0 !important;
 			}
 
 			.header-button.close::before {
-				top: 4px;
+				top: 2px;
+				right: 3px;
 			}
 		}
 	}
 
 	.window-content {
-		pointer-events: none;
 		border-radius: 25px;
 		padding: 0;
 
-		.draggable,
-		a,
-		input,
-		button,
-		textarea:not(.read-only) { pointer-events: all }
+		.sheet-tabs {
+			.item { 
+				color: $c-fg-dim;
+				font-family: $font-title;
+				transform: scale(1);
+				transition: 0.5s;
+				&.active {
+					color: $c-fg-bright;
+					text-shadow: 0 0 10px #{$c-red};
+					transform: scale(1.5);
+				}
+				&:hover { 
+					color: $c-bg-dark;
+					transform: scale(2);
+					text-shadow: 0 0 10px #{$c-fg-bright};
+				}
+			}
+		}
 
 		form.editable {
 			position: relative;
@@ -88,33 +102,33 @@
 				max-height: 105px;
 			}
 			
-			h1 {
-				border: none;
-				background-color: transparent;
-				text-align: center;
-				font-family: $font-header;
-				font-size: 32px;
-				margin: 0;
+			// h1 {
+			// 	border: none;
+			// 	background-color: transparent;
+			// 	text-align: center;
+			// 	font-family: $font-header;
+			// 	font-size: $font-size-h1;
+			// 	margin: 0;
 
-				&.inset-shadow {
-					color: #1A1A1A;
-					letter-spacing: 0.1em;
-					text-shadow: -1px -1px 1px #000000, 2px 2px 1px #262626;
-				}
-			}
+			// 	&.inset-shadow {
+			// 		color: #1A1A1A;
+			// 		letter-spacing: 0.1em;
+			// 		text-shadow: -1px -1px 1px #000000, 2px 2px 1px #262626;
+			// 	}
+			// }
 
 			.sheet-body {
-				.tab.active {
+				.tab {
 					min-height: 500px;
 
-					&.background { pointer-events: all }
+					// &.background { pointer-events: all }
 					
 					.editor {
-						pointer-events: all;
+						// pointer-events: all;
 						min-height: 500px;
 
 						* {
-							pointer-events: all;
+							// pointer-events: all;
 						}
 					}
 				}

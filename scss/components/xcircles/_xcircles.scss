@@ -32,14 +32,14 @@ $padding-right: 350px;
       left: 0;
 
       .circle-path {
-        --circle-color: #{$c-gold5} !important;
+        --circle-color: #{setAlpha($c-gold, 0.5)} !important;
 
         fill: var(--circle-color);
       }
     }
 
     &.x-circle-basic { --circle-color: #{$c-lime}; }
-    &.x-circle-pink { --circle-color: #{$c-pink}; }
+    &.x-circle-pink { --circle-color: #{$c-magenta}; }
     &.x-circle-cyan { --circle-color: #{$c-cyan}; }
     &.x-circle-yellow { --circle-color: #{$c-yellow}; }
     &.x-circle-purple { --circle-color: #{$c-purple}; }

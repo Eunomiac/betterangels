@@ -157,7 +157,7 @@ Hooks.once("ready", () => {
 		MotionPathPlugin,
 		Dragger,
 		GSDevTools,
-		getPos: U.getNewPos,
+		getPos: U.getPos,
 		pause: () => gsap.globalTimeline.pause(),
 		play: () => gsap.globalTimeline.play(),
 		XContainer: XElem.CONTAINER

@@ -103,6 +103,7 @@ const getPath = (fileTitle, subPath) => `/systems/betterangels/hbs/${subPath}/${
 export const TEMPLATES = {
 	actorSections: [  // Actor Character Sheet Sections
 		getPath("actor-front", "actor/sections"),
+		getPath("actor-screwtape", "actor/sections"),
 		getPath("actor-notes", "actor/sections")
 	],
 	actorPartials: [  // Actor Partials

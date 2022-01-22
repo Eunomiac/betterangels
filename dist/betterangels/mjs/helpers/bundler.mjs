@@ -13,7 +13,10 @@ export {default as gsap,
 	MotionPathPlugin,
 	GSDevTools,
 	SlowMo,
-	RoughEase
+	RoughEase,
+	SplitText,
+	TextPlugin,
+	CSSPlugin
 } from "/scripts/greensock/esm/all.js";
 
 export {default as U} from "./utilities.mjs";
@@ -22,7 +25,7 @@ export * from "./mixins.mjs";
 
 export {default as loadHandlebars, TEMPLATES} from "./handlebars.mjs";
 export {default as BetterAngelsActor} from "../documents/actor.mjs";
-export {default as BetterAngelsActorSheet, HOOKS as ActorSheetHooks} from "../sheets/actor-sheet.mjs";
+export {default as BetterAngelsActorSheet, HOOKS as ActorSheetHooks, EFFECTS as ActorSheetEffects} from "../sheets/actor-sheet.mjs";
 export {default as HellboundActorSheet} from "../sheets/actor-hellbound-sheet.mjs";
 export {default as MinorNPCSheet} from "../sheets/actor-minornpc-sheet.mjs";
 export {default as MobNPCSheet} from "../sheets/actor-mobnpc-sheet.mjs";

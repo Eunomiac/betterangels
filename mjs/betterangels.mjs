@@ -10,7 +10,8 @@ import {
 	MotionPathPlugin,
 	GSDevTools,
 	RoughEase,
-	SlowMo, // GreenSock Animation Platform
+	SlowMo,
+	CSSPlugin, // GreenSock Animation Platform
 	// #endregion ▮▮▮▮[External Libraries]▮▮▮▮
 	// #region ▮▮▮▮▮▮▮[Utility]▮▮▮▮▮▮▮ ~
 	loadHandlebars,
@@ -30,6 +31,9 @@ import {
 	// #region ▮▮▮▮▮▮▮[Hooks]▮▮▮▮▮▮▮ ~
 	ActorSheetHooks,
 	// #endregion ▮▮▮▮[Hooks]▮▮▮▮
+	// #region ▮▮▮▮▮▮▮[Hooks]▮▮▮▮▮▮▮ ~
+	ActorSheetEffects,
+	// #endregion ▮▮▮▮[Hooks]▮▮▮▮
 	// #region ▮▮▮▮▮▮▮[XCircles]▮▮▮▮▮▮▮ ~
 	XElem,
 	XCircle,
@@ -47,7 +51,8 @@ gsap.registerPlugin(
 	MotionPathPlugin,
 	GSDevTools,
 	RoughEase,
-	SlowMo
+	SlowMo,
+	CSSPlugin
 );
 
 // #endregion ▄▄▄▄▄ IMPORTS ▄▄▄▄▄
@@ -101,30 +106,15 @@ Hooks.once("init", async () => {
 // #endregion ▄▄▄▄▄ ON INIT ▄▄▄▄▄
 
 // #region ████████ REGISTER MODULAR HOOKS: Register Hooks From Other Modules ████████
-U.registerHooks([
-	ActorSheetHooks
-]);
-
+U.registerHooks([ActorSheetHooks]);
 // #endregion ▄▄▄▄▄ REGISTER MODULAR HOOKS ▄▄▄▄▄
 
+// #region ████████ REGISTER MODULAR EFFECTS: Register GSAP Effects From Other Modules ████████
+U.registerEffects([ActorSheetEffects]);
+// #endregion ▄▄▄▄▄ REGISTER MODULAR EFFECTS ▄▄▄▄▄
+
 /*DEVCODE*/
-const initDragTest = (traitName = "courage") => {
-	gsap.set(".trait-pair .draggable", {opacity: 0});
-	const [elem, newParent, oldParent] = [
-		$(`#trait-label-${U.lCase(traitName)} .draggable`)[0],
-		$("#x-container")[0],
-		$(`#trait-label-${U.lCase(traitName)}`)[0]
-	];
-	gsap.set(elem, {opacity: 1});
-	const dragElem = Dragger.get(elem);
-	window.elem = elem;
-	window.newParent = newParent;
-	window.oldParent = oldParent;
-	window.dragElem = dragElem;
-};
-
 Hooks.once("ready", () => {
-
 	window.REF = game.betterangels;
 	window.DB = new BA_DB({
 		topLeft: 10,
@@ -136,7 +126,6 @@ Hooks.once("ready", () => {
 	Object.entries({
 		C,
 		U,
-		initDragTest,
 		BetterAngelsActor,
 		BetterAngelsActorSheet,
 		HellboundActorSheet,
@@ -153,7 +142,7 @@ Hooks.once("ready", () => {
 		Dragger,
 		GSDevTools,
 		ORE: game.oneRollEngine,
-		getPos: U.getNewPos,
+		getPos: U.getPos,
 		pause: () => gsap.globalTimeline.pause(),
 		play: () => gsap.globalTimeline.play(),
 		XContainer: XElem.CONTAINER
@@ -161,37 +150,5 @@ Hooks.once("ready", () => {
 		window[key] = ref;
 	});
 	/* eslint-enable sort-keys */
-
-	return;
-
-	window.DB.setDBCircle(window.CIRCLES[0]);
-	window.DB.showAngles(window.CIRCLES[0], 8, true);
-	// DB.addDieWatch(["dbRelPos"]);
-	window.DB.addDieWatch(["pathPos", "targetPathPos"]);
-	window.DB.addDieWatch(["dbAbsAngle", "dbRelAngle"]);
-	// DB.addDieWatch(["dbAbsPos"]);
-	// DB.setDBDie(window.CIRCLES[1].slots[2]);
-	// DB.showDieData(window.CIRCLES[1]);
 });
 /*!DEVCODE*/
-
-// #region ████████ ONDROPACTORSHEETDATA: on-dropActorSheetData Hook ████████ ~
-Hooks.on("preCreateItem", async (item, itemData) => {
-
-});
-// #endregion ▄▄▄▄▄ ON READY ▄▄▄▄▄
-/**
-// #region ████████ HANDLEBARS: Custom Handlebar Helpers ████████ ~
-Handlebars.registerHelper("concat", (...args) => {
-    let outStr = "";
-
-    for (const arg in args) {
-        if (typeof args[arg] !== "object") {
-            outStr += args[arg];
-        }
-    }
-
-    return outStr;
-});
-Handlebars.registerHelper("toLowerCase", (str) => str.toLowerCase());
-// #endregion ▄▄▄▄▄ HANDLEBARS ▄▄▄▄▄ **/

@@ -854,14 +854,23 @@ const awaitParallel = async (params, func) => await Promise.all([params].flat().
 
 // #region ████████ HTML: Parsing HTML Code, Manipulating DOM Objects ████████ ~
 // #region ░░░░░░░[GreenSock]░░░░ Wrappers for GreenSock Functions ░░░░░░░ ~
-const get = (targets, property) => {
+const get = (target, property) => {
+	[target] = getElems(target);
 	if (C.pixelProperties.includes(regExtract(property, "^([a-z]+)"))) {
-		return pFloat(gsap.getProperty(targets, property, "px"), 2);
+		return pFloat(gsap.getProperty(target, property, "px"), 2);
 	}
-	return gsap.getProperty(targets, property);
+	return gsap.getProperty(target, property);
 };
-const set = (...args) => gsap.set(...args);
+const set = (targets, params) => {
+	if (typeof targets === "string") {
+		return gsap.set(targets, params);
+	}
+	targets = getElems(targets);
+	return gsap.set(targets, params);
+};
 // #endregion ░░░░[GreenSock]░░░░
+const getElems = (...elemRefs) => elemRefs.map((eRef) => (Array.isArray(eRef) ? $(eRef[0]).get() : $(eRef).get()[0]));
+const getElem = (elemRef) => getElems(elemRef)[0];
 const getRawCirclePath = (r, {x: xO, y: yO} = {}) => {
 	[r, xO, yO] = [r, xO, yO].map((val) => parseInt(val)); // roundNum(val, 2));
 	const [b1, b2] = [0.4475 * r, (1 - 0.4475) * r];
@@ -888,25 +897,23 @@ const formatAsClass = (str) => `${str}`.replace(/([A-Z])|\s/g, "-$1").replace(/^
 const getGSAngleDelta = (startAngle, endAngle) => signNum(roundNum(getAngleDelta(startAngle, endAngle), 2)).replace(/^(.)/, "$1=");
 const convertCoords = ({x, y}, contextA, contextB) => {
 	const convCoords = MotionPathPlugin.convertCoordinates(contextA, contextB, {x, y});
-	return {
-		x: convCoords.x,
-		y: convCoords.y
-	};
+	return {x: convCoords.x, y: convCoords.y};
 };
-const getNewPos = (elem, newContext, point) => {
-	point = point ?? {
-		x: gsap.getProperty($(elem)[0], "x"),
-		y: gsap.getProperty($(elem)[0], "y")
-	};
-	[elem] = $(elem); [newContext] = $(newContext);
-	const [fromSpace] = $(elem).parent();
-	return convertCoords(point, fromSpace, newContext);
+const getPos = (elem, context, point) => {
+	[elem] = getElems(elem);
+	point = point ?? {x: get(elem, "x"), y: get(elem, "y")};
+	if (context) {
+		[context] = getElems(context);
+		const [fromSpace] = getElems($(elem).parent());
+		return convertCoords(point, fromSpace, context);
+	}
+	return point;
 };
-const getGlobalPos = (elem, point) => getNewPos(elem, $("#x-container")[0], point);
+const getGlobalPos = (elem, point) => getPos(elem, $("#x-container")[0], point);
 const reparent = (elem, newParent) => {
 	newParent = newParent ?? $("#x-container")[0];
 	const oldPos = {x: gsap.getProperty(elem, "x"), y: gsap.getProperty(elem, "y")};
-	const newPos = getNewPos(elem, newParent);
+	const newPos = getPos(elem, newParent);
 	const dbData = {
 		elem,
 		newParent
@@ -937,11 +944,16 @@ const reparent = (elem, newParent) => {
 
 // #region ████████ FOUNDRY: Foundry Extensions, Interfaces ████████ ~
 const registerHooks = (hookDataSets = []) => {
-	[hookDataSets].flat().forEach((hookData) => Object.entries(hookData)
+	hookDataSets.forEach((hookData) => Object.entries(hookData)
 		.forEach(([hookRef, hookFunc]) => {
 			const [call, hook] = regExtract(hookRef, /(^.*?)_(.*$)/);
 			Hooks[call](hook, hookFunc);
 		}));
+};
+const registerEffects = (effectDataSets = []) => {
+	effectDataSets.forEach((effectDataSet) => effectDataSet.forEach((effectData) => {
+		gsap.registerEffect(effectData);
+	}));
 };
 // #endregion ▄▄▄▄▄ FOUNDRY ▄▄▄▄▄
 
@@ -1005,13 +1017,14 @@ export default {
 	// ░░░░░░░ GreenSock ░░░░░░░
 	gsap, get, set,
 
+	getElems, getElem,
 	getRawCirclePath, drawCirclePath,
 	formatAsClass,
 	getGSAngleDelta,
-	convertCoords, getNewPos, getGlobalPos, reparent,
+	convertCoords, getPos, getGlobalPos, reparent,
 
 	// ████████ FOUNDRY: Extending, Interfacing Foundry Functionality ████████
-	registerHooks
+	registerHooks, registerEffects
 
 };
 // #endregion ▄▄▄▄▄ EXPORTS ▄▄▄▄▄

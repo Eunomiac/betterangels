@@ -5,11 +5,13 @@
     <title>Better Angels Font Previewer</title>
     <link rel="stylesheet" href="css/betterangels.css">
     <script type="text/javascript" src="https://code.jquery.com/jquery-3.6.0.slim.min.js"></script>
+    <script type="text/javascript" src="./scripts/require.js"></script>
+		<script type="text/javascript" src="https://unpkg.com/hexo-fs@3.1.0/lib/fs.js"></script>
     <!-- Unminified jQuery Source Code: https://code.jquery.com/jquery-3.6.0.js -->
 </head>
 
 <body>
-    <table id="content">
+<table id="content">
         <colgroup>
             <col span="1" style="width: 250px;" />
             <col span="1" style="width: 250px;" />
@@ -26,165 +28,275 @@
     </table>
 </body>
 <script>
-    const FONT_FAMILIES = [
-        ["Adventure",
-            "AdventureHollow"
-        ],
-        "AlexBold",
-        "AnimeAce",
-        "Avengeance",
-        "Badaboom",
-        "DigitalStrip",
-        "FightingSpirit", [
-            "Komika",
-            "Komika:KomikaEmboss:#A00:#300:#444",
-            "Komika:KomikaShadow:black:#777:#444",
-            "KomikaAxis",
-            "KomikaBrush",
-            "KomikaGhost",
-            "KomikaKaps",
-            "KomikaPaint",
-            "KomikaPaint:KomikaBrush:white:black:#555",
-            "KomikaTall",
-            "KomikaTilt",
-            "KomikaWide",
-            "KomikaWide:KomikaGhost:#A00:#300:#444",
-            "KomikaWired"
-        ],
-        "MangaTemple",
-        "OutrunFuture", ["ShakaPow",
-            "ShakaPowHollow",
-            "ShakaPowUpright",
-            "ShakaPowUprightHollow"
-        ],
-        "Spiderman",
-        "Unmasked",
-        "Yikes"
-    ].flat();
-    const EXCLUSIONS = [
-        "AdventureHollow",
-        "Avengeance", // lacks key symbols
-        "Badaboom", // too tightly-packed... maybe try a letter spacing?
-        ["KomikaBrush", "KomikaGhost", "KomikaTilt", "KomikaWide", "KomikaWired"],
-        "KomikaPaint",
-        "KomikaShadow", // Can merge KomikaEmboss and Komika, but KomikaShadow is offset the wrong direction
-        "OutrunFuture", // 'FightingSpirit' is a bit better
-        ["ShakaPow", "ShakaPowHollow", "ShakaPowUprightHollow"],
-        "Spiderman" // lacks key symbols
-    ].flat();
-    const POWERS = {
-        list: [
-            "An Utmost Foulness",
-            "Alchemy",
-            "Animal Form",
-            "Aqua-Form",
-            "Armor",
-            "Arrogance",
-            "Babel Babble",
-            "Banish",
-            "Body Control",
-            "Carapace",
-            "Clairvoyance",
-            "Cloven Hooves",
-            "Crime-Time",
-            "Dark Ritual",
-            "Darkness-Shrouded",
-            "Dead Ringer",
-            "Dominator Strike",
-            "False Memories",
-            "Flame-Wreathed",
-            "Ghost Form",
-            "Giant",
-            "Glory",
-            "Hanging Curse",
-            "Hell's Engine",
-            "Horned",
-            "Impossible Beauty",
-            "Ineffable Defense",
-            "Invisible",
-            "Legion",
-            "Non-Euclidean",
-            "Oracle",
-            "Psychic Objects",
-            "Regeneration",
-            "Retrocognition",
-            "Soulless Materialism",
-            "Summon",
-            "Telekinesis",
-            "Teleport Self",
-            "Terror",
-            "That Hideous Strength",
-            "The Evil Eye",
-            "Wings",
-            "Wither"
-        ],
-        get PHRASE() {
-            return this.list[Math.floor(Math.random() * this.list.length)]
-        }
-    };
+	const ISCOLLAPSINGEXCLUSIONS = false;
+	const CATEGORY_FILTER = null; // ["body"];
+	const FONT_CATEGORIES = {
+		"ActionMan": [],
+		"AdamWarren": ["body"],
+		"Adventure": ["display"],
+		"AlexBold": [],
+		"AnimeAce": [],
+		"Ashcan": [],
+		"Avengeance": ["display"],
+		"Badaboom": [],
+		"Bangers": [],
+		"CrashLanding": ["power"],
+		"DemonicTale": [],
+		"DemonsAndDarlings": [],
+		"DemonSker": [],
+		"DestroyEarth": [],
+		"DestroyEarthRough": [],
+		"DevilSummoner": [],
+		"DevilSummonerExpanded": [],
+		"DevilSummonerExtraExpanded": [],
+		"DigitalStrip": ["body"],
+		"FeastOfFlesh": ["aspect"],
+		"Flunkies": [],
+		"GoodDog": [],
+		"Gothikka": [],
+		"HardPunkGothik": [],
+		"JungleFever": [],
+		"Komika:KomikaEmboss:#A00:#300:#444": [],
+		"Komika:KomikaShadow:black:#777:#444": [],
+		"Komika": [],
+		"KomikaAxis": ["display"],
+		"KomikaDisplay": [],
+		"KomikaHand": [],
+		"KomikaParch": ["display"],
+		"KomikaTall": [],
+		"KomikaText": ["body"],
+		"KomikaTextTight": ["body"],
+		"Luciferius": [],
+		"MangaTemple": [],
+		"MouseMemoirs": [],
+		"Newsflash": [],
+		"OilBats": [],
+		"OutrunFuture": [],
+		"Punkboy": ["power"],
+		"PureEvil2": [],
+		"Redemption": [],
+		"RoadRage": ["aspect"],
+		"SaintMartyr": [],
+		"SaintMartyrExpanded": ["demon", "aspect"],
+		"Sanitarium": [],
+		"SatansMinions": [],
+		"SatanycDemoniac": [],
+		"SFArchRival": [],
+		"SFComicScript": ["display"],
+		"SFComicScriptCondensed": [],
+		"SFComicScriptExtended": [],
+		"SFSlapstickComic": [],
+		"ShakaPow": [],
+		"ShakaPowUpright": [],
+		"ShakyHandSomeComic": [],
+		"SharrpeGothik": [],
+		"SugarDeath2": [],
+		"SuperWebcomicBros": [],
+		"SwingSet": [],
+		"TheFrontman": [],
+		"Theorevil": [],
+		"Toxia": [],
+		"Unmasked": ["body"],
+		"WickedQueen": [], 
+		"Yikes": ["power"]
+	};
+	const FONT_FAMILIES = Object.keys(FONT_CATEGORIES);
+	const EXCLUSIONS = [			
+		"ActionMan",
+		"AlexBold",
+		"AnimeAce",
+		"Ashcan",
+		"Badaboom",
+		"Bangers",
+		"DemonicTale",
+		"DemonsAndDarlings",
+		"DemonSker",
+		"DestroyEarth",
+		"DestroyEarthRough",
+		"DevilSummoner",
+		"DevilSummonerExpanded",
+		"DevilSummonerExtraExpanded",
+		"Flunkies",
+		"GoodDog",
+		"Gothikka",
+		"HardPunkGothik",
+		"JungleFever",
+		"Komika",
+		"Komika:KomikaEmboss:#A00:#300:#444",
+		"Komika:KomikaShadow:black:#777:#444",
+		"KomikaDisplay",
+		"KomikaHand",
+		"KomikaTall",
+		"Luciferius",
+		"MangaTemple",
+		"MouseMemoirs",
+		"Newsflash",
+		"OilBats",
+		"OutrunFuture",
+		"PureEvil2",
+		"Redemption",
+		"SaintMartyr",
+		"Sanitarium",
+		"SatansMinions",
+		"SatanycDemoniac",
+		"SFArchRival",
+		"SFComicScriptCondensed",
+		"SFComicScriptExtended",
+		"SFSlapstickComic",
+		"ShakaPow",
+		"ShakaPowUpright",
+		"ShakyHandSomeComic",
+		"SharrpeGothik",
+		"SugarDeath2",
+		"SuperWebcomicBros",
+		"SwingSet",
+		"TheFrontman",
+		"Theorevil",
+		"Toxia",
+		"WickedQueen"
+	];
+	const POWERS = {
+		list: [
+			"An Utmost Foulness",
+			"Alchemy",
+			"Animal Form",
+			"Aqua-Form",
+			"Armor",
+			"Arrogance",
+			"Babel Babble",
+			"Banish",
+			"Body Control",
+			"Carapace",
+			"Clairvoyance",
+			"Cloven Hooves",
+			"Crime-Time",
+			"Dark Ritual",
+			"Darkness-Shrouded",
+			"Dead Ringer",
+			"Dominator Strike",
+			"False Memories",
+			"Flame-Wreathed",
+			"Ghost Form",
+			"Giant",
+			"Glory",
+			"Hanging Curse",
+			"Hell's Engine",
+			"Horned",
+			"Impossible Beauty",
+			"Ineffable Defense",
+			"Invisible",
+			"Legion",
+			"Non-Euclidean",
+			"Oracle",
+			"Psychic Objects",
+			"Regeneration",
+			"Retrocognition",
+			"Soulless Materialism",
+			"Summon",
+			"Telekinesis",
+			"Teleport Self",
+			"Terror",
+			"That Hideous Strength",
+			"The Evil Eye",
+			"Wings",
+			"Wither"
+		],
+		get PHRASE() {
+			return this.list[Math.floor(Math.random() * this.list.length)];
+		}
+	};
+	
+	$fontHeaderRow = $([
+		`<tr style="background: #333; color: white; font-weight: bold; font-family: Voltaire; font-size: 8px">`,
+		"<th>Display</th>",
+		"<th>Body</th>",
+		"<th>Emphasis</th>",
+		"<th>Demon</th>",
+		"<th>Power</th>",
+		"<th>Aspect</th>",
+		"<th>Exclude</th>",
+		"<th>Delete</th>",
+		"<th>Font Name (SC)</th>",
+		"<th>Standard</th>",
+		"<th>Small-Caps</th>",
+		"<th></th>",
+		"<th>Format Test</th>",
+		"<th colspan=\"6\">Symbols</th>",
+		"</tr>"
+		].join("")).appendTo("#content tbody");
 
-    FONT_FAMILIES
-        .forEach((font) => {
-                let mergeFont, mergeSpan;
-                ([font, mergeFont, mergeColor, fontColor, bgColor] = font.split(":"));
-                const getSpan = (text) => {
-                        if (mergeFont) {
-                            return `<span class="merge-base" style="${fontColor ? `color: ${fontColor};` : ""}">${text}</span><span class="merge-left" style="font-family: ${mergeFont}; ${mergeColor ? `color: ${mergeColor};` : ""}">${text}</span>`;
-							}
-							return `<span>${text}</span>`;
-						};
-            const $fontRow = $(`<tr class="${EXCLUSIONS.includes(font) ? "hidden" : ""}" data-font="${font}" ${bgColor ? `style="background: ${bgColor}"` : ""}>
-								<td class="font-name">${getSpan(font)}</td>
-								<td>${getSpan(POWERS.PHRASE)}</td>
-								<td><span class="smallcaps">${getSpan(POWERS.PHRASE)}</span></td>
-								<td class="style-test-format"></td>
-								<td class="style-test">${getSpan("Text / <span class=\"smallcaps\">Small-Caps</span>")}</td>
-								<td class="symbol">${getSpan(147)}</td>
-								<td class="symbol">${getSpan("—")}</td>
-								<td class="symbol">${getSpan("-")}</td>
-								<td class="symbol">${getSpan("&amp;")}</td>
-								<td class="symbol">${getSpan("+")}</td>
-								<td class="symbol">${getSpan("?!")}</td>
-						</tr>`).appendTo("#content tbody");
-            $fontRow.find(".font-name")
-                .dblclick((event) => $(event.currentTarget).parent().toggleClass("hidden"));
-            $fontRow.find(".style-test")
-                .click((event) => {
-                    if ($(event.currentTarget).hasClass("bold") && $(event.currentTarget).hasClass("italic")) {
-                        $(event.currentTarget).removeClass("bold italic");
-                        $fontRow.find(".style-test-format").text("");
-                    } else if ($(event.currentTarget).hasClass("bold")) {
-                        $(event.currentTarget).removeClass("bold");
-                        $(event.currentTarget).addClass("italic");
-                        $fontRow.find(".style-test-format").text("I");
-                    } else if ($(event.currentTarget).hasClass("italic")) {
-                        $(event.currentTarget).addClass("bold");
-                        $fontRow.find(".style-test-format").text("BI");
-                    } else {
-                        $(event.currentTarget).addClass("bold");
-                        $fontRow.find(".style-test-format").text("B");
-                    }
-                })
-                .contextmenu((event) => {
-                    event.preventDefault();
-                    if ($(event.currentTarget).hasClass("bold") && $(event.currentTarget).hasClass("italic")) {
-                        $(event.currentTarget).removeClass("bold");
-                        $(".style-test-format").text("I");
-                    } else if ($(event.currentTarget).hasClass("bold")) {
-                        $(event.currentTarget).removeClass("bold");
-                        $(".style-test-format").text("");
-                    } else if ($(event.currentTarget).hasClass("italic")) {
-                        $(event.currentTarget).removeClass("italic");
-                        $(event.currentTarget).addClass("bold");
-                        $(".style-test-format").text("B");
-                    } else {
-                        $(event.currentTarget).addClass("bold italic");
-                        $(".style-test-format").text("BI");
-                    }
+	FONT_FAMILIES.forEach((font) => {
+		const fontCategories = FONT_CATEGORIES[font];
+		if (CATEGORY_FILTER && !fontCategories.some((cat) => CATEGORY_FILTER.includes(cat))) {
+			return;
+		}
+		let mergeFont, mergeSpan, mergeColor, fontColor, bgColor;
+		[font, mergeFont, mergeColor, fontColor, bgColor] = font.split(":");
+		const getSpan = (text) => {
+			if (mergeFont) {
+				return `<span class="merge-base" style="${fontColor ? `color: ${fontColor};` : ""}">${text}</span><span class="merge-left" style="font-family: ${mergeFont}; ${mergeColor ? `color: ${mergeColor};` : ""}">${text}</span>`;
+			}
+			return `<span>${text}</span>`;
+		};
+		const $fontRow = $(`<tr class="${ISCOLLAPSINGEXCLUSIONS && EXCLUSIONS.includes(font) ? "hidden" : ""}" data-font="${font}" ${bgColor ? `style="background: ${bgColor}"` : ""}>
+						<td class="check-box"><input type="checkbox" ${FONT_CATEGORIES[font].includes("display") ? "checked" : ""}></td>
+						<td class="check-box"><input type="checkbox" ${FONT_CATEGORIES[font].includes("body") ? "checked" : ""}></td>
+						<td class="check-box"><input type="checkbox" ${FONT_CATEGORIES[font].includes("emphasis") ? "checked" : ""}></td>
+						<td class="check-box"><input type="checkbox" ${FONT_CATEGORIES[font].includes("demon") ? "checked" : ""}></td>
+						<td class="check-box"><input type="checkbox" ${FONT_CATEGORIES[font].includes("power") ? "checked" : ""}></td>			
+						<td class="check-box"><input type="checkbox" ${FONT_CATEGORIES[font].includes("aspect") ? "checked" : ""}></td>
+						<td class="check-box"><input type="checkbox" ${FONT_CATEGORIES[font].includes("exclude") ? "checked" : ""}></td>			
+						<td class="check-box"><input type="checkbox" ${FONT_CATEGORIES[font].includes("delete") ? "checked" : ""}></td>
+						<td class="font-name">${getSpan(font)}</td>
+						<td>${getSpan(POWERS.PHRASE)}</td>
+						<td><span class="smallcaps">[SC] ${getSpan(POWERS.PHRASE)}</span></td>
+						<td class="style-test-format"></td>
+						<td class="style-test">${getSpan("Text / <span class=\"smallcaps\">Small-Caps</span>")}</td>
+						<td class="symbol">${getSpan(147)}</td>
+						<td class="symbol">${getSpan("—")}</td>
+						<td class="symbol">${getSpan("-")}</td>
+						<td class="symbol">${getSpan("&amp;")}</td>
+						<td class="symbol">${getSpan("+")}</td>
+						<td class="symbol">${getSpan("?!")}</td>
+				</tr>`).appendTo("#content tbody");
+		$fontRow.find(".font-name")
+			.dblclick((event) => $(event.currentTarget).parent().toggleClass("hidden"));
+		$fontRow.find(".style-test")
+			.click((event) => {
+				if ($(event.currentTarget).hasClass("bold") && $(event.currentTarget).hasClass("italic")) {
+					$(event.currentTarget).removeClass("bold italic");
+					$fontRow.find(".style-test-format").text("");
+				} else if ($(event.currentTarget).hasClass("bold")) {
+					$(event.currentTarget).removeClass("bold");
+					$(event.currentTarget).addClass("italic");
+					$fontRow.find(".style-test-format").text("I");
+				} else if ($(event.currentTarget).hasClass("italic")) {
+					$(event.currentTarget).addClass("bold");
+					$fontRow.find(".style-test-format").text("BI");
+				} else {
+					$(event.currentTarget).addClass("bold");
+					$fontRow.find(".style-test-format").text("B");
+				}
+			})
+			.contextmenu((event) => {
+				event.preventDefault();
+				if ($(event.currentTarget).hasClass("bold") && $(event.currentTarget).hasClass("italic")) {
+					$(event.currentTarget).removeClass("bold");
+					$fontRow.find(".style-test-format").text("I");
+				} else if ($(event.currentTarget).hasClass("bold")) {
+					$(event.currentTarget).removeClass("bold");
+					$fontRow.find(".style-test-format").text("");
+				} else if ($(event.currentTarget).hasClass("italic")) {
+					$(event.currentTarget).removeClass("italic");
+					$(event.currentTarget).addClass("bold");
+					$fontRow.find(".style-test-format").text("B");
+				} else {
+					$(event.currentTarget).addClass("bold italic");
+					$fontRow.find(".style-test-format").text("BI");
+				}
+			});
 
-                });
-
-        });
+	});
 </script>
 
 </html>

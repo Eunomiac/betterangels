@@ -1,4 +1,5 @@
 // Import utilities.
+@import "utils/functions";
 @import "utils/typography";
 @import "utils/colors";
 @import "utils/fonttester";
@@ -32,7 +33,7 @@
     outline: 4px solid gold !important;
     opacity: 1 !important;
 }
-
+/*
 span.trait {
     position: relative;
     display: inline-block;
@@ -42,18 +43,18 @@ span.trait {
     transform: scale(1);
     transform-origin: 50% 50%;
     &.draggable {
-        pointer-events: all !important;
+        // pointer-events: all !important;
         opacity: 0;
         transform: scale(1);
         &.strategy {
-            font-family: $font-header
+					@include font-strategy();
         }
         &.tactic {
-            font-family: $font-body
+          @include font-tactic();
         }
     }
 }
-
+*/ 
 
 /* Styles limited to betterangels sheets */
 

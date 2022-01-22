@@ -1,49 +1,121 @@
 @import url("https://fonts.googleapis.com/css2?family=New+Rocker&family=Roboto:wght@400;700&display=swap");
 // Google Fonts: "New Rocker", "Roboto"
-$font-body: "DigitalStrip", sans-serif;
-$font-header: "KomikaAxis", sans-serif;
-$font-demon: "New Rocker", serif;
+
 $font-list: (
+	(Acme "Acme-Regular.ttf")
+	(ActionMan "Action_Man.ttf")
+	(ActionMan "Action_Man_Bold.ttf")
+	(ActionMan "Action_Man_Bold_Italic.ttf")
+	(ActionMan "Action_Man_Italic.ttf")
+	(AdamWarren "adamwarrenpro-bold.ttf")
+	(AdamWarren "adamwarrenpro-boldunderline.ttf")
+	(AdamWarren "adamwarrenpro.ttf")
 	(Adventure "adventure.otf")
-	(AdventureHollow "adventure_hollow.otf")
 	(AlexBold "alex-bold.ttf")
 	(AnimeAce "animeace2.otf")
 	(AnimeAce "animeace2_b.otf" "b")
 	(AnimeAce "animeace2_i.otf" "i")
+	(Ashcan "ashcanbb_bold.ttf")
+	(Ashcan "ashcanbb_reg.ttf")
 	(Avengeance "avengeance-mightiest-avenger.otf")
 	(Badaboom "badaboom.ttf")
+	(Bangers "Bangers.ttf")
+	(BubblegumSans, "BubblegumSans-Regular.otf")
+	(CrashLanding "CrashLandingBB.ttf")
+	(CrashLanding "CrashLandingBB_ital.ttf")
+	(DemonSker "DEMONSKER.ttf")
+	(DemonicTale "MB-Demonic_Tale.ttf")
+	(DemonsAndDarlings "DemonsAndDarlings.ttf")
+	(DestroyEarth "DestroyEarthBB.ttf")
+	(DestroyEarthRough "DestroyEarthRoughBB.ttf")
+	(DevilSummoner "DevilSummonerItalic-JYyj.otf")
+	(DevilSummoner "DevilSummonerLeftalic-zPA3.otf")
+	(DevilSummoner "DevilSummonerRegular-Ovye.otf")
+	(DevilSummonerExpanded "DevilSummonerExpanded-Dlp9.otf")
+	(DevilSummonerExpanded "DevilSummonerExpandedItalic-AV6M.otf")
+	(DevilSummonerExtraExpanded "DevilSummonerExtraExpItal-9OWK.otf")
+	(DevilSummonerExtraExpanded "DevilSummonerExtraExpanded-ydZY.otf")
 	(DigitalStrip "digitalstrip.otf")
 	(DigitalStrip "digitalstrip_bi.otf" "bi")
 	(DigitalStrip "digitalstrip_i.otf" "i")
-	(FightingSpirit "fighting-spirit.otf")
-	(FightingSpirit "fighting-spirit_b.otf" "b")
-	(FightingSpirit "fighting-spirit_i.otf" "i")
+	(FeastOfFlesh "fofbb_ital.otf")
+	(FeastOfFlesh "fofbb_reg.otf")
+	(Flunkies "FlunkiesBB.otf")
+	(GoodDog "GOODDP__.TTF")
+	(Gothikka "gothikka.ttf")
+	(HardPunkGothik "Hard Punk Gothik.ttf")
+	(JungleFever "JungleFeverNF.otf")
 	(Komika "komika-title.ttf")
 	(KomikaAxis "komika-title_axis.ttf")
-	(KomikaBrush "komika-title_brush.ttf")
+	(KomikaDisplay "Komika_display.ttf")
+	(KomikaDisplay "Komika_display_bold.ttf")
 	(KomikaEmboss "komika-title_emboss.ttf")
-	(KomikaGhost "komika-title_ghost.ttf")
-	(KomikaKaps "komika-title_kaps.ttf")
-	(KomikaPaint "komika-title_paint.ttf")
+	(KomikaHand "Komika_Hand.ttf")
+	(KomikaHand "Komika_Hand_Bold.ttf")
+	(KomikaHand "Komika_Hand_Bold_Italic.ttf")
+	(KomikaHand "Komika_Hand_Italic.ttf")
+	(KomikaParch "Komika_Parch.ttf")
 	(KomikaShadow "komika-title_shadow.ttf")
 	(KomikaTall "komika-title_tall.ttf")
-	(KomikaTilt "komika-title_tilt.ttf")
-	(KomikaWide "komika-title_wide.ttf")
-	(KomikaWired "komika-title_wired.ttf")
+	(KomikaText "KOMTXTBI.ttf")
+	(KomikaText "KOMTXTB_.ttf")
+	(KomikaText "KOMTXTI_.ttf")
+	(KomikaText "KOMTXT__.ttf")
+	(KomikaTextTight "KOMTXTTI.ttf")
+	(KomikaTextTight "KOMTXTT_.ttf")
+	(Luciferius "LUCIFERI.ttf")
+	(Luciferius "LUCIFER_.ttf")
 	(MangaTemple "manga-temple.ttf")
 	(MangaTemple "manga-temple_b.ttf" "b")
 	(MangaTemple "mange-temple_i.ttf" "i")
+	(MouseMemoirs "MouseMemoirs-Regular.ttf")
+	(Newsflash "NewsflashBB.ttf")
+	(OilBats "OilBats.ttf")
 	(OutrunFuture "outrun-future.otf")
 	(OutrunFuture "outrun-future_b.otf" "b")
 	(OutrunFuture "outrun-future_bi.otf" "bi")
+	(Punkboy "punkboy_tbs.ttf")
+	(Punkboy "punkboy_tbs_bold.ttf")
+	(Punkboy "punkboy_tbs_ital.ttf")
+	(Punkboy "punkboy_tbs_italbold.ttf")
+	(PureEvil2 "puree____2.ttf")
+	(Redemption "Redemption.ttf")
+	(RoadRage "Road_Rage.otf")
+	(SFArchRival "SF_Arch_Rival.ttf")
+	(SFArchRival "SF_Arch_Rival_Bold.ttf")
+	(SFArchRival "SF_Arch_Rival_Bold_Italic.ttf")
+	(SFArchRival "SF_Arch_Rival_Italic.ttf")
+	(SFComicScript "SFComicScript-Bold.ttf")
+	(SFComicScript "SFComicScript.ttf")
+	(SFComicScriptCondensed "SFComicScriptCondensed.ttf")
+	(SFComicScriptExtended "SFComicScriptExtended.ttf")
+	(SFSlapstickComic "SF_Slapstick_Comic.ttf")
+	(SaintMartyr "SaintMartyr-L39rg.otf")
+	(SaintMartyr "SaintMartyrItalic-X3ago.otf")
+	(SaintMartyrExpanded "SaintMartyrExpanded-3z2PZ.otf")
+	(SaintMartyrExpanded "SaintMartyrExpandedItalic-x3qa8.otf")
+	(Sanitarium "SanitariumBB.otf")
+	(SatansMinions "SATAM___.TTF")
+	(SatanycDemoniac "Satanyc Demoniac St.ttf")
 	(ShakaPow "shaka-pow.ttf")
-	(ShakaPowHollow "shaka-pow_hollow.ttf")
 	(ShakaPowUpright "shaka-pow_upright.ttf")
-	(ShakaPowUprightHollow "shaka-pow_upright-hollow.ttf")
-	(Spiderman "the-amazing-spiderman.ttf")
+	(ShakyHandSomeComic "Shaky Hand Some Comic.otf")
+	(ShakyHandSomeComic "Shaky Hand Some Comic_bold.otf")
+	(SharrpeGothik "Sharrpe Gothik.ttf")
+	(StraightToHell Sinner "StraightToHellSinnerBB.ttf")
+	(SugarDeath2 "Sugar Death 2 Italic.ttf")
+	(SugarDeath2 "Sugar Death2.ttf")
+	(SuperWebcomicBros "Super Webcomic Bros. Bold Italic.ttf")
+	(SuperWebcomicBros "Super Webcomic Bros. Bold.ttf")
+	(SuperWebcomicBros "Super Webcomic Bros..ttf")
+	(SwingSet "SWINSBRG.TTF")
+	(TheFrontman "TheFrontman.ttf")
+	(Theorevil "Theorevil.otf")
+	(Toxia "Toxia_FRE.ttf")
 	(Unmasked "unmasked.ttf")
 	(Unmasked "unmasked_b.ttf" "b")
 	(Unmasked "unmasked_i.ttf" "i")
+	(WickedQueen "WICKQB__.TTF")
 	(Yikes "yikes.ttf")
 );
 
@@ -51,7 +123,7 @@ $font-list: (
     $font-family: nth($font-data, 1);
     $font-file: nth($font-data, 2);
     @font-face {
-        font-family: $font-family;
+        font-family: "#{$font-family}";
         src: url("../assets/fonts/#{$font-file}");
         @if length($font-data)>=3 {
             $font-format: nth($font-data, 3);
@@ -63,7 +135,114 @@ $font-list: (
             }
         }
     }
-    *[data-font=#{$font-family}] {
-        font-family: $font-family;
+    *[data-font="#{$font-family}"] {
+        font-family: "#{$font-family}";
     }
+}
+
+$body-fonts: (AdamWarren, DigitalStrip, KomikaText, KomikaTextTight, Unmasked);
+$body-fonts: (Acme, BubblegumSans, KomikaText, KomikaTextTight, MouseMemoirs);
+
+
+$header-fonts: (Adventure, Avengeance, KomikaAxis, KomikaParch, SFComicScript);
+$demon-fonts: (SaintMartyrExpanded);
+$power-fonts: (CrashLanding, Punkboy, Yikes);
+$aspect-fonts: (FeastOfFlesh, RoadRage, SaintMartyrExpanded);
+
+$font-title: Avengeance;
+$font-header: Adventure, sans-serif;
+$font-body: KomikaText; // Acme;
+$font-demon: OutrunFuture; // "SaintMartyrExpanded"; // "FightingSpirit"; // "New Rocker", serif;
+$font-power-name: CrashLanding; // "BattleLines"; // "ShakaPowUpright"; // "Sanitarium", serif;
+$font-aspect-name: FeastOfFlesh; // "WickedQueen"; // "PureEvil2"; // "FightingSpirit", serif;
+$font-close-button: Sanitarium;
+
+
+$font-size-h1: 42px;
+$font-size-h2: 32px;
+$font-size-h3: 28px;
+$font-size-h4: 14px;
+
+$font-size-b1: 36px;
+$font-size-b2: 24px;
+$font-size-b3: 18px; 
+$font-size-b4: 16px; 
+
+@mixin font-title($shadow-color: $c-bg-dark) {
+	font: {
+		family: Avengeance;
+		size: 2.3em;
+		variant: normal;
+		weight: normal;
+		style: normal;
+	}
+	line-height: 2.3em;
+	letter-spacing: normal;
+	word-spacing: normal;
+	text: {
+		align: center;
+		decoration: none;
+		indent: 0;
+		shadow: rept((0 0 0.1em #{$shadow-color}), 3);
+		transform: none;
+	}
+	white-space: nowrap;
+}
+
+@mixin font-body($shadow-color: $c-bg-dark) {
+	font: {
+		family: KomikaText;
+		size: 1em;
+		variant: normal;
+		weight: normal;
+		style: normal;
+	}
+	line-height: 1.25em;
+	letter-spacing: normal;
+	word-spacing: normal;
+	text: {
+		align: justify;
+		decoration: none;
+		indent: 0;
+		shadow: rept((0 0 0.12em #{$shadow-color}), 5);
+		transform: none;
+	}
+	white-space: pre-wrap;
+}
+
+@mixin font-draggable-trait($shadow-color: $c-bg-dark) {
+	font: {
+		size: 1.5em;
+		variant: normal;
+		weight: normal;
+		style: normal;
+	}
+	line-height: 1.5em;
+	letter-spacing: normal;
+	word-spacing: normal;
+	text: {
+		decoration: none;
+		indent: 0;
+		shadow: rept((0 0 0.12em #{$shadow-color}), 5);
+		transform: none;
+		align: center;
+	}
+	white-space: nowrap;
+}
+
+@mixin font-strategy($shadow-color: $c-bg-dark) {
+	@include font-draggable-trait($shadow-color);
+	font: {
+		family: Bangers;
+	}
+	line-height: 1em;
+}
+
+@mixin font-tactic($shadow-color: $c-bg-dark) {
+	@include font-draggable-trait($shadow-color);
+	font: {
+		family: KomikaDisplay;
+		size: 1em;
+	}
+	line-height: 1em;
 }

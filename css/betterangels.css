@@ -1,304 +1,820 @@
 @import url("https://fonts.googleapis.com/css2?family=New+Rocker&family=Roboto:wght@400;700&display=swap");
 @font-face {
-  font-family: Adventure;
+  font-family: "Acme";
+  src: url("../assets/fonts/Acme-Regular.ttf"); }
+
+*[data-font="Acme"] {
+  font-family: "Acme"; }
+
+@font-face {
+  font-family: "ActionMan";
+  src: url("../assets/fonts/Action_Man.ttf"); }
+
+*[data-font="ActionMan"] {
+  font-family: "ActionMan"; }
+
+@font-face {
+  font-family: "ActionMan";
+  src: url("../assets/fonts/Action_Man_Bold.ttf"); }
+
+*[data-font="ActionMan"] {
+  font-family: "ActionMan"; }
+
+@font-face {
+  font-family: "ActionMan";
+  src: url("../assets/fonts/Action_Man_Bold_Italic.ttf"); }
+
+*[data-font="ActionMan"] {
+  font-family: "ActionMan"; }
+
+@font-face {
+  font-family: "ActionMan";
+  src: url("../assets/fonts/Action_Man_Italic.ttf"); }
+
+*[data-font="ActionMan"] {
+  font-family: "ActionMan"; }
+
+@font-face {
+  font-family: "AdamWarren";
+  src: url("../assets/fonts/adamwarrenpro-bold.ttf"); }
+
+*[data-font="AdamWarren"] {
+  font-family: "AdamWarren"; }
+
+@font-face {
+  font-family: "AdamWarren";
+  src: url("../assets/fonts/adamwarrenpro-boldunderline.ttf"); }
+
+*[data-font="AdamWarren"] {
+  font-family: "AdamWarren"; }
+
+@font-face {
+  font-family: "AdamWarren";
+  src: url("../assets/fonts/adamwarrenpro.ttf"); }
+
+*[data-font="AdamWarren"] {
+  font-family: "AdamWarren"; }
+
+@font-face {
+  font-family: "Adventure";
   src: url("../assets/fonts/adventure.otf"); }
 
-*[data-font=Adventure] {
-  font-family: Adventure; }
+*[data-font="Adventure"] {
+  font-family: "Adventure"; }
 
 @font-face {
-  font-family: AdventureHollow;
-  src: url("../assets/fonts/adventure_hollow.otf"); }
-
-*[data-font=AdventureHollow] {
-  font-family: AdventureHollow; }
-
-@font-face {
-  font-family: AlexBold;
+  font-family: "AlexBold";
   src: url("../assets/fonts/alex-bold.ttf"); }
 
-*[data-font=AlexBold] {
-  font-family: AlexBold; }
+*[data-font="AlexBold"] {
+  font-family: "AlexBold"; }
 
 @font-face {
-  font-family: AnimeAce;
+  font-family: "AnimeAce";
   src: url("../assets/fonts/animeace2.otf"); }
 
-*[data-font=AnimeAce] {
-  font-family: AnimeAce; }
+*[data-font="AnimeAce"] {
+  font-family: "AnimeAce"; }
 
 @font-face {
-  font-family: AnimeAce;
+  font-family: "AnimeAce";
   src: url("../assets/fonts/animeace2_b.otf");
   font-weight: bold; }
 
-*[data-font=AnimeAce] {
-  font-family: AnimeAce; }
+*[data-font="AnimeAce"] {
+  font-family: "AnimeAce"; }
 
 @font-face {
-  font-family: AnimeAce;
+  font-family: "AnimeAce";
   src: url("../assets/fonts/animeace2_i.otf");
   font-style: italic; }
 
-*[data-font=AnimeAce] {
-  font-family: AnimeAce; }
+*[data-font="AnimeAce"] {
+  font-family: "AnimeAce"; }
 
 @font-face {
-  font-family: Avengeance;
+  font-family: "Ashcan";
+  src: url("../assets/fonts/ashcanbb_bold.ttf"); }
+
+*[data-font="Ashcan"] {
+  font-family: "Ashcan"; }
+
+@font-face {
+  font-family: "Ashcan";
+  src: url("../assets/fonts/ashcanbb_reg.ttf"); }
+
+*[data-font="Ashcan"] {
+  font-family: "Ashcan"; }
+
+@font-face {
+  font-family: "Avengeance";
   src: url("../assets/fonts/avengeance-mightiest-avenger.otf"); }
 
-*[data-font=Avengeance] {
-  font-family: Avengeance; }
+*[data-font="Avengeance"] {
+  font-family: "Avengeance"; }
 
 @font-face {
-  font-family: Badaboom;
+  font-family: "Badaboom";
   src: url("../assets/fonts/badaboom.ttf"); }
 
-*[data-font=Badaboom] {
-  font-family: Badaboom; }
+*[data-font="Badaboom"] {
+  font-family: "Badaboom"; }
 
 @font-face {
-  font-family: DigitalStrip;
+  font-family: "Bangers";
+  src: url("../assets/fonts/Bangers.ttf"); }
+
+*[data-font="Bangers"] {
+  font-family: "Bangers"; }
+
+@font-face {
+  font-family: "BubblegumSans";
+  src: url("../assets/fonts/BubblegumSans-Regular.otf"); }
+
+*[data-font="BubblegumSans"] {
+  font-family: "BubblegumSans"; }
+
+@font-face {
+  font-family: "CrashLanding";
+  src: url("../assets/fonts/CrashLandingBB.ttf"); }
+
+*[data-font="CrashLanding"] {
+  font-family: "CrashLanding"; }
+
+@font-face {
+  font-family: "CrashLanding";
+  src: url("../assets/fonts/CrashLandingBB_ital.ttf"); }
+
+*[data-font="CrashLanding"] {
+  font-family: "CrashLanding"; }
+
+@font-face {
+  font-family: "DemonSker";
+  src: url("../assets/fonts/DEMONSKER.ttf"); }
+
+*[data-font="DemonSker"] {
+  font-family: "DemonSker"; }
+
+@font-face {
+  font-family: "DemonicTale";
+  src: url("../assets/fonts/MB-Demonic_Tale.ttf"); }
+
+*[data-font="DemonicTale"] {
+  font-family: "DemonicTale"; }
+
+@font-face {
+  font-family: "DemonsAndDarlings";
+  src: url("../assets/fonts/DemonsAndDarlings.ttf"); }
+
+*[data-font="DemonsAndDarlings"] {
+  font-family: "DemonsAndDarlings"; }
+
+@font-face {
+  font-family: "DestroyEarth";
+  src: url("../assets/fonts/DestroyEarthBB.ttf"); }
+
+*[data-font="DestroyEarth"] {
+  font-family: "DestroyEarth"; }
+
+@font-face {
+  font-family: "DestroyEarthRough";
+  src: url("../assets/fonts/DestroyEarthRoughBB.ttf"); }
+
+*[data-font="DestroyEarthRough"] {
+  font-family: "DestroyEarthRough"; }
+
+@font-face {
+  font-family: "DevilSummoner";
+  src: url("../assets/fonts/DevilSummonerItalic-JYyj.otf"); }
+
+*[data-font="DevilSummoner"] {
+  font-family: "DevilSummoner"; }
+
+@font-face {
+  font-family: "DevilSummoner";
+  src: url("../assets/fonts/DevilSummonerLeftalic-zPA3.otf"); }
+
+*[data-font="DevilSummoner"] {
+  font-family: "DevilSummoner"; }
+
+@font-face {
+  font-family: "DevilSummoner";
+  src: url("../assets/fonts/DevilSummonerRegular-Ovye.otf"); }
+
+*[data-font="DevilSummoner"] {
+  font-family: "DevilSummoner"; }
+
+@font-face {
+  font-family: "DevilSummonerExpanded";
+  src: url("../assets/fonts/DevilSummonerExpanded-Dlp9.otf"); }
+
+*[data-font="DevilSummonerExpanded"] {
+  font-family: "DevilSummonerExpanded"; }
+
+@font-face {
+  font-family: "DevilSummonerExpanded";
+  src: url("../assets/fonts/DevilSummonerExpandedItalic-AV6M.otf"); }
+
+*[data-font="DevilSummonerExpanded"] {
+  font-family: "DevilSummonerExpanded"; }
+
+@font-face {
+  font-family: "DevilSummonerExtraExpanded";
+  src: url("../assets/fonts/DevilSummonerExtraExpItal-9OWK.otf"); }
+
+*[data-font="DevilSummonerExtraExpanded"] {
+  font-family: "DevilSummonerExtraExpanded"; }
+
+@font-face {
+  font-family: "DevilSummonerExtraExpanded";
+  src: url("../assets/fonts/DevilSummonerExtraExpanded-ydZY.otf"); }
+
+*[data-font="DevilSummonerExtraExpanded"] {
+  font-family: "DevilSummonerExtraExpanded"; }
+
+@font-face {
+  font-family: "DigitalStrip";
   src: url("../assets/fonts/digitalstrip.otf"); }
 
-*[data-font=DigitalStrip] {
-  font-family: DigitalStrip; }
+*[data-font="DigitalStrip"] {
+  font-family: "DigitalStrip"; }
 
 @font-face {
-  font-family: DigitalStrip;
+  font-family: "DigitalStrip";
   src: url("../assets/fonts/digitalstrip_bi.otf");
   font-weight: bold;
   font-style: italic; }
 
-*[data-font=DigitalStrip] {
-  font-family: DigitalStrip; }
+*[data-font="DigitalStrip"] {
+  font-family: "DigitalStrip"; }
 
 @font-face {
-  font-family: DigitalStrip;
+  font-family: "DigitalStrip";
   src: url("../assets/fonts/digitalstrip_i.otf");
   font-style: italic; }
 
-*[data-font=DigitalStrip] {
-  font-family: DigitalStrip; }
+*[data-font="DigitalStrip"] {
+  font-family: "DigitalStrip"; }
 
 @font-face {
-  font-family: FightingSpirit;
-  src: url("../assets/fonts/fighting-spirit.otf"); }
+  font-family: "FeastOfFlesh";
+  src: url("../assets/fonts/fofbb_ital.otf"); }
 
-*[data-font=FightingSpirit] {
-  font-family: FightingSpirit; }
-
-@font-face {
-  font-family: FightingSpirit;
-  src: url("../assets/fonts/fighting-spirit_b.otf");
-  font-weight: bold; }
-
-*[data-font=FightingSpirit] {
-  font-family: FightingSpirit; }
+*[data-font="FeastOfFlesh"] {
+  font-family: "FeastOfFlesh"; }
 
 @font-face {
-  font-family: FightingSpirit;
-  src: url("../assets/fonts/fighting-spirit_i.otf");
-  font-style: italic; }
+  font-family: "FeastOfFlesh";
+  src: url("../assets/fonts/fofbb_reg.otf"); }
 
-*[data-font=FightingSpirit] {
-  font-family: FightingSpirit; }
+*[data-font="FeastOfFlesh"] {
+  font-family: "FeastOfFlesh"; }
 
 @font-face {
-  font-family: Komika;
+  font-family: "Flunkies";
+  src: url("../assets/fonts/FlunkiesBB.otf"); }
+
+*[data-font="Flunkies"] {
+  font-family: "Flunkies"; }
+
+@font-face {
+  font-family: "GoodDog";
+  src: url("../assets/fonts/GOODDP__.TTF"); }
+
+*[data-font="GoodDog"] {
+  font-family: "GoodDog"; }
+
+@font-face {
+  font-family: "Gothikka";
+  src: url("../assets/fonts/gothikka.ttf"); }
+
+*[data-font="Gothikka"] {
+  font-family: "Gothikka"; }
+
+@font-face {
+  font-family: "HardPunkGothik";
+  src: url("../assets/fonts/Hard Punk Gothik.ttf"); }
+
+*[data-font="HardPunkGothik"] {
+  font-family: "HardPunkGothik"; }
+
+@font-face {
+  font-family: "JungleFever";
+  src: url("../assets/fonts/JungleFeverNF.otf"); }
+
+*[data-font="JungleFever"] {
+  font-family: "JungleFever"; }
+
+@font-face {
+  font-family: "Komika";
   src: url("../assets/fonts/komika-title.ttf"); }
 
-*[data-font=Komika] {
-  font-family: Komika; }
+*[data-font="Komika"] {
+  font-family: "Komika"; }
 
 @font-face {
-  font-family: KomikaAxis;
+  font-family: "KomikaAxis";
   src: url("../assets/fonts/komika-title_axis.ttf"); }
 
-*[data-font=KomikaAxis] {
-  font-family: KomikaAxis; }
+*[data-font="KomikaAxis"] {
+  font-family: "KomikaAxis"; }
 
 @font-face {
-  font-family: KomikaBrush;
-  src: url("../assets/fonts/komika-title_brush.ttf"); }
+  font-family: "KomikaDisplay";
+  src: url("../assets/fonts/Komika_display.ttf"); }
 
-*[data-font=KomikaBrush] {
-  font-family: KomikaBrush; }
+*[data-font="KomikaDisplay"] {
+  font-family: "KomikaDisplay"; }
 
 @font-face {
-  font-family: KomikaEmboss;
+  font-family: "KomikaDisplay";
+  src: url("../assets/fonts/Komika_display_bold.ttf"); }
+
+*[data-font="KomikaDisplay"] {
+  font-family: "KomikaDisplay"; }
+
+@font-face {
+  font-family: "KomikaEmboss";
   src: url("../assets/fonts/komika-title_emboss.ttf"); }
 
-*[data-font=KomikaEmboss] {
-  font-family: KomikaEmboss; }
+*[data-font="KomikaEmboss"] {
+  font-family: "KomikaEmboss"; }
 
 @font-face {
-  font-family: KomikaGhost;
-  src: url("../assets/fonts/komika-title_ghost.ttf"); }
+  font-family: "KomikaHand";
+  src: url("../assets/fonts/Komika_Hand.ttf"); }
 
-*[data-font=KomikaGhost] {
-  font-family: KomikaGhost; }
-
-@font-face {
-  font-family: KomikaKaps;
-  src: url("../assets/fonts/komika-title_kaps.ttf"); }
-
-*[data-font=KomikaKaps] {
-  font-family: KomikaKaps; }
+*[data-font="KomikaHand"] {
+  font-family: "KomikaHand"; }
 
 @font-face {
-  font-family: KomikaPaint;
-  src: url("../assets/fonts/komika-title_paint.ttf"); }
+  font-family: "KomikaHand";
+  src: url("../assets/fonts/Komika_Hand_Bold.ttf"); }
 
-*[data-font=KomikaPaint] {
-  font-family: KomikaPaint; }
+*[data-font="KomikaHand"] {
+  font-family: "KomikaHand"; }
 
 @font-face {
-  font-family: KomikaShadow;
+  font-family: "KomikaHand";
+  src: url("../assets/fonts/Komika_Hand_Bold_Italic.ttf"); }
+
+*[data-font="KomikaHand"] {
+  font-family: "KomikaHand"; }
+
+@font-face {
+  font-family: "KomikaHand";
+  src: url("../assets/fonts/Komika_Hand_Italic.ttf"); }
+
+*[data-font="KomikaHand"] {
+  font-family: "KomikaHand"; }
+
+@font-face {
+  font-family: "KomikaParch";
+  src: url("../assets/fonts/Komika_Parch.ttf"); }
+
+*[data-font="KomikaParch"] {
+  font-family: "KomikaParch"; }
+
+@font-face {
+  font-family: "KomikaShadow";
   src: url("../assets/fonts/komika-title_shadow.ttf"); }
 
-*[data-font=KomikaShadow] {
-  font-family: KomikaShadow; }
+*[data-font="KomikaShadow"] {
+  font-family: "KomikaShadow"; }
 
 @font-face {
-  font-family: KomikaTall;
+  font-family: "KomikaTall";
   src: url("../assets/fonts/komika-title_tall.ttf"); }
 
-*[data-font=KomikaTall] {
-  font-family: KomikaTall; }
+*[data-font="KomikaTall"] {
+  font-family: "KomikaTall"; }
 
 @font-face {
-  font-family: KomikaTilt;
-  src: url("../assets/fonts/komika-title_tilt.ttf"); }
+  font-family: "KomikaText";
+  src: url("../assets/fonts/KOMTXTBI.ttf"); }
 
-*[data-font=KomikaTilt] {
-  font-family: KomikaTilt; }
-
-@font-face {
-  font-family: KomikaWide;
-  src: url("../assets/fonts/komika-title_wide.ttf"); }
-
-*[data-font=KomikaWide] {
-  font-family: KomikaWide; }
+*[data-font="KomikaText"] {
+  font-family: "KomikaText"; }
 
 @font-face {
-  font-family: KomikaWired;
-  src: url("../assets/fonts/komika-title_wired.ttf"); }
+  font-family: "KomikaText";
+  src: url("../assets/fonts/KOMTXTB_.ttf"); }
 
-*[data-font=KomikaWired] {
-  font-family: KomikaWired; }
+*[data-font="KomikaText"] {
+  font-family: "KomikaText"; }
 
 @font-face {
-  font-family: MangaTemple;
+  font-family: "KomikaText";
+  src: url("../assets/fonts/KOMTXTI_.ttf"); }
+
+*[data-font="KomikaText"] {
+  font-family: "KomikaText"; }
+
+@font-face {
+  font-family: "KomikaText";
+  src: url("../assets/fonts/KOMTXT__.ttf"); }
+
+*[data-font="KomikaText"] {
+  font-family: "KomikaText"; }
+
+@font-face {
+  font-family: "KomikaTextTight";
+  src: url("../assets/fonts/KOMTXTTI.ttf"); }
+
+*[data-font="KomikaTextTight"] {
+  font-family: "KomikaTextTight"; }
+
+@font-face {
+  font-family: "KomikaTextTight";
+  src: url("../assets/fonts/KOMTXTT_.ttf"); }
+
+*[data-font="KomikaTextTight"] {
+  font-family: "KomikaTextTight"; }
+
+@font-face {
+  font-family: "Luciferius";
+  src: url("../assets/fonts/LUCIFERI.ttf"); }
+
+*[data-font="Luciferius"] {
+  font-family: "Luciferius"; }
+
+@font-face {
+  font-family: "Luciferius";
+  src: url("../assets/fonts/LUCIFER_.ttf"); }
+
+*[data-font="Luciferius"] {
+  font-family: "Luciferius"; }
+
+@font-face {
+  font-family: "MangaTemple";
   src: url("../assets/fonts/manga-temple.ttf"); }
 
-*[data-font=MangaTemple] {
-  font-family: MangaTemple; }
+*[data-font="MangaTemple"] {
+  font-family: "MangaTemple"; }
 
 @font-face {
-  font-family: MangaTemple;
+  font-family: "MangaTemple";
   src: url("../assets/fonts/manga-temple_b.ttf");
   font-weight: bold; }
 
-*[data-font=MangaTemple] {
-  font-family: MangaTemple; }
+*[data-font="MangaTemple"] {
+  font-family: "MangaTemple"; }
 
 @font-face {
-  font-family: MangaTemple;
+  font-family: "MangaTemple";
   src: url("../assets/fonts/mange-temple_i.ttf");
   font-style: italic; }
 
-*[data-font=MangaTemple] {
-  font-family: MangaTemple; }
+*[data-font="MangaTemple"] {
+  font-family: "MangaTemple"; }
 
 @font-face {
-  font-family: OutrunFuture;
+  font-family: "MouseMemoirs";
+  src: url("../assets/fonts/MouseMemoirs-Regular.ttf"); }
+
+*[data-font="MouseMemoirs"] {
+  font-family: "MouseMemoirs"; }
+
+@font-face {
+  font-family: "Newsflash";
+  src: url("../assets/fonts/NewsflashBB.ttf"); }
+
+*[data-font="Newsflash"] {
+  font-family: "Newsflash"; }
+
+@font-face {
+  font-family: "OilBats";
+  src: url("../assets/fonts/OilBats.ttf"); }
+
+*[data-font="OilBats"] {
+  font-family: "OilBats"; }
+
+@font-face {
+  font-family: "OutrunFuture";
   src: url("../assets/fonts/outrun-future.otf"); }
 
-*[data-font=OutrunFuture] {
-  font-family: OutrunFuture; }
+*[data-font="OutrunFuture"] {
+  font-family: "OutrunFuture"; }
 
 @font-face {
-  font-family: OutrunFuture;
+  font-family: "OutrunFuture";
   src: url("../assets/fonts/outrun-future_b.otf");
   font-weight: bold; }
 
-*[data-font=OutrunFuture] {
-  font-family: OutrunFuture; }
+*[data-font="OutrunFuture"] {
+  font-family: "OutrunFuture"; }
 
 @font-face {
-  font-family: OutrunFuture;
+  font-family: "OutrunFuture";
   src: url("../assets/fonts/outrun-future_bi.otf");
   font-weight: bold;
   font-style: italic; }
 
-*[data-font=OutrunFuture] {
-  font-family: OutrunFuture; }
+*[data-font="OutrunFuture"] {
+  font-family: "OutrunFuture"; }
 
 @font-face {
-  font-family: ShakaPow;
+  font-family: "Punkboy";
+  src: url("../assets/fonts/punkboy_tbs.ttf"); }
+
+*[data-font="Punkboy"] {
+  font-family: "Punkboy"; }
+
+@font-face {
+  font-family: "Punkboy";
+  src: url("../assets/fonts/punkboy_tbs_bold.ttf"); }
+
+*[data-font="Punkboy"] {
+  font-family: "Punkboy"; }
+
+@font-face {
+  font-family: "Punkboy";
+  src: url("../assets/fonts/punkboy_tbs_ital.ttf"); }
+
+*[data-font="Punkboy"] {
+  font-family: "Punkboy"; }
+
+@font-face {
+  font-family: "Punkboy";
+  src: url("../assets/fonts/punkboy_tbs_italbold.ttf"); }
+
+*[data-font="Punkboy"] {
+  font-family: "Punkboy"; }
+
+@font-face {
+  font-family: "PureEvil2";
+  src: url("../assets/fonts/puree____2.ttf"); }
+
+*[data-font="PureEvil2"] {
+  font-family: "PureEvil2"; }
+
+@font-face {
+  font-family: "Redemption";
+  src: url("../assets/fonts/Redemption.ttf"); }
+
+*[data-font="Redemption"] {
+  font-family: "Redemption"; }
+
+@font-face {
+  font-family: "RoadRage";
+  src: url("../assets/fonts/Road_Rage.otf"); }
+
+*[data-font="RoadRage"] {
+  font-family: "RoadRage"; }
+
+@font-face {
+  font-family: "SFArchRival";
+  src: url("../assets/fonts/SF_Arch_Rival.ttf"); }
+
+*[data-font="SFArchRival"] {
+  font-family: "SFArchRival"; }
+
+@font-face {
+  font-family: "SFArchRival";
+  src: url("../assets/fonts/SF_Arch_Rival_Bold.ttf"); }
+
+*[data-font="SFArchRival"] {
+  font-family: "SFArchRival"; }
+
+@font-face {
+  font-family: "SFArchRival";
+  src: url("../assets/fonts/SF_Arch_Rival_Bold_Italic.ttf"); }
+
+*[data-font="SFArchRival"] {
+  font-family: "SFArchRival"; }
+
+@font-face {
+  font-family: "SFArchRival";
+  src: url("../assets/fonts/SF_Arch_Rival_Italic.ttf"); }
+
+*[data-font="SFArchRival"] {
+  font-family: "SFArchRival"; }
+
+@font-face {
+  font-family: "SFComicScript";
+  src: url("../assets/fonts/SFComicScript-Bold.ttf"); }
+
+*[data-font="SFComicScript"] {
+  font-family: "SFComicScript"; }
+
+@font-face {
+  font-family: "SFComicScript";
+  src: url("../assets/fonts/SFComicScript.ttf"); }
+
+*[data-font="SFComicScript"] {
+  font-family: "SFComicScript"; }
+
+@font-face {
+  font-family: "SFComicScriptCondensed";
+  src: url("../assets/fonts/SFComicScriptCondensed.ttf"); }
+
+*[data-font="SFComicScriptCondensed"] {
+  font-family: "SFComicScriptCondensed"; }
+
+@font-face {
+  font-family: "SFComicScriptExtended";
+  src: url("../assets/fonts/SFComicScriptExtended.ttf"); }
+
+*[data-font="SFComicScriptExtended"] {
+  font-family: "SFComicScriptExtended"; }
+
+@font-face {
+  font-family: "SFSlapstickComic";
+  src: url("../assets/fonts/SF_Slapstick_Comic.ttf"); }
+
+*[data-font="SFSlapstickComic"] {
+  font-family: "SFSlapstickComic"; }
+
+@font-face {
+  font-family: "SaintMartyr";
+  src: url("../assets/fonts/SaintMartyr-L39rg.otf"); }
+
+*[data-font="SaintMartyr"] {
+  font-family: "SaintMartyr"; }
+
+@font-face {
+  font-family: "SaintMartyr";
+  src: url("../assets/fonts/SaintMartyrItalic-X3ago.otf"); }
+
+*[data-font="SaintMartyr"] {
+  font-family: "SaintMartyr"; }
+
+@font-face {
+  font-family: "SaintMartyrExpanded";
+  src: url("../assets/fonts/SaintMartyrExpanded-3z2PZ.otf"); }
+
+*[data-font="SaintMartyrExpanded"] {
+  font-family: "SaintMartyrExpanded"; }
+
+@font-face {
+  font-family: "SaintMartyrExpanded";
+  src: url("../assets/fonts/SaintMartyrExpandedItalic-x3qa8.otf"); }
+
+*[data-font="SaintMartyrExpanded"] {
+  font-family: "SaintMartyrExpanded"; }
+
+@font-face {
+  font-family: "Sanitarium";
+  src: url("../assets/fonts/SanitariumBB.otf"); }
+
+*[data-font="Sanitarium"] {
+  font-family: "Sanitarium"; }
+
+@font-face {
+  font-family: "SatansMinions";
+  src: url("../assets/fonts/SATAM___.TTF"); }
+
+*[data-font="SatansMinions"] {
+  font-family: "SatansMinions"; }
+
+@font-face {
+  font-family: "SatanycDemoniac";
+  src: url("../assets/fonts/Satanyc Demoniac St.ttf"); }
+
+*[data-font="SatanycDemoniac"] {
+  font-family: "SatanycDemoniac"; }
+
+@font-face {
+  font-family: "ShakaPow";
   src: url("../assets/fonts/shaka-pow.ttf"); }
 
-*[data-font=ShakaPow] {
-  font-family: ShakaPow; }
+*[data-font="ShakaPow"] {
+  font-family: "ShakaPow"; }
 
 @font-face {
-  font-family: ShakaPowHollow;
-  src: url("../assets/fonts/shaka-pow_hollow.ttf"); }
-
-*[data-font=ShakaPowHollow] {
-  font-family: ShakaPowHollow; }
-
-@font-face {
-  font-family: ShakaPowUpright;
+  font-family: "ShakaPowUpright";
   src: url("../assets/fonts/shaka-pow_upright.ttf"); }
 
-*[data-font=ShakaPowUpright] {
-  font-family: ShakaPowUpright; }
+*[data-font="ShakaPowUpright"] {
+  font-family: "ShakaPowUpright"; }
 
 @font-face {
-  font-family: ShakaPowUprightHollow;
-  src: url("../assets/fonts/shaka-pow_upright-hollow.ttf"); }
+  font-family: "ShakyHandSomeComic";
+  src: url("../assets/fonts/Shaky Hand Some Comic.otf"); }
 
-*[data-font=ShakaPowUprightHollow] {
-  font-family: ShakaPowUprightHollow; }
-
-@font-face {
-  font-family: Spiderman;
-  src: url("../assets/fonts/the-amazing-spiderman.ttf"); }
-
-*[data-font=Spiderman] {
-  font-family: Spiderman; }
+*[data-font="ShakyHandSomeComic"] {
+  font-family: "ShakyHandSomeComic"; }
 
 @font-face {
-  font-family: Unmasked;
+  font-family: "ShakyHandSomeComic";
+  src: url("../assets/fonts/Shaky Hand Some Comic_bold.otf"); }
+
+*[data-font="ShakyHandSomeComic"] {
+  font-family: "ShakyHandSomeComic"; }
+
+@font-face {
+  font-family: "SharrpeGothik";
+  src: url("../assets/fonts/Sharrpe Gothik.ttf"); }
+
+*[data-font="SharrpeGothik"] {
+  font-family: "SharrpeGothik"; }
+
+@font-face {
+  font-family: "StraightToHell";
+  src: url("../assets/fonts/Sinner"); }
+
+*[data-font="StraightToHell"] {
+  font-family: "StraightToHell"; }
+
+@font-face {
+  font-family: "SugarDeath2";
+  src: url("../assets/fonts/Sugar Death 2 Italic.ttf"); }
+
+*[data-font="SugarDeath2"] {
+  font-family: "SugarDeath2"; }
+
+@font-face {
+  font-family: "SugarDeath2";
+  src: url("../assets/fonts/Sugar Death2.ttf"); }
+
+*[data-font="SugarDeath2"] {
+  font-family: "SugarDeath2"; }
+
+@font-face {
+  font-family: "SuperWebcomicBros";
+  src: url("../assets/fonts/Super Webcomic Bros. Bold Italic.ttf"); }
+
+*[data-font="SuperWebcomicBros"] {
+  font-family: "SuperWebcomicBros"; }
+
+@font-face {
+  font-family: "SuperWebcomicBros";
+  src: url("../assets/fonts/Super Webcomic Bros. Bold.ttf"); }
+
+*[data-font="SuperWebcomicBros"] {
+  font-family: "SuperWebcomicBros"; }
+
+@font-face {
+  font-family: "SuperWebcomicBros";
+  src: url("../assets/fonts/Super Webcomic Bros..ttf"); }
+
+*[data-font="SuperWebcomicBros"] {
+  font-family: "SuperWebcomicBros"; }
+
+@font-face {
+  font-family: "SwingSet";
+  src: url("../assets/fonts/SWINSBRG.TTF"); }
+
+*[data-font="SwingSet"] {
+  font-family: "SwingSet"; }
+
+@font-face {
+  font-family: "TheFrontman";
+  src: url("../assets/fonts/TheFrontman.ttf"); }
+
+*[data-font="TheFrontman"] {
+  font-family: "TheFrontman"; }
+
+@font-face {
+  font-family: "Theorevil";
+  src: url("../assets/fonts/Theorevil.otf"); }
+
+*[data-font="Theorevil"] {
+  font-family: "Theorevil"; }
+
+@font-face {
+  font-family: "Toxia";
+  src: url("../assets/fonts/Toxia_FRE.ttf"); }
+
+*[data-font="Toxia"] {
+  font-family: "Toxia"; }
+
+@font-face {
+  font-family: "Unmasked";
   src: url("../assets/fonts/unmasked.ttf"); }
 
-*[data-font=Unmasked] {
-  font-family: Unmasked; }
+*[data-font="Unmasked"] {
+  font-family: "Unmasked"; }
 
 @font-face {
-  font-family: Unmasked;
+  font-family: "Unmasked";
   src: url("../assets/fonts/unmasked_b.ttf");
   font-weight: bold; }
 
-*[data-font=Unmasked] {
-  font-family: Unmasked; }
+*[data-font="Unmasked"] {
+  font-family: "Unmasked"; }
 
 @font-face {
-  font-family: Unmasked;
+  font-family: "Unmasked";
   src: url("../assets/fonts/unmasked_i.ttf");
   font-style: italic; }
 
-*[data-font=Unmasked] {
-  font-family: Unmasked; }
+*[data-font="Unmasked"] {
+  font-family: "Unmasked"; }
 
 @font-face {
-  font-family: Yikes;
+  font-family: "WickedQueen";
+  src: url("../assets/fonts/WICKQB__.TTF"); }
+
+*[data-font="WickedQueen"] {
+  font-family: "WickedQueen"; }
+
+@font-face {
+  font-family: "Yikes";
   src: url("../assets/fonts/yikes.ttf"); }
 
-*[data-font=Yikes] {
-  font-family: Yikes; }
+*[data-font="Yikes"] {
+  font-family: "Yikes"; }
 
 /* body * {
   display: none;
@@ -329,7 +845,9 @@
       border-right: none;
       background: #333333;
       color: white;
-      text-align: center; }
+      text-align: center;
+      min-width: 40px;
+      line-height: 32px; }
     #content tbody tr td.style-test {
       border-left: none;
       min-width: 500px; }
@@ -376,6 +894,9 @@
         line-height: 5px; }
       #content tbody tr.hidden td .merge-left {
         display: none; }
+    #content tbody tr.hidden td.font-name > span {
+      font-size: 14px !important;
+      font-family: Voltaire !important; }
 
 /* Global styles */
 h1, h2, h3, h4 {
@@ -385,12 +906,11 @@ i.fas {
   font-family: "Font Awesome 5 Free" !important; }
 
 .window-app {
-  font-family: "DigitalStrip", sans-serif;
-  --color-text-dark-primary: DigitalStrip, sans-serif;
-  color: #b3b3b3;
+  font-family: KomikaText;
+  color: #999999;
   background: #222222; }
   .window-app a:hover {
-    text-shadow: 0 0 18px #9cffff, 0 0 18px #9cffff, 0 0 18px #9cffff;
+    text-shadow: 0 0 18px cyan, 0 0 18px cyan, 0 0 18px cyan;
     color: white; }
   .window-app a.pdfoundry-link:hover {
     color: black; }
@@ -405,7 +925,7 @@ i.fas {
     .window-app .window-content input[type="number"],
     .window-app .window-content input[type="date"],
     .window-app .window-content input[type="time"] {
-      color: #b3b3b3;
+      color: #999999;
       border: 0;
       background: transparent; }
     .window-app .window-content .directory .directory-list .directory-item > * {
@@ -413,7 +933,7 @@ i.fas {
 
 .rollable:hover, .rollable:focus {
   color: white;
-  text-shadow: 0 0 18px #9cffff, 0 0 18px #9cffff, 0 0 18px #9cffff;
+  text-shadow: 0 0 18px cyan, 0 0 18px cyan, 0 0 18px cyan;
   cursor: pointer; }
 
 /* Styles for created DOM objects */
@@ -438,12 +958,12 @@ i.fas {
       top: 0;
       left: 0; }
       .x-container .x-circle > svg .circle-path {
-        --circle-color: gold !important;
+        --circle-color: rgba(255, 215, 0, 0.5) !important;
         fill: var(--circle-color); }
     .x-container .x-circle.x-circle-basic {
       --circle-color: lime; }
     .x-container .x-circle.x-circle-pink {
-      --circle-color: pink; }
+      --circle-color: magenta; }
     .x-container .x-circle.x-circle-cyan {
       --circle-color: cyan; }
     .x-container .x-circle.x-circle-yellow {
@@ -486,886 +1006,744 @@ i.fas {
   outline: 4px solid gold !important;
   opacity: 1 !important; }
 
+/*
 span.trait {
-  position: relative;
-  display: inline-block;
-  background-color: transparent;
-  border-radius: 10px;
-  outline: 0;
-  -webkit-transform: scale(1);
-  -ms-transform: scale(1);
-  transform: scale(1);
-  -webkit-transform-origin: 50% 50%;
-  -ms-transform-origin: 50% 50%;
-  transform-origin: 50% 50%; }
-  span.trait.draggable {
-    pointer-events: all !important;
-    opacity: 0;
+    position: relative;
+    display: inline-block;
+    background-color: transparent;
+    border-radius: 10px;
+    outline: 0;
+    transform: scale(1);
+    transform-origin: 50% 50%;
+    &.draggable {
+        // pointer-events: all !important;
+        opacity: 0;
+        transform: scale(1);
+        &.strategy {
+					@include font-strategy();
+        }
+        &.tactic {
+          @include font-tactic();
+        }
+    }
+}
+*/
+/* Styles limited to betterangels sheets */
+.betterangels .window-header {
+  position: absolute;
+  width: 100%;
+  height: 30px;
+  border: none;
+  font-size: 0;
+  margin-top: -20px;
+  overflow: visible;
+  z-index: 1; }
+  .betterangels .window-header > *:not(.header-button.close) {
+    display: none; }
+  .betterangels .window-header .header-button.close {
+    text-shadow: none; }
+    .betterangels .window-header .header-button.close::before {
+      display: block;
+      content: "X";
+      font-family: Sanitarium;
+      font-size: 14px;
+      background: #AA0000;
+      height: 15px;
+      width: 15px;
+      line-height: 13px;
+      text-align: center;
+      border-radius: 15px;
+      -webkit-box-shadow: -1px -1px 3px black, 1px 1px 3px white;
+      box-shadow: -1px -1px 3px black, 1px 1px 3px white;
+      position: absolute;
+      right: 15px;
+      top: 35px;
+      -webkit-transform-origin: 50% 50%;
+      -ms-transform-origin: 50% 50%;
+      transform-origin: 50% 50%;
+      -webkit-transition: 0.25s all;
+      -o-transition: 0.25s all;
+      transition: 0.25s all; }
+    .betterangels .window-header .header-button.close:hover::before {
+      -webkit-transform: scale(1.5);
+      -ms-transform: scale(1.5);
+      transform: scale(1.5);
+      -webkit-box-shadow: 0 0 5px #ff0000, 0 0 5px #ff0000, 0 0 5px #ff0000;
+      box-shadow: 0 0 5px #ff0000, 0 0 5px #ff0000, 0 0 5px #ff0000; }
+
+.betterangels.minimized {
+  --border-width: 5px;
+  --main-padding: 0;
+  height: 20px !important;
+  min-height: 20px !important;
+  width: 200px !important;
+  border-radius: 15px;
+  -webkit-box-shadow: 2px 2px 3px black, -0.5px -0.5px 2px white, 2px 2px 3px black;
+  box-shadow: 2px 2px 3px black, -0.5px -0.5px 2px white, 2px 2px 3px black; }
+  .betterangels.minimized .window-header {
+    width: 200px;
+    height: 20px;
+    border: 0;
+    margin-top: 0; }
+    .betterangels.minimized .window-header .window-title {
+      display: block;
+      color: white;
+      position: relative;
+      font-size: 16px;
+      line-height: 20px; }
+    .betterangels.minimized .window-header .header-button.close::before {
+      top: 2px;
+      right: 3px; }
+
+.betterangels .window-content {
+  border-radius: 25px;
+  padding: 0; }
+  .betterangels .window-content .sheet-tabs .item {
+    color: gray;
+    font-family: Avengeance;
     -webkit-transform: scale(1);
     -ms-transform: scale(1);
-    transform: scale(1); }
-    span.trait.draggable.strategy {
-      font-family: "KomikaAxis", sans-serif; }
-    span.trait.draggable.tactic {
-      font-family: "DigitalStrip", sans-serif; }
-
-/* Styles limited to betterangels sheets */
-.betterangels {
-  text-shadow: 0 0 5px black, 0 0 2px black, 0 0 5px #222222; }
-  .betterangels .window-header {
-    position: absolute;
-    width: 100%;
-    height: 30px;
-    border: none;
-    font-size: 0;
-    margin-top: -20px;
-    overflow: visible;
-    z-index: 1; }
-    .betterangels .window-header > *:not(.header-button.close) {
-      display: none !important; }
-    .betterangels .window-header .header-button.close {
-      text-shadow: none; }
-      .betterangels .window-header .header-button.close::before {
-        display: block;
-        content: "X";
-        font-size: 14px;
-        background: #AA0000;
-        height: 15px;
-        width: 15px;
-        line-height: 13px;
-        text-align: center;
-        border-radius: 15px;
-        -webkit-box-shadow: -1px -1px 3px black, 1px 1px 3px white;
-        box-shadow: -1px -1px 3px black, 1px 1px 3px white;
-        position: absolute;
-        right: 0px;
-        top: 20px;
-        -webkit-transform-origin: 50% 50%;
-        -ms-transform-origin: 50% 50%;
-        transform-origin: 50% 50%;
-        -webkit-transition: 0.25s all;
-        -o-transition: 0.25s all;
-        transition: 0.25s all; }
-      .betterangels .window-header .header-button.close:hover::before {
-        -webkit-transform: scale(1.5);
-        -ms-transform: scale(1.5);
-        transform: scale(1.5);
-        -webkit-box-shadow: 0 0 5px #ff0000, 0 0 5px #ff0000, 0 0 5px #ff0000;
-        box-shadow: 0 0 5px #ff0000, 0 0 5px #ff0000, 0 0 5px #ff0000; }
-  .betterangels.minimized {
-    height: 20px !important;
-    min-height: 20px !important;
-    width: 200px !important;
-    border-radius: 15px;
-    -webkit-box-shadow: 2px 2px 3px black, -0.5px -0.5px 2px white, 2px 2px 3px black;
-    box-shadow: 2px 2px 3px black, -0.5px -0.5px 2px white, 2px 2px 3px black; }
-    .betterangels.minimized .window-header {
-      width: 200px;
-      height: 20px;
-      border: 0;
-      margin-top: 0; }
-      .betterangels.minimized .window-header .window-title {
-        display: block;
-        color: white;
-        position: relative;
-        font-size: 24px;
-        line-height: 20px;
-        top: 0 !important; }
-      .betterangels.minimized .window-header .header-button.close::before {
-        top: 4px; }
-  .betterangels .window-content {
-    pointer-events: none;
-    border-radius: 25px;
-    padding: 0; }
-    .betterangels .window-content .draggable,
-    .betterangels .window-content a,
-    .betterangels .window-content input,
-    .betterangels .window-content button,
-    .betterangels .window-content textarea:not(.read-only) {
-      pointer-events: all; }
-    .betterangels .window-content form.editable {
-      position: relative; }
-      .betterangels .window-content form.editable .sheet-header {
-        -webkit-box-flex: 0;
-        -ms-flex-positive: 0;
-        flex-grow: 0;
-        max-height: 105px; }
-      .betterangels .window-content form.editable h1 {
-        border: none;
-        background-color: transparent;
-        text-align: center;
-        font-family: "KomikaAxis", sans-serif;
-        font-size: 32px;
-        margin: 0; }
-        .betterangels .window-content form.editable h1.inset-shadow {
-          color: #1A1A1A;
-          letter-spacing: 0.1em;
-          text-shadow: -1px -1px 1px #000000, 2px 2px 1px #262626; }
-      .betterangels .window-content form.editable .sheet-body .tab.active {
+    transform: scale(1);
+    -webkit-transition: 0.5s;
+    -o-transition: 0.5s;
+    transition: 0.5s; }
+    .betterangels .window-content .sheet-tabs .item.active {
+      color: white;
+      text-shadow: 0 0 10px red;
+      -webkit-transform: scale(1.5);
+      -ms-transform: scale(1.5);
+      transform: scale(1.5); }
+    .betterangels .window-content .sheet-tabs .item:hover {
+      color: black;
+      -webkit-transform: scale(2);
+      -ms-transform: scale(2);
+      transform: scale(2);
+      text-shadow: 0 0 10px white; }
+  .betterangels .window-content form.editable {
+    position: relative; }
+    .betterangels .window-content form.editable .sheet-header {
+      -webkit-box-flex: 0;
+      -ms-flex-positive: 0;
+      flex-grow: 0;
+      max-height: 105px; }
+    .betterangels .window-content form.editable .sheet-body .tab {
+      min-height: 500px; }
+      .betterangels .window-content form.editable .sheet-body .tab .editor {
         min-height: 500px; }
-        .betterangels .window-content form.editable .sheet-body .tab.active.background {
-          pointer-events: all; }
-        .betterangels .window-content form.editable .sheet-body .tab.active .editor {
-          pointer-events: all;
-          min-height: 500px; }
-          .betterangels .window-content form.editable .sheet-body .tab.active .editor * {
-            pointer-events: all; }
-  .betterangels .window-resizable-handle {
-    display: none; }
+
+.betterangels .window-resizable-handle {
+  display: none; }
+
+.betterangels.actor .text-tactic {
+  color: magenta; }
+
+.betterangels.actor .text-strategy {
+  color: lime; }
+
+.betterangels.actor .red-alert {
+  text-align: center;
+  width: 100%;
+  display: block;
+  font-size: 24px;
+  margin: 10px 0 0 0;
+  border-radius: 15px;
+  background: red;
+  outline: 3px solid #4d0000; }
 
 .betterangels.actor {
-  @use "sass:math"; }
-  .betterangels.actor .text-tactic {
-    color: magenta; }
-  .betterangels.actor .text-strategy {
-    color: lime; }
-  .betterangels.actor .red-alert {
-    text-align: center;
-    width: 100%;
-    display: block;
-    font-size: 24px;
-    margin: 10px 0 0 0;
-    border-radius: 15px;
-    background: red;
-    outline: 3px solid darkred; }
-  .betterangels.actor {
-    border-radius: 25px; }
-    .betterangels.actor:not(.minimized) {
-      width: 476px !important;
-      height: auto !important;
-      min-height: 500px;
-      overflow: visible !important; }
-    .betterangels.actor.minimized {
-      --border-width: 5px;
-      --main-padding: 0; }
-      .betterangels.actor.minimized .window-header .window-title {
-        display: block !important;
-        font-size: 16px;
-        position: relative;
-        top: 18px; }
-    .betterangels.actor .window-content {
-      --sheet-bg: radial-gradient(farthest-side circle at 100% 0%, #333333, #222222 70%, #111111);
-      --border-color: #222222;
-      --border-width: 10px;
-      --main-padding: 5px;
-      --demon-name-color: #202020;
-      --demon-name-shadow: -0.5px -0.5px 1px #000, 0.5px 0.5px 1px #444;
-      --demon-name-transform: scaleX(0.85);
-      --demon-name-align: right;
-      --primary-sinister-dark: rgba(0, 0, 0, 1);
-      --primary-sinister-med: rgba(20, 20, 20, 0.7);
-      --primary-sinister-bright: rgba(50, 50, 50, 1);
-      overflow: visible !important; }
-      .betterangels.actor .window-content form.editable {
-        background: var(--sheet-bg);
-        border: var(--border-width) outset var(--border-color);
-        padding: var(--main-padding);
-        border-radius: 25px; }
-        .betterangels.actor .window-content form.editable input,
-        .betterangels.actor .window-content form.editable select {
-          border: 0;
-          pointer-events: all; }
-        .betterangels.actor .window-content form.editable option {
+  border-radius: 25px; }
+  .betterangels.actor:not(.minimized) {
+    width: 476px !important;
+    height: auto !important;
+    min-height: 500px;
+    overflow: visible !important; }
+  .betterangels.actor .window-content {
+    --sheet-bg: radial-gradient(farthest-side circle at 100% 0%, #333333, #222222 70%, #0f0f0f);
+    --border-color: #222222;
+    --border-width: 10px;
+    --main-padding: 5px;
+    --demon-name-color: #0f0f0f;
+    --demon-name-filter: "none";
+    --demon-name-align: right;
+    --demon-name-font-size: 14px;
+    --demon-name-scale: 1;
+    --demon-name-text-shadow: -1px 1px 0px #4d4d4d, 1px -1px 0px black;
+    --primary-sinister-dark: black;
+    --primary-sinister-med: rgba(25, 25, 25, 0.7);
+    --primary-sinister-bright: #333333;
+    overflow: visible !important; }
+    .betterangels.actor .window-content form.editable {
+      background: var(--sheet-bg);
+      border: var(--border-width) outset var(--border-color);
+      padding: var(--main-padding);
+      border-radius: 25px; }
+      .betterangels.actor .window-content form.editable input, .betterangels.actor .window-content form.editable select {
+        border: 0; }
+        .betterangels.actor .window-content form.editable inputselect option, .betterangels.actor .window-content form.editable selectselect option {
           color: #222222; }
-        .betterangels.actor .window-content form.editable.demon-awake {
-          --sheet-bg: radial-gradient(farthest-side circle at 100% 0%, #400, #200 70%, #111111);
-          --border-color: #220000;
-          --demon-name-color: #FF0000;
-          --demon-name-shadow: 0 0 3px black, 0 0 3px black, 0 0 3px black, 0 0 13px red, 0 0 5px red, 0 0 5px red;
-          --primary-sinister-dark: rgba(0, 0, 0, 1);
-          --primary-sinister-med: rgba(50, 20, 20, 0.7);
-          --primary-sinister-bright: rgba(150, 0, 0, 1); }
-        .betterangels.actor .window-content form.editable.drag-to-hell {
-          --sheet-bg: radial-gradient(farthest-side circle at 100% 0%, #FF0000, #550000 70%, #380000);
-          --border-color: #FF0000;
-          --demon-name-color: #FF0000;
-          --demon-name-shadow: 0 0 3px black, 0 0 3px black, 0 0 3px black, 0 0 13px #FF0000, 0 0 5px #FF0000, 0 0 5px #FF0000;
-          --demon-name-transform: scaleX(0.85) scale(1.2);
-          --demon-name-align: center;
-          --primary-sinister-dark: rgba(0, 0, 0, 1);
-          --primary-sinister-med: rgba(50, 20, 20, 0.7);
-          --primary-sinister-bright: rgba(150, 0, 0, 1); }
-        .betterangels.actor .window-content form.editable.exorcising {
-          --demon-name-color: #FF0000;
-          --demon-name-shadow: 0 0 3px black, 0 0 3px black, 0 0 3px black;
-          -webkit-filter: sepia(1) hue-rotate(180deg) brightness(1.3);
-          filter: sepia(1) hue-rotate(180deg) brightness(1.3);
-          --primary-sinister-dark: rgba(0, 0, 0, 1);
-          --primary-sinister-med: rgba(50, 20, 20, 0.7);
-          --primary-sinister-bright: rgba(150, 0, 0, 1); }
-        .betterangels.actor .window-content form.editable .sheet-header img.profile-img {
-          border: 0;
-          margin-bottom: auto; }
-        .betterangels.actor .window-content form.editable .sheet-header .header-fields {
-          width: calc(100% + 70px);
-          margin-left: -70px; }
-          .betterangels.actor .window-content form.editable .sheet-header .header-fields h3 {
-            margin: -17px 0 0 0;
-            padding: 0 5px 0 0;
-            float: right;
-            color: #666666;
-            font-size: 12px; }
-          .betterangels.actor .window-content form.editable .sheet-header .header-fields h2 {
+      .betterangels.actor .window-content form.editable.demon-awake {
+        --sheet-bg: radial-gradient(farthest-side circle at 50% 10%, #330000, #0f0000 60%, black);
+        --border-color: #0f0000;
+        --demon-name-color: black;
+        --demon-name-filter: drop-shadow(0 0 20px rgba(255, 0, 0, 0.5)) drop-shadow(0 0 10px rgba(255, 0, 0, 0.5)) drop-shadow(0 0 5px red);
+        --demon-name-text-shadow: none;
+        --demon-name-align: center;
+        --primary-sinister-dark: black;
+        --primary-sinister-med: rgba(77, 0, 0, 0.7);
+        --primary-sinister-bright: #990000; }
+      .betterangels.actor .window-content form.editable.drag-to-hell {
+        --sheet-bg: radial-gradient(farthest-side circle at 50% 15%, #990000, #330000 60%, #0f0000);
+        --border-color: #4d0000;
+        --demon-name-color: black;
+        --demon-name-filter: drop-shadow(0 0 25px red);
+        --demon-name-align: center;
+        --demon-name-text-shadow: 0 0 2px red, 0 0 2px red, 0 0 2px red, 0 0 10px red, 0 0 10px red, 0 0 10px red;
+        --demon-name-scale: 0.6;
+        --demon-name-font-size: 28px;
+        --primary-sinister-dark: black;
+        --primary-sinister-med: rgba(38, 13, 13, 0.7);
+        --primary-sinister-bright: maroon; }
+      .betterangels.actor .window-content form.editable.exorcising {
+        --demon-name-color: red;
+        --demon-name-filter: none;
+        --primary-sinister-dark: black;
+        --primary-sinister-med: rgba(38, 13, 13, 0.7);
+        --primary-sinister-bright: #990000;
+        -webkit-filter: sepia(1) hue-rotate(180deg) brightness(1.3);
+        filter: sepia(1) hue-rotate(180deg) brightness(1.3); }
+      .betterangels.actor .window-content form.editable .sheet-header img.profile-img {
+        border: 0;
+        margin-bottom: auto; }
+      .betterangels.actor .window-content form.editable .sheet-header .header-fields {
+        width: calc(100% + 70px);
+        margin-left: -70px; }
+        .betterangels.actor .window-content form.editable .sheet-header .header-fields h3 {
+          margin: -17px 0 0 0;
+          padding: 0 5px 0 0;
+          float: right;
+          color: gray;
+          font-size: 12px; }
+        .betterangels.actor .window-content form.editable .sheet-header .header-fields h2 {
+          height: -webkit-fit-content;
+          height: -moz-fit-content;
+          height: fit-content;
+          margin: 0;
+          line-height: 0;
+          position: relative; }
+          .betterangels.actor .window-content form.editable .sheet-header .header-fields h2 input {
             height: -webkit-fit-content;
             height: -moz-fit-content;
             height: fit-content;
+            text-shadow: 0 0 3px black, 0 0 3px black, 0 0 3px black;
+            text-align: center; }
+          .betterangels.actor .window-content form.editable .sheet-header .header-fields h2.villainname {
             margin: 0; }
-            .betterangels.actor .window-content form.editable .sheet-header .header-fields h2 input {
-              height: -webkit-fit-content;
-              height: -moz-fit-content;
-              height: fit-content;
-              text-shadow: 0 0 3px black, 0 0 3px black, 0 0 3px black;
-              text-align: center; }
-            .betterangels.actor .window-content form.editable .sheet-header .header-fields h2.villainname {
-              margin-top: -15px; }
-              .betterangels.actor .window-content form.editable .sheet-header .header-fields h2.villainname input {
-                color: white;
-                font-family: "KomikaAxis", sans-serif;
-                font-size: 32px;
-                line-height: 32px; }
-            .betterangels.actor .window-content form.editable .sheet-header .header-fields h2.humanname {
-              position: relative;
-              top: -10px; }
-              .betterangels.actor .window-content form.editable .sheet-header .header-fields h2.humanname input {
-                font-family: "DigitalStrip", sans-serif;
-                font-size: 18px;
-                color: #b3b3b3;
-                text-align: right;
-                font-variant: small-caps; }
-            .betterangels.actor .window-content form.editable .sheet-header .header-fields h2.demonname {
-              position: relative;
-              top: -10px;
-              -webkit-transform: var(--demon-name-transform);
-              -ms-transform: var(--demon-name-transform);
-              transform: var(--demon-name-transform);
-              -webkit-transform-origin: var(--demon-name-align);
-              -ms-transform-origin: var(--demon-name-align);
-              transform-origin: var(--demon-name-align); }
-              .betterangels.actor .window-content form.editable .sheet-header .header-fields h2.demonname input {
-                line-height: 20px;
-                font-family: "New Rocker", serif;
-                color: var(--demon-name-color);
-                text-shadow: var(--demon-name-shadow);
-                float: var(--demon-name-align);
-                text-align: var(--demon-name-align); }
-        .betterangels.actor .window-content form.editable .sheet-tabs {
-          margin-top: -5px; }
-        .betterangels.actor .window-content form.editable .sheet-body .tab.active .trait-panel {
-          display: grid;
-          margin: 15px 0;
-          grid-template-columns: repeat(3, 1fr);
-          grid-template-rows: repeat(3, 1fr);
-          grid-gap: 2.5em 0; }
-          .betterangels.actor .window-content form.editable .sheet-body .tab.active .trait-panel .trait-cell.cell-1 {
-            grid-row: 1 / 2;
-            grid-column: 1 / 2; }
-          .betterangels.actor .window-content form.editable .sheet-body .tab.active .trait-panel .trait-cell.cell-2 {
-            grid-row: 1 / 2;
-            grid-column: 2 / 3; }
-          .betterangels.actor .window-content form.editable .sheet-body .tab.active .trait-panel .trait-cell.cell-3 {
-            grid-row: 1 / 2;
-            grid-column: 3 / 4; }
-          .betterangels.actor .window-content form.editable .sheet-body .tab.active .trait-panel .trait-cell.cell-4 {
-            grid-row: 2 / 3;
-            grid-column: 1 / 2; }
-          .betterangels.actor .window-content form.editable .sheet-body .tab.active .trait-panel .trait-cell.cell-5 {
-            grid-row: 2 / 3;
-            grid-column: 2 / 3; }
-          .betterangels.actor .window-content form.editable .sheet-body .tab.active .trait-panel .trait-cell.cell-6 {
-            grid-row: 2 / 3;
-            grid-column: 3 / 4; }
-          .betterangels.actor .window-content form.editable .sheet-body .tab.active .trait-panel .trait-cell.cell-7 {
-            grid-row: 3 / 4;
-            grid-column: 1 / 2; }
-          .betterangels.actor .window-content form.editable .sheet-body .tab.active .trait-panel .trait-cell.cell-8 {
-            grid-row: 3 / 4;
-            grid-column: 2 / 3; }
-          .betterangels.actor .window-content form.editable .sheet-body .tab.active .trait-panel .trait-cell.cell-9 {
-            grid-row: 3 / 4;
-            grid-column: 3 / 4; }
-          .betterangels.actor .window-content form.editable .sheet-body .tab.active .trait-panel .trait-cell {
-            display: grid;
-            grid-template-columns: 1fr;
-            grid-template-rows: repeat(4, 1em);
-            grid-gap: 0.25em;
-            -webkit-transform-origin: 50% 50%;
-            -ms-transform-origin: 50% 50%;
-            transform-origin: 50% 50%; }
-            .betterangels.actor .window-content form.editable .sheet-body .tab.active .trait-panel .trait-cell:nth-child(3n - 1) {
-              -webkit-transform: scale(1.2);
-              -ms-transform: scale(1.2);
-              transform: scale(1.2); }
-            .betterangels.actor .window-content form.editable .sheet-body .tab.active .trait-panel .trait-cell .trait-name[data-sub-type="sinister"] {
-              grid-row: 1 / 2; }
-            .betterangels.actor .window-content form.editable .sheet-body .tab.active .trait-panel .trait-cell .dot-line.sinister {
-              grid-row: 2 / 3; }
-            .betterangels.actor .window-content form.editable .sheet-body .tab.active .trait-panel .trait-cell .dot-line.virtuous {
-              grid-row: 3 / 4; }
-            .betterangels.actor .window-content form.editable .sheet-body .tab.active .trait-panel .trait-cell .trait-name[data-sub-type="virtuous"] {
-              grid-row: 4 / 5; }
-            .betterangels.actor .window-content form.editable .sheet-body .tab.active .trait-panel .trait-cell .trait-name .trait-label {
-              display: block;
-              width: 100%;
-              line-height: 1em; }
-            .betterangels.actor .window-content form.editable .sheet-body .tab.active .trait-panel .trait-cell .trait-name[data-sub-type="virtuous"] .trait-label {
+            .betterangels.actor .window-content form.editable .sheet-header .header-fields h2.villainname input {
+              font-family: Avengeance;
+              font-size: 2.3em;
+              font-variant: normal;
+              font-weight: normal;
+              font-style: normal;
+              line-height: 2.3em;
+              letter-spacing: normal;
+              word-spacing: normal;
+              text-align: center;
+              text-decoration: none;
+              text-indent: 0;
+              text-shadow: 0 0 0.1em black, 0 0 0.1em black, 0 0 0.1em black;
+              text-transform: none;
+              white-space: nowrap;
+              color: white;
+              height: 100%; }
+          .betterangels.actor .window-content form.editable .sheet-header .header-fields h2.humanname {
+            top: -10px;
+            text-align: right; }
+            .betterangels.actor .window-content form.editable .sheet-header .header-fields h2.humanname input {
+              width: auto;
+              font-family: KomikaText;
+              font-size: 18px;
+              color: #999999;
               text-align: right; }
-            .betterangels.actor .window-content form.editable .sheet-body .tab.active .trait-panel .trait-cell .trait-name[data-type="strategy"] .trait-label {
-              font-family: "KomikaAxis", sans-serif; }
-            .betterangels.actor .window-content form.editable .sheet-body .tab.active .trait-panel .trait-cell .dot-line {
-              display: grid;
-              grid-template-columns: 1fr repeat(7, 1em) 1fr;
-              grid-template-rows: 1em;
-              grid-gap: 0.25em; }
-              .betterangels.actor .window-content form.editable .sheet-body .tab.active .trait-panel .trait-cell .dot-line .dot {
-                pointer-events: all;
-                grid-row: 1 / 2;
-                border-radius: 1em;
-                outline: 1px solid white;
-                background: black; }
-              .betterangels.actor .window-content form.editable .sheet-body .tab.active .trait-panel .trait-cell .dot-line.sinister .dot-1 {
-                grid-column: 2 / 3; }
-              .betterangels.actor .window-content form.editable .sheet-body .tab.active .trait-panel .trait-cell .dot-line.virtuous .dot-1 {
-                grid-column: 8 / 9; }
-              .betterangels.actor .window-content form.editable .sheet-body .tab.active .trait-panel .trait-cell .dot-line.sinister .dot-2 {
-                grid-column: 3 / 4; }
-              .betterangels.actor .window-content form.editable .sheet-body .tab.active .trait-panel .trait-cell .dot-line.virtuous .dot-2 {
-                grid-column: 7 / 8; }
-              .betterangels.actor .window-content form.editable .sheet-body .tab.active .trait-panel .trait-cell .dot-line.sinister .dot-3 {
-                grid-column: 4 / 5; }
-              .betterangels.actor .window-content form.editable .sheet-body .tab.active .trait-panel .trait-cell .dot-line.virtuous .dot-3 {
-                grid-column: 6 / 7; }
-              .betterangels.actor .window-content form.editable .sheet-body .tab.active .trait-panel .trait-cell .dot-line.sinister .dot-4 {
-                grid-column: 5 / 6; }
-              .betterangels.actor .window-content form.editable .sheet-body .tab.active .trait-panel .trait-cell .dot-line.virtuous .dot-4 {
-                grid-column: 5 / 6; }
-              .betterangels.actor .window-content form.editable .sheet-body .tab.active .trait-panel .trait-cell .dot-line.sinister .dot-5 {
-                grid-column: 6 / 7; }
-              .betterangels.actor .window-content form.editable .sheet-body .tab.active .trait-panel .trait-cell .dot-line.virtuous .dot-5 {
-                grid-column: 4 / 5; }
-        .betterangels.actor .window-content form.editable .sheet-body .tab.active .trait-line {
+          .betterangels.actor .window-content form.editable .sheet-header .header-fields h2.demonname {
+            top: -5px; }
+            .betterangels.actor .window-content form.editable .sheet-header .header-fields h2.demonname input {
+              height: 40px;
+              width: calc(100% / var(--demon-name-scale));
+              margin: -10px 0 -10px calc(50% - 50% / var(--demon-name-scale));
+              line-height: 20px;
+              font-family: OutrunFuture;
+              font-size: var(--demon-name-font-size);
+              color: var(--demon-name-color);
+              -webkit-filter: var(--demon-name-filter);
+              filter: var(--demon-name-filter);
+              text-shadow: var(--demon-name-text-shadow);
+              text-align: var(--demon-name-align);
+              -webkit-transform: scaleX(var(--demon-name-scale));
+              -ms-transform: scaleX(var(--demon-name-scale));
+              transform: scaleX(var(--demon-name-scale)); }
+      .betterangels.actor .window-content form.editable .sheet-body .tab.front .trait-panel {
+        display: grid;
+        margin: 15px 0;
+        grid-template-columns: repeat(3, 1fr);
+        grid-template-rows: repeat(3, 1fr); }
+        .betterangels.actor .window-content form.editable .sheet-body .tab.front .trait-panel * {
+          -webkit-transform-origin: 50% 50%;
+          -ms-transform-origin: 50% 50%;
+          transform-origin: 50% 50%; }
+        .betterangels.actor .window-content form.editable .sheet-body .tab.front .trait-panel .trait-cell.cell-1 {
+          grid-row: 1 / 2;
+          grid-column: 1 / 2; }
+        .betterangels.actor .window-content form.editable .sheet-body .tab.front .trait-panel .trait-cell.cell-2 {
+          grid-row: 1 / 2;
+          grid-column: 2 / 3; }
+        .betterangels.actor .window-content form.editable .sheet-body .tab.front .trait-panel .trait-cell.cell-3 {
+          grid-row: 1 / 2;
+          grid-column: 3 / 4; }
+        .betterangels.actor .window-content form.editable .sheet-body .tab.front .trait-panel .trait-cell.cell-4 {
+          grid-row: 2 / 3;
+          grid-column: 1 / 2; }
+        .betterangels.actor .window-content form.editable .sheet-body .tab.front .trait-panel .trait-cell.cell-5 {
+          grid-row: 2 / 3;
+          grid-column: 2 / 3; }
+        .betterangels.actor .window-content form.editable .sheet-body .tab.front .trait-panel .trait-cell.cell-6 {
+          grid-row: 2 / 3;
+          grid-column: 3 / 4; }
+        .betterangels.actor .window-content form.editable .sheet-body .tab.front .trait-panel .trait-cell.cell-7 {
+          grid-row: 3 / 4;
+          grid-column: 1 / 2; }
+        .betterangels.actor .window-content form.editable .sheet-body .tab.front .trait-panel .trait-cell.cell-8 {
+          grid-row: 3 / 4;
+          grid-column: 2 / 3; }
+        .betterangels.actor .window-content form.editable .sheet-body .tab.front .trait-panel .trait-cell.cell-9 {
+          grid-row: 3 / 4;
+          grid-column: 3 / 4; }
+        .betterangels.actor .window-content form.editable .sheet-body .tab.front .trait-panel .trait-cell {
           display: grid;
-          grid-template-columns: 144px 140px 144px;
-          grid-gap: 16px; }
-          .betterangels.actor .window-content form.editable .sheet-body .tab.active .trait-line * {
-            pointer-events: none;
-            -webkit-transform-origin: 50% 50%;
-            -ms-transform-origin: 50% 50%;
-            transform-origin: 50% 50%; }
-          .betterangels.actor .window-content form.editable .sheet-body .tab.active .trait-line.primary {
-            background: -webkit-gradient(linear, left top, left bottom, from(var(--primary-sinister-angle)), color-stop(var(--primary-sinister-dark)), color-stop(60%, var(--primary-sinister-med)));
-            background: -o-linear-gradient(var(--primary-sinister-angle), var(--primary-sinister-dark), var(--primary-sinister-med) 60%);
-            background: linear-gradient(var(--primary-sinister-angle), var(--primary-sinister-dark), var(--primary-sinister-med) 60%);
-            border-radius: 15px;
-            width: calc(100% + 6px);
-            margin-left: -4px;
-            -webkit-box-shadow: inset 3px -3px 3px var(--primary-sinister-bright), inset -3px 3px 5px var(--primary-sinister-dark), inset 0 0 60px rgba(255, 0, 0, 0.3), inset 0 0 10px red;
-            box-shadow: inset 3px -3px 3px var(--primary-sinister-bright), inset -3px 3px 5px var(--primary-sinister-dark), inset 0 0 60px rgba(255, 0, 0, 0.3), inset 0 0 10px red;
-            padding: 0 5px 0 5px; }
-            .betterangels.actor .window-content form.editable .sheet-body .tab.active .trait-line.primary:nth-of-type(2) {
-              --primary-sinister-angle: 45deg; }
-            .betterangels.actor .window-content form.editable .sheet-body .tab.active .trait-line.primary:nth-of-type(3) {
-              --primary-sinister-angle: 40deg; }
-            .betterangels.actor .window-content form.editable .sheet-body .tab.active .trait-line.primary:nth-of-type(4) {
-              --primary-sinister-angle: 30deg; }
-          .betterangels.actor .window-content form.editable .sheet-body .tab.active .trait-line .trait-pair {
-            display: grid;
+          grid-template-columns: 1fr;
+          grid-template-rows: 0.5em repeat(4, 1em) 0.5em;
+          grid-gap: 0.25em; }
+          .betterangels.actor .window-content form.editable .sheet-body .tab.front .trait-panel .trait-cell .dot-line[data-sub-type="sinister"] {
+            grid-row: 3 / 4; }
+          .betterangels.actor .window-content form.editable .sheet-body .tab.front .trait-panel .trait-cell .dot-line[data-sub-type="virtuous"] {
+            grid-row: 4 / 5; }
+          .betterangels.actor .window-content form.editable .sheet-body .tab.front .trait-panel .trait-cell:nth-child(3n - 1) .trait-name[data-sub-type="sinister"] {
+            grid-row: 1 / 3; }
+          .betterangels.actor .window-content form.editable .sheet-body .tab.front .trait-panel .trait-cell:nth-child(3n - 1) .trait-name[data-sub-type="virtuous"] {
+            grid-row: 5 / 7; }
+          .betterangels.actor .window-content form.editable .sheet-body .tab.front .trait-panel .trait-cell:nth-child(3n) .trait-name[data-sub-type="sinister"], .betterangels.actor .window-content form.editable .sheet-body .tab.front .trait-panel .trait-cell:nth-child(3n - 2) .trait-name[data-sub-type="sinister"] {
+            grid-row: 2 / 3; }
+          .betterangels.actor .window-content form.editable .sheet-body .tab.front .trait-panel .trait-cell:nth-child(3n) .trait-name[data-sub-type="virtuous"], .betterangels.actor .window-content form.editable .sheet-body .tab.front .trait-panel .trait-cell:nth-child(3n - 2) .trait-name[data-sub-type="virtuous"] {
+            grid-row: 5 / 6; }
+          .betterangels.actor .window-content form.editable .sheet-body .tab.front .trait-panel .trait-cell .trait-name {
             position: relative;
-            grid-template-rows: repeat(4, var(--dot-size));
-            grid-gap: 1px;
-            margin-top: auto;
-            margin-bottom: auto;
-            z-index: 5; }
-            .betterangels.actor .window-content form.editable .sheet-body .tab.active .trait-line .trait-pair > label {
-              position: relative;
-              -webkit-transition: 3s;
-              -o-transition: 3s;
-              transition: 3s; }
-              .betterangels.actor .window-content form.editable .sheet-body .tab.active .trait-line .trait-pair > label > span {
-                position: absolute; }
-              .betterangels.actor .window-content form.editable .sheet-body .tab.active .trait-line .trait-pair > label.sinister {
-                grid-row: 1;
-                margin-left: -15px; }
-                .betterangels.actor .window-content form.editable .sheet-body .tab.active .trait-line .trait-pair > label.sinister > span {
-                  left: 0; }
-                .betterangels.actor .window-content form.editable .sheet-body .tab.active .trait-line .trait-pair > label.sinister.primary {
-                  border-radius: 10px;
-                  text-indent: 5px;
-                  -webkit-box-shadow: 0 0 15px red, 0 0 5px red, 0 0 5px red;
-                  box-shadow: 0 0 15px red, 0 0 5px red, 0 0 5px red;
-                  background: -webkit-gradient(linear, left top, right top, color-stop(10%, red), to(black));
-                  background: -o-linear-gradient(left, red 10%, black);
-                  background: linear-gradient(90deg, red 10%, black); }
-              .betterangels.actor .window-content form.editable .sheet-body .tab.active .trait-line .trait-pair > label.virtuous {
-                grid-row: 4; }
-              .betterangels.actor .window-content form.editable .sheet-body .tab.active .trait-line .trait-pair > label.strategy:not(.no-hover):hover > span.display {
-                color: #b3b3b3;
-                -webkit-animation: neonGlow-strategy 1.5s ease-in-out infinite alternate;
-                animation: neonGlow-strategy 1.5s ease-in-out infinite alternate;
-                -webkit-transition: all 0.5s;
-                -o-transition: all 0.5s;
-                transition: all 0.5s; }
-
-@-webkit-keyframes neonGlow-strategy {
-  from {
-    color: #00bf00;
-    text-shadow: 0 0 3px white, 0 0 6px white, 0 0 9px white, 0 0 12px #00ff00, 0 0 21px #00ff00, 0 0 24px #00ff00, 0 0 30px #00ff00, 0 0 45px #00ff00;
-    scale: 1; }
-  to {
-    color: green;
-    text-shadow: 0 0 1px white, 0 0 2px white, 0 0 3px white, 0 0 4px #00ff00, 0 0 7px #00ff00, 0 0 8px #00ff00, 0 0 10px #00ff00, 0 0 15px #00ff00;
-    scale: 1.5; } }
-
-@keyframes neonGlow-strategy {
-  from {
-    color: #00bf00;
-    text-shadow: 0 0 3px white, 0 0 6px white, 0 0 9px white, 0 0 12px #00ff00, 0 0 21px #00ff00, 0 0 24px #00ff00, 0 0 30px #00ff00, 0 0 45px #00ff00;
-    scale: 1; }
-  to {
-    color: green;
-    text-shadow: 0 0 1px white, 0 0 2px white, 0 0 3px white, 0 0 4px #00ff00, 0 0 7px #00ff00, 0 0 8px #00ff00, 0 0 10px #00ff00, 0 0 15px #00ff00;
-    scale: 1.5; } }
-              .betterangels.actor .window-content form.editable .sheet-body .tab.active .trait-line .trait-pair > label.tactic:not(.no-hover):hover > span.display {
-                color: #b3b3b3;
-                -webkit-animation: neonGlow-tactic 1.5s ease-in-out infinite alternate;
-                animation: neonGlow-tactic 1.5s ease-in-out infinite alternate;
-                -webkit-transition: all 0.5s;
-                -o-transition: all 0.5s;
-                transition: all 0.5s; }
-
-@-webkit-keyframes neonGlow-tactic {
-  from {
-    color: #bf00bf;
-    text-shadow: 0 0 3px white, 0 0 6px white, 0 0 9px white, 0 0 12px #ff00ff, 0 0 21px #ff00ff, 0 0 24px #ff00ff, 0 0 30px #ff00ff, 0 0 45px #ff00ff;
-    scale: 1; }
-  to {
-    color: purple;
-    text-shadow: 0 0 1px white, 0 0 2px white, 0 0 3px white, 0 0 4px #ff00ff, 0 0 7px #ff00ff, 0 0 8px #ff00ff, 0 0 10px #ff00ff, 0 0 15px #ff00ff;
-    scale: 1.5; } }
-
-@keyframes neonGlow-tactic {
-  from {
-    color: #bf00bf;
-    text-shadow: 0 0 3px white, 0 0 6px white, 0 0 9px white, 0 0 12px #ff00ff, 0 0 21px #ff00ff, 0 0 24px #ff00ff, 0 0 30px #ff00ff, 0 0 45px #ff00ff;
-    scale: 1; }
-  to {
-    color: purple;
-    text-shadow: 0 0 1px white, 0 0 2px white, 0 0 3px white, 0 0 4px #ff00ff, 0 0 7px #ff00ff, 0 0 8px #ff00ff, 0 0 10px #ff00ff, 0 0 15px #ff00ff;
-    scale: 1.5; } }
-            .betterangels.actor .window-content form.editable .sheet-body .tab.active .trait-line .trait-pair .trait-grid {
-              display: grid;
-              position: relative;
-              grid-template-rows: repeat(2, var(--dot-size));
-              grid-template-columns: repeat(7, var(--dot-size));
-              grid-row: 2 / span 2;
-              grid-gap: 1px;
-              margin-top: auto;
-              margin-bottom: auto;
-              pointer-events: all;
-              z-index: 5; }
-              .betterangels.actor .window-content form.editable .sheet-body .tab.active .trait-line .trait-pair .trait-grid .dot {
-                position: relative;
-                border: 1px solid #b3b3b3;
-                border-radius: 50%; }
-                .betterangels.actor .window-content form.editable .sheet-body .tab.active .trait-line .trait-pair .trait-grid .dot > .dot-slot {
-                  position: absolute;
-                  height: 100%;
-                  width: 100%;
-                  border-radius: 50%;
-                  background: transparent; }
-                  .betterangels.actor .window-content form.editable .sheet-body .tab.active .trait-line .trait-pair .trait-grid .dot > .dot-slot.full {
-                    background: -o-radial-gradient(ellipse, white, #b3b3b3 70%);
-                    background: radial-gradient(ellipse, white, #b3b3b3 70%); }
-                  .betterangels.actor .window-content form.editable .sheet-body .tab.active .trait-line .trait-pair .trait-grid .dot > .dot-slot.top-layer {
-                    z-index: 10000;
-                    pointer-events: none !important; }
-                .betterangels.actor .window-content form.editable .sheet-body .tab.active .trait-line .trait-pair .trait-grid .dot.top-1 {
-                  grid-row: 1;
-                  grid-column: 1; }
-                .betterangels.actor .window-content form.editable .sheet-body .tab.active .trait-line .trait-pair .trait-grid .dot.top-2 {
-                  grid-row: 1;
-                  grid-column: 2; }
-                .betterangels.actor .window-content form.editable .sheet-body .tab.active .trait-line .trait-pair .trait-grid .dot.top-3 {
-                  grid-row: 1;
-                  grid-column: 3; }
-                .betterangels.actor .window-content form.editable .sheet-body .tab.active .trait-line .trait-pair .trait-grid .dot.top-4 {
-                  grid-row: 1;
-                  grid-column: 4; }
-                .betterangels.actor .window-content form.editable .sheet-body .tab.active .trait-line .trait-pair .trait-grid .dot.top-5 {
-                  grid-row: 1;
-                  grid-column: 5; }
-                .betterangels.actor .window-content form.editable .sheet-body .tab.active .trait-line .trait-pair .trait-grid .dot.bottom-5 {
-                  grid-row: 2;
-                  grid-column: 3; }
-                .betterangels.actor .window-content form.editable .sheet-body .tab.active .trait-line .trait-pair .trait-grid .dot.bottom-4 {
-                  grid-row: 2;
-                  grid-column: 4; }
-                .betterangels.actor .window-content form.editable .sheet-body .tab.active .trait-line .trait-pair .trait-grid .dot.bottom-3 {
-                  grid-row: 2;
-                  grid-column: 5; }
-                .betterangels.actor .window-content form.editable .sheet-body .tab.active .trait-line .trait-pair .trait-grid .dot.bottom-2 {
-                  grid-row: 2;
-                  grid-column: 6; }
-                .betterangels.actor .window-content form.editable .sheet-body .tab.active .trait-line .trait-pair .trait-grid .dot.bottom-1 {
-                  grid-row: 2;
-                  grid-column: 7; }
-            .betterangels.actor .window-content form.editable .sheet-body .tab.active .trait-line .trait-pair.tactic {
-              --dot-size: 15px;
-              width: 144px;
-              padding: 16px; }
-              .betterangels.actor .window-content form.editable .sheet-body .tab.active .trait-line .trait-pair.tactic > label {
-                font-family: "DigitalStrip", sans-serif;
-                line-height: 14px; }
-            .betterangels.actor .window-content form.editable .sheet-body .tab.active .trait-line .trait-pair.strategy {
-              --dot-size: 19px;
-              width: 140px; }
-              .betterangels.actor .window-content form.editable .sheet-body .tab.active .trait-line .trait-pair.strategy > label {
-                font-family: "KomikaAxis", sans-serif;
-                line-height: 18px; }
-        .betterangels.actor .window-content form.editable .sheet-body .tab.active .menu-positioner {
-          position: absolute; }
-          .betterangels.actor .window-content form.editable .sheet-body .tab.active .menu-positioner .radial-menu {
-            position: absolute;
-            display: block;
-            padding: 0;
-            background: transparent;
-            border-radius: 50%;
-            opacity: 0%;
-            -webkit-transition: 0.5s;
-            -o-transition: 0.5s;
-            transition: 0.5s;
-            -webkit-transform: scale(0.3) rotate(-125deg);
-            -ms-transform: scale(0.3) rotate(-125deg);
-            transform: scale(0.3) rotate(-125deg);
-            pointer-events: all; }
-            .betterangels.actor .window-content form.editable .sheet-body .tab.active .menu-positioner .radial-menu.size60px-8items {
-              top: calc(50% - 60px);
-              left: calc(50% - 60px);
-              z-index: 6;
-              width: 120px;
-              height: 120px; }
-              .betterangels.actor .window-content form.editable .sheet-body .tab.active .menu-positioner .radial-menu.size60px-8items .menu-container .menu-button:nth-child(1) button,
-              .betterangels.actor .window-content form.editable .sheet-body .tab.active .menu-positioner .radial-menu.size60px-8items .menu-container .menu-button:nth-child(1) label {
-                -webkit-animation-delay: 0.125s;
-                animation-delay: 0.125s; }
-              .betterangels.actor .window-content form.editable .sheet-body .tab.active .menu-positioner .radial-menu.size60px-8items .menu-container .menu-button:nth-child(2) button,
-              .betterangels.actor .window-content form.editable .sheet-body .tab.active .menu-positioner .radial-menu.size60px-8items .menu-container .menu-button:nth-child(2) label {
-                -webkit-animation-delay: 0.25s;
-                animation-delay: 0.25s; }
-              .betterangels.actor .window-content form.editable .sheet-body .tab.active .menu-positioner .radial-menu.size60px-8items .menu-container .menu-button:nth-child(3) button,
-              .betterangels.actor .window-content form.editable .sheet-body .tab.active .menu-positioner .radial-menu.size60px-8items .menu-container .menu-button:nth-child(3) label {
-                -webkit-animation-delay: 0.375s;
-                animation-delay: 0.375s; }
-              .betterangels.actor .window-content form.editable .sheet-body .tab.active .menu-positioner .radial-menu.size60px-8items .menu-container .menu-button:nth-child(4) button,
-              .betterangels.actor .window-content form.editable .sheet-body .tab.active .menu-positioner .radial-menu.size60px-8items .menu-container .menu-button:nth-child(4) label {
-                -webkit-animation-delay: 0.5s;
-                animation-delay: 0.5s; }
-              .betterangels.actor .window-content form.editable .sheet-body .tab.active .menu-positioner .radial-menu.size60px-8items .menu-container .menu-button:nth-child(5) button,
-              .betterangels.actor .window-content form.editable .sheet-body .tab.active .menu-positioner .radial-menu.size60px-8items .menu-container .menu-button:nth-child(5) label {
-                -webkit-animation-delay: 0.625s;
-                animation-delay: 0.625s; }
-              .betterangels.actor .window-content form.editable .sheet-body .tab.active .menu-positioner .radial-menu.size60px-8items .menu-container .menu-button:nth-child(6) button,
-              .betterangels.actor .window-content form.editable .sheet-body .tab.active .menu-positioner .radial-menu.size60px-8items .menu-container .menu-button:nth-child(6) label {
-                -webkit-animation-delay: 0.75s;
-                animation-delay: 0.75s; }
-              .betterangels.actor .window-content form.editable .sheet-body .tab.active .menu-positioner .radial-menu.size60px-8items .menu-container .menu-button:nth-child(7) button,
-              .betterangels.actor .window-content form.editable .sheet-body .tab.active .menu-positioner .radial-menu.size60px-8items .menu-container .menu-button:nth-child(7) label {
-                -webkit-animation-delay: 0.875s;
-                animation-delay: 0.875s; }
-              .betterangels.actor .window-content form.editable .sheet-body .tab.active .menu-positioner .radial-menu.size60px-8items .menu-container .menu-button:nth-child(8) button,
-              .betterangels.actor .window-content form.editable .sheet-body .tab.active .menu-positioner .radial-menu.size60px-8items .menu-container .menu-button:nth-child(8) label {
-                -webkit-animation-delay: 1s;
-                animation-delay: 1s; }
-              .betterangels.actor .window-content form.editable .sheet-body .tab.active .menu-positioner .radial-menu.size60px-8items .menu-container .menu-button {
-                margin-top: -7px;
-                margin-left: -15px; }
-                .betterangels.actor .window-content form.editable .sheet-body .tab.active .menu-positioner .radial-menu.size60px-8items .menu-container .menu-button:nth-of-type(1) {
-                  -webkit-transform: rotate(0deg) translate(30px) rotate(0deg) translateX(0px);
-                  -ms-transform: rotate(0deg) translate(30px) rotate(0deg) translateX(0px);
-                  transform: rotate(0deg) translate(30px) rotate(0deg) translateX(0px); }
-                .betterangels.actor .window-content form.editable .sheet-body .tab.active .menu-positioner .radial-menu.size60px-8items .menu-container .menu-button:nth-of-type(2) {
-                  -webkit-transform: rotate(45deg) translate(30px) rotate(-45deg) translateX(0px) translateY(0px);
-                  -ms-transform: rotate(45deg) translate(30px) rotate(-45deg) translateX(0px) translateY(0px);
-                  transform: rotate(45deg) translate(30px) rotate(-45deg) translateX(0px) translateY(0px); }
-                .betterangels.actor .window-content form.editable .sheet-body .tab.active .menu-positioner .radial-menu.size60px-8items .menu-container .menu-button:nth-of-type(3) {
-                  -webkit-transform: rotate(90deg) translate(30px) rotate(-90deg) translateX(0px) translateY(0px);
-                  -ms-transform: rotate(90deg) translate(30px) rotate(-90deg) translateX(0px) translateY(0px);
-                  transform: rotate(90deg) translate(30px) rotate(-90deg) translateX(0px) translateY(0px); }
-                .betterangels.actor .window-content form.editable .sheet-body .tab.active .menu-positioner .radial-menu.size60px-8items .menu-container .menu-button:nth-of-type(4) {
-                  -webkit-transform: rotate(135deg) translate(30px) rotate(-135deg) translateX(0px) translateY(-0px);
-                  -ms-transform: rotate(135deg) translate(30px) rotate(-135deg) translateX(0px) translateY(-0px);
-                  transform: rotate(135deg) translate(30px) rotate(-135deg) translateX(0px) translateY(-0px); }
-                .betterangels.actor .window-content form.editable .sheet-body .tab.active .menu-positioner .radial-menu.size60px-8items .menu-container .menu-button:nth-of-type(5) {
-                  -webkit-transform: rotate(180deg) translate(30px) rotate(-180deg) translateX(-0px);
-                  -ms-transform: rotate(180deg) translate(30px) rotate(-180deg) translateX(-0px);
-                  transform: rotate(180deg) translate(30px) rotate(-180deg) translateX(-0px); }
-                .betterangels.actor .window-content form.editable .sheet-body .tab.active .menu-positioner .radial-menu.size60px-8items .menu-container .menu-button:nth-of-type(6) {
-                  -webkit-transform: rotate(225deg) translate(30px) rotate(-225deg) translateX(-0px) translateY(-0px);
-                  -ms-transform: rotate(225deg) translate(30px) rotate(-225deg) translateX(-0px) translateY(-0px);
-                  transform: rotate(225deg) translate(30px) rotate(-225deg) translateX(-0px) translateY(-0px); }
-                .betterangels.actor .window-content form.editable .sheet-body .tab.active .menu-positioner .radial-menu.size60px-8items .menu-container .menu-button:nth-of-type(7) {
-                  -webkit-transform: rotate(270deg) translate(30px) rotate(-270deg) translateX(-0px) translateY(-0px);
-                  -ms-transform: rotate(270deg) translate(30px) rotate(-270deg) translateX(-0px) translateY(-0px);
-                  transform: rotate(270deg) translate(30px) rotate(-270deg) translateX(-0px) translateY(-0px); }
-                .betterangels.actor .window-content form.editable .sheet-body .tab.active .menu-positioner .radial-menu.size60px-8items .menu-container .menu-button:nth-of-type(8) {
-                  -webkit-transform: rotate(315deg) translate(30px) rotate(-315deg) translateX(-0px) translateY(0px);
-                  -ms-transform: rotate(315deg) translate(30px) rotate(-315deg) translateX(-0px) translateY(0px);
-                  transform: rotate(315deg) translate(30px) rotate(-315deg) translateX(-0px) translateY(0px); }
-            .betterangels.actor .window-content form.editable .sheet-body .tab.active .menu-positioner .radial-menu.size50px-8items {
-              top: calc(50% - 50px);
-              left: calc(50% - 50px);
-              z-index: 6;
-              width: 100px;
-              height: 100px; }
-              .betterangels.actor .window-content form.editable .sheet-body .tab.active .menu-positioner .radial-menu.size50px-8items .menu-container .menu-button:nth-child(1) button,
-              .betterangels.actor .window-content form.editable .sheet-body .tab.active .menu-positioner .radial-menu.size50px-8items .menu-container .menu-button:nth-child(1) label {
-                -webkit-animation-delay: 0.125s;
-                animation-delay: 0.125s; }
-              .betterangels.actor .window-content form.editable .sheet-body .tab.active .menu-positioner .radial-menu.size50px-8items .menu-container .menu-button:nth-child(2) button,
-              .betterangels.actor .window-content form.editable .sheet-body .tab.active .menu-positioner .radial-menu.size50px-8items .menu-container .menu-button:nth-child(2) label {
-                -webkit-animation-delay: 0.25s;
-                animation-delay: 0.25s; }
-              .betterangels.actor .window-content form.editable .sheet-body .tab.active .menu-positioner .radial-menu.size50px-8items .menu-container .menu-button:nth-child(3) button,
-              .betterangels.actor .window-content form.editable .sheet-body .tab.active .menu-positioner .radial-menu.size50px-8items .menu-container .menu-button:nth-child(3) label {
-                -webkit-animation-delay: 0.375s;
-                animation-delay: 0.375s; }
-              .betterangels.actor .window-content form.editable .sheet-body .tab.active .menu-positioner .radial-menu.size50px-8items .menu-container .menu-button:nth-child(4) button,
-              .betterangels.actor .window-content form.editable .sheet-body .tab.active .menu-positioner .radial-menu.size50px-8items .menu-container .menu-button:nth-child(4) label {
-                -webkit-animation-delay: 0.5s;
-                animation-delay: 0.5s; }
-              .betterangels.actor .window-content form.editable .sheet-body .tab.active .menu-positioner .radial-menu.size50px-8items .menu-container .menu-button:nth-child(5) button,
-              .betterangels.actor .window-content form.editable .sheet-body .tab.active .menu-positioner .radial-menu.size50px-8items .menu-container .menu-button:nth-child(5) label {
-                -webkit-animation-delay: 0.625s;
-                animation-delay: 0.625s; }
-              .betterangels.actor .window-content form.editable .sheet-body .tab.active .menu-positioner .radial-menu.size50px-8items .menu-container .menu-button:nth-child(6) button,
-              .betterangels.actor .window-content form.editable .sheet-body .tab.active .menu-positioner .radial-menu.size50px-8items .menu-container .menu-button:nth-child(6) label {
-                -webkit-animation-delay: 0.75s;
-                animation-delay: 0.75s; }
-              .betterangels.actor .window-content form.editable .sheet-body .tab.active .menu-positioner .radial-menu.size50px-8items .menu-container .menu-button:nth-child(7) button,
-              .betterangels.actor .window-content form.editable .sheet-body .tab.active .menu-positioner .radial-menu.size50px-8items .menu-container .menu-button:nth-child(7) label {
-                -webkit-animation-delay: 0.875s;
-                animation-delay: 0.875s; }
-              .betterangels.actor .window-content form.editable .sheet-body .tab.active .menu-positioner .radial-menu.size50px-8items .menu-container .menu-button:nth-child(8) button,
-              .betterangels.actor .window-content form.editable .sheet-body .tab.active .menu-positioner .radial-menu.size50px-8items .menu-container .menu-button:nth-child(8) label {
-                -webkit-animation-delay: 1s;
-                animation-delay: 1s; }
-              .betterangels.actor .window-content form.editable .sheet-body .tab.active .menu-positioner .radial-menu.size50px-8items .menu-container .menu-button {
-                margin-top: -7px;
-                margin-left: -12.5px; }
-                .betterangels.actor .window-content form.editable .sheet-body .tab.active .menu-positioner .radial-menu.size50px-8items .menu-container .menu-button:nth-of-type(1) {
-                  -webkit-transform: rotate(0deg) translate(25px) rotate(0deg) translateX(0px);
-                  -ms-transform: rotate(0deg) translate(25px) rotate(0deg) translateX(0px);
-                  transform: rotate(0deg) translate(25px) rotate(0deg) translateX(0px); }
-                .betterangels.actor .window-content form.editable .sheet-body .tab.active .menu-positioner .radial-menu.size50px-8items .menu-container .menu-button:nth-of-type(2) {
-                  -webkit-transform: rotate(45deg) translate(25px) rotate(-45deg) translateX(0px) translateY(0px);
-                  -ms-transform: rotate(45deg) translate(25px) rotate(-45deg) translateX(0px) translateY(0px);
-                  transform: rotate(45deg) translate(25px) rotate(-45deg) translateX(0px) translateY(0px); }
-                .betterangels.actor .window-content form.editable .sheet-body .tab.active .menu-positioner .radial-menu.size50px-8items .menu-container .menu-button:nth-of-type(3) {
-                  -webkit-transform: rotate(90deg) translate(25px) rotate(-90deg) translateX(0px) translateY(0px);
-                  -ms-transform: rotate(90deg) translate(25px) rotate(-90deg) translateX(0px) translateY(0px);
-                  transform: rotate(90deg) translate(25px) rotate(-90deg) translateX(0px) translateY(0px); }
-                .betterangels.actor .window-content form.editable .sheet-body .tab.active .menu-positioner .radial-menu.size50px-8items .menu-container .menu-button:nth-of-type(4) {
-                  -webkit-transform: rotate(135deg) translate(25px) rotate(-135deg) translateX(0px) translateY(-0px);
-                  -ms-transform: rotate(135deg) translate(25px) rotate(-135deg) translateX(0px) translateY(-0px);
-                  transform: rotate(135deg) translate(25px) rotate(-135deg) translateX(0px) translateY(-0px); }
-                .betterangels.actor .window-content form.editable .sheet-body .tab.active .menu-positioner .radial-menu.size50px-8items .menu-container .menu-button:nth-of-type(5) {
-                  -webkit-transform: rotate(180deg) translate(25px) rotate(-180deg) translateX(-0px);
-                  -ms-transform: rotate(180deg) translate(25px) rotate(-180deg) translateX(-0px);
-                  transform: rotate(180deg) translate(25px) rotate(-180deg) translateX(-0px); }
-                .betterangels.actor .window-content form.editable .sheet-body .tab.active .menu-positioner .radial-menu.size50px-8items .menu-container .menu-button:nth-of-type(6) {
-                  -webkit-transform: rotate(225deg) translate(25px) rotate(-225deg) translateX(-0px) translateY(-0px);
-                  -ms-transform: rotate(225deg) translate(25px) rotate(-225deg) translateX(-0px) translateY(-0px);
-                  transform: rotate(225deg) translate(25px) rotate(-225deg) translateX(-0px) translateY(-0px); }
-                .betterangels.actor .window-content form.editable .sheet-body .tab.active .menu-positioner .radial-menu.size50px-8items .menu-container .menu-button:nth-of-type(7) {
-                  -webkit-transform: rotate(270deg) translate(25px) rotate(-270deg) translateX(-0px) translateY(-0px);
-                  -ms-transform: rotate(270deg) translate(25px) rotate(-270deg) translateX(-0px) translateY(-0px);
-                  transform: rotate(270deg) translate(25px) rotate(-270deg) translateX(-0px) translateY(-0px); }
-                .betterangels.actor .window-content form.editable .sheet-body .tab.active .menu-positioner .radial-menu.size50px-8items .menu-container .menu-button:nth-of-type(8) {
-                  -webkit-transform: rotate(315deg) translate(25px) rotate(-315deg) translateX(-0px) translateY(0px);
-                  -ms-transform: rotate(315deg) translate(25px) rotate(-315deg) translateX(-0px) translateY(0px);
-                  transform: rotate(315deg) translate(25px) rotate(-315deg) translateX(-0px) translateY(0px); }
-            .betterangels.actor .window-content form.editable .sheet-body .tab.active .menu-positioner .radial-menu.size100px-8items {
-              top: calc(50% - 100px);
-              left: calc(50% - 100px);
-              z-index: 6;
-              width: 200px;
-              height: 200px; }
-              .betterangels.actor .window-content form.editable .sheet-body .tab.active .menu-positioner .radial-menu.size100px-8items .menu-container .menu-button:nth-child(1) button,
-              .betterangels.actor .window-content form.editable .sheet-body .tab.active .menu-positioner .radial-menu.size100px-8items .menu-container .menu-button:nth-child(1) label {
-                -webkit-animation-delay: 0.125s;
-                animation-delay: 0.125s; }
-              .betterangels.actor .window-content form.editable .sheet-body .tab.active .menu-positioner .radial-menu.size100px-8items .menu-container .menu-button:nth-child(2) button,
-              .betterangels.actor .window-content form.editable .sheet-body .tab.active .menu-positioner .radial-menu.size100px-8items .menu-container .menu-button:nth-child(2) label {
-                -webkit-animation-delay: 0.25s;
-                animation-delay: 0.25s; }
-              .betterangels.actor .window-content form.editable .sheet-body .tab.active .menu-positioner .radial-menu.size100px-8items .menu-container .menu-button:nth-child(3) button,
-              .betterangels.actor .window-content form.editable .sheet-body .tab.active .menu-positioner .radial-menu.size100px-8items .menu-container .menu-button:nth-child(3) label {
-                -webkit-animation-delay: 0.375s;
-                animation-delay: 0.375s; }
-              .betterangels.actor .window-content form.editable .sheet-body .tab.active .menu-positioner .radial-menu.size100px-8items .menu-container .menu-button:nth-child(4) button,
-              .betterangels.actor .window-content form.editable .sheet-body .tab.active .menu-positioner .radial-menu.size100px-8items .menu-container .menu-button:nth-child(4) label {
-                -webkit-animation-delay: 0.5s;
-                animation-delay: 0.5s; }
-              .betterangels.actor .window-content form.editable .sheet-body .tab.active .menu-positioner .radial-menu.size100px-8items .menu-container .menu-button:nth-child(5) button,
-              .betterangels.actor .window-content form.editable .sheet-body .tab.active .menu-positioner .radial-menu.size100px-8items .menu-container .menu-button:nth-child(5) label {
-                -webkit-animation-delay: 0.625s;
-                animation-delay: 0.625s; }
-              .betterangels.actor .window-content form.editable .sheet-body .tab.active .menu-positioner .radial-menu.size100px-8items .menu-container .menu-button:nth-child(6) button,
-              .betterangels.actor .window-content form.editable .sheet-body .tab.active .menu-positioner .radial-menu.size100px-8items .menu-container .menu-button:nth-child(6) label {
-                -webkit-animation-delay: 0.75s;
-                animation-delay: 0.75s; }
-              .betterangels.actor .window-content form.editable .sheet-body .tab.active .menu-positioner .radial-menu.size100px-8items .menu-container .menu-button:nth-child(7) button,
-              .betterangels.actor .window-content form.editable .sheet-body .tab.active .menu-positioner .radial-menu.size100px-8items .menu-container .menu-button:nth-child(7) label {
-                -webkit-animation-delay: 0.875s;
-                animation-delay: 0.875s; }
-              .betterangels.actor .window-content form.editable .sheet-body .tab.active .menu-positioner .radial-menu.size100px-8items .menu-container .menu-button:nth-child(8) button,
-              .betterangels.actor .window-content form.editable .sheet-body .tab.active .menu-positioner .radial-menu.size100px-8items .menu-container .menu-button:nth-child(8) label {
-                -webkit-animation-delay: 1s;
-                animation-delay: 1s; }
-              .betterangels.actor .window-content form.editable .sheet-body .tab.active .menu-positioner .radial-menu.size100px-8items .menu-container .menu-button {
-                margin-top: -7px;
-                margin-left: -25px; }
-                .betterangels.actor .window-content form.editable .sheet-body .tab.active .menu-positioner .radial-menu.size100px-8items .menu-container .menu-button:nth-of-type(1) {
-                  -webkit-transform: rotate(0deg) translate(50px) rotate(0deg) translateX(0px);
-                  -ms-transform: rotate(0deg) translate(50px) rotate(0deg) translateX(0px);
-                  transform: rotate(0deg) translate(50px) rotate(0deg) translateX(0px); }
-                .betterangels.actor .window-content form.editable .sheet-body .tab.active .menu-positioner .radial-menu.size100px-8items .menu-container .menu-button:nth-of-type(2) {
-                  -webkit-transform: rotate(45deg) translate(50px) rotate(-45deg) translateX(0px) translateY(0px);
-                  -ms-transform: rotate(45deg) translate(50px) rotate(-45deg) translateX(0px) translateY(0px);
-                  transform: rotate(45deg) translate(50px) rotate(-45deg) translateX(0px) translateY(0px); }
-                .betterangels.actor .window-content form.editable .sheet-body .tab.active .menu-positioner .radial-menu.size100px-8items .menu-container .menu-button:nth-of-type(3) {
-                  -webkit-transform: rotate(90deg) translate(50px) rotate(-90deg) translateX(0px) translateY(0px);
-                  -ms-transform: rotate(90deg) translate(50px) rotate(-90deg) translateX(0px) translateY(0px);
-                  transform: rotate(90deg) translate(50px) rotate(-90deg) translateX(0px) translateY(0px); }
-                .betterangels.actor .window-content form.editable .sheet-body .tab.active .menu-positioner .radial-menu.size100px-8items .menu-container .menu-button:nth-of-type(4) {
-                  -webkit-transform: rotate(135deg) translate(50px) rotate(-135deg) translateX(0px) translateY(-0px);
-                  -ms-transform: rotate(135deg) translate(50px) rotate(-135deg) translateX(0px) translateY(-0px);
-                  transform: rotate(135deg) translate(50px) rotate(-135deg) translateX(0px) translateY(-0px); }
-                .betterangels.actor .window-content form.editable .sheet-body .tab.active .menu-positioner .radial-menu.size100px-8items .menu-container .menu-button:nth-of-type(5) {
-                  -webkit-transform: rotate(180deg) translate(50px) rotate(-180deg) translateX(-0px);
-                  -ms-transform: rotate(180deg) translate(50px) rotate(-180deg) translateX(-0px);
-                  transform: rotate(180deg) translate(50px) rotate(-180deg) translateX(-0px); }
-                .betterangels.actor .window-content form.editable .sheet-body .tab.active .menu-positioner .radial-menu.size100px-8items .menu-container .menu-button:nth-of-type(6) {
-                  -webkit-transform: rotate(225deg) translate(50px) rotate(-225deg) translateX(-0px) translateY(-0px);
-                  -ms-transform: rotate(225deg) translate(50px) rotate(-225deg) translateX(-0px) translateY(-0px);
-                  transform: rotate(225deg) translate(50px) rotate(-225deg) translateX(-0px) translateY(-0px); }
-                .betterangels.actor .window-content form.editable .sheet-body .tab.active .menu-positioner .radial-menu.size100px-8items .menu-container .menu-button:nth-of-type(7) {
-                  -webkit-transform: rotate(270deg) translate(50px) rotate(-270deg) translateX(-0px) translateY(-0px);
-                  -ms-transform: rotate(270deg) translate(50px) rotate(-270deg) translateX(-0px) translateY(-0px);
-                  transform: rotate(270deg) translate(50px) rotate(-270deg) translateX(-0px) translateY(-0px); }
-                .betterangels.actor .window-content form.editable .sheet-body .tab.active .menu-positioner .radial-menu.size100px-8items .menu-container .menu-button:nth-of-type(8) {
-                  -webkit-transform: rotate(315deg) translate(50px) rotate(-315deg) translateX(-0px) translateY(0px);
-                  -ms-transform: rotate(315deg) translate(50px) rotate(-315deg) translateX(-0px) translateY(0px);
-                  transform: rotate(315deg) translate(50px) rotate(-315deg) translateX(-0px) translateY(0px); }
-            .betterangels.actor .window-content form.editable .sheet-body .tab.active .menu-positioner .radial-menu.size150px-8items {
-              top: calc(50% - 150px);
-              left: calc(50% - 150px);
-              z-index: 6;
-              width: 300px;
-              height: 300px; }
-              .betterangels.actor .window-content form.editable .sheet-body .tab.active .menu-positioner .radial-menu.size150px-8items .menu-container .menu-button:nth-child(1) button,
-              .betterangels.actor .window-content form.editable .sheet-body .tab.active .menu-positioner .radial-menu.size150px-8items .menu-container .menu-button:nth-child(1) label {
-                -webkit-animation-delay: 0.125s;
-                animation-delay: 0.125s; }
-              .betterangels.actor .window-content form.editable .sheet-body .tab.active .menu-positioner .radial-menu.size150px-8items .menu-container .menu-button:nth-child(2) button,
-              .betterangels.actor .window-content form.editable .sheet-body .tab.active .menu-positioner .radial-menu.size150px-8items .menu-container .menu-button:nth-child(2) label {
-                -webkit-animation-delay: 0.25s;
-                animation-delay: 0.25s; }
-              .betterangels.actor .window-content form.editable .sheet-body .tab.active .menu-positioner .radial-menu.size150px-8items .menu-container .menu-button:nth-child(3) button,
-              .betterangels.actor .window-content form.editable .sheet-body .tab.active .menu-positioner .radial-menu.size150px-8items .menu-container .menu-button:nth-child(3) label {
-                -webkit-animation-delay: 0.375s;
-                animation-delay: 0.375s; }
-              .betterangels.actor .window-content form.editable .sheet-body .tab.active .menu-positioner .radial-menu.size150px-8items .menu-container .menu-button:nth-child(4) button,
-              .betterangels.actor .window-content form.editable .sheet-body .tab.active .menu-positioner .radial-menu.size150px-8items .menu-container .menu-button:nth-child(4) label {
-                -webkit-animation-delay: 0.5s;
-                animation-delay: 0.5s; }
-              .betterangels.actor .window-content form.editable .sheet-body .tab.active .menu-positioner .radial-menu.size150px-8items .menu-container .menu-button:nth-child(5) button,
-              .betterangels.actor .window-content form.editable .sheet-body .tab.active .menu-positioner .radial-menu.size150px-8items .menu-container .menu-button:nth-child(5) label {
-                -webkit-animation-delay: 0.625s;
-                animation-delay: 0.625s; }
-              .betterangels.actor .window-content form.editable .sheet-body .tab.active .menu-positioner .radial-menu.size150px-8items .menu-container .menu-button:nth-child(6) button,
-              .betterangels.actor .window-content form.editable .sheet-body .tab.active .menu-positioner .radial-menu.size150px-8items .menu-container .menu-button:nth-child(6) label {
-                -webkit-animation-delay: 0.75s;
-                animation-delay: 0.75s; }
-              .betterangels.actor .window-content form.editable .sheet-body .tab.active .menu-positioner .radial-menu.size150px-8items .menu-container .menu-button:nth-child(7) button,
-              .betterangels.actor .window-content form.editable .sheet-body .tab.active .menu-positioner .radial-menu.size150px-8items .menu-container .menu-button:nth-child(7) label {
-                -webkit-animation-delay: 0.875s;
-                animation-delay: 0.875s; }
-              .betterangels.actor .window-content form.editable .sheet-body .tab.active .menu-positioner .radial-menu.size150px-8items .menu-container .menu-button:nth-child(8) button,
-              .betterangels.actor .window-content form.editable .sheet-body .tab.active .menu-positioner .radial-menu.size150px-8items .menu-container .menu-button:nth-child(8) label {
-                -webkit-animation-delay: 1s;
-                animation-delay: 1s; }
-              .betterangels.actor .window-content form.editable .sheet-body .tab.active .menu-positioner .radial-menu.size150px-8items .menu-container .menu-button {
-                margin-top: -7px;
-                margin-left: -37.5px; }
-                .betterangels.actor .window-content form.editable .sheet-body .tab.active .menu-positioner .radial-menu.size150px-8items .menu-container .menu-button:nth-of-type(1) {
-                  -webkit-transform: rotate(0deg) translate(75px) rotate(0deg) translateX(0px);
-                  -ms-transform: rotate(0deg) translate(75px) rotate(0deg) translateX(0px);
-                  transform: rotate(0deg) translate(75px) rotate(0deg) translateX(0px); }
-                .betterangels.actor .window-content form.editable .sheet-body .tab.active .menu-positioner .radial-menu.size150px-8items .menu-container .menu-button:nth-of-type(2) {
-                  -webkit-transform: rotate(45deg) translate(75px) rotate(-45deg) translateX(0px) translateY(0px);
-                  -ms-transform: rotate(45deg) translate(75px) rotate(-45deg) translateX(0px) translateY(0px);
-                  transform: rotate(45deg) translate(75px) rotate(-45deg) translateX(0px) translateY(0px); }
-                .betterangels.actor .window-content form.editable .sheet-body .tab.active .menu-positioner .radial-menu.size150px-8items .menu-container .menu-button:nth-of-type(3) {
-                  -webkit-transform: rotate(90deg) translate(75px) rotate(-90deg) translateX(0px) translateY(0px);
-                  -ms-transform: rotate(90deg) translate(75px) rotate(-90deg) translateX(0px) translateY(0px);
-                  transform: rotate(90deg) translate(75px) rotate(-90deg) translateX(0px) translateY(0px); }
-                .betterangels.actor .window-content form.editable .sheet-body .tab.active .menu-positioner .radial-menu.size150px-8items .menu-container .menu-button:nth-of-type(4) {
-                  -webkit-transform: rotate(135deg) translate(75px) rotate(-135deg) translateX(0px) translateY(-0px);
-                  -ms-transform: rotate(135deg) translate(75px) rotate(-135deg) translateX(0px) translateY(-0px);
-                  transform: rotate(135deg) translate(75px) rotate(-135deg) translateX(0px) translateY(-0px); }
-                .betterangels.actor .window-content form.editable .sheet-body .tab.active .menu-positioner .radial-menu.size150px-8items .menu-container .menu-button:nth-of-type(5) {
-                  -webkit-transform: rotate(180deg) translate(75px) rotate(-180deg) translateX(-0px);
-                  -ms-transform: rotate(180deg) translate(75px) rotate(-180deg) translateX(-0px);
-                  transform: rotate(180deg) translate(75px) rotate(-180deg) translateX(-0px); }
-                .betterangels.actor .window-content form.editable .sheet-body .tab.active .menu-positioner .radial-menu.size150px-8items .menu-container .menu-button:nth-of-type(6) {
-                  -webkit-transform: rotate(225deg) translate(75px) rotate(-225deg) translateX(-0px) translateY(-0px);
-                  -ms-transform: rotate(225deg) translate(75px) rotate(-225deg) translateX(-0px) translateY(-0px);
-                  transform: rotate(225deg) translate(75px) rotate(-225deg) translateX(-0px) translateY(-0px); }
-                .betterangels.actor .window-content form.editable .sheet-body .tab.active .menu-positioner .radial-menu.size150px-8items .menu-container .menu-button:nth-of-type(7) {
-                  -webkit-transform: rotate(270deg) translate(75px) rotate(-270deg) translateX(-0px) translateY(-0px);
-                  -ms-transform: rotate(270deg) translate(75px) rotate(-270deg) translateX(-0px) translateY(-0px);
-                  transform: rotate(270deg) translate(75px) rotate(-270deg) translateX(-0px) translateY(-0px); }
-                .betterangels.actor .window-content form.editable .sheet-body .tab.active .menu-positioner .radial-menu.size150px-8items .menu-container .menu-button:nth-of-type(8) {
-                  -webkit-transform: rotate(315deg) translate(75px) rotate(-315deg) translateX(-0px) translateY(0px);
-                  -ms-transform: rotate(315deg) translate(75px) rotate(-315deg) translateX(-0px) translateY(0px);
-                  transform: rotate(315deg) translate(75px) rotate(-315deg) translateX(-0px) translateY(0px); }
-            .betterangels.actor .window-content form.editable .sheet-body .tab.active .menu-positioner .radial-menu.depth-1 {
-              z-index: 2; }
-            .betterangels.actor .window-content form.editable .sheet-body .tab.active .menu-positioner .radial-menu.depth-2 {
-              z-index: 4; }
-            .betterangels.actor .window-content form.editable .sheet-body .tab.active .menu-positioner .radial-menu.depth-3 {
-              z-index: 6; }
-            .betterangels.actor .window-content form.editable .sheet-body .tab.active .menu-positioner .radial-menu.depth-4 {
-              z-index: 8; }
-            .betterangels.actor .window-content form.editable .sheet-body .tab.active .menu-positioner .radial-menu:not(.active) {
-              pointer-events: none !important; }
-              .betterangels.actor .window-content form.editable .sheet-body .tab.active .menu-positioner .radial-menu:not(.active) * {
-                pointer-events: none !important; }
-            .betterangels.actor .window-content form.editable .sheet-body .tab.active .menu-positioner .radial-menu video {
+            pointer-events: none; }
+            .betterangels.actor .window-content form.editable .sheet-body .tab.front .trait-panel .trait-cell .trait-name .trait-label {
+              display: block;
               position: absolute;
-              top: -50%;
-              left: -50%;
-              width: 200%;
-              height: 200%;
-              opacity: 100%;
-              -webkit-transform: scale(1.75);
-              -ms-transform: scale(1.75);
-              transform: scale(1.75);
-              opacity: 0.75; }
-            .betterangels.actor .window-content form.editable .sheet-body .tab.active .menu-positioner .radial-menu .menu-container {
+              width: -webkit-min-content;
+              width: -moz-min-content;
+              width: min-content;
+              min-width: 50%;
+              color: #999999;
+              z-index: 1;
+              pointer-events: all; }
+              .betterangels.actor .window-content form.editable .sheet-body .tab.front .trait-panel .trait-cell .trait-name .trait-label[data-type="tactic"] {
+                font-size: 1.5em;
+                font-variant: normal;
+                font-weight: normal;
+                font-style: normal;
+                line-height: 1.5em;
+                letter-spacing: normal;
+                word-spacing: normal;
+                text-decoration: none;
+                text-indent: 0;
+                text-shadow: 0 0 0.12em black, 0 0 0.12em black, 0 0 0.12em black, 0 0 0.12em black, 0 0 0.12em black;
+                text-transform: none;
+                text-align: center;
+                white-space: nowrap;
+                font-family: KomikaDisplay;
+                font-size: 1em;
+                line-height: 1em; }
+              .betterangels.actor .window-content form.editable .sheet-body .tab.front .trait-panel .trait-cell .trait-name .trait-label[data-type="strategy"] {
+                font-size: 1.5em;
+                font-variant: normal;
+                font-weight: normal;
+                font-style: normal;
+                line-height: 1.5em;
+                letter-spacing: normal;
+                word-spacing: normal;
+                text-decoration: none;
+                text-indent: 0;
+                text-shadow: 0 0 0.12em black, 0 0 0.12em black, 0 0 0.12em black, 0 0 0.12em black, 0 0 0.12em black;
+                text-transform: none;
+                text-align: center;
+                white-space: nowrap;
+                font-family: Bangers;
+                line-height: 1em; }
+              .betterangels.actor .window-content form.editable .sheet-body .tab.front .trait-panel .trait-cell .trait-name .trait-label[data-sub-type="sinister"] {
+                left: 0;
+                bottom: 0;
+                text-align: left;
+                -webkit-transform-origin: 25% 50%;
+                -ms-transform-origin: 25% 50%;
+                transform-origin: 25% 50%; }
+              .betterangels.actor .window-content form.editable .sheet-body .tab.front .trait-panel .trait-cell .trait-name .trait-label[data-sub-type="virtuous"] {
+                right: 0;
+                top: 0;
+                text-align: right;
+                -webkit-transform-origin: 75% 50%;
+                -ms-transform-origin: 75% 50%;
+                transform-origin: 75% 50%; }
+              .betterangels.actor .window-content form.editable .sheet-body .tab.front .trait-panel .trait-cell .trait-name .trait-label.trait-label-bg {
+                visibility: hidden;
+                color: #222222;
+                text-shadow: -1px 1px 1px gray, 1px -1px 1px black; }
+          .betterangels.actor .window-content form.editable .sheet-body .tab.front .trait-panel .trait-cell .dot-line {
+            display: grid;
+            grid-template-columns: 1fr repeat(7, 1em) 1fr;
+            grid-template-rows: 1em;
+            grid-gap: 0.25em; }
+            .betterangels.actor .window-content form.editable .sheet-body .tab.front .trait-panel .trait-cell .dot-line .dot {
+              position: relative;
+              border: 1px solid #999999;
+              border-radius: 50%;
+              grid-row: 1 / 2;
+              background: transparent; }
+              .betterangels.actor .window-content form.editable .sheet-body .tab.front .trait-panel .trait-cell .dot-line .dot.full {
+                background: -o-radial-gradient(ellipse, white, #999999 70%);
+                background: radial-gradient(ellipse, white, #999999 70%); }
+            .betterangels.actor .window-content form.editable .sheet-body .tab.front .trait-panel .trait-cell .dot-line[data-sub-type="sinister"] .dot-1 {
+              grid-column: 2 / 3; }
+            .betterangels.actor .window-content form.editable .sheet-body .tab.front .trait-panel .trait-cell .dot-line[data-sub-type="virtuous"] .dot-1 {
+              grid-column: 8 / 9; }
+            .betterangels.actor .window-content form.editable .sheet-body .tab.front .trait-panel .trait-cell .dot-line[data-sub-type="sinister"] .dot-2 {
+              grid-column: 3 / 4; }
+            .betterangels.actor .window-content form.editable .sheet-body .tab.front .trait-panel .trait-cell .dot-line[data-sub-type="virtuous"] .dot-2 {
+              grid-column: 7 / 8; }
+            .betterangels.actor .window-content form.editable .sheet-body .tab.front .trait-panel .trait-cell .dot-line[data-sub-type="sinister"] .dot-3 {
+              grid-column: 4 / 5; }
+            .betterangels.actor .window-content form.editable .sheet-body .tab.front .trait-panel .trait-cell .dot-line[data-sub-type="virtuous"] .dot-3 {
+              grid-column: 6 / 7; }
+            .betterangels.actor .window-content form.editable .sheet-body .tab.front .trait-panel .trait-cell .dot-line[data-sub-type="sinister"] .dot-4 {
+              grid-column: 5 / 6; }
+            .betterangels.actor .window-content form.editable .sheet-body .tab.front .trait-panel .trait-cell .dot-line[data-sub-type="virtuous"] .dot-4 {
+              grid-column: 5 / 6; }
+            .betterangels.actor .window-content form.editable .sheet-body .tab.front .trait-panel .trait-cell .dot-line[data-sub-type="sinister"] .dot-5 {
+              grid-column: 6 / 7; }
+            .betterangels.actor .window-content form.editable .sheet-body .tab.front .trait-panel .trait-cell .dot-line[data-sub-type="virtuous"] .dot-5 {
+              grid-column: 4 / 5; }
+          .betterangels.actor .window-content form.editable .sheet-body .tab.front .trait-panel .trait-cell .menu-positioner {
+            position: absolute; }
+            .betterangels.actor .window-content form.editable .sheet-body .tab.front .trait-panel .trait-cell .menu-positioner .radial-menu {
               position: absolute;
-              top: -20%;
-              left: -20%;
-              width: 140%;
-              height: 140%;
-              list-style: none; }
-              .betterangels.actor .window-content form.editable .sheet-body .tab.active .menu-positioner .radial-menu .menu-container .menu-button {
+              display: block;
+              padding: 0;
+              background: transparent;
+              border-radius: 50%;
+              opacity: 0%;
+              -webkit-transition: 0.5s;
+              -o-transition: 0.5s;
+              transition: 0.5s;
+              -webkit-transform: scale(0.3) rotate(-125deg);
+              -ms-transform: scale(0.3) rotate(-125deg);
+              transform: scale(0.3) rotate(-125deg); }
+              .betterangels.actor .window-content form.editable .sheet-body .tab.front .trait-panel .trait-cell .menu-positioner .radial-menu.size60px-8items {
+                top: calc(50% - 60px);
+                left: calc(50% - 60px);
+                z-index: 6;
+                width: 120px;
+                height: 120px; }
+                .betterangels.actor .window-content form.editable .sheet-body .tab.front .trait-panel .trait-cell .menu-positioner .radial-menu.size60px-8items .menu-container .menu-button:nth-child(1) button, .betterangels.actor .window-content form.editable .sheet-body .tab.front .trait-panel .trait-cell .menu-positioner .radial-menu.size60px-8items .menu-container .menu-button:nth-child(1) label {
+                  -webkit-animation-delay: 0.125s;
+                  animation-delay: 0.125s; }
+                .betterangels.actor .window-content form.editable .sheet-body .tab.front .trait-panel .trait-cell .menu-positioner .radial-menu.size60px-8items .menu-container .menu-button:nth-child(2) button, .betterangels.actor .window-content form.editable .sheet-body .tab.front .trait-panel .trait-cell .menu-positioner .radial-menu.size60px-8items .menu-container .menu-button:nth-child(2) label {
+                  -webkit-animation-delay: 0.25s;
+                  animation-delay: 0.25s; }
+                .betterangels.actor .window-content form.editable .sheet-body .tab.front .trait-panel .trait-cell .menu-positioner .radial-menu.size60px-8items .menu-container .menu-button:nth-child(3) button, .betterangels.actor .window-content form.editable .sheet-body .tab.front .trait-panel .trait-cell .menu-positioner .radial-menu.size60px-8items .menu-container .menu-button:nth-child(3) label {
+                  -webkit-animation-delay: 0.375s;
+                  animation-delay: 0.375s; }
+                .betterangels.actor .window-content form.editable .sheet-body .tab.front .trait-panel .trait-cell .menu-positioner .radial-menu.size60px-8items .menu-container .menu-button:nth-child(4) button, .betterangels.actor .window-content form.editable .sheet-body .tab.front .trait-panel .trait-cell .menu-positioner .radial-menu.size60px-8items .menu-container .menu-button:nth-child(4) label {
+                  -webkit-animation-delay: 0.5s;
+                  animation-delay: 0.5s; }
+                .betterangels.actor .window-content form.editable .sheet-body .tab.front .trait-panel .trait-cell .menu-positioner .radial-menu.size60px-8items .menu-container .menu-button:nth-child(5) button, .betterangels.actor .window-content form.editable .sheet-body .tab.front .trait-panel .trait-cell .menu-positioner .radial-menu.size60px-8items .menu-container .menu-button:nth-child(5) label {
+                  -webkit-animation-delay: 0.625s;
+                  animation-delay: 0.625s; }
+                .betterangels.actor .window-content form.editable .sheet-body .tab.front .trait-panel .trait-cell .menu-positioner .radial-menu.size60px-8items .menu-container .menu-button:nth-child(6) button, .betterangels.actor .window-content form.editable .sheet-body .tab.front .trait-panel .trait-cell .menu-positioner .radial-menu.size60px-8items .menu-container .menu-button:nth-child(6) label {
+                  -webkit-animation-delay: 0.75s;
+                  animation-delay: 0.75s; }
+                .betterangels.actor .window-content form.editable .sheet-body .tab.front .trait-panel .trait-cell .menu-positioner .radial-menu.size60px-8items .menu-container .menu-button:nth-child(7) button, .betterangels.actor .window-content form.editable .sheet-body .tab.front .trait-panel .trait-cell .menu-positioner .radial-menu.size60px-8items .menu-container .menu-button:nth-child(7) label {
+                  -webkit-animation-delay: 0.875s;
+                  animation-delay: 0.875s; }
+                .betterangels.actor .window-content form.editable .sheet-body .tab.front .trait-panel .trait-cell .menu-positioner .radial-menu.size60px-8items .menu-container .menu-button:nth-child(8) button, .betterangels.actor .window-content form.editable .sheet-body .tab.front .trait-panel .trait-cell .menu-positioner .radial-menu.size60px-8items .menu-container .menu-button:nth-child(8) label {
+                  -webkit-animation-delay: 1s;
+                  animation-delay: 1s; }
+                .betterangels.actor .window-content form.editable .sheet-body .tab.front .trait-panel .trait-cell .menu-positioner .radial-menu.size60px-8items .menu-container .menu-button {
+                  margin-top: -7px;
+                  margin-left: -15px; }
+                  .betterangels.actor .window-content form.editable .sheet-body .tab.front .trait-panel .trait-cell .menu-positioner .radial-menu.size60px-8items .menu-container .menu-button:nth-of-type(1) {
+                    -webkit-transform: rotate(0deg) translate(30px) rotate(0deg) translateX(0px);
+                    -ms-transform: rotate(0deg) translate(30px) rotate(0deg) translateX(0px);
+                    transform: rotate(0deg) translate(30px) rotate(0deg) translateX(0px); }
+                  .betterangels.actor .window-content form.editable .sheet-body .tab.front .trait-panel .trait-cell .menu-positioner .radial-menu.size60px-8items .menu-container .menu-button:nth-of-type(2) {
+                    -webkit-transform: rotate(45deg) translate(30px) rotate(-45deg) translateX(0px) translateY(0px);
+                    -ms-transform: rotate(45deg) translate(30px) rotate(-45deg) translateX(0px) translateY(0px);
+                    transform: rotate(45deg) translate(30px) rotate(-45deg) translateX(0px) translateY(0px); }
+                  .betterangels.actor .window-content form.editable .sheet-body .tab.front .trait-panel .trait-cell .menu-positioner .radial-menu.size60px-8items .menu-container .menu-button:nth-of-type(3) {
+                    -webkit-transform: rotate(90deg) translate(30px) rotate(-90deg) translateX(0px) translateY(0px);
+                    -ms-transform: rotate(90deg) translate(30px) rotate(-90deg) translateX(0px) translateY(0px);
+                    transform: rotate(90deg) translate(30px) rotate(-90deg) translateX(0px) translateY(0px); }
+                  .betterangels.actor .window-content form.editable .sheet-body .tab.front .trait-panel .trait-cell .menu-positioner .radial-menu.size60px-8items .menu-container .menu-button:nth-of-type(4) {
+                    -webkit-transform: rotate(135deg) translate(30px) rotate(-135deg) translateX(0px) translateY(-0px);
+                    -ms-transform: rotate(135deg) translate(30px) rotate(-135deg) translateX(0px) translateY(-0px);
+                    transform: rotate(135deg) translate(30px) rotate(-135deg) translateX(0px) translateY(-0px); }
+                  .betterangels.actor .window-content form.editable .sheet-body .tab.front .trait-panel .trait-cell .menu-positioner .radial-menu.size60px-8items .menu-container .menu-button:nth-of-type(5) {
+                    -webkit-transform: rotate(180deg) translate(30px) rotate(-180deg) translateX(-0px);
+                    -ms-transform: rotate(180deg) translate(30px) rotate(-180deg) translateX(-0px);
+                    transform: rotate(180deg) translate(30px) rotate(-180deg) translateX(-0px); }
+                  .betterangels.actor .window-content form.editable .sheet-body .tab.front .trait-panel .trait-cell .menu-positioner .radial-menu.size60px-8items .menu-container .menu-button:nth-of-type(6) {
+                    -webkit-transform: rotate(225deg) translate(30px) rotate(-225deg) translateX(-0px) translateY(-0px);
+                    -ms-transform: rotate(225deg) translate(30px) rotate(-225deg) translateX(-0px) translateY(-0px);
+                    transform: rotate(225deg) translate(30px) rotate(-225deg) translateX(-0px) translateY(-0px); }
+                  .betterangels.actor .window-content form.editable .sheet-body .tab.front .trait-panel .trait-cell .menu-positioner .radial-menu.size60px-8items .menu-container .menu-button:nth-of-type(7) {
+                    -webkit-transform: rotate(270deg) translate(30px) rotate(-270deg) translateX(-0px) translateY(-0px);
+                    -ms-transform: rotate(270deg) translate(30px) rotate(-270deg) translateX(-0px) translateY(-0px);
+                    transform: rotate(270deg) translate(30px) rotate(-270deg) translateX(-0px) translateY(-0px); }
+                  .betterangels.actor .window-content form.editable .sheet-body .tab.front .trait-panel .trait-cell .menu-positioner .radial-menu.size60px-8items .menu-container .menu-button:nth-of-type(8) {
+                    -webkit-transform: rotate(315deg) translate(30px) rotate(-315deg) translateX(-0px) translateY(0px);
+                    -ms-transform: rotate(315deg) translate(30px) rotate(-315deg) translateX(-0px) translateY(0px);
+                    transform: rotate(315deg) translate(30px) rotate(-315deg) translateX(-0px) translateY(0px); }
+              .betterangels.actor .window-content form.editable .sheet-body .tab.front .trait-panel .trait-cell .menu-positioner .radial-menu.size50px-8items {
+                top: calc(50% - 50px);
+                left: calc(50% - 50px);
+                z-index: 6;
+                width: 100px;
+                height: 100px; }
+                .betterangels.actor .window-content form.editable .sheet-body .tab.front .trait-panel .trait-cell .menu-positioner .radial-menu.size50px-8items .menu-container .menu-button:nth-child(1) button, .betterangels.actor .window-content form.editable .sheet-body .tab.front .trait-panel .trait-cell .menu-positioner .radial-menu.size50px-8items .menu-container .menu-button:nth-child(1) label {
+                  -webkit-animation-delay: 0.125s;
+                  animation-delay: 0.125s; }
+                .betterangels.actor .window-content form.editable .sheet-body .tab.front .trait-panel .trait-cell .menu-positioner .radial-menu.size50px-8items .menu-container .menu-button:nth-child(2) button, .betterangels.actor .window-content form.editable .sheet-body .tab.front .trait-panel .trait-cell .menu-positioner .radial-menu.size50px-8items .menu-container .menu-button:nth-child(2) label {
+                  -webkit-animation-delay: 0.25s;
+                  animation-delay: 0.25s; }
+                .betterangels.actor .window-content form.editable .sheet-body .tab.front .trait-panel .trait-cell .menu-positioner .radial-menu.size50px-8items .menu-container .menu-button:nth-child(3) button, .betterangels.actor .window-content form.editable .sheet-body .tab.front .trait-panel .trait-cell .menu-positioner .radial-menu.size50px-8items .menu-container .menu-button:nth-child(3) label {
+                  -webkit-animation-delay: 0.375s;
+                  animation-delay: 0.375s; }
+                .betterangels.actor .window-content form.editable .sheet-body .tab.front .trait-panel .trait-cell .menu-positioner .radial-menu.size50px-8items .menu-container .menu-button:nth-child(4) button, .betterangels.actor .window-content form.editable .sheet-body .tab.front .trait-panel .trait-cell .menu-positioner .radial-menu.size50px-8items .menu-container .menu-button:nth-child(4) label {
+                  -webkit-animation-delay: 0.5s;
+                  animation-delay: 0.5s; }
+                .betterangels.actor .window-content form.editable .sheet-body .tab.front .trait-panel .trait-cell .menu-positioner .radial-menu.size50px-8items .menu-container .menu-button:nth-child(5) button, .betterangels.actor .window-content form.editable .sheet-body .tab.front .trait-panel .trait-cell .menu-positioner .radial-menu.size50px-8items .menu-container .menu-button:nth-child(5) label {
+                  -webkit-animation-delay: 0.625s;
+                  animation-delay: 0.625s; }
+                .betterangels.actor .window-content form.editable .sheet-body .tab.front .trait-panel .trait-cell .menu-positioner .radial-menu.size50px-8items .menu-container .menu-button:nth-child(6) button, .betterangels.actor .window-content form.editable .sheet-body .tab.front .trait-panel .trait-cell .menu-positioner .radial-menu.size50px-8items .menu-container .menu-button:nth-child(6) label {
+                  -webkit-animation-delay: 0.75s;
+                  animation-delay: 0.75s; }
+                .betterangels.actor .window-content form.editable .sheet-body .tab.front .trait-panel .trait-cell .menu-positioner .radial-menu.size50px-8items .menu-container .menu-button:nth-child(7) button, .betterangels.actor .window-content form.editable .sheet-body .tab.front .trait-panel .trait-cell .menu-positioner .radial-menu.size50px-8items .menu-container .menu-button:nth-child(7) label {
+                  -webkit-animation-delay: 0.875s;
+                  animation-delay: 0.875s; }
+                .betterangels.actor .window-content form.editable .sheet-body .tab.front .trait-panel .trait-cell .menu-positioner .radial-menu.size50px-8items .menu-container .menu-button:nth-child(8) button, .betterangels.actor .window-content form.editable .sheet-body .tab.front .trait-panel .trait-cell .menu-positioner .radial-menu.size50px-8items .menu-container .menu-button:nth-child(8) label {
+                  -webkit-animation-delay: 1s;
+                  animation-delay: 1s; }
+                .betterangels.actor .window-content form.editable .sheet-body .tab.front .trait-panel .trait-cell .menu-positioner .radial-menu.size50px-8items .menu-container .menu-button {
+                  margin-top: -7px;
+                  margin-left: -12.5px; }
+                  .betterangels.actor .window-content form.editable .sheet-body .tab.front .trait-panel .trait-cell .menu-positioner .radial-menu.size50px-8items .menu-container .menu-button:nth-of-type(1) {
+                    -webkit-transform: rotate(0deg) translate(25px) rotate(0deg) translateX(0px);
+                    -ms-transform: rotate(0deg) translate(25px) rotate(0deg) translateX(0px);
+                    transform: rotate(0deg) translate(25px) rotate(0deg) translateX(0px); }
+                  .betterangels.actor .window-content form.editable .sheet-body .tab.front .trait-panel .trait-cell .menu-positioner .radial-menu.size50px-8items .menu-container .menu-button:nth-of-type(2) {
+                    -webkit-transform: rotate(45deg) translate(25px) rotate(-45deg) translateX(0px) translateY(0px);
+                    -ms-transform: rotate(45deg) translate(25px) rotate(-45deg) translateX(0px) translateY(0px);
+                    transform: rotate(45deg) translate(25px) rotate(-45deg) translateX(0px) translateY(0px); }
+                  .betterangels.actor .window-content form.editable .sheet-body .tab.front .trait-panel .trait-cell .menu-positioner .radial-menu.size50px-8items .menu-container .menu-button:nth-of-type(3) {
+                    -webkit-transform: rotate(90deg) translate(25px) rotate(-90deg) translateX(0px) translateY(0px);
+                    -ms-transform: rotate(90deg) translate(25px) rotate(-90deg) translateX(0px) translateY(0px);
+                    transform: rotate(90deg) translate(25px) rotate(-90deg) translateX(0px) translateY(0px); }
+                  .betterangels.actor .window-content form.editable .sheet-body .tab.front .trait-panel .trait-cell .menu-positioner .radial-menu.size50px-8items .menu-container .menu-button:nth-of-type(4) {
+                    -webkit-transform: rotate(135deg) translate(25px) rotate(-135deg) translateX(0px) translateY(-0px);
+                    -ms-transform: rotate(135deg) translate(25px) rotate(-135deg) translateX(0px) translateY(-0px);
+                    transform: rotate(135deg) translate(25px) rotate(-135deg) translateX(0px) translateY(-0px); }
+                  .betterangels.actor .window-content form.editable .sheet-body .tab.front .trait-panel .trait-cell .menu-positioner .radial-menu.size50px-8items .menu-container .menu-button:nth-of-type(5) {
+                    -webkit-transform: rotate(180deg) translate(25px) rotate(-180deg) translateX(-0px);
+                    -ms-transform: rotate(180deg) translate(25px) rotate(-180deg) translateX(-0px);
+                    transform: rotate(180deg) translate(25px) rotate(-180deg) translateX(-0px); }
+                  .betterangels.actor .window-content form.editable .sheet-body .tab.front .trait-panel .trait-cell .menu-positioner .radial-menu.size50px-8items .menu-container .menu-button:nth-of-type(6) {
+                    -webkit-transform: rotate(225deg) translate(25px) rotate(-225deg) translateX(-0px) translateY(-0px);
+                    -ms-transform: rotate(225deg) translate(25px) rotate(-225deg) translateX(-0px) translateY(-0px);
+                    transform: rotate(225deg) translate(25px) rotate(-225deg) translateX(-0px) translateY(-0px); }
+                  .betterangels.actor .window-content form.editable .sheet-body .tab.front .trait-panel .trait-cell .menu-positioner .radial-menu.size50px-8items .menu-container .menu-button:nth-of-type(7) {
+                    -webkit-transform: rotate(270deg) translate(25px) rotate(-270deg) translateX(-0px) translateY(-0px);
+                    -ms-transform: rotate(270deg) translate(25px) rotate(-270deg) translateX(-0px) translateY(-0px);
+                    transform: rotate(270deg) translate(25px) rotate(-270deg) translateX(-0px) translateY(-0px); }
+                  .betterangels.actor .window-content form.editable .sheet-body .tab.front .trait-panel .trait-cell .menu-positioner .radial-menu.size50px-8items .menu-container .menu-button:nth-of-type(8) {
+                    -webkit-transform: rotate(315deg) translate(25px) rotate(-315deg) translateX(-0px) translateY(0px);
+                    -ms-transform: rotate(315deg) translate(25px) rotate(-315deg) translateX(-0px) translateY(0px);
+                    transform: rotate(315deg) translate(25px) rotate(-315deg) translateX(-0px) translateY(0px); }
+              .betterangels.actor .window-content form.editable .sheet-body .tab.front .trait-panel .trait-cell .menu-positioner .radial-menu.size100px-8items {
+                top: calc(50% - 100px);
+                left: calc(50% - 100px);
+                z-index: 6;
+                width: 200px;
+                height: 200px; }
+                .betterangels.actor .window-content form.editable .sheet-body .tab.front .trait-panel .trait-cell .menu-positioner .radial-menu.size100px-8items .menu-container .menu-button:nth-child(1) button, .betterangels.actor .window-content form.editable .sheet-body .tab.front .trait-panel .trait-cell .menu-positioner .radial-menu.size100px-8items .menu-container .menu-button:nth-child(1) label {
+                  -webkit-animation-delay: 0.125s;
+                  animation-delay: 0.125s; }
+                .betterangels.actor .window-content form.editable .sheet-body .tab.front .trait-panel .trait-cell .menu-positioner .radial-menu.size100px-8items .menu-container .menu-button:nth-child(2) button, .betterangels.actor .window-content form.editable .sheet-body .tab.front .trait-panel .trait-cell .menu-positioner .radial-menu.size100px-8items .menu-container .menu-button:nth-child(2) label {
+                  -webkit-animation-delay: 0.25s;
+                  animation-delay: 0.25s; }
+                .betterangels.actor .window-content form.editable .sheet-body .tab.front .trait-panel .trait-cell .menu-positioner .radial-menu.size100px-8items .menu-container .menu-button:nth-child(3) button, .betterangels.actor .window-content form.editable .sheet-body .tab.front .trait-panel .trait-cell .menu-positioner .radial-menu.size100px-8items .menu-container .menu-button:nth-child(3) label {
+                  -webkit-animation-delay: 0.375s;
+                  animation-delay: 0.375s; }
+                .betterangels.actor .window-content form.editable .sheet-body .tab.front .trait-panel .trait-cell .menu-positioner .radial-menu.size100px-8items .menu-container .menu-button:nth-child(4) button, .betterangels.actor .window-content form.editable .sheet-body .tab.front .trait-panel .trait-cell .menu-positioner .radial-menu.size100px-8items .menu-container .menu-button:nth-child(4) label {
+                  -webkit-animation-delay: 0.5s;
+                  animation-delay: 0.5s; }
+                .betterangels.actor .window-content form.editable .sheet-body .tab.front .trait-panel .trait-cell .menu-positioner .radial-menu.size100px-8items .menu-container .menu-button:nth-child(5) button, .betterangels.actor .window-content form.editable .sheet-body .tab.front .trait-panel .trait-cell .menu-positioner .radial-menu.size100px-8items .menu-container .menu-button:nth-child(5) label {
+                  -webkit-animation-delay: 0.625s;
+                  animation-delay: 0.625s; }
+                .betterangels.actor .window-content form.editable .sheet-body .tab.front .trait-panel .trait-cell .menu-positioner .radial-menu.size100px-8items .menu-container .menu-button:nth-child(6) button, .betterangels.actor .window-content form.editable .sheet-body .tab.front .trait-panel .trait-cell .menu-positioner .radial-menu.size100px-8items .menu-container .menu-button:nth-child(6) label {
+                  -webkit-animation-delay: 0.75s;
+                  animation-delay: 0.75s; }
+                .betterangels.actor .window-content form.editable .sheet-body .tab.front .trait-panel .trait-cell .menu-positioner .radial-menu.size100px-8items .menu-container .menu-button:nth-child(7) button, .betterangels.actor .window-content form.editable .sheet-body .tab.front .trait-panel .trait-cell .menu-positioner .radial-menu.size100px-8items .menu-container .menu-button:nth-child(7) label {
+                  -webkit-animation-delay: 0.875s;
+                  animation-delay: 0.875s; }
+                .betterangels.actor .window-content form.editable .sheet-body .tab.front .trait-panel .trait-cell .menu-positioner .radial-menu.size100px-8items .menu-container .menu-button:nth-child(8) button, .betterangels.actor .window-content form.editable .sheet-body .tab.front .trait-panel .trait-cell .menu-positioner .radial-menu.size100px-8items .menu-container .menu-button:nth-child(8) label {
+                  -webkit-animation-delay: 1s;
+                  animation-delay: 1s; }
+                .betterangels.actor .window-content form.editable .sheet-body .tab.front .trait-panel .trait-cell .menu-positioner .radial-menu.size100px-8items .menu-container .menu-button {
+                  margin-top: -7px;
+                  margin-left: -25px; }
+                  .betterangels.actor .window-content form.editable .sheet-body .tab.front .trait-panel .trait-cell .menu-positioner .radial-menu.size100px-8items .menu-container .menu-button:nth-of-type(1) {
+                    -webkit-transform: rotate(0deg) translate(50px) rotate(0deg) translateX(0px);
+                    -ms-transform: rotate(0deg) translate(50px) rotate(0deg) translateX(0px);
+                    transform: rotate(0deg) translate(50px) rotate(0deg) translateX(0px); }
+                  .betterangels.actor .window-content form.editable .sheet-body .tab.front .trait-panel .trait-cell .menu-positioner .radial-menu.size100px-8items .menu-container .menu-button:nth-of-type(2) {
+                    -webkit-transform: rotate(45deg) translate(50px) rotate(-45deg) translateX(0px) translateY(0px);
+                    -ms-transform: rotate(45deg) translate(50px) rotate(-45deg) translateX(0px) translateY(0px);
+                    transform: rotate(45deg) translate(50px) rotate(-45deg) translateX(0px) translateY(0px); }
+                  .betterangels.actor .window-content form.editable .sheet-body .tab.front .trait-panel .trait-cell .menu-positioner .radial-menu.size100px-8items .menu-container .menu-button:nth-of-type(3) {
+                    -webkit-transform: rotate(90deg) translate(50px) rotate(-90deg) translateX(0px) translateY(0px);
+                    -ms-transform: rotate(90deg) translate(50px) rotate(-90deg) translateX(0px) translateY(0px);
+                    transform: rotate(90deg) translate(50px) rotate(-90deg) translateX(0px) translateY(0px); }
+                  .betterangels.actor .window-content form.editable .sheet-body .tab.front .trait-panel .trait-cell .menu-positioner .radial-menu.size100px-8items .menu-container .menu-button:nth-of-type(4) {
+                    -webkit-transform: rotate(135deg) translate(50px) rotate(-135deg) translateX(0px) translateY(-0px);
+                    -ms-transform: rotate(135deg) translate(50px) rotate(-135deg) translateX(0px) translateY(-0px);
+                    transform: rotate(135deg) translate(50px) rotate(-135deg) translateX(0px) translateY(-0px); }
+                  .betterangels.actor .window-content form.editable .sheet-body .tab.front .trait-panel .trait-cell .menu-positioner .radial-menu.size100px-8items .menu-container .menu-button:nth-of-type(5) {
+                    -webkit-transform: rotate(180deg) translate(50px) rotate(-180deg) translateX(-0px);
+                    -ms-transform: rotate(180deg) translate(50px) rotate(-180deg) translateX(-0px);
+                    transform: rotate(180deg) translate(50px) rotate(-180deg) translateX(-0px); }
+                  .betterangels.actor .window-content form.editable .sheet-body .tab.front .trait-panel .trait-cell .menu-positioner .radial-menu.size100px-8items .menu-container .menu-button:nth-of-type(6) {
+                    -webkit-transform: rotate(225deg) translate(50px) rotate(-225deg) translateX(-0px) translateY(-0px);
+                    -ms-transform: rotate(225deg) translate(50px) rotate(-225deg) translateX(-0px) translateY(-0px);
+                    transform: rotate(225deg) translate(50px) rotate(-225deg) translateX(-0px) translateY(-0px); }
+                  .betterangels.actor .window-content form.editable .sheet-body .tab.front .trait-panel .trait-cell .menu-positioner .radial-menu.size100px-8items .menu-container .menu-button:nth-of-type(7) {
+                    -webkit-transform: rotate(270deg) translate(50px) rotate(-270deg) translateX(-0px) translateY(-0px);
+                    -ms-transform: rotate(270deg) translate(50px) rotate(-270deg) translateX(-0px) translateY(-0px);
+                    transform: rotate(270deg) translate(50px) rotate(-270deg) translateX(-0px) translateY(-0px); }
+                  .betterangels.actor .window-content form.editable .sheet-body .tab.front .trait-panel .trait-cell .menu-positioner .radial-menu.size100px-8items .menu-container .menu-button:nth-of-type(8) {
+                    -webkit-transform: rotate(315deg) translate(50px) rotate(-315deg) translateX(-0px) translateY(0px);
+                    -ms-transform: rotate(315deg) translate(50px) rotate(-315deg) translateX(-0px) translateY(0px);
+                    transform: rotate(315deg) translate(50px) rotate(-315deg) translateX(-0px) translateY(0px); }
+              .betterangels.actor .window-content form.editable .sheet-body .tab.front .trait-panel .trait-cell .menu-positioner .radial-menu.size150px-8items {
+                top: calc(50% - 150px);
+                left: calc(50% - 150px);
+                z-index: 6;
+                width: 300px;
+                height: 300px; }
+                .betterangels.actor .window-content form.editable .sheet-body .tab.front .trait-panel .trait-cell .menu-positioner .radial-menu.size150px-8items .menu-container .menu-button:nth-child(1) button, .betterangels.actor .window-content form.editable .sheet-body .tab.front .trait-panel .trait-cell .menu-positioner .radial-menu.size150px-8items .menu-container .menu-button:nth-child(1) label {
+                  -webkit-animation-delay: 0.125s;
+                  animation-delay: 0.125s; }
+                .betterangels.actor .window-content form.editable .sheet-body .tab.front .trait-panel .trait-cell .menu-positioner .radial-menu.size150px-8items .menu-container .menu-button:nth-child(2) button, .betterangels.actor .window-content form.editable .sheet-body .tab.front .trait-panel .trait-cell .menu-positioner .radial-menu.size150px-8items .menu-container .menu-button:nth-child(2) label {
+                  -webkit-animation-delay: 0.25s;
+                  animation-delay: 0.25s; }
+                .betterangels.actor .window-content form.editable .sheet-body .tab.front .trait-panel .trait-cell .menu-positioner .radial-menu.size150px-8items .menu-container .menu-button:nth-child(3) button, .betterangels.actor .window-content form.editable .sheet-body .tab.front .trait-panel .trait-cell .menu-positioner .radial-menu.size150px-8items .menu-container .menu-button:nth-child(3) label {
+                  -webkit-animation-delay: 0.375s;
+                  animation-delay: 0.375s; }
+                .betterangels.actor .window-content form.editable .sheet-body .tab.front .trait-panel .trait-cell .menu-positioner .radial-menu.size150px-8items .menu-container .menu-button:nth-child(4) button, .betterangels.actor .window-content form.editable .sheet-body .tab.front .trait-panel .trait-cell .menu-positioner .radial-menu.size150px-8items .menu-container .menu-button:nth-child(4) label {
+                  -webkit-animation-delay: 0.5s;
+                  animation-delay: 0.5s; }
+                .betterangels.actor .window-content form.editable .sheet-body .tab.front .trait-panel .trait-cell .menu-positioner .radial-menu.size150px-8items .menu-container .menu-button:nth-child(5) button, .betterangels.actor .window-content form.editable .sheet-body .tab.front .trait-panel .trait-cell .menu-positioner .radial-menu.size150px-8items .menu-container .menu-button:nth-child(5) label {
+                  -webkit-animation-delay: 0.625s;
+                  animation-delay: 0.625s; }
+                .betterangels.actor .window-content form.editable .sheet-body .tab.front .trait-panel .trait-cell .menu-positioner .radial-menu.size150px-8items .menu-container .menu-button:nth-child(6) button, .betterangels.actor .window-content form.editable .sheet-body .tab.front .trait-panel .trait-cell .menu-positioner .radial-menu.size150px-8items .menu-container .menu-button:nth-child(6) label {
+                  -webkit-animation-delay: 0.75s;
+                  animation-delay: 0.75s; }
+                .betterangels.actor .window-content form.editable .sheet-body .tab.front .trait-panel .trait-cell .menu-positioner .radial-menu.size150px-8items .menu-container .menu-button:nth-child(7) button, .betterangels.actor .window-content form.editable .sheet-body .tab.front .trait-panel .trait-cell .menu-positioner .radial-menu.size150px-8items .menu-container .menu-button:nth-child(7) label {
+                  -webkit-animation-delay: 0.875s;
+                  animation-delay: 0.875s; }
+                .betterangels.actor .window-content form.editable .sheet-body .tab.front .trait-panel .trait-cell .menu-positioner .radial-menu.size150px-8items .menu-container .menu-button:nth-child(8) button, .betterangels.actor .window-content form.editable .sheet-body .tab.front .trait-panel .trait-cell .menu-positioner .radial-menu.size150px-8items .menu-container .menu-button:nth-child(8) label {
+                  -webkit-animation-delay: 1s;
+                  animation-delay: 1s; }
+                .betterangels.actor .window-content form.editable .sheet-body .tab.front .trait-panel .trait-cell .menu-positioner .radial-menu.size150px-8items .menu-container .menu-button {
+                  margin-top: -7px;
+                  margin-left: -37.5px; }
+                  .betterangels.actor .window-content form.editable .sheet-body .tab.front .trait-panel .trait-cell .menu-positioner .radial-menu.size150px-8items .menu-container .menu-button:nth-of-type(1) {
+                    -webkit-transform: rotate(0deg) translate(75px) rotate(0deg) translateX(0px);
+                    -ms-transform: rotate(0deg) translate(75px) rotate(0deg) translateX(0px);
+                    transform: rotate(0deg) translate(75px) rotate(0deg) translateX(0px); }
+                  .betterangels.actor .window-content form.editable .sheet-body .tab.front .trait-panel .trait-cell .menu-positioner .radial-menu.size150px-8items .menu-container .menu-button:nth-of-type(2) {
+                    -webkit-transform: rotate(45deg) translate(75px) rotate(-45deg) translateX(0px) translateY(0px);
+                    -ms-transform: rotate(45deg) translate(75px) rotate(-45deg) translateX(0px) translateY(0px);
+                    transform: rotate(45deg) translate(75px) rotate(-45deg) translateX(0px) translateY(0px); }
+                  .betterangels.actor .window-content form.editable .sheet-body .tab.front .trait-panel .trait-cell .menu-positioner .radial-menu.size150px-8items .menu-container .menu-button:nth-of-type(3) {
+                    -webkit-transform: rotate(90deg) translate(75px) rotate(-90deg) translateX(0px) translateY(0px);
+                    -ms-transform: rotate(90deg) translate(75px) rotate(-90deg) translateX(0px) translateY(0px);
+                    transform: rotate(90deg) translate(75px) rotate(-90deg) translateX(0px) translateY(0px); }
+                  .betterangels.actor .window-content form.editable .sheet-body .tab.front .trait-panel .trait-cell .menu-positioner .radial-menu.size150px-8items .menu-container .menu-button:nth-of-type(4) {
+                    -webkit-transform: rotate(135deg) translate(75px) rotate(-135deg) translateX(0px) translateY(-0px);
+                    -ms-transform: rotate(135deg) translate(75px) rotate(-135deg) translateX(0px) translateY(-0px);
+                    transform: rotate(135deg) translate(75px) rotate(-135deg) translateX(0px) translateY(-0px); }
+                  .betterangels.actor .window-content form.editable .sheet-body .tab.front .trait-panel .trait-cell .menu-positioner .radial-menu.size150px-8items .menu-container .menu-button:nth-of-type(5) {
+                    -webkit-transform: rotate(180deg) translate(75px) rotate(-180deg) translateX(-0px);
+                    -ms-transform: rotate(180deg) translate(75px) rotate(-180deg) translateX(-0px);
+                    transform: rotate(180deg) translate(75px) rotate(-180deg) translateX(-0px); }
+                  .betterangels.actor .window-content form.editable .sheet-body .tab.front .trait-panel .trait-cell .menu-positioner .radial-menu.size150px-8items .menu-container .menu-button:nth-of-type(6) {
+                    -webkit-transform: rotate(225deg) translate(75px) rotate(-225deg) translateX(-0px) translateY(-0px);
+                    -ms-transform: rotate(225deg) translate(75px) rotate(-225deg) translateX(-0px) translateY(-0px);
+                    transform: rotate(225deg) translate(75px) rotate(-225deg) translateX(-0px) translateY(-0px); }
+                  .betterangels.actor .window-content form.editable .sheet-body .tab.front .trait-panel .trait-cell .menu-positioner .radial-menu.size150px-8items .menu-container .menu-button:nth-of-type(7) {
+                    -webkit-transform: rotate(270deg) translate(75px) rotate(-270deg) translateX(-0px) translateY(-0px);
+                    -ms-transform: rotate(270deg) translate(75px) rotate(-270deg) translateX(-0px) translateY(-0px);
+                    transform: rotate(270deg) translate(75px) rotate(-270deg) translateX(-0px) translateY(-0px); }
+                  .betterangels.actor .window-content form.editable .sheet-body .tab.front .trait-panel .trait-cell .menu-positioner .radial-menu.size150px-8items .menu-container .menu-button:nth-of-type(8) {
+                    -webkit-transform: rotate(315deg) translate(75px) rotate(-315deg) translateX(-0px) translateY(0px);
+                    -ms-transform: rotate(315deg) translate(75px) rotate(-315deg) translateX(-0px) translateY(0px);
+                    transform: rotate(315deg) translate(75px) rotate(-315deg) translateX(-0px) translateY(0px); }
+              .betterangels.actor .window-content form.editable .sheet-body .tab.front .trait-panel .trait-cell .menu-positioner .radial-menu.depth-1 {
+                z-index: 2; }
+              .betterangels.actor .window-content form.editable .sheet-body .tab.front .trait-panel .trait-cell .menu-positioner .radial-menu.depth-2 {
+                z-index: 4; }
+              .betterangels.actor .window-content form.editable .sheet-body .tab.front .trait-panel .trait-cell .menu-positioner .radial-menu.depth-3 {
+                z-index: 6; }
+              .betterangels.actor .window-content form.editable .sheet-body .tab.front .trait-panel .trait-cell .menu-positioner .radial-menu.depth-4 {
+                z-index: 8; }
+              .betterangels.actor .window-content form.editable .sheet-body .tab.front .trait-panel .trait-cell .menu-positioner .radial-menu:not(.active) {
+                pointer-events: none; }
+                .betterangels.actor .window-content form.editable .sheet-body .tab.front .trait-panel .trait-cell .menu-positioner .radial-menu:not(.active) * {
+                  pointer-events: none; }
+              .betterangels.actor .window-content form.editable .sheet-body .tab.front .trait-panel .trait-cell .menu-positioner .radial-menu video {
                 position: absolute;
-                display: block;
-                top: 50%;
-                left: 50%;
-                height: 20px;
-                width: 30px; }
+                top: -50%;
+                left: -50%;
+                width: 200%;
+                height: 200%;
+                opacity: 100%;
+                -webkit-transform: scale(1.75);
+                -ms-transform: scale(1.75);
+                transform: scale(1.75);
+                opacity: 0.75; }
+              .betterangels.actor .window-content form.editable .sheet-body .tab.front .trait-panel .trait-cell .menu-positioner .radial-menu .menu-container {
+                position: absolute;
+                top: -20%;
+                left: -20%;
+                width: 140%;
+                height: 140%;
+                list-style: none; }
+                .betterangels.actor .window-content form.editable .sheet-body .tab.front .trait-panel .trait-cell .menu-positioner .radial-menu .menu-container .menu-button {
+                  position: absolute;
+                  display: block;
+                  top: 50%;
+                  left: 50%;
+                  height: 20px;
+                  width: 30px; }
 
 @-webkit-keyframes slow-bob {
   from {
@@ -1378,258 +1756,253 @@ span.trait {
     top: -3px; }
   to {
     top: 3px; } }
-                .betterangels.actor .window-content form.editable .sheet-body .tab.active .menu-positioner .radial-menu .menu-container .menu-button button {
-                  position: absolute;
+                  .betterangels.actor .window-content form.editable .sheet-body .tab.front .trait-panel .trait-cell .menu-positioner .radial-menu .menu-container .menu-button button {
+                    position: absolute;
+                    padding: 0;
+                    margin: 0;
+                    height: 100%;
+                    width: 100%;
+                    background: transparent;
+                    background-size: 30px 20px;
+                    border: none;
+                    outline: none;
+                    -webkit-box-shadow: none;
+                    box-shadow: none;
+                    -webkit-transition: 0.5s;
+                    -o-transition: 0.5s;
+                    transition: 0.5s;
+                    -webkit-animation: slow-bob 2s cubic-bezier(0.36, 0, 0.63, 1) infinite alternate;
+                    animation: slow-bob 2s cubic-bezier(0.36, 0, 0.63, 1) infinite alternate; }
+                    .betterangels.actor .window-content form.editable .sheet-body .tab.front .trait-panel .trait-cell .menu-positioner .radial-menu .menu-container .menu-button button.button-add-drop {
+                      background-image: url("/systems/betterangels/assets/icons/add-drop-bg.webp"); }
+                      .betterangels.actor .window-content form.editable .sheet-body .tab.front .trait-panel .trait-cell .menu-positioner .radial-menu .menu-container .menu-button button.button-add-drop.active-add {
+                        background-image: url("/systems/betterangels/assets/icons/add-active.webp"); }
+                      .betterangels.actor .window-content form.editable .sheet-body .tab.front .trait-panel .trait-cell .menu-positioner .radial-menu .menu-container .menu-button button.button-add-drop.active-drop {
+                        background-image: url("/systems/betterangels/assets/icons/drop-active.webp"); }
+                      .betterangels.actor .window-content form.editable .sheet-body .tab.front .trait-panel .trait-cell .menu-positioner .radial-menu .menu-container .menu-button button.button-add-drop.active-add.active-drop {
+                        background-image: url("/systems/betterangels/assets/icons/add-drop-active.webp"); }
+                    .betterangels.actor .window-content form.editable .sheet-body .tab.front .trait-panel .trait-cell .menu-positioner .radial-menu .menu-container .menu-button button.button-slide-left {
+                      background-image: url("/systems/betterangels/assets/icons/slide-left-bg.webp"); }
+                      .betterangels.actor .window-content form.editable .sheet-body .tab.front .trait-panel .trait-cell .menu-positioner .radial-menu .menu-container .menu-button button.button-slide-left.active-slide-left {
+                        background-image: url("/systems/betterangels/assets/icons/slide-left.webp"); }
+                    .betterangels.actor .window-content form.editable .sheet-body .tab.front .trait-panel .trait-cell .menu-positioner .radial-menu .menu-container .menu-button button.button-slide-right {
+                      background-image: url("/systems/betterangels/assets/icons/slide-right-bg.webp"); }
+                      .betterangels.actor .window-content form.editable .sheet-body .tab.front .trait-panel .trait-cell .menu-positioner .radial-menu .menu-container .menu-button button.button-slide-right.active-slide-right {
+                        background-image: url("/systems/betterangels/assets/icons/slide-right.webp"); }
+              .betterangels.actor .window-content form.editable .sheet-body .tab.front .trait-panel .trait-cell .menu-positioner .radial-menu.active {
+                z-index: 20;
+                opacity: 100%;
+                -webkit-transform: scale(1) rotate(0deg);
+                -ms-transform: scale(1) rotate(0deg);
+                transform: scale(1) rotate(0deg); }
+                .betterangels.actor .window-content form.editable .sheet-body .tab.front .trait-panel .trait-cell .menu-positioner .radial-menu.active .menu-container {
                   padding: 0;
                   margin: 0;
-                  height: 100%;
-                  width: 100%;
-                  background: transparent;
-                  background-size: 30px 20px;
-                  border: none;
-                  outline: none;
-                  -webkit-box-shadow: none;
-                  box-shadow: none;
-                  -webkit-transition: 0.5s;
-                  -o-transition: 0.5s;
-                  transition: 0.5s;
-                  -webkit-animation: slow-bob 2s cubic-bezier(0.36, 0, 0.63, 1) infinite alternate;
-                  animation: slow-bob 2s cubic-bezier(0.36, 0, 0.63, 1) infinite alternate; }
-                  .betterangels.actor .window-content form.editable .sheet-body .tab.active .menu-positioner .radial-menu .menu-container .menu-button button.button-add-drop {
-                    background-image: url("/systems/betterangels/assets/icons/add-drop-bg.webp"); }
-                    .betterangels.actor .window-content form.editable .sheet-body .tab.active .menu-positioner .radial-menu .menu-container .menu-button button.button-add-drop.active-add {
-                      background-image: url("/systems/betterangels/assets/icons/add-active.webp");
-                      pointer-events: all; }
-                    .betterangels.actor .window-content form.editable .sheet-body .tab.active .menu-positioner .radial-menu .menu-container .menu-button button.button-add-drop.active-drop {
-                      background-image: url("/systems/betterangels/assets/icons/drop-active.webp");
-                      pointer-events: all; }
-                    .betterangels.actor .window-content form.editable .sheet-body .tab.active .menu-positioner .radial-menu .menu-container .menu-button button.button-add-drop.active-add.active-drop {
-                      background-image: url("/systems/betterangels/assets/icons/add-drop-active.webp");
-                      pointer-events: all; }
-                  .betterangels.actor .window-content form.editable .sheet-body .tab.active .menu-positioner .radial-menu .menu-container .menu-button button.button-slide-left {
-                    background-image: url("/systems/betterangels/assets/icons/slide-left-bg.webp"); }
-                    .betterangels.actor .window-content form.editable .sheet-body .tab.active .menu-positioner .radial-menu .menu-container .menu-button button.button-slide-left.active-slide-left {
-                      background-image: url("/systems/betterangels/assets/icons/slide-left.webp");
-                      pointer-events: all; }
-                  .betterangels.actor .window-content form.editable .sheet-body .tab.active .menu-positioner .radial-menu .menu-container .menu-button button.button-slide-right {
-                    background-image: url("/systems/betterangels/assets/icons/slide-right-bg.webp"); }
-                    .betterangels.actor .window-content form.editable .sheet-body .tab.active .menu-positioner .radial-menu .menu-container .menu-button button.button-slide-right.active-slide-right {
-                      background-image: url("/systems/betterangels/assets/icons/slide-right.webp");
-                      pointer-events: all; }
-            .betterangels.actor .window-content form.editable .sheet-body .tab.active .menu-positioner .radial-menu.active {
-              z-index: 20;
-              opacity: 100%;
-              -webkit-transform: scale(1) rotate(0deg);
-              -ms-transform: scale(1) rotate(0deg);
-              transform: scale(1) rotate(0deg); }
-              .betterangels.actor .window-content form.editable .sheet-body .tab.active .menu-positioner .radial-menu.active .menu-container {
-                padding: 0;
-                margin: 0;
-                list-style: none; }
-                .betterangels.actor .window-content form.editable .sheet-body .tab.active .menu-positioner .radial-menu.active .menu-container .menu-button:hover {
-                  z-index: 10; }
-                  .betterangels.actor .window-content form.editable .sheet-body .tab.active .menu-positioner .radial-menu.active .menu-container .menu-button:hover button {
-                    -webkit-transform: scale(2);
-                    -ms-transform: scale(2);
-                    transform: scale(2); }
-        .betterangels.actor .window-content form.editable .sheet-body .tab.active .features-list {
-          width: 100%; }
-          .betterangels.actor .window-content form.editable .sheet-body .tab.active .features-list .feature-row {
-            display: -webkit-box;
-            display: -ms-flexbox;
-            display: flex;
-            -webkit-box-pack: space-evenly;
-            -ms-flex-pack: space-evenly;
-            justify-content: space-evenly;
-            -ms-flex-line-pack: distribute;
-            align-content: space-around;
-            padding: 10px 0;
-            pointer-events: all;
-            min-height: 70px; }
-            .betterangels.actor .window-content form.editable .sheet-body .tab.active .features-list .feature-row .feature {
+                  list-style: none; }
+                  .betterangels.actor .window-content form.editable .sheet-body .tab.front .trait-panel .trait-cell .menu-positioner .radial-menu.active .menu-container .menu-button:hover {
+                    z-index: 10; }
+                    .betterangels.actor .window-content form.editable .sheet-body .tab.front .trait-panel .trait-cell .menu-positioner .radial-menu.active .menu-container .menu-button:hover button {
+                      -webkit-transform: scale(2);
+                      -ms-transform: scale(2);
+                      transform: scale(2); }
+      .betterangels.actor .window-content form.editable .sheet-body .tab.front .features-list {
+        width: 100%; }
+        .betterangels.actor .window-content form.editable .sheet-body .tab.front .features-list .feature-row {
+          display: -webkit-box;
+          display: -ms-flexbox;
+          display: flex;
+          -webkit-box-pack: space-evenly;
+          -ms-flex-pack: space-evenly;
+          justify-content: space-evenly;
+          -ms-flex-line-pack: distribute;
+          align-content: space-around;
+          padding: 10px 0;
+          min-height: 70px; }
+          .betterangels.actor .window-content form.editable .sheet-body .tab.front .features-list .feature-row .feature {
+            height: 125px;
+            width: 125px; }
+            .betterangels.actor .window-content form.editable .sheet-body .tab.front .features-list .feature-row .feature label {
+              font-size: 32px;
+              position: relative;
+              z-index: 500;
+              width: 500px;
+              text-align: center;
+              -webkit-transform: translate(-50%, -50%) translate(62.5px, 62.5px) scale(0.1);
+              -ms-transform: translate(-50%, -50%) translate(62.5px, 62.5px) scale(0.1);
+              transform: translate(-50%, -50%) translate(62.5px, 62.5px) scale(0.1);
               height: 125px;
-              width: 125px; }
-              .betterangels.actor .window-content form.editable .sheet-body .tab.active .features-list .feature-row .feature label {
-                font-size: 32px;
-                position: relative;
-                z-index: 500;
-                width: 500px;
-                text-align: center;
-                -webkit-transform: translate(-50%, -50%) translate(62.5px, 62.5px) scale(0.1);
-                -ms-transform: translate(-50%, -50%) translate(62.5px, 62.5px) scale(0.1);
-                transform: translate(-50%, -50%) translate(62.5px, 62.5px) scale(0.1);
-                height: 125px;
-                margin-bottom: -125px;
-                display: block;
-                line-height: 125px;
-                white-space: nowrap;
-                pointer-events: none !important;
-                -webkit-transition: 1.0s all;
-                -o-transition: 1.0s all;
-                transition: 1.0s all;
-                -webkit-transform-origin: 50% 50%;
-                -ms-transform-origin: 50% 50%;
-                transform-origin: 50% 50%;
-                opacity: 0;
-                font-family: "New Rocker";
-                text-transform: uppercase;
-                color: black; }
-              .betterangels.actor .window-content form.editable .sheet-body .tab.active .features-list .feature-row .feature img {
-                position: relative;
-                display: block;
-                border: 0;
-                margin-bottom: -125px; }
-                .betterangels.actor .window-content form.editable .sheet-body .tab.active .features-list .feature-row .feature img.aspect-coin {
-                  -webkit-filter: drop-shadow(16px 16px 16px black);
-                  filter: drop-shadow(16px 16px 16px black); }
-                  .betterangels.actor .window-content form.editable .sheet-body .tab.active .features-list .feature-row .feature img.aspect-coin:nth-of-type(3) {
-                    display: none; }
-                .betterangels.actor .window-content form.editable .sheet-body .tab.active .features-list .feature-row .feature img.active {
+              margin-bottom: -125px;
+              display: block;
+              line-height: 125px;
+              white-space: nowrap;
+              pointer-events: none;
+              -webkit-transition: 0.5s all;
+              -o-transition: 0.5s all;
+              transition: 0.5s all;
+              -webkit-transform-origin: 50% 50%;
+              -ms-transform-origin: 50% 50%;
+              transform-origin: 50% 50%;
+              opacity: 0;
+              letter-spacing: -0.25em;
+              color: black; }
+              .betterangels.actor .window-content form.editable .sheet-body .tab.front .features-list .feature-row .feature label.power {
+                font-family: CrashLanding; }
+              .betterangels.actor .window-content form.editable .sheet-body .tab.front .features-list .feature-row .feature label.aspect {
+                font-family: FeastOfFlesh; }
+            .betterangels.actor .window-content form.editable .sheet-body .tab.front .features-list .feature-row .feature img {
+              position: relative;
+              display: block;
+              border: 0;
+              margin-bottom: -125px; }
+              .betterangels.actor .window-content form.editable .sheet-body .tab.front .features-list .feature-row .feature img.aspect-coin {
+                -webkit-filter: drop-shadow(16px 16px 16px black);
+                filter: drop-shadow(16px 16px 16px black); }
+                .betterangels.actor .window-content form.editable .sheet-body .tab.front .features-list .feature-row .feature img.aspect-coin:nth-of-type(3) {
                   display: none; }
-              .betterangels.actor .window-content form.editable .sheet-body .tab.active .features-list .feature-row .feature video {
-                height: 125px;
-                width: 125px;
-                -webkit-transform: translateY(5px) scale(2.6);
-                -ms-transform: translateY(5px) scale(2.6);
-                transform: translateY(5px) scale(2.6);
-                position: relative;
-                z-index: 5;
-                pointer-events: none;
+              .betterangels.actor .window-content form.editable .sheet-body .tab.front .features-list .feature-row .feature img.active {
                 display: none; }
-              .betterangels.actor .window-content form.editable .sheet-body .tab.active .features-list .feature-row .feature:hover .active {
-                display: block; }
-              .betterangels.actor .window-content form.editable .sheet-body .tab.active .features-list .feature-row .feature:hover .base {
-                display: none; }
-              .betterangels.actor .window-content form.editable .sheet-body .tab.active .features-list .feature-row .feature:hover video {
-                display: block; }
-              .betterangels.actor .window-content form.editable .sheet-body .tab.active .features-list .feature-row .feature:hover label {
-                -webkit-transform: translate(-50%, -50%) translate(62.5px, 62.5px) scaleY(2.5) scaleX(1.5);
-                -ms-transform: translate(-50%, -50%) translate(62.5px, 62.5px) scaleY(2.5) scaleX(1.5);
-                transform: translate(-50%, -50%) translate(62.5px, 62.5px) scaleY(2.5) scaleX(1.5);
-                color: black;
-                text-shadow: 0 0 2px #F00, 0 0 4px #700, 0 0 4px gold, 0 0 4px gold;
-                font-family: "New Rocker";
-                text-transform: uppercase;
-                letter-spacing: -0.1em;
-                opacity: 1; }
-        .betterangels.actor .window-content form.editable .sheet-body .tab.active.background {
-          min-height: 500px;
-          pointer-events: all; }
-          .betterangels.actor .window-content form.editable .sheet-body .tab.active.background .editor {
-            height: 100%;
-            pointer-events: all; }
-            .betterangels.actor .window-content form.editable .sheet-body .tab.active.background .editor .editor-content {
-              color: #b3b3b3;
-              padding: 0; }
-              .betterangels.actor .window-content form.editable .sheet-body .tab.active.background .editor .editor-content h1 {
-                border: none;
-                font-family: "KomikaAxis";
-                color: white;
-                text-shadow: 0 0 5px black, 0 0 5px black, 0 0 5px black, 0 0 5px black, 0 0 5px black;
-                background: #161616;
-                outline: 2px solid black;
-                text-indent: 10px;
-                height: 42px;
-                line-height: 36px; }
-              .betterangels.actor .window-content form.editable .sheet-body .tab.active.background .editor .editor-content h2 {
-                border: none;
-                font-family: "KomikaAxis";
-                font-variant: small-caps;
-                text-indent: 7px;
-                outline: 2px solid black;
-                text-shadow: 0 0 5px black, 0 0 5px black, 0 0 5px black, 0 0 5px black, 0 0 5px black;
-                background: #333;
-                height: 28px;
-                line-height: 22px;
-                color: white; }
-              .betterangels.actor .window-content form.editable .sheet-body .tab.active.background .editor .editor-content h3 {
-                font-family: "DigitalStrip";
-                font-variant: small-caps;
-                color: white;
-                text-indent: 7px;
-                outline: 2px solid black;
-                background: #222;
-                text-shadow: 0 0 3px black, 0 0 3px black, 0 0 3px black, 0 0 3px black, 0 0 3px black; }
-              .betterangels.actor .window-content form.editable .sheet-body .tab.active.background .editor .editor-content p {
-                font-family: "DigitalStrip";
-                font-variant: small-caps;
-                font-size: 16px;
-                padding: 0 5px; }
-              .betterangels.actor .window-content form.editable .sheet-body .tab.active.background .editor .editor-content h4,
-              .betterangels.actor .window-content form.editable .sheet-body .tab.active.background .editor .editor-content h5 {
-                color: white;
-                font-family: "DigitalStrip";
-                font-variant: small-caps;
-                text-indent: 7px;
-                margin: 0;
-                border-bottom: 2px dotted #333; }
-            .betterangels.actor .window-content form.editable .sheet-body .tab.active.background .editor .tox-tinymce {
-              pointer-events: all;
-              min-height: 500px; }
-            .betterangels.actor .window-content form.editable .sheet-body .tab.active.background .editor * {
-              pointer-events: all; }
-  .betterangels.actor.mobnpc button {
-    pointer-events: all; }
-  .betterangels.actor.mobnpc input[type="number"] {
-    display: inline-block;
-    width: 35px;
-    -webkit-box-flex: 0;
-    -ms-flex-positive: 0;
-    flex-grow: 0; }
-  .betterangels.actor.mobnpc .window-content form.editable .sheet-header .header-fields {
-    width: 100%;
-    margin: 0; }
-    .betterangels.actor.mobnpc .window-content form.editable .sheet-header .header-fields h2.charname {
-      margin-top: -10px; }
-      .betterangels.actor.mobnpc .window-content form.editable .sheet-header .header-fields h2.charname input {
-        color: white;
-        font-family: "KomikaAxis", sans-serif;
-        font-size: 24px;
-        line-height: 24px; }
-    .betterangels.actor.mobnpc .window-content form.editable .sheet-header .header-fields h2.size {
-      display: -webkit-box;
-      display: -ms-flexbox;
-      display: flex;
-      -webkit-box-pack: center;
-      -ms-flex-pack: center;
-      justify-content: center; }
-      .betterangels.actor.mobnpc .window-content form.editable .sheet-header .header-fields h2.size label {
-        -webkit-box-flex: 0.1;
-        -ms-flex-positive: 0.1;
-        flex-grow: 0.1;
-        text-align: right; }
-      .betterangels.actor.mobnpc .window-content form.editable .sheet-header .header-fields h2.size select {
-        text-align: right; }
-  .betterangels.actor.mobnpc .window-content form.editable .sheet-body {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    font-size: 12px;
-    color: white; }
-    .betterangels.actor.mobnpc .window-content form.editable .sheet-body input[type="number"] {
-      background: rgba(0, 0, 0, 0.2);
-      outline: 2px inset rgba(255, 255, 255, 0.5);
-      margin: 0 5px;
-      padding: 0 0 2px 0;
+            .betterangels.actor .window-content form.editable .sheet-body .tab.front .features-list .feature-row .feature video {
+              height: 125px;
+              width: 125px;
+              -webkit-transform: translateY(5px) scale(2.6);
+              -ms-transform: translateY(5px) scale(2.6);
+              transform: translateY(5px) scale(2.6);
+              position: relative;
+              z-index: 5;
+              pointer-events: none;
+              display: none; }
+            .betterangels.actor .window-content form.editable .sheet-body .tab.front .features-list .feature-row .feature:hover .active, .betterangels.actor .window-content form.editable .sheet-body .tab.front .features-list .feature-row .feature:hover video {
+              display: block; }
+            .betterangels.actor .window-content form.editable .sheet-body .tab.front .features-list .feature-row .feature:hover .base {
+              display: none; }
+            .betterangels.actor .window-content form.editable .sheet-body .tab.front .features-list .feature-row .feature:hover label.power {
+              -webkit-transform: translate(-50%, -50%) translate(62.5px, 62.5px) scale(2);
+              -ms-transform: translate(-50%, -50%) translate(62.5px, 62.5px) scale(2);
+              transform: translate(-50%, -50%) translate(62.5px, 62.5px) scale(2);
+              opacity: 1;
+              letter-spacing: normal;
+              color: black;
+              text-shadow: 0 0 5px white, 0 0 3px gold, 0 0 2px gold, 0 0 2px gold; }
+            .betterangels.actor .window-content form.editable .sheet-body .tab.front .features-list .feature-row .feature:hover label.aspect {
+              -webkit-transform: translate(-50%, -50%) translate(62.5px, 62.5px) scaleX(1.5) scaleY(2.5);
+              -ms-transform: translate(-50%, -50%) translate(62.5px, 62.5px) scaleX(1.5) scaleY(2.5);
+              transform: translate(-50%, -50%) translate(62.5px, 62.5px) scaleX(1.5) scaleY(2.5);
+              opacity: 1;
+              color: black;
+              text-shadow: 0 0 2px red, 0 0 4px #660000, 0 0 4px gold, 0 0 4px gold;
+              letter-spacing: normal;
+              opacity: 1; }
+      .betterangels.actor .window-content form.editable .sheet-body .tab.background {
+        min-height: 500px; }
+        .betterangels.actor .window-content form.editable .sheet-body .tab.background .editor {
+          height: 100%; }
+          .betterangels.actor .window-content form.editable .sheet-body .tab.background .editor .editor-content {
+            color: #999999;
+            padding: 0; }
+            .betterangels.actor .window-content form.editable .sheet-body .tab.background .editor .editor-content h1 {
+              border: none;
+              font-family: Adventure, sans-serif;
+              font-size: 42px;
+              color: white;
+              text-shadow: 0 0 5px black, 0 0 5px black, 0 0 5px black, 0 0 5px black, 0 0 5px black;
+              background: #191919;
+              outline: 2px solid black;
+              text-indent: 10px;
+              height: 42px;
+              line-height: 31.5px; }
+            .betterangels.actor .window-content form.editable .sheet-body .tab.background .editor .editor-content h2 {
+              border: none;
+              font-family: Adventure, sans-serif;
+              font-size: 32px;
+              text-indent: 7px;
+              outline: 2px solid black;
+              text-shadow: 0 0 5px black, 0 0 5px black, 0 0 5px black, 0 0 5px black, 0 0 5px black;
+              background: #191919;
+              height: 32px;
+              line-height: 24px;
+              color: white; }
+            .betterangels.actor .window-content form.editable .sheet-body .tab.background .editor .editor-content h3 {
+              font-family: KomikaText;
+              font-size: 28px;
+              font-variant: small-caps;
+              color: white;
+              text-indent: 7px;
+              outline: 2px solid black;
+              background: #222222;
+              text-shadow: 0 0 3px black, 0 0 3px black, 0 0 3px black, 0 0 3px black, 0 0 3px black; }
+            .betterangels.actor .window-content form.editable .sheet-body .tab.background .editor .editor-content h4, .betterangels.actor .window-content form.editable .sheet-body .tab.background .editor .editor-content h5 {
+              color: white;
+              font-family: KomikaText;
+              font-variant: small-caps;
+              text-indent: 7px;
+              margin: 0;
+              border-bottom: 2px dotted #333333; }
+            .betterangels.actor .window-content form.editable .sheet-body .tab.background .editor .editor-content p {
+              font-family: KomikaText;
+              font-size: 16px;
+              padding: 0 5px; }
+          .betterangels.actor .window-content form.editable .sheet-body .tab.background .editor .tox-tinymce {
+            min-height: 500px; }
+
+.betterangels.actor.mobnpc input[type="number"] {
+  display: inline-block;
+  width: 35px;
+  -webkit-box-flex: 0;
+  -ms-flex-positive: 0;
+  flex-grow: 0; }
+
+.betterangels.actor.mobnpc .window-content form.editable .sheet-header .header-fields {
+  width: 100%;
+  margin: 0; }
+  .betterangels.actor.mobnpc .window-content form.editable .sheet-header .header-fields h2.charname {
+    margin-top: -10px; }
+    .betterangels.actor.mobnpc .window-content form.editable .sheet-header .header-fields h2.charname input {
+      color: white;
+      font-family: Adventure, sans-serif;
       font-size: 24px;
-      vertical-align: middle;
-      text-align: center; }
-    .betterangels.actor.mobnpc .window-content form.editable .sheet-body .mob-factors ul,
-    .betterangels.actor.mobnpc .window-content form.editable .sheet-body .mob-stats ul {
-      list-style: none;
-      padding: 0; }
-      .betterangels.actor.mobnpc .window-content form.editable .sheet-body .mob-factors ul li span,
-      .betterangels.actor.mobnpc .window-content form.editable .sheet-body .mob-stats ul li span {
-        vertical-align: super; }
-        .betterangels.actor.mobnpc .window-content form.editable .sheet-body .mob-factors ul li span.big-number,
-        .betterangels.actor.mobnpc .window-content form.editable .sheet-body .mob-stats ul li span.big-number {
-          vertical-align: sub; }
-    .betterangels.actor.mobnpc .window-content form.editable .sheet-body span.big-number {
-      font-size: 24px;
-      vertical-align: sub;
-      margin: 0 5px; }
-    .betterangels.actor.mobnpc .window-content form.editable .sheet-body .mob-guidelines {
-      grid-row: 2;
-      grid-column: 1 / 3; }
+      line-height: 24px; }
+  .betterangels.actor.mobnpc .window-content form.editable .sheet-header .header-fields h2.size {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    justify-content: center; }
+    .betterangels.actor.mobnpc .window-content form.editable .sheet-header .header-fields h2.size label {
+      -webkit-box-flex: 0.1;
+      -ms-flex-positive: 0.1;
+      flex-grow: 0.1;
+      text-align: right; }
+    .betterangels.actor.mobnpc .window-content form.editable .sheet-header .header-fields h2.size select {
+      text-align: right; }
+
+.betterangels.actor.mobnpc .window-content form.editable .sheet-body {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  font-size: 12px;
+  color: white; }
+  .betterangels.actor.mobnpc .window-content form.editable .sheet-body input[type="number"] {
+    background: rgba(0, 0, 0, 0.2);
+    outline: 2px inset rgba(255, 255, 255, 0.5);
+    margin: 0 5px;
+    padding: 0 0 2px 0;
+    font-size: 24px;
+    vertical-align: middle;
+    text-align: center; }
+  .betterangels.actor.mobnpc .window-content form.editable .sheet-body .mob-factors ul, .betterangels.actor.mobnpc .window-content form.editable .sheet-body .mob-stats ul {
+    list-style: none;
+    padding: 0; }
+    .betterangels.actor.mobnpc .window-content form.editable .sheet-body .mob-factors ul li span, .betterangels.actor.mobnpc .window-content form.editable .sheet-body .mob-stats ul li span {
+      vertical-align: super; }
+      .betterangels.actor.mobnpc .window-content form.editable .sheet-body .mob-factors ul li span.big-number, .betterangels.actor.mobnpc .window-content form.editable .sheet-body .mob-stats ul li span.big-number {
+        vertical-align: sub; }
+  .betterangels.actor.mobnpc .window-content form.editable .sheet-body span.big-number {
+    font-size: 24px;
+    vertical-align: sub;
+    margin: 0 5px; }
+  .betterangels.actor.mobnpc .window-content form.editable .sheet-body .mob-guidelines {
+    grid-row: 2;
+    grid-column: 1 / 3; }
 
 .betterangels.item .window-content {
   padding-top: 0; }
@@ -1683,7 +2056,7 @@ span.trait {
       height: 75px;
       margin-top: 20px;
       font-size: 32px;
-      font-family: "KomikaAxis", sans-serif;
+      font-family: Adventure, sans-serif;
       resize: none;
       line-height: 70px; }
   .betterangels.item .window-content .sheet-header {
@@ -1758,11 +2131,11 @@ span.trait {
     #chat-log .chat-message .message-content .roll-name {
       display: inline-block;
       background: url(../ui/parchment.jpg);
-      font-family: "KomikaAxis", sans-serif;
+      font-family: Adventure, sans-serif;
       font-size: 24px;
       line-height: 24px; }
     #chat-log .chat-message .message-content .one-roll-engine-dice-roll .roll-summary, #chat-log .chat-message .message-content .one-roll-engine-dice-roll .ore-summary {
-      font-family: "DigitalStrip", sans-serif;
+      font-family: KomikaText;
       font-size: 16px;
       font-weight: bold;
       margin-left: -5px;
@@ -1772,11 +2145,11 @@ span.trait {
       #chat-log .chat-message .message-content .one-roll-engine-dice-roll .roll-summary .trait-name, #chat-log .chat-message .message-content .one-roll-engine-dice-roll .ore-summary .trait-name {
         margin: 0 5px; }
         #chat-log .chat-message .message-content .one-roll-engine-dice-roll .roll-summary .trait-name.strategy, #chat-log .chat-message .message-content .one-roll-engine-dice-roll .ore-summary .trait-name.strategy {
-          color: darkgreen; }
+          color: #006600; }
         #chat-log .chat-message .message-content .one-roll-engine-dice-roll .roll-summary .trait-name.tactic, #chat-log .chat-message .message-content .one-roll-engine-dice-roll .ore-summary .trait-name.tactic {
           color: purple; }
       #chat-log .chat-message .message-content .one-roll-engine-dice-roll .roll-summary .trait-value, #chat-log .chat-message .message-content .one-roll-engine-dice-roll .roll-summary .pool-total, #chat-log .chat-message .message-content .one-roll-engine-dice-roll .ore-summary .trait-value, #chat-log .chat-message .message-content .one-roll-engine-dice-roll .ore-summary .pool-total {
-        font-family: "KomikaAxis", sans-serif;
+        font-family: Adventure, sans-serif;
         font-size: 24px;
         line-height: inherit;
         position: relative;

@@ -28,6 +28,9 @@
                     background: #333333;
                     color: white;
                     text-align: center;
+										// width: 50px;
+										min-width: 40px;
+										line-height: 32px;
                 }
                 &.style-test {
                     border-left: none;
@@ -92,6 +95,10 @@
                         display: none
                     }
                 }
+								td.font-name > span {
+									font-size: 14px !important;
+									font-family: Voltaire !important;
+								}
             }
         }
     }

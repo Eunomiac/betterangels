@@ -1,17 +1,21 @@
-{{log data}}
 
 <div class="trait-cell cell-{{math num "++"}}">
 	{{#each data}}
 	<div class="trait-name" data-trait="{{name}}" data-value="{{value}}" data-type="{{type}}" data-sub-type="{{subType}}">
-		<label class="trait-label">{{displayName}}</label>
+		<label class="trait-label trait-draggable" data-trait="{{name}}" data-value="{{value}}" data-type="{{type}}" data-sub-type="{{subType}}">{{displayName}}</label>
+		<label class="trait-label trait-label-bg trait-droppable" data-trait="{{name}}" data-value="{{value}}" data-type="{{type}}" data-sub-type="{{subType}}">{{displayName}}</label>
 	</div>
-	<div class="dot-line {{type}} {{subType}}">
+	<div class="dot-line" data-trait="{{name}}" data-value="{{value}}" data-type="{{type}}" data-sub-type="{{subType}}">
 		{{#for value}}
 		<div id="{{../name}}-{{math @index "++"}}" class="dot dot-{{math @index "++"}} full"></div>
 		{{/for}}
 		{{#for emptyDots}}
-		<div id="{{../name}}-{{math (math @index "++") "+" value}}" class="dot dot-{{math (math @index "++") "+" ../value}} full"></div>
+		<div id="{{../name}}-{{math (math @index "++") "+" value}}" class="dot dot-{{math (math @index "++") "+" ../value}}"></div>
 		{{/for}}
 	</div>
 	{{/each}}
+	{{> "/systems/betterangels/hbs/actor/parts/radial-menu.html" top=data.[0] bottom=data.[1]}}
 </div>
+
+
+    

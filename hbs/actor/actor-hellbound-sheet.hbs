@@ -17,6 +17,7 @@
         <!-- Default tab is specified in actor-sheet.mjs -->
         <a class="item" data-tab="front">Stats</a>
         <a class="item" data-tab="notes">Notes</a>
+        <a class="item" data-tab="screwtape">Screwtape</a>
     </nav>
 
     <!-- Sheet Body -->
@@ -30,6 +31,11 @@
         <!-- Notes & Details Tab -->
         <div class="tab background" data-group="primary" data-tab="notes">
 					{{> "/systems/betterangels/hbs/actor/sections/actor-notes.hbs"}}
+        </div>
+
+        <!-- Screwtape Tab -->
+        <div class="tab screwtape" data-group="primary" data-tab="screwtape">
+					{{> "/systems/betterangels/hbs/actor/sections/actor-screwtape.hbs"}}
         </div>
 
     </section>
