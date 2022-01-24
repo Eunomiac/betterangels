@@ -3,6 +3,50 @@
 	{{> "/systems/betterangels/hbs/actor/parts/trait-cell.hbs" data=this num=@index}}
 	{{/each}}
 </section>
+<section class="hover-triggers"> {{!-- To Width: 💥💫💡🔑🪓✒️🔒🔓🔎🔧✂️🔪⚔️ --}}
+	<div class="hover-target red" data-action="reset">
+		<span class="target-icon">❌</span>
+		<span class="target-label">Reset</span>
+		<video src="systems/betterangels/assets/animations/hover-trigger-red.webm" mute style="transform: rotate(180deg)"></video>
+		<span class="target-trigger-anim" style="transform: translate(-50%, -50%) scale(0); opacity: 0;"></span>
+	</div>
+	<div class="hover-target yellow" data-action="add" data-type="general">
+		<span class="target-icon">💡</span>
+		<span class="target-label">+General</span>
+		<video src="systems/betterangels/assets/animations/hover-trigger-yellow.webm" mute style="transform: rotate(-90deg)"></video>
+		<span class="target-trigger-anim" style="transform: translate(-50%, -50%) scale(0); opacity: 0;"></span>
+	</div>
+	<div class="hover-target yellow" data-action="add" data-type="weapon">
+		<span class="target-icon">⚔️</span>
+		<span class="target-label">+Weapon</span>
+		<video src="systems/betterangels/assets/animations/hover-trigger-yellow.webm" mute style="transform: rotate(-90deg)"></video>
+		<span class="target-trigger-anim" style="transform: translate(-50%, -50%) scale(0); opacity: 0;"></span>
+	</div>
+	<div class="hover-target yellow" data-action="add" data-type="surprise">
+		<span class="target-icon">❓❗</span>
+		<span class="target-label">+Surprise</span>
+		<video src="systems/betterangels/assets/animations/hover-trigger-yellow.webm" mute style="transform: rotate(-90deg)"></video>
+		<span class="target-trigger-anim" style="transform: translate(-50%, -50%) scale(0); opacity: 0;"></span>
+	</div>
+	<div class="hover-target yellow" data-action="add" data-type="secret">
+		<span class="target-icon">✒️</span>
+		<span class="target-label">+Secret</span>
+		<video src="systems/betterangels/assets/animations/hover-trigger-yellow.webm" mute style="transform: rotate(-90deg)"></video>
+		<span class="target-trigger-anim" style="transform: translate(-50%, -50%) scale(0); opacity: 0;"></span>
+	</div>
+	<div class="hover-target blue" data-action="toWidth">
+		<span class="target-icon">⏩</span>
+		<span class="target-label">To Width</span>
+		<video src="systems/betterangels/assets/animations/hover-trigger-blue.webm" mute style="transform: rotate(90deg)"></video>
+		<span class="target-trigger-anim" style="transform: translate(-50%, -50%) scale(0); opacity: 0;"></span>
+	</div>
+	<div class="hover-target green" data-action="toHeight">
+		<span class="target-icon">⏫</span>
+		<span class="target-label">To Height</span>
+		<video src="systems/betterangels/assets/animations/hover-trigger-green.webm" mute style="transform: rotate(0deg)"></video>
+		<span class="target-trigger-anim" style="transform: translate(-50%, -50%) scale(0); opacity: 0;"></span>
+	</div>
+</section>
 
 <section class="features-list">
 	<div class="feature-row powers-list">

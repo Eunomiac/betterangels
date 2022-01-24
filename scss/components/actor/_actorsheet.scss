@@ -215,7 +215,7 @@
 									color: $c-fg;
 									z-index: 1;
 									pointer-events: all;
-									// background-color: rgba(255, 255, 0, 0.25);
+									// background-color: rgba(255, 255, 0, 0.1);
 
 									&[data-type="tactic"] { @include font-tactic() }
 									&[data-type="strategy"] { @include font-strategy() }
@@ -232,12 +232,57 @@
 										transform-origin: 75% 50%;
 									}
 
-									&.trait-label-bg { 
+									& + .trait-label-bg { 
 										visibility: hidden;
 										color: $c-bg;
 										text-shadow: -1px 1px 1px #{$c-fg-dim}, 1px -1px 1px #{$c-bg-dark};
+										transition: 0.25s;
 									}
-									// &.trait-label-bg { outline: 3px dotted magenta }
+
+									&.is-dragging + .trait-label-bg {
+										visibility: visible;
+									}
+
+									> span {
+										position: relative;
+										display: block;
+
+										&.roll-desc, &.to-width-advantages {
+											position: absolute;
+											height: 1em;
+											width: 200%;
+											left: -50%;
+											pointer-events: none;
+
+											color: $c-bg-dark;
+
+											&.roll-desc {
+												bottom: -1em;
+												@include font-roll-desc($c-fg-bright);
+											}
+											&.to-width-advantages { 
+												bottom: -2.5em;	
+												@include font-to-width-advantages($c-fg-bright);
+
+												> * {
+													display: inline;
+													line-height: inherit;
+													font-size: inherit;
+												}
+
+												.to-width-tags {
+													text-shadow: rept((0 0 0.1em var(--shadow-color)), 3);
+													text-shadow: none;
+													border-radius: 0.25em;
+													background-color: var(--shadow-color);
+													&.general { --shadow-color: white }
+													&.weapon { --shadow-color: magenta }
+													&.secret { --shadow-color: blue }
+													&.surprise { --shadow-color: yellow }
+												}
+											}
+										}
+									}
 								}
 							}
 
@@ -264,6 +309,93 @@
 							}
 
 							@import "../radial-menu";
+						}
+					}
+
+					.hover-triggers {
+						position: absolute;
+						top: 0;
+						height: 60%;
+						width: 100%;
+						pointer-events: none;
+
+						.hover-target {
+							display: block;
+							position: absolute;
+							height: 100px;
+							width: 100px;
+							pointer-events: all;
+
+							&.red { --hover-trigger-color: #{$c-red} }
+							&.green { --hover-trigger-color: #{$c-green} }
+							&.blue { --hover-trigger-color: #{$c-cyan} }
+							&.yellow { --hover-trigger-color: #{$c-yellow} }
+							&.purple { --hover-trigger-color: #{$c-purple} }
+
+							span {
+								display: block;
+								position: absolute;
+								height: 100%;
+								width: 100%;
+								border-radius: 50%;
+
+								&.target-icon {
+									font-size: 32px;
+									text-align: center;
+									line-height: 100px;
+									letter-spacing: -0.25em;
+									text-indent: -0.25em;
+								}
+								&.target-label {
+									// outline: 2px solid var(--hover-trigger-color);
+									text-align: center;
+									line-height: 160px;
+									font-family: BadaBoom;
+									// text-shadow: rept((0 0 3px var(--hover-trigger-color)), 3);
+									font-size: 20px;
+									white-space: nowrap;
+								}
+								&.target-trigger-anim {
+									background: var(--hover-trigger-color);
+									// opacity: 0.1;
+									top: 50%;
+									left: 50%;
+								}
+							}
+
+							&[data-action="add"] {
+								left: -100px;
+
+								&[data-type="general"] { top: 10% }
+								&[data-type="weapon"] { top: 36.6%; left: -120px; }
+								&[data-type="surprise"] { top: 63.3%; left: -120px; }
+								&[data-type="secret"] { top: 90% } 
+							}
+
+							&[data-action="reset"] {
+								right: -100px;
+								top: 10%;
+							}
+
+							&[data-action="toWidth"] {
+								right: -120px;
+								top: 50%;
+							}
+
+							&[data-action="toHeight"] {
+								right: -100px;
+								top: 90%;
+							}
+
+							video {
+								display: block;
+								position: absolute;
+								pointer-events: none;
+								width: 200%;
+								height: 200%;
+								left: -50%;
+								top: -50%;
+							}
 						}
 					}
 					

@@ -907,7 +907,7 @@ i.fas {
 
 .window-app {
   font-family: KomikaText;
-  color: #999999;
+  color: #cccccc;
   background: #222222; }
   .window-app a:hover {
     text-shadow: 0 0 18px cyan, 0 0 18px cyan, 0 0 18px cyan;
@@ -925,7 +925,7 @@ i.fas {
     .window-app .window-content input[type="number"],
     .window-app .window-content input[type="date"],
     .window-app .window-content input[type="time"] {
-      color: #999999;
+      color: #cccccc;
       border: 0;
       background: transparent; }
     .window-app .window-content .directory .directory-list .directory-item > * {
@@ -1262,7 +1262,7 @@ span.trait {
               width: auto;
               font-family: KomikaText;
               font-size: 18px;
-              color: #999999;
+              color: #cccccc;
               text-align: right; }
           .betterangels.actor .window-content form.editable .sheet-header .header-fields h2.demonname {
             top: -5px; }
@@ -1344,7 +1344,7 @@ span.trait {
               width: -moz-min-content;
               width: min-content;
               min-width: 50%;
-              color: #999999;
+              color: #cccccc;
               z-index: 1;
               pointer-events: all; }
               .betterangels.actor .window-content form.editable .sheet-body .tab.front .trait-panel .trait-cell .trait-name .trait-label[data-type="tactic"] {
@@ -1394,10 +1394,92 @@ span.trait {
                 -webkit-transform-origin: 75% 50%;
                 -ms-transform-origin: 75% 50%;
                 transform-origin: 75% 50%; }
-              .betterangels.actor .window-content form.editable .sheet-body .tab.front .trait-panel .trait-cell .trait-name .trait-label.trait-label-bg {
+              .betterangels.actor .window-content form.editable .sheet-body .tab.front .trait-panel .trait-cell .trait-name .trait-label + .trait-label-bg {
                 visibility: hidden;
                 color: #222222;
-                text-shadow: -1px 1px 1px gray, 1px -1px 1px black; }
+                text-shadow: -1px 1px 1px gray, 1px -1px 1px black;
+                -webkit-transition: 0.25s;
+                -o-transition: 0.25s;
+                transition: 0.25s; }
+              .betterangels.actor .window-content form.editable .sheet-body .tab.front .trait-panel .trait-cell .trait-name .trait-label.is-dragging + .trait-label-bg {
+                visibility: visible; }
+              .betterangels.actor .window-content form.editable .sheet-body .tab.front .trait-panel .trait-cell .trait-name .trait-label > span {
+                position: relative;
+                display: block; }
+                .betterangels.actor .window-content form.editable .sheet-body .tab.front .trait-panel .trait-cell .trait-name .trait-label > span.roll-desc, .betterangels.actor .window-content form.editable .sheet-body .tab.front .trait-panel .trait-cell .trait-name .trait-label > span.to-width-advantages {
+                  position: absolute;
+                  height: 1em;
+                  width: 200%;
+                  left: -50%;
+                  pointer-events: none;
+                  color: black; }
+                  .betterangels.actor .window-content form.editable .sheet-body .tab.front .trait-panel .trait-cell .trait-name .trait-label > span.roll-desc.roll-desc, .betterangels.actor .window-content form.editable .sheet-body .tab.front .trait-panel .trait-cell .trait-name .trait-label > span.to-width-advantages.roll-desc {
+                    bottom: -1em;
+                    font-family: Acme;
+                    /* family: Ashcan; */
+                    /* family: Ashcan (b); */
+                    /* family: BubblegumSans; */
+                    /* family: GoodDog; */
+                    /* family: KomikaTextTight; */
+                    /* family: MouseMemoirs; */
+                    /* family: ShakyHandSomeComic; */
+                    /* family: ShakyHandSomeComic (b); */
+                    /* family: SwingSet; */
+                    font-size: 0.4em;
+                    font-variant: normal;
+                    font-weight: normal;
+                    font-style: normal;
+                    line-height: 0.4em;
+                    letter-spacing: normal;
+                    word-spacing: normal;
+                    text-align: center;
+                    text-decoration: none;
+                    text-indent: 0;
+                    text-shadow: 0 0 0.1em white, 0 0 0.1em white, 0 0 0.1em white;
+                    text-transform: none;
+                    white-space: nowrap; }
+                  .betterangels.actor .window-content form.editable .sheet-body .tab.front .trait-panel .trait-cell .trait-name .trait-label > span.roll-desc.to-width-advantages, .betterangels.actor .window-content form.editable .sheet-body .tab.front .trait-panel .trait-cell .trait-name .trait-label > span.to-width-advantages.to-width-advantages {
+                    bottom: -2.5em;
+                    font-family: Acme;
+                    /* family: Ashcan; */
+                    /* family: Ashcan (b); */
+                    /* family: BubblegumSans; */
+                    /* family: GoodDog; */
+                    /* family: KomikaTextTight; */
+                    /* family: MouseMemoirs; */
+                    /* family: ShakyHandSomeComic; */
+                    /* family: ShakyHandSomeComic (b); */
+                    /* family: SwingSet; */
+                    font-size: 0.4em;
+                    font-variant: normal;
+                    font-weight: normal;
+                    font-style: normal;
+                    line-height: 0.4em;
+                    letter-spacing: normal;
+                    word-spacing: normal;
+                    text-align: center;
+                    text-decoration: none;
+                    text-indent: 0;
+                    text-shadow: 0 0 0.1em white, 0 0 0.1em white, 0 0 0.1em white;
+                    text-transform: none;
+                    white-space: nowrap; }
+                    .betterangels.actor .window-content form.editable .sheet-body .tab.front .trait-panel .trait-cell .trait-name .trait-label > span.roll-desc.to-width-advantages > *, .betterangels.actor .window-content form.editable .sheet-body .tab.front .trait-panel .trait-cell .trait-name .trait-label > span.to-width-advantages.to-width-advantages > * {
+                      display: inline;
+                      line-height: inherit;
+                      font-size: inherit; }
+                    .betterangels.actor .window-content form.editable .sheet-body .tab.front .trait-panel .trait-cell .trait-name .trait-label > span.roll-desc.to-width-advantages .to-width-tags, .betterangels.actor .window-content form.editable .sheet-body .tab.front .trait-panel .trait-cell .trait-name .trait-label > span.to-width-advantages.to-width-advantages .to-width-tags {
+                      text-shadow: 0 0 0.1em var(--shadow-color), 0 0 0.1em var(--shadow-color), 0 0 0.1em var(--shadow-color);
+                      text-shadow: none;
+                      border-radius: 0.25em;
+                      background-color: var(--shadow-color); }
+                      .betterangels.actor .window-content form.editable .sheet-body .tab.front .trait-panel .trait-cell .trait-name .trait-label > span.roll-desc.to-width-advantages .to-width-tags.general, .betterangels.actor .window-content form.editable .sheet-body .tab.front .trait-panel .trait-cell .trait-name .trait-label > span.to-width-advantages.to-width-advantages .to-width-tags.general {
+                        --shadow-color: white ; }
+                      .betterangels.actor .window-content form.editable .sheet-body .tab.front .trait-panel .trait-cell .trait-name .trait-label > span.roll-desc.to-width-advantages .to-width-tags.weapon, .betterangels.actor .window-content form.editable .sheet-body .tab.front .trait-panel .trait-cell .trait-name .trait-label > span.to-width-advantages.to-width-advantages .to-width-tags.weapon {
+                        --shadow-color: magenta ; }
+                      .betterangels.actor .window-content form.editable .sheet-body .tab.front .trait-panel .trait-cell .trait-name .trait-label > span.roll-desc.to-width-advantages .to-width-tags.secret, .betterangels.actor .window-content form.editable .sheet-body .tab.front .trait-panel .trait-cell .trait-name .trait-label > span.to-width-advantages.to-width-advantages .to-width-tags.secret {
+                        --shadow-color: blue ; }
+                      .betterangels.actor .window-content form.editable .sheet-body .tab.front .trait-panel .trait-cell .trait-name .trait-label > span.roll-desc.to-width-advantages .to-width-tags.surprise, .betterangels.actor .window-content form.editable .sheet-body .tab.front .trait-panel .trait-cell .trait-name .trait-label > span.to-width-advantages.to-width-advantages .to-width-tags.surprise {
+                        --shadow-color: yellow ; }
           .betterangels.actor .window-content form.editable .sheet-body .tab.front .trait-panel .trait-cell .dot-line {
             display: grid;
             grid-template-columns: 1fr repeat(7, 1em) 1fr;
@@ -1405,13 +1487,13 @@ span.trait {
             grid-gap: 0.25em; }
             .betterangels.actor .window-content form.editable .sheet-body .tab.front .trait-panel .trait-cell .dot-line .dot {
               position: relative;
-              border: 1px solid #999999;
+              border: 1px solid #cccccc;
               border-radius: 50%;
               grid-row: 1 / 2;
               background: transparent; }
               .betterangels.actor .window-content form.editable .sheet-body .tab.front .trait-panel .trait-cell .dot-line .dot.full {
-                background: -o-radial-gradient(ellipse, white, #999999 70%);
-                background: radial-gradient(ellipse, white, #999999 70%); }
+                background: -o-radial-gradient(ellipse, white, #cccccc 70%);
+                background: radial-gradient(ellipse, white, #cccccc 70%); }
             .betterangels.actor .window-content form.editable .sheet-body .tab.front .trait-panel .trait-cell .dot-line[data-sub-type="sinister"] .dot-1 {
               grid-column: 2 / 3; }
             .betterangels.actor .window-content form.editable .sheet-body .tab.front .trait-panel .trait-cell .dot-line[data-sub-type="virtuous"] .dot-1 {
@@ -1805,6 +1887,79 @@ span.trait {
                       -webkit-transform: scale(2);
                       -ms-transform: scale(2);
                       transform: scale(2); }
+      .betterangels.actor .window-content form.editable .sheet-body .tab.front .hover-triggers {
+        position: absolute;
+        top: 0;
+        height: 60%;
+        width: 100%;
+        pointer-events: none; }
+        .betterangels.actor .window-content form.editable .sheet-body .tab.front .hover-triggers .hover-target {
+          display: block;
+          position: absolute;
+          height: 100px;
+          width: 100px;
+          pointer-events: all; }
+          .betterangels.actor .window-content form.editable .sheet-body .tab.front .hover-triggers .hover-target.red {
+            --hover-trigger-color: red ; }
+          .betterangels.actor .window-content form.editable .sheet-body .tab.front .hover-triggers .hover-target.green {
+            --hover-trigger-color: #00cc00 ; }
+          .betterangels.actor .window-content form.editable .sheet-body .tab.front .hover-triggers .hover-target.blue {
+            --hover-trigger-color: cyan ; }
+          .betterangels.actor .window-content form.editable .sheet-body .tab.front .hover-triggers .hover-target.yellow {
+            --hover-trigger-color: yellow ; }
+          .betterangels.actor .window-content form.editable .sheet-body .tab.front .hover-triggers .hover-target.purple {
+            --hover-trigger-color: purple ; }
+          .betterangels.actor .window-content form.editable .sheet-body .tab.front .hover-triggers .hover-target span {
+            display: block;
+            position: absolute;
+            height: 100%;
+            width: 100%;
+            border-radius: 50%; }
+            .betterangels.actor .window-content form.editable .sheet-body .tab.front .hover-triggers .hover-target span.target-icon {
+              font-size: 32px;
+              text-align: center;
+              line-height: 100px;
+              letter-spacing: -0.25em;
+              text-indent: -0.25em; }
+            .betterangels.actor .window-content form.editable .sheet-body .tab.front .hover-triggers .hover-target span.target-label {
+              text-align: center;
+              line-height: 160px;
+              font-family: BadaBoom;
+              font-size: 20px;
+              white-space: nowrap; }
+            .betterangels.actor .window-content form.editable .sheet-body .tab.front .hover-triggers .hover-target span.target-trigger-anim {
+              background: var(--hover-trigger-color);
+              top: 50%;
+              left: 50%; }
+          .betterangels.actor .window-content form.editable .sheet-body .tab.front .hover-triggers .hover-target[data-action="add"] {
+            left: -100px; }
+            .betterangels.actor .window-content form.editable .sheet-body .tab.front .hover-triggers .hover-target[data-action="add"][data-type="general"] {
+              top: 10%; }
+            .betterangels.actor .window-content form.editable .sheet-body .tab.front .hover-triggers .hover-target[data-action="add"][data-type="weapon"] {
+              top: 36.6%;
+              left: -120px; }
+            .betterangels.actor .window-content form.editable .sheet-body .tab.front .hover-triggers .hover-target[data-action="add"][data-type="surprise"] {
+              top: 63.3%;
+              left: -120px; }
+            .betterangels.actor .window-content form.editable .sheet-body .tab.front .hover-triggers .hover-target[data-action="add"][data-type="secret"] {
+              top: 90%; }
+          .betterangels.actor .window-content form.editable .sheet-body .tab.front .hover-triggers .hover-target[data-action="reset"] {
+            right: -100px;
+            top: 10%; }
+          .betterangels.actor .window-content form.editable .sheet-body .tab.front .hover-triggers .hover-target[data-action="toWidth"] {
+            right: -120px;
+            top: 50%; }
+          .betterangels.actor .window-content form.editable .sheet-body .tab.front .hover-triggers .hover-target[data-action="toHeight"] {
+            right: -100px;
+            top: 90%; }
+          .betterangels.actor .window-content form.editable .sheet-body .tab.front .hover-triggers .hover-target video {
+            display: block;
+            position: absolute;
+            pointer-events: none;
+            width: 200%;
+            height: 200%;
+            left: -50%;
+            top: -50%; }
       .betterangels.actor .window-content form.editable .sheet-body .tab.front .features-list {
         width: 100%; }
         .betterangels.actor .window-content form.editable .sheet-body .tab.front .features-list .feature-row {

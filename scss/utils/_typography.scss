@@ -246,3 +246,64 @@ $font-size-b4: 16px;
 	}
 	line-height: 1em;
 }
+
+@mixin font-roll-desc($shadow-color: $c-bg-dark) {	
+	font: {
+		family: Acme;
+		/* family: Ashcan; */
+		/* family: Ashcan (b); */
+		/* family: BubblegumSans; */
+		/* family: GoodDog; */
+		/* family: KomikaTextTight; */
+		/* family: MouseMemoirs; */
+		/* family: ShakyHandSomeComic; */
+		/* family: ShakyHandSomeComic (b); */
+		/* family: SwingSet; */
+		size: 0.4em;
+		variant: normal;
+		weight: normal;
+		style: normal;
+	}
+	line-height: 0.4em;
+	letter-spacing: normal;
+	word-spacing: normal;
+	text: {
+		align: center;
+		decoration: none;
+		indent: 0;
+		shadow: rept((0 0 0.1em #{$shadow-color}), 3);
+		transform: none;
+	}
+	white-space: nowrap;
+}
+
+@mixin font-to-width-advantages($shadow-color: $c-bg-dark) {
+	font: {
+		family: Acme;
+		/* family: Ashcan; */
+		/* family: Ashcan (b); */
+		/* family: BubblegumSans; */
+		/* family: GoodDog; */
+		/* family: KomikaTextTight; */
+		/* family: MouseMemoirs; */
+		/* family: ShakyHandSomeComic; */
+		/* family: ShakyHandSomeComic (b); */
+		/* family: SwingSet; */
+		size: 0.4em;
+		variant: normal;
+		weight: normal;
+		style: normal;
+	}
+	line-height: 0.4em;
+	letter-spacing: normal;
+	word-spacing: normal;
+	text: {
+		align: center;
+		decoration: none;
+		indent: 0;
+		shadow: rept((0 0 0.1em #{$shadow-color}), 3);
+		transform: none;
+	}
+	white-space: nowrap;
+
+}

@@ -2,7 +2,17 @@
 <div class="trait-cell cell-{{math num "++"}}">
 	{{#each data}}
 	<div class="trait-name" data-trait="{{name}}" data-value="{{value}}" data-type="{{type}}" data-sub-type="{{subType}}">
-		<label class="trait-label trait-draggable" data-trait="{{name}}" data-value="{{value}}" data-type="{{type}}" data-sub-type="{{subType}}">{{displayName}}</label>
+		<label class="trait-label trait-draggable" data-trait="{{name}}" data-value="{{value}}" data-type="{{type}}" data-sub-type="{{subType}}">
+			<span class="display-name">{{displayName}}</span>
+			<span class="roll-desc"></span>
+			<span class="to-width-advantages">
+				<span class="to-width-label"></span> {{!-- To Width: 💥💫💡🔑🪓✒️🔒🔓🔎🔧✂️🔪⚔️ --}}
+				<span class="to-width-tags general"></span>
+				<span class="to-width-tags weapon"></span>
+				<span class="to-width-tags surprise"></span>
+				<span class="to-width-tags secret"></span>
+			</span>
+		</label>
 		<label class="trait-label trait-label-bg trait-droppable" data-trait="{{name}}" data-value="{{value}}" data-type="{{type}}" data-sub-type="{{subType}}">{{displayName}}</label>
 	</div>
 	<div class="dot-line" data-trait="{{name}}" data-value="{{value}}" data-type="{{type}}" data-sub-type="{{subType}}">
@@ -16,6 +26,3 @@
 	{{/each}}
 	{{> "/systems/betterangels/hbs/actor/parts/radial-menu.hbs" top=data.[0] bottom=data.[1]}}
 </div>
-
-
-    

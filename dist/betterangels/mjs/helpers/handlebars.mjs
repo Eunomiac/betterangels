@@ -108,7 +108,6 @@ export const TEMPLATES = {
 	],
 	actorPartials: [  // Actor Partials
 		getPath("radial-menu", "actor/parts"),
-		getPath("trait-grid", "actor/parts"),
 		getPath("trait-cell", "actor/parts")
 	]
 };

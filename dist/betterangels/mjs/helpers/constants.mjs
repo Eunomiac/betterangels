@@ -106,10 +106,12 @@ export default {
 		const C = this;
 		return {
 			colors: {
-				fg: "rgb(179, 179, 179)",
+				gold: "rgb(255, 215, 0)",
+				fg: "rgb(204, 204, 204)",
 				fgBright: "rgb(255, 255, 255)",
 				fgDim: "rgb(128, 128, 128)",
 				bg: "rgb(34, 34, 34)",
+				bgDim: "rgb(15, 15, 15)",
 				bgDark: "rgb(0, 0, 0)",
 				filling: "rgb(0, 255, 0)",
 				fillingDark: "rgb(0, 128, 0)",
@@ -120,7 +122,11 @@ export default {
 				strategyBright: "rgb(0, 255, 0)",
 				tacticBright: "rgb(255, 0, 255)",
 				strategyDark: "rgb(0, 100, 0)",
-				tacticDark: "rgb(100, 0, 100)"
+				tacticDark: "rgb(100, 0, 100)",
+				addHoverTrigger: "rgb(255, 255, 0)",
+				toWidthHoverTrigger: "rgb(0, 255, 255)",
+				resetHoverTrigger: "rgb(255, 0, 0)",
+				toHeightHoverTrigger: "rgb(0, 255, 0)"
 			},
 			get dots() {
 				return {
@@ -130,6 +136,40 @@ export default {
 						filling: `radial-gradient(ellipse, ${C.html.colors.filling}, ${C.html.colors.fillingDark} 70%)`,
 						emptying: `radial-gradient(ellipse, ${C.html.colors.emptying}, ${C.html.colors.emptyingDark} 70%)`
 					}
+				};
+			},
+			get shadows() {
+				return {
+					traitShadow: `0 0 0.12em ${this.colors.bgDark})`.repeat(5),
+					tacticHover: [
+						...[3, 6].map((blur) => `0 0 ${blur}px ${this.colors.fgBright}`),
+						...[6, 10, 12, 15].map((blur) => `0 0 ${blur}px ${this.colors.tacticBright}`)
+					].join(", "),
+					strategyHover: [
+						...[3, 6].map((blur) => `0 0 ${blur}px ${this.colors.fgBright}`),
+						...[6, 10, 12, 15].map((blur) => `0 0 ${blur}px ${this.colors.strategyBright}`)
+					].join(", "),
+					bgTraitShadow: `-1px 1px 1px ${this.colors.fgDim}, 1px -1px 1px ${this.colors.bgDark}`,
+					dropTarget: [
+						...[5, 10].map((blur) => `0 0 ${blur}px ${this.colors.fgBright}`),
+						...[10, 15, 20, 25].map((blur) => `0 0 ${blur}px ${this.colors.gold}`)
+					].join(", "),
+					addHoverTrigger: [
+						...[3, 6].map((blur) => `0 0 ${blur}px ${this.colors.fgBright}`),
+						...[6, 10, 12, 15].map((blur) => `0 0 ${blur}px ${this.colors.addHoverTrigger}`)
+					].join(", "),
+					toWidthHoverTrigger: [
+						...[3, 6].map((blur) => `0 0 ${blur}px ${this.colors.fgBright}`),
+						...[6, 10, 12, 15].map((blur) => `0 0 ${blur}px ${this.colors.toWidthHoverTrigger}`)
+					],
+					toHeightHoverTrigger: [
+						...[3, 6].map((blur) => `0 0 ${blur}px ${this.colors.fgBright}`),
+						...[6, 10, 12, 15].map((blur) => `0 0 ${blur}px ${this.colors.toHeightHoverTrigger}`)
+					],
+					resetHoverTrigger: [
+						...[3, 6].map((blur) => `0 0 ${blur}px ${this.colors.fgBright}`),
+						...[6, 10, 12, 15].map((blur) => `0 0 ${blur}px ${this.colors.resetHoverTrigger}`)
+					]
 				};
 			}
 		};

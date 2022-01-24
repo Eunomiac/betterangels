@@ -857,7 +857,12 @@ const set = (targets, params) => {
 	targets = getElems(targets);
 	return gsap.set(targets, params);
 };
-const getElems = (...elemRefs) => elemRefs.map((eRef) => (Array.isArray(eRef) ? $(eRef[0]).get() : $(eRef).get()[0]));
+const getElems = (...elemRefs) => [elemRefs].flat(3).map((eRef) => {
+	if (eRef) {
+		return Array.isArray(eRef) ? $(eRef[0]).get() : $(eRef).get()[0];
+	}
+	return false;
+});
 const getElem = (elemRef) => getElems(elemRef)[0];
 const getRawCirclePath = (r, {x: xO, y: yO} = {}) => {
 	[r, xO, yO] = [r, xO, yO].map((val) => parseInt(val)); // roundNum(val, 2));

@@ -6,7 +6,7 @@
 \* ****▌███████████████████████████████████████████████████████████████████████████▐**** */
 
 import {
-	// ▮▮▮▮▮▮▮[Constants]▮▮▮▮▮▮▮
+ 	// ▮▮▮▮▮▮▮[Constants]▮▮▮▮▮▮▮
 	C,
 	// ▮▮▮▮▮▮▮[External Libraries]▮▮▮▮▮▮▮
 	// GreenSock Animation Platform
@@ -68,10 +68,19 @@ export default class extends MIX(ActorSheet).with(UpdateQueue) {
 	}
 
 	get $() { return $(`#actor-${this.actor.id}`) }
+	get isDraggingTrait() { return Boolean(this.$.find(".is-dragging")[0]) }
 
 	// ████████ 🔴 ACTIVATE LISTENERS ████████
 	activateListeners(html) {
 		super.activateListeners(html);
+
+		const testTrait$ = this.$.find(".trait-label[data-trait=\"cunning\"]");
+		testTrait$.find(".roll-desc")[0].innerText = "CUNNING + Espionage + 3✒️ + 2⚔️ = 10";
+		testTrait$.find(".to-width-advantages .to-width-label")[0].innerText = "To Width:";
+		testTrait$.find(".to-width-advantages .general")[0].innerText = "💡";
+		testTrait$.find(".to-width-advantages .weapon")[0].innerText = "⚔️";
+		testTrait$.find(".to-width-advantages .surprise")[0].innerText = "";
+		testTrait$.find(".to-width-advantages .secret")[0].innerText = "";
 
 		// Attach gsap hover events
 		html.find(".trait-label").mouseenter(this._onTraitHover.bind(this));
@@ -89,6 +98,8 @@ export default class extends MIX(ActorSheet).with(UpdateQueue) {
 
 		html.find(".trait-label[data-type=\"strategy\"][data-sub-type=\"sinister\"]").dblclick(this._setPrimarySinister.bind(this));
 
+		html.find(".hover-target video").on("ended", ({currentTarget}) => { currentTarget.currentTime = 0 });
+
 		html.find(".feature").click((event) => {
 			const item = this.actor.items.get(event.currentTarget.dataset.itemId);
 			item.sheet.render(true);
@@ -96,94 +107,107 @@ export default class extends MIX(ActorSheet).with(UpdateQueue) {
 
 		// Create gsap Draggable trait elements
 		Dragger.create(this.$.find(".trait-label"), {
-			onDragStart() {
-				// Assign is-dragging class, remove draggable class
+			onDragStartParams: [this],
+			onDragStart(actorSheet) {
+				// Assign is-dragging class
 				$(this.target).addClass("is-dragging");
 
-				// Determine trait type and droppable target type
+				// Determine trait, trait type, and droppable target type
 				this.trait = $(this.target).data("trait");
 				this.type = $(this.target).data("type");
-				[this.homeTarget] = sheetContext.$.find(".trait-label.is-dragging + .trait-label-bg");
+				this.dropType = this.type === "strategy" ? "tactic" : "strategy";
+
+				// Assemble home element, potential drop targets, and modifier targets
+				[this.homeTarget] = actorSheet.$.find(".trait-label.is-dragging + .trait-label-bg");
 				[this.rollTargets, this.nonTargets] = U.partition(
-					Array.from(sheetContext.$.find(".trait-draggable:not(.is-dragging)")),
+					Array.from(actorSheet.$.find(".trait-draggable:not(.is-dragging)")),
 					(elem) => $(elem).data("type") !== this.type
 				);
-				this.modTargets = Array.from(sheetContext.$.find(".trait-roll-modifier"));
+				[this.readyRollovers, this.unassignedRollovers] = U.partition(
+					Array.from(actorSheet.$.find(".roll-over-mod")),
+					(elem) => $(elem).data("action")
+				);
+
+				this.modTargets = [
+					...this.readyRollovers,
+					...this.unassignedRollovers
+				];
 				this.dropTargets = [
 					...this.rollTargets,
 					this.homeTarget
 				];
+				this.hoverTargets = [
+					...this.dropTargets,
+					...this.modTargets
+				];
+
 				console.log({
-					DRAGGING: this.target,
-					trait: this.trait,
-					type: this.type,
 					homeTarget: this.homeTarget,
 					rollTargets: this.rollTargets,
-					nonTargets: this.nonTargets,
-					modTargets: this.modTargets,
-					dropTargets: this.dropTargets
+					dropTargets: this.dropTargets,
+					hoverTargets: this.hoverTargets
 				});
 
-				// Reset hover-over timeline, then color and expand draggable trait
-				sheetContext.hoverTimelines[this.trait]?.seek(0.01)?.reverse();
-				this.dragTimeline = gsap.timeline({
-					callbackScope: this,
-					onReverseComplete() {
-						gsap.set(this.target, {clearProps: "transform,color,textShadow"});
-						gsap.to(this.target, {opacity: 1, duration: 0.25});
-						$(this.target).removeClass("is-dragging");
-						this.enable();
-					}
-				})
-					.fromTo(this.target, {
-						opacity: 0
-					}, {
-						color: C.html.colors[this.type],
-						opacity: 1,
-						textShadow: [
-							...[2, 4, 8].map((blur) => `0 0 ${1.5 * blur}px white`),
-							...[4, 7, 8, 10, 15].map((blur) => `0 0 ${1.5 * blur}px ${C.html.colors[`${this.type}Bright`]}`)
-						].join(", "),
-						scale: 2,
-						duration: 0.25
-					});
+				// Tween draggable element to "dragging"
+				actorSheet.playTimelineTo(this.target, "dragging", {duration: 0.5, ease: "elastic"});
 
-				// Enable display of background trait, brighten droppable traits, expand roll modifier targets
-				this.dropTimeline = gsap.timeline()
-					.fade(this.homeTarget, 0)
-					.brighten(this.rollTargets, 0)
-					.darken(this.nonTargets, 0);
-				// 	.spinOut(this.modTargets, 0)
+				// Tween drop target elements to "bright"
+				actorSheet.playTimelineTo(this.rollTargets, "bright", {duration: 1, ease: "sine", stagger: 1});
+
+				// Tween invalid target elements to "faded"
+				actorSheet.playTimelineTo(this.nonTargets, "faded", {duration: 1, ease: "sine", stagger: 1});
+
+				// Tween ready rollover targets to "assigned"
+				// actorSheet.playTimelineTo(this.readyRollovers, "assigned", {duration: 1, stagger: 2, staggerFrom: "start"});
+
+				// Tween assignable rollover targets to "visible"
+				// actorSheet.playTimelineTo(this.unassignedRollovers, "visible", {duration: 1, stagger: 2, staggerFrom: "start"});
 			},
-			onDragEnd() {
+			onDragParams: [this],
+			onDrag(actorSheet) {
+				// Check for a drop target and fire its droppable timeline
+				const dropTarget = actorSheet.getDropElem(this);
+				if (dropTarget !== this.dropTarget) {
+					actorSheet.setDroppable(dropTarget, this.dropTarget);
+					this.dropTarget = dropTarget;
+				}
+
+				// Check for a mod target and initiate its charge-up timeline
+				const modTarget = actorSheet.getModElem(this);
+				if (modTarget !== this.modTarget) {
+					actorSheet.setModTarget(modTarget, this.modTarget);
+					this.modTarget = modTarget;
+				}
+			},
+			onDragEndParams: [this],
+			onDragEnd(actorSheet) {
 				// Temporarily disable this draggable instance while it is repositioned
 				this.disable();
 
-				// Find which, if any, roll targets (including home target) it is being dropped on
-				let dropThreshold = 0.5, dropTargets;
-				const targetReport = {};
-				while (dropThreshold >= 0) {
-					const validDropTargets = (dropTargets ?? this.dropTargets).filter((elem) => this.hitTest(elem, `${dropThreshold * 100}%`));
-					if (validDropTargets.length === 0) { break }
-					dropTargets = [...validDropTargets];
-					targetReport[`${dropThreshold * 100}% (${dropTargets.length})`] = [...dropTargets];
-					if (dropTargets.length === 1) { break }
-					dropThreshold -= 0.1;
-				}
-				const [dropElem] = dropTargets ?? [];
-				console.log({
-					targetReport,
-					dropElem
-				});
-				if (dropElem) {
-					console.log(`Dropped on ${dropElem.dataset?.trait?.toUpperCase()}`);
+				if (this.dropTarget) {
+					this.dropTargets = this.dropTargets.filter((elem) => elem !== this.dropTarget);
+					console.log(`Dropped on ${this.dropTarget.dataset?.trait?.toUpperCase()}`);
 				} else {
 					console.log("Dropped on NO TARGET");
 				}
 
-				// Fade the dragged trait to hidden, then reset its position and fade it back in while reversing the trait timeline
-				this.dragTimeline?.reverse();
-				this.dropTimeline?.reverse();
+				// Tween unused drop targets and non-targets to "base"
+				actorSheet.playTimelineTo([...this.dropTargets, ...this.nonTargets], "base", {duration: 0.5, ease: "sine", stagger: 5});
+
+				// Tween drop target into roll animation
+				actorSheet.playTimelineTo(this.dropTarget, "base", {duration: 5});
+
+				// Fade-explode draggable item to opacity 0, set position to 0, set timeline position to base, fade in
+				actorSheet.playTimelineTo(this.target, "hoverOver", {duration: 1.5, ease: "power2"})
+					.then(() => {
+						actorSheet.playTimelineTo(this.target, "base", {duration: 0});
+						gsap.set(this.target, {x: 0, y: 0});
+						$(this.target).removeClass("is-dragging");
+						this.enable();
+					});
+
+				// Tween mod targets to "hidden"
+				// actorSheet.playTimelineTo(this.modTargets, "hidden", {duration: 1, stagger: 2, staggerFrom: "start"});
 			}
 		});
 	}
@@ -196,54 +220,232 @@ export default class extends MIX(ActorSheet).with(UpdateQueue) {
 		super.render(...args);
 	}
 
-	// ████████ GSAP Effects ████████
-	get hoverTimelines() { return (this._hoverTimelines = this._hoverTimelines ?? {}) }
-	get dragHoverTimelines() { return (this._dragHoverTimelines = this._dragHoverTimelines ?? {}) }
-	get isDraggingTrait() { return Boolean(this.$.find(".is-dragging")[0]) }
+	// ████████ GSAP Timelines ████████
+	get TIMELINES() {
+		if (!this._TIMELINES) {
+			this._TIMELINES = new Map();
+			this.$.find(".trait-draggable").each((i, elem) => {
+				this._TIMELINES.set(elem, this.makeTraitTimeline(elem));
+			});
+			this.$.find(".hover-target").each((i, elem) => {
+				this._TIMELINES.set(elem, this.makeModTimeline(elem));
+			});
+		}
+		return this._TIMELINES;
+	}
+	getTimeline(elemRef) { return this.TIMELINES.get(U.getElem(elemRef)) }
+	getTimelines(elemsRef) { return U.getElems(elemsRef).map((elem) => this.TIMELINES.get(elem)) }
+
+	makeTraitTimeline(traitElem) {
+		const trait = $(traitElem).data("trait");
+		const type = $(traitElem).data("type");
+		return gsap.timeline({paused: true, defaults: {ease: "none"}})
+			.addLabel("faded", 0)
+			.fromTo(traitElem, {
+				autoAlpha: 0.25,
+				color: C.html.colors.fg,
+				scale: 1,
+				textShadow: C.html.shadows.traitShadow
+			}, {
+				autoAlpha: 1
+			})
+			.addLabel("base")
+			.to(traitElem, {
+				color: C.html.colors.fgBright,
+				scale: 1.15
+			})
+			.addLabel("bright")
+			.to(traitElem, {
+				color: C.html.colors[`${type}Dark`],
+				scale: 1.25,
+				textShadow: C.html.shadows[`${type}Hover`]
+			})
+			.addLabel("hoverOver")
+			.to(traitElem, {
+				color: C.html.colors.gold,
+				scale: 1.5,
+				textShadow: C.html.shadows.dropTarget
+			})
+			.addLabel("dropTarget")
+			.to(traitElem, {
+				color: C.html.colors[type],
+				scale: 2
+			})
+			.addLabel("dragging")
+			.seek("base");
+	}
+
+	makeModTimeline(modElem) {
+		const modElem$ = $(modElem);
+		const action = modElem$.data("action");
+		const type = modElem$.data("type");
+		const [iconElem] = modElem$.find(".target-icon");
+		const [labelElem] = modElem$.find(".target-label");
+		const [videoElem] = modElem$.find("video");
+		const [triggerAnimElem] = modElem$.find(".target-trigger-anim");
+
+		return gsap.timeline(({paused: true, defaults: {ease: "none"}}))
+			.to([modElem, iconElem, labelElem, videoElem, triggerAnimElem], {
+				autoAlpha: 0,
+				scale: 0,
+				duration: 0,
+				textShadow: 0,
+				outline: 0
+			})
+			.addLabel("hidden")
+			.to([modElem, iconElem, videoElem], {
+				autoAlpha: 0.75,
+				scale: 0.8,
+				stagger: 0.25
+			}, ">")
+			.to(labelElem, {
+				autoAlpha: 1,
+				scale: 1,
+				delay: 0.5,
+				textShadow: C.html.shadows[`${action}HoverTrigger`]
+			}, "<")
+			.addLabel("visible")
+			.to([modElem, iconElem, videoElem], {
+				autoAlpha: 1,
+				scale: 1
+			})
+			.to(labelElem, {
+				keyframes: {
+					scale: [1, 1.25, 1, 1, 1, 1],
+					outline: [0, 0, `3px solid ${C.html.colors[`${action}HoverTrigger`]}`]
+				}
+			}, "<")
+			.addLabel("startCycle")
+			.call(() => {
+				videoElem.currentTime = 0;
+				videoElem.play();
+			})
+			.to(iconElem, {
+				keyframes: {
+					scale: [1, 1.25, 1, 0.75, 1],
+					ease: "sine.inOut"
+				},
+				duration: videoElem.duration
+			}, "<")
+			.to(triggerAnimElem, {
+				autoAlpha: 0.75,
+				scale: 1,
+				ease: "power2.in",
+				duration: videoElem.duration
+			}, "<")
+			.call(() => {
+				this.onHoverTrigger(action, type);
+			})
+			.to(videoElem, {
+				autoAlpha: 0,
+				duration: 0.25
+			})
+			.to(triggerAnimElem, {
+				keyframes: {
+					autoAlpha: [0.75, 1, 0, 0, 0],
+					scale: [1, 10],
+					ease: "power4.out"
+				},
+				duration: 0.25
+			}, "<")
+			.to(triggerAnimElem, {
+				scale: 1,
+				duration: 0,
+				onCompleteParams: [this],
+				onComplete(actorSheet) {
+					actorSheet.playTimelineTo(modElem, "endCycle", {from: "startCycle", maxDuration: 20});
+				}
+			}) // Check how onComplete and .call() work with your CodePen timeline label tester
+			.addLabel("endCycle")
+			.seek("hidden");
+	}
+
+	playTimelineTo(tlRef, label, {from, minDuration = 0, maxDuration = 0.5, duration, ease, stagger = 0, staggerFrom = "random"} = {}) {
+		const timelines = this.getTimelines(tlRef)
+			.map((timeline) => {
+				if (timeline) {
+					const thisTween = from
+						? timeline.tweenFromTo(from, label, ease ? {ease, paused: true} : {paused: true})
+						: timeline.tweenTo(label, ease ? {ease, paused: true} : {paused: true});
+					const tweenDur = thisTween.duration();
+					const targetDuration = duration ?? Math.max(Math.min(tweenDur, maxDuration), minDuration);
+					const tlReport = {
+						[`${tlRef}`]: label,
+						params: {minDuration, maxDuration, duration, ease, stagger, staggerFrom},
+						duration: {initialTweenDur: tweenDur, targetDuration}
+					};
+					if (parseFloat(targetDuration) !== parseFloat(tweenDur)) {
+						thisTween.timeScale(tweenDur / targetDuration);
+					}
+					tlReport.duration.finalDuration = thisTween.duration();
+					// console.log(tlReport);
+					return thisTween;
+				}
+				return false;
+			})
+			.filter((timeline) => Boolean(timeline));
+		if (timelines.length === 0) {
+			return [];
+		}
+		if (timelines.length === 1) {
+			return timelines[0].delay(0).play();
+		}
+		if (stagger > 0) {
+			const distributer = gsap.utils.distribute({amount: stagger, from: staggerFrom});
+			return timelines.map((timeline, i, arr) => timeline.delay(distributer(i, arr[i], arr)).play());
+		}
+		return timelines.map((timeline) => timeline.delay(0).play());
+	}
 
 	_onTraitHover({currentTarget}) {
-		const trait = $(currentTarget).data("trait");
-		if (this.isDraggingTrait) {
-			if (!(trait in this.dragHoverTimelines)) {
-				const isStrategy = C.strategies.includes(trait);
-				this.dragHoverTimelines[trait] = gsap.timeline({paused: true})
-					.to(currentTarget, {
-						scale: 1.5,
-						textShadow: [
-							...[2, 4/* , 8 */].map((blur) => `0 0 ${1.5 * blur}px white`),
-							...[4, 7, 8, 10/* , 15 */].map((blur) => `0 0 ${1.5 * blur}px gold`)
-						].join(", "),
-						color: "gold",
-						duration: 0.15,
-						ease: "sine.out"
-					}, 0);
-			}
-			this.dragHoverTimelines[trait].play();
-		} else {
-			if (!(trait in this.hoverTimelines)) {
-				const isStrategy = C.strategies.includes(trait);
-				this.hoverTimelines[trait] = gsap.timeline({paused: true})
-					.to(currentTarget, {
-						scale: 1.25,
-						textShadow: [
-							...[2, 4/* , 8 */].map((blur) => `0 0 ${1.5 * blur}px white`),
-							...[4, 7, 8, 10/* , 15 */].map((blur) => `0 0 ${1.5 * blur}px ${C.html.colors[isStrategy ? "strategyBright" : "tacticBright"]}`)
-						].join(", "),
-						color: C.html.colors[isStrategy ? "strategyDark" : "tacticDark"],
-						duration: 0.15,
-						ease: "sine.out"
-					}, 0);
-			}
-			this.hoverTimelines[trait].play();
+		if (!this.isDraggingTrait) {
+			this.playTimelineTo(currentTarget, "hoverOver", {from: "bright", duration: 0.25, ease: "power2.out"});
+		}
+	}
+	_offTraitHover({currentTarget}) {
+		if (!this.isDraggingTrait) {
+			this.playTimelineTo(currentTarget, "base", {duration: 0.25, ease: "power2.in"});
 		}
 	}
 
-	_offTraitHover({currentTarget}) {
-		const trait = $(currentTarget).data("trait");
-		if (this.isDraggingTrait) {
-			this.dragHoverTimelines[trait]?.reverse();
+	getDropElem(dragger) {
+		const isOverElement = (threshold) => (elem) => dragger.hitTest(elem, `${threshold}%`);
+		let [validTargets] = U.partition(dragger.dropTargets, isOverElement(50)),
+						invalidTargets;
+		for (let threshold = 40; threshold >= 0; threshold -= 10) {
+			if (validTargets.length <= 1) { break }
+			[validTargets, invalidTargets] = U.partition(validTargets, isOverElement(threshold));
 		}
-		this.hoverTimelines[trait]?.reverse();
+		return [...validTargets, ...invalidTargets ?? []].shift();
+	}
+	setDroppable(newTarget, oldTarget) {
+		[newTarget, oldTarget] = U.getElems(newTarget, oldTarget);
+		if (oldTarget && !$(oldTarget).hasClass("trait-label-bg")) {
+			this.playTimelineTo(oldTarget, "bright");
+		}
+		if (newTarget && !$(newTarget).hasClass("trait-label-bg")) {
+			this.playTimelineTo(newTarget, "dropTarget", {duration: 0.25});
+		}
+	}
+	getModElem(dragger) {
+		const isOverElement = (threshold) => (elem) => dragger.hitTest(elem, `${threshold}%`);
+		let [validTargets] = U.partition(dragger.modTargets, isOverElement(50)),
+						invalidTargets;
+		for (let threshold = 40; threshold >= 0; threshold -= 10) {
+			if (validTargets.length <= 1) { break }
+			[validTargets, invalidTargets] = U.partition(validTargets, isOverElement(threshold));
+		}
+		return [...validTargets, ...invalidTargets ?? []].shift();
+	}
+	setModTarget(newTarget, oldTarget) {
+		[newTarget, oldTarget] = U.getElems(newTarget, oldTarget);
+		if (oldTarget) {
+			this.playTimelineTo(oldTarget, "visible");
+		}
+		if (newTarget) {
+			this.playTimelineTo(newTarget, "startCycle", {maxDuration: 0.25})
+				.then(() => this.playTimelineTo(newTarget, "endCycle", {maxDuration: 20}));
+		}
 	}
 	// ████████ Trait Radial Menu: Radial Menu for Trait Lines ████████
 	_getTraitPairData(trait) {
