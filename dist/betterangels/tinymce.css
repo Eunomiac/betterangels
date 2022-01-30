@@ -1,22 +1,27 @@
 @import url("https://fonts.googleapis.com/css2?family=New+Rocker&family=Roboto:wght@400;700&display=swap");
 @font-face {
   font-family: "DigitalStrip";
-  src: url("./assets/fonts/DigitalStripBB_Reg.otf"); }
+  src: url("./assets/fonts/digitalstrip.otf"); }
 
 @font-face {
   font-family: "DigitalStrip";
-  src: url("./assets/fonts/DigitalStripBB_Ital.otf");
+  src: url("./assets/fonts/digitalstrip_i.otf");
   font-style: italic; }
 
 @font-face {
   font-family: "DigitalStrip";
   font-style: italic;
   font-weight: bold;
-  src: url("./assets/fonts/DigitalStripBB_BoldItal.otf"); }
+  src: url("./assets/fonts/digitalstrip_bi.otf"); }
 
 @font-face {
   font-family: Komikax;
-  src: url("./assets/fonts/KOMIKAX_.ttf"); }
+  src: url("./assets/fonts/Komika_display.ttf"); }
+
+@font-face {
+  font-family: Komikax;
+	font-weight: bold;
+  src: url("./assets/fonts/Komika_display_bold.ttf"); }
 
 #tinymce {
 	color: rgb(179, 179, 179);

@@ -243,45 +243,112 @@
 										visibility: visible;
 									}
 
-									> span {
+									.display-name {
 										position: relative;
 										display: block;
+									}
 
-										&.roll-desc, &.to-width-advantages {
+									.icons-top, .icons-bottom {
+										$icon-size: 14px;
+
+										position: absolute;
+										display: block;
+										height: $icon-size;
+										// width: 200%;
+										// left: -50%;
+										pointer-events: none;
+										padding: 0;
+										margin: 0;
+
+										&.icons-top { top: -0.75em }
+										&.icons-bottom { bottom: -1em }
+
+										.roll-icon {
+											border-radius: 5px;
+											height: $icon-size;
+											width: $icon-size;
+											display: inline-block;
 											position: absolute;
-											height: 1em;
-											width: 200%;
-											left: -50%;
-											pointer-events: none;
-
-											color: $c-bg-dark;
-
-											&.roll-desc {
-												bottom: -1em;
-												@include font-roll-desc($c-fg-bright);
+											border-radius: 0.25em;
+											background: linear-gradient(-45deg, var(--icon-color-dark), var(--icon-color-bright));
+											font-size: 10px;
+											text-align: center;
+											line-height: $icon-size;
+											text-shadow: none;
+											
+											&[data-type="trait"] {
+												--icon-color-dark: transparent;
+												--icon-color-bright: transparent;
 											}
-											&.to-width-advantages { 
-												bottom: -2.5em;	
-												@include font-to-width-advantages($c-fg-bright);
-
-												> * {
-													display: inline;
-													line-height: inherit;
-													font-size: inherit;
-												}
-
-												.to-width-tags {
-													text-shadow: rept((0 0 0.1em var(--shadow-color)), 3);
-													text-shadow: none;
-													border-radius: 0.25em;
-													background-color: var(--shadow-color);
-													&.general { --shadow-color: white }
-													&.weapon { --shadow-color: magenta }
-													&.secret { --shadow-color: blue }
-													&.surprise { --shadow-color: yellow }
-												}
+											&[data-sub-type="general"] {
+												--icon-color-dark: #{lighten($c-white, -80%)};
+												--icon-color-bright: #{$c-white};
+											}
+											&[data-sub-type="weapon"] {
+												--icon-color-dark: #{lighten($c-magenta, -80%)};
+												--icon-color-bright: #{$c-magenta};
+											}
+											&[data-sub-type="surprise"] {
+												--icon-color-dark: #{lighten($c-yellow, -80%)};
+												--icon-color-bright: #{$c-yellow};
+												letter-spacing: -0.2em;
+												text-indent: -0.2em;
+											}
+											&[data-sub-type="secret"] {
+												--icon-color-dark: #{lighten($c-cyan, -80%)};
+												--icon-color-bright: #{$c-cyan};
+											}
+											&[data-type="mastery"] {
+												--icon-color-dark: #{$c-purple};
+												--icon-color-bright: #{$c-gold};
+											}
+											&[data-type="expert"] {
+												--icon-color-dark: #{$c-blue};
+												--icon-color-bright: #{$c-lime};
 											}
 										}
+									}
+
+									.roll-desc {
+										position: absolute;
+										display: block;
+										background: $c-bg-dark;
+										border-radius: 0.25em;
+										height: 1.2em;
+										width: 200%;
+										left: -50%;
+										pointer-events: none;
+										@include font-roll-desc($c-fg-bright);
+										color: $c-fg-bright;
+										text-shadow: none;
+										bottom: -1em;
+										margin: 0;
+										padding: 0;
+										visibility: hidden;										
+
+										.roll-desc-text { 
+											display: inline-block;
+											padding-right: 2px;
+											text-shadow: none;
+											height: 100%;
+											line-height: 1.5em;
+
+											&.strategy-text {
+												color: $c-lime;
+												font-family: Bangers;
+											}
+											&.tactic-text {
+												color: $c-magenta;
+												// font-family: KomikaTextTight;
+												// font-variant: small-caps;
+												// font-weight: bold;
+											}
+										}
+
+										// .roll-icon { 
+											// font-size: 0.6em;
+											// vertical-align: top;
+										// }
 									}
 								}
 							}
@@ -325,6 +392,7 @@
 							height: 100px;
 							width: 100px;
 							pointer-events: all;
+							visibility: hidden;
 
 							&.red { --hover-trigger-color: #{$c-red} }
 							&.green { --hover-trigger-color: #{$c-green} }

@@ -3,15 +3,11 @@
 	{{#each data}}
 	<div class="trait-name" data-trait="{{name}}" data-value="{{value}}" data-type="{{type}}" data-sub-type="{{subType}}">
 		<label class="trait-label trait-draggable" data-trait="{{name}}" data-value="{{value}}" data-type="{{type}}" data-sub-type="{{subType}}">
+			<span class="icons-top"></span>
 			<span class="display-name">{{displayName}}</span>
 			<span class="roll-desc"></span>
-			<span class="to-width-advantages">
-				<span class="to-width-label"></span> {{!-- To Width: 💥💫💡🔑🪓✒️🔒🔓🔎🔧✂️🔪⚔️ --}}
-				<span class="to-width-tags general"></span>
-				<span class="to-width-tags weapon"></span>
-				<span class="to-width-tags surprise"></span>
-				<span class="to-width-tags secret"></span>
-			</span>
+			<span class="roll-desc-animations"></span>
+			<span class="icons-bottom"></span>
 		</label>
 		<label class="trait-label trait-label-bg trait-droppable" data-trait="{{name}}" data-value="{{value}}" data-type="{{type}}" data-sub-type="{{subType}}">{{displayName}}</label>
 	</div>

@@ -7,7 +7,8 @@ import gsap, {MotionPathPlugin, Draggable as Dragger} from "/scripts/greensock/e
 import C from "./constants.mjs";
 
 // #region ▮▮▮▮▮▮▮[IMPORT CONFIG] Initialization Function for Imports ▮▮▮▮▮▮▮ ~
-const _hyph = (str) => str; /* Hyphenopoly.config(
+const _hyph = (str) => str;
+/* Hyphenopoly.config(
   {
     require: ["en-us"],
     // loader: "fs", // Whether to load using node's fs or https (default: fs)
@@ -53,7 +54,7 @@ const _hyph = (str) => str; /* Hyphenopoly.config(
 // #endregion ▄▄▄▄▄ IMPORTS ▄▄▄▄▄
 
 // #region ▮▮▮▮▮▮▮[HELPERS] Internal Functions, Data & References Used by Utility Functions ▮▮▮▮▮▮▮ ~
-/* eslint-disable array-element-newline, object-property-newline */
+/* eslint-disable array-element-newline */
 const _noCapWords = [ // Regexp tests that should not be capitalized when converting to title case.
 	"above", "after", "at", "below", "by", "down", "for", "from", "in", "onto", "of", "off", "on", "out",
 	"to", "under", "up", "with", "for", "and", "nor", "but", "or", "yet", "so", "the", "an", "a"
@@ -232,8 +233,23 @@ const _numberWords = {
 		.map((prefix) => (prefix ? `${prefix}illion` : ""))
 };
 const _ordinals = {
-	zero: "zeroeth", one: "first", two: "second", three: "third", four: "fourth", five: "fifth", eight: "eighth", nine: "ninth", twelve: "twelfth",
-	twenty: "twentieth", thirty: "thirtieth", forty: "fortieth", fifty: "fiftieth", sixty: "sixtieth", seventy: "seventieth", eighty: "eightieth", ninety: "ninetieth"
+	zero: "zeroeth",
+	one: "first",
+	two: "second",
+	three: "third",
+	four: "fourth",
+	five: "fifth",
+	eight: "eighth",
+	nine: "ninth",
+	twelve: "twelfth",
+	twenty: "twentieth",
+	thirty: "thirtieth",
+	forty: "fortieth",
+	fifty: "fiftieth",
+	sixty: "sixtieth",
+	seventy: "seventieth",
+	eighty: "eightieth",
+	ninety: "ninetieth"
 };
 const _romanNumerals = {
 	grouped: [
@@ -313,13 +329,18 @@ const areEqual = (...refs) => {
 		const [type1, type2] = [getType(ref1), getType(ref2)];
 		if (type1 === type2) {
 			switch (type1) {
-				case "null": case "string": case "number": case "boolean": {
+				case "null":
+				case "string":
+				case "number":
+				case "boolean":
+				{
 					return ref1 === ref2;
 				}
 				// case "array": case "set": case "list": {
 				//   return _.isEqual(ref1, ref2);
 				// }
-				default: {
+				default:
+				{
 					try {
 						return JSON.stringify(ref1) === JSON.stringify(ref2);
 					} catch {
@@ -366,7 +387,7 @@ const degToRad = (deg, isConstrained = true) => {
 // #endregion ▄▄▄▄▄ TYPES ▄▄▄▄▄
 
 // #region ████████ STRINGS: String Parsing, Manipulation, Conversion, Regular Expressions ████████ ~
-// #region ░░░░░░░[Case Conversion]░░░░ Upper, Lower, Sentence & Title Case ░░░░░░░ ~
+// #region ▓▓▓▓▓▓▓[Case Conversion]▓▓▓▓ Upper, Lower, Sentence & Title Case ▓▓▓▓▓▓▓ ~
 const uCase = (str) => `${str ?? ""}`.toUpperCase();
 const lCase = (str) => `${str ?? ""}`.toLowerCase();
 const sCase = (str) => {
@@ -380,8 +401,8 @@ const sCase = (str) => {
 const tCase = (str) => `${str ?? ""}`.split(/\s/)
 	.map((word, i) => (i && testRegExp(word, _noCapWords) ? lCase(word) : sCase(word)))
 	.join(" ").trim();
-// #endregion ░░░░[Case Conversion]░░░░
-// #region ░░░░░░░[RegExp]░░░░ Regular Expressions ░░░░░░░ ~
+// #endregion ▓▓▓▓[Case Conversion]▓▓▓▓
+// #region ▓▓▓▓▓▓▓[RegExp]▓▓▓▓ Regular Expressions ▓▓▓▓▓▓▓ ~
 const testRegExp = (str, patterns = [], flags = "gui", isTestingAll = false) => patterns.map(
 	(pattern) => (getType(pattern) === "regexp"
 		? pattern
@@ -396,8 +417,8 @@ const regExtract = (ref, pattern, flags = "u") => {
 	const matches = ref.match(pattern) || [];
 	return isGrouping ? matches.slice(1) : matches.pop();
 };
-// #endregion ░░░░[REGEXP]░░░░
-// #region ░░░░░░░[Formatting]░░░░ Hyphenation, Pluralization, "a"/"an" Fixing ░░░░░░░ ~
+// #endregion ▓▓▓▓[REGEXP]▓▓▓▓
+// #region ▓▓▓▓▓▓▓[Formatting]▓▓▓▓ Hyphenation, Pluralization, "a"/"an" Fixing ▓▓▓▓▓▓▓ ~
 const hyphenate = (string) => (/^<|\u00AD|\u200B/.test(string) ? string : _hyph(string));
 const unhyphenate = (string) => string.replace(/\u00AD|\u200B/gu, "");
 const parseArticles = (str) => `${str}`.replace(/\b(a|A)\s([aeiouAEIOU])/gu, "$1n $2");
@@ -552,8 +573,8 @@ const romanizeNum = (num, isUsingGroupedChars = true) => {
 		: romanNum;
 };
 // #endregion _______ Numbers _______
-// #endregion ░░░░[Formatting]░░░░
-// #region ░░░░░░░[Content]░░░░ Lorem Ipsum, Random Content Generation ░░░░░░░ ~
+// #endregion ▓▓▓▓[Formatting]▓▓▓▓
+// #region ▓▓▓▓▓▓▓[Content]▓▓▓▓ Lorem Ipsum, Random Content Generation ▓▓▓▓▓▓▓ ~
 const loremIpsum = (numWords = 200) => {
 	const lrWordList = _loremIpsumText.split(/\n?\s+/g);
 	const words = [...lrWordList[randNum(0, lrWordList.length - 1)]];
@@ -564,8 +585,8 @@ const loremIpsum = (numWords = 200) => {
 	return `${sCase(words.join(" ")).trim().replace(/[^a-z\s]*$/ui, "")}.`;
 };
 const randWord = (numWords = 1, wordList = _randomWords) => [...Array(numWords)].map(() => randElem(wordList)).join(" ");
-// #endregion ░░░░[Content]░░░░
-// #region ░░░░░░░[Localization]░░░░ Simplified Localization Functionality ░░░░░░░ ~
+// #endregion ▓▓▓▓[Content]▓▓▓▓
+// #region ▓▓▓▓▓▓▓[Localization]▓▓▓▓ Simplified Localization Functionality ▓▓▓▓▓▓▓ ~
 const localize = (locRef, formatDict = {}) => {
 	if (new RegExp(`/^"?${C.systemname}\\.`, "u").test(JSON.stringify(locRef)) && typeof game.i18n.localize(locRef) === "string") {
 		Object.entries(formatDict).forEach(([key, val]) => { formatDict[key] = localize(val) });
@@ -573,7 +594,7 @@ const localize = (locRef, formatDict = {}) => {
 	}
 	return locRef;
 };
-// #endregion ░░░░[Localization]░░░░
+// #endregion ▓▓▓▓[Localization]▓▓▓▓
 // #endregion ▄▄▄▄▄ STRINGS ▄▄▄▄▄
 
 // #region ████████ SEARCHING: Searching Various Data Types w/ Fuzzy Matching ████████ ~
@@ -638,14 +659,14 @@ const coinFlip = () => randNum(0, 1, 1) === 1;
 const cycleNum = (num, [min = 0, max = Infinity] = []) => gsap.utils.wrap(min, max, num);
 const cycleAngle = (angle) => cycleNum(angle, [-180, 180]);
 const roundNum = (num, sigDigits = 0) => (sigDigits === 0 ? pInt(num) : pFloat(num, sigDigits));
-// #region ░░░░░░░[Positioning]░░░░ Relationships On 2D Cartesian Plane ░░░░░░░ ~
+// #region ▓▓▓▓▓▓▓[Positioning]▓▓▓▓ Relationships On 2D Cartesian Plane ▓▓▓▓▓▓▓ ~
 const getDistance = ({x: x1, y: y1}, {x: x2, y: y2}) => ((x1 - x2) ** 2 + (y1 - y2) ** 2) ** 0.5;
 const getAngle = ({x: x1, y: y1}, {x: x2, y: y2}, {x: xO = 0, y: yO = 0} = {}) => {
 	x1 -= xO; y1 -= yO; x2 -= xO; y2 -= yO;
 	return cycleAngle(radToDeg(Math.atan2(y2 - y1, x2 - x1)));
 };
 const getAngleDelta = (angleStart, angleEnd) => cycleAngle(angleEnd - angleStart);
-// #endregion ░░░░[Positioning]░░░░
+// #endregion ▓▓▓▓[Positioning]▓▓▓▓
 // #endregion ▄▄▄▄▄ NUMBERS ▄▄▄▄▄
 
 // #region ████████ ARRAYS: Array Manipulation ████████ ~
@@ -707,6 +728,7 @@ const partition = (obj, predicate = (v, k) => true) => [
 	objFilter(obj, predicate),
 	objFilter(obj, (v, k) => !predicate(v, k))
 ];
+
 const objMap = (obj, keyFunc, valFunc) => {
 	// An object-equivalent Array.map() function, which accepts mapping functions to transform both keys and values.
 	// If only one function is provided, it's assumed to be mapping the values and will receive (v, k) args.
@@ -716,6 +738,7 @@ const objMap = (obj, keyFunc, valFunc) => {
 	valFunc = valFunc || ((v) => v);
 	return Object.fromEntries(Object.entries(obj).map(([key, val]) => [keyFunc(key, val), valFunc(val, key)]));
 };
+
 const objFilter = (obj, keyFunc, valFunc) => {
 	// An object-equivalent Array.filter() function, which accepts filter functions for both keys and/or values.
 	// If only one function is provided, it's assumed to be mapping the values and will receive (v, k) args.
@@ -725,6 +748,7 @@ const objFilter = (obj, keyFunc, valFunc) => {
 	valFunc = valFunc || (() => true);
 	return Object.fromEntries(Object.entries(obj).filter(([key, val]) => keyFunc(key) && valFunc(val)));
 };
+
 const objForEach = (obj, func) => {
 	// An object-equivalent Array.forEach() function, which accepts one function(val, key) to perform for each member.
 	if (getType(obj) === "array") {
@@ -733,6 +757,7 @@ const objForEach = (obj, func) => {
 		Object.entries(obj).forEach(([key, val]) => func(val, key));
 	}
 };
+
 const remove = (obj, searchFunc) => {
 	// Given an array or list and a search function, will remove the first matching element and return it.
 	if (getType(obj) === "list") {
@@ -853,7 +878,7 @@ const awaitParallel = async (params, func) => await Promise.all([params].flat().
 // #endregion ▄▄▄▄▄ FUNCTIONS ▄▄▄▄▄
 
 // #region ████████ HTML: Parsing HTML Code, Manipulating DOM Objects ████████ ~
-// #region ░░░░░░░[GreenSock]░░░░ Wrappers for GreenSock Functions ░░░░░░░ ~
+// #region ▓▓▓▓▓▓▓[GreenSock]▓▓▓▓ Wrappers for GreenSock Functions ▓▓▓▓▓▓▓ ~
 const get = (target, property) => {
 	[target] = getElems(target);
 	if (C.pixelProperties.includes(regExtract(property, "^([a-z]+)"))) {
@@ -868,7 +893,7 @@ const set = (targets, params) => {
 	targets = getElems(targets);
 	return gsap.set(targets, params);
 };
-// #endregion ░░░░[GreenSock]░░░░
+// #endregion ▓▓▓▓[GreenSock]▓▓▓▓
 const getElems = (...elemRefs) => [elemRefs].flat(3).map((eRef) => {
 	if (eRef) {
 		return Array.isArray(eRef) ? $(eRef[0]).get() : $(eRef).get()[0];
@@ -915,7 +940,7 @@ const getPos = (elem, context, point) => {
 	return point;
 };
 const getGlobalPos = (elem, point) => getPos(elem, $("#x-container")[0], point);
-const reparent = (elem, newParent) => {
+const reparent = (elem, newParent, isUsingTopLeft = false) => {
 	newParent = newParent ?? $("#x-container")[0];
 	const oldPos = {x: gsap.getProperty(elem, "x"), y: gsap.getProperty(elem, "y")};
 	const newPos = getPos(elem, newParent);
@@ -934,7 +959,16 @@ const reparent = (elem, newParent) => {
 		dbData.oldDragPos = {x: dragElem.x, y: dragElem.y};
 	}
 	$(elem).appendTo(newParent);
-	gsap.set(elem, {x: newPos.x, y: newPos.y});
+	if (isUsingTopLeft) {
+		const curLeft = gsap.getProperty(elem, "left");
+		const curTop = gsap.getProperty(elem, "top");
+		gsap.set(elem, {
+			left: curLeft + newPos.x - oldPos.x,
+			top: curTop + newPos.y - oldPos.y
+		});
+	} else {
+		gsap.set(elem, {x: newPos.x, y: newPos.y});
+	}
 	dbData.newPosCheck = {x: gsap.getProperty(elem, "x"), y: gsap.getProperty(elem, "y")};
 	if (dragElem) {
 		dbData.newDragPos = {x: dragElem.x, y: dragElem.y};
@@ -980,15 +1014,15 @@ export default {
 	regExtract,
 
 	// ████████ STRINGS: String Parsing, Manipulation, Conversion ████████
-	// ░░░░░░░ Case Conversion ░░░░░░░
+	// ▓▓▓▓▓▓▓ Case Conversion ▓▓▓▓▓▓▓
 	uCase, lCase, sCase, tCase,
-	// ░░░░░░░ Formatting ░░░░░░░
+	// ▓▓▓▓▓▓▓ Formatting ▓▓▓▓▓▓▓
 	hyphenate, pluralize, oxfordize, ellipsize,
 	parseArticles,
 	signNum, padNum, stringifyNum, verbalizeNum, ordinalizeNum, romanizeNum,
-	// ░░░░░░░ Content ░░░░░░░
+	// ▓▓▓▓▓▓▓ Content ▓▓▓▓▓▓▓
 	loremIpsum, randWord,
-	// ░░░░░░░ Localization ░░░░░░░
+	// ▓▓▓▓▓▓▓ Localization ▓▓▓▓▓▓▓
 	localize,
 
 	// ████████ SEARCHING: Searching Various Data Types w/ Fuzzy Matching ████████
@@ -998,7 +1032,7 @@ export default {
 	randNum, randInt,
 	coinFlip,
 	cycleNum, cycleAngle, roundNum,
-	// ░░░░░░░ Positioning ░░░░░░░
+	// ▓▓▓▓▓▓▓ Positioning ▓▓▓▓▓▓▓
 	getDistance,
 	getAngle, getAngleDelta,
 
@@ -1019,7 +1053,7 @@ export default {
 	awaitSerial, awaitParallel,
 
 	// ████████ HTML: Parsing HTML Code, Manipulating DOM Objects ████████
-	// ░░░░░░░ GreenSock ░░░░░░░
+	// ▓▓▓▓▓▓▓ GreenSock ▓▓▓▓▓▓▓
 	gsap, get, set,
 
 	getElems, getElem,

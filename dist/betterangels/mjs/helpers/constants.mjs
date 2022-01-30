@@ -92,8 +92,8 @@ export default {
 		"x", "y", "top", "left", "height", "width", "margin", "border"
 	],
 	menuRadius: {
-		strategy: 60,
-		tactic: 50
+		strategy: 80,
+		tactic: 80
 	},
 	mobResolve: {
 		0.1: "Cowardly (10%)",
@@ -101,6 +101,23 @@ export default {
 		0.33: "Average (33%)",
 		0.5: "Fanatic (50%)",
 		0.9: "Suicidal (90%)"
+	},
+	icons: {
+		size: 15,
+		traits: {
+			strategy: (trait, value) => `<span class="roll-desc-text strategy-text" data-type="trait" data-sub-type="strategy">${trait.toUpperCase()} ${value}</span>`,
+			tactic: (trait, value) => `<span class="roll-desc-text tactic-text" data-type="trait" data-sub-type="tactic">${trait.charAt(0).toUpperCase()}${trait.slice(1).toLowerCase()} ${value}</span>`
+		},
+		topDice: "<span class=\"roll-desc-text\" data-type=\"trait\" data-sub-type=\"topDice\">🔼</span>",
+		advantages: {
+			general: "<span class=\"roll-icon\" data-type=\"advantage\" data-sub-type=\"general\">💡</span>",
+			weapon: "<span class=\"roll-icon\" data-type=\"advantage\" data-sub-type=\"weapon\">⚔️</span>",
+			surprise: "<span class=\"roll-icon\" data-type=\"advantage\" data-sub-type=\"surprise\">❓❗</span>",
+			secret: "<span class=\"roll-icon\" data-type=\"advantage\" data-sub-type=\"secret\">✒️</span>"
+		},
+		masteryDie: "<span class=\"roll-icon\" data-type=\"mastery\">👑</span>",
+		expertDice: ["🔟", "1️⃣", "2️⃣", "3️⃣", "4️⃣", "5️⃣", "6️⃣", "7️⃣", "8️⃣", "9️⃣", "🔟"]
+			.map((icon, i) => `<span class="roll-icon" data-type="expert" data-value="${i === 0 ? 10 : i}">${icon}</span>`)
 	},
 	get html() {
 		const C = this;

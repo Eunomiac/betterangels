@@ -15,35 +15,41 @@
 
 @font-face {
   font-family: "ActionMan";
-  src: url("../assets/fonts/Action_Man_Bold.ttf"); }
+  src: url("../assets/fonts/Action_Man_Bold.ttf");
+  font-weight: bold; }
 
 *[data-font="ActionMan"] {
   font-family: "ActionMan"; }
 
 @font-face {
   font-family: "ActionMan";
-  src: url("../assets/fonts/Action_Man_Bold_Italic.ttf"); }
+  src: url("../assets/fonts/Action_Man_Bold_Italic.ttf");
+  font-weight: bold;
+  font-style: italic; }
 
 *[data-font="ActionMan"] {
   font-family: "ActionMan"; }
 
 @font-face {
   font-family: "ActionMan";
-  src: url("../assets/fonts/Action_Man_Italic.ttf"); }
+  src: url("../assets/fonts/Action_Man_Italic.ttf");
+  font-style: italic; }
 
 *[data-font="ActionMan"] {
   font-family: "ActionMan"; }
 
 @font-face {
   font-family: "AdamWarren";
-  src: url("../assets/fonts/adamwarrenpro-bold.ttf"); }
+  src: url("../assets/fonts/adamwarrenpro-bold.ttf");
+  font-weight: bold; }
 
 *[data-font="AdamWarren"] {
   font-family: "AdamWarren"; }
 
 @font-face {
   font-family: "AdamWarren";
-  src: url("../assets/fonts/adamwarrenpro-boldunderline.ttf"); }
+  src: url("../assets/fonts/adamwarrenpro-boldunderline.ttf");
+  font-weight: bold; }
 
 *[data-font="AdamWarren"] {
   font-family: "AdamWarren"; }
@@ -94,7 +100,8 @@
 
 @font-face {
   font-family: "Ashcan";
-  src: url("../assets/fonts/ashcanbb_bold.ttf"); }
+  src: url("../assets/fonts/ashcanbb_bold.ttf");
+  font-weight: bold; }
 
 *[data-font="Ashcan"] {
   font-family: "Ashcan"; }
@@ -143,7 +150,8 @@
 
 @font-face {
   font-family: "CrashLanding";
-  src: url("../assets/fonts/CrashLandingBB_ital.ttf"); }
+  src: url("../assets/fonts/CrashLandingBB_ital.ttf");
+  font-style: italic; }
 
 *[data-font="CrashLanding"] {
   font-family: "CrashLanding"; }
@@ -185,14 +193,8 @@
 
 @font-face {
   font-family: "DevilSummoner";
-  src: url("../assets/fonts/DevilSummonerItalic-JYyj.otf"); }
-
-*[data-font="DevilSummoner"] {
-  font-family: "DevilSummoner"; }
-
-@font-face {
-  font-family: "DevilSummoner";
-  src: url("../assets/fonts/DevilSummonerLeftalic-zPA3.otf"); }
+  src: url("../assets/fonts/DevilSummonerItalic-JYyj.otf");
+  font-style: italic; }
 
 *[data-font="DevilSummoner"] {
   font-family: "DevilSummoner"; }
@@ -213,14 +215,16 @@
 
 @font-face {
   font-family: "DevilSummonerExpanded";
-  src: url("../assets/fonts/DevilSummonerExpandedItalic-AV6M.otf"); }
+  src: url("../assets/fonts/DevilSummonerExpandedItalic-AV6M.otf");
+  font-style: italic; }
 
 *[data-font="DevilSummonerExpanded"] {
   font-family: "DevilSummonerExpanded"; }
 
 @font-face {
   font-family: "DevilSummonerExtraExpanded";
-  src: url("../assets/fonts/DevilSummonerExtraExpItal-9OWK.otf"); }
+  src: url("../assets/fonts/DevilSummonerExtraExpItal-9OWK.otf");
+  font-style: italic; }
 
 *[data-font="DevilSummonerExtraExpanded"] {
   font-family: "DevilSummonerExtraExpanded"; }
@@ -258,7 +262,8 @@
 
 @font-face {
   font-family: "FeastOfFlesh";
-  src: url("../assets/fonts/fofbb_ital.otf"); }
+  src: url("../assets/fonts/fofbb_ital.otf");
+  font-style: italic; }
 
 *[data-font="FeastOfFlesh"] {
   font-family: "FeastOfFlesh"; }
@@ -328,7 +333,8 @@
 
 @font-face {
   font-family: "KomikaDisplay";
-  src: url("../assets/fonts/Komika_display_bold.ttf"); }
+  src: url("../assets/fonts/Komika_display_bold.ttf");
+  font-weight: bold; }
 
 *[data-font="KomikaDisplay"] {
   font-family: "KomikaDisplay"; }
@@ -349,21 +355,25 @@
 
 @font-face {
   font-family: "KomikaHand";
-  src: url("../assets/fonts/Komika_Hand_Bold.ttf"); }
+  src: url("../assets/fonts/Komika_Hand_Bold.ttf");
+  font-weight: bold; }
 
 *[data-font="KomikaHand"] {
   font-family: "KomikaHand"; }
 
 @font-face {
   font-family: "KomikaHand";
-  src: url("../assets/fonts/Komika_Hand_Bold_Italic.ttf"); }
+  src: url("../assets/fonts/Komika_Hand_Bold_Italic.ttf");
+  font-weight: bold;
+  font-style: italic; }
 
 *[data-font="KomikaHand"] {
   font-family: "KomikaHand"; }
 
 @font-face {
   font-family: "KomikaHand";
-  src: url("../assets/fonts/Komika_Hand_Italic.ttf"); }
+  src: url("../assets/fonts/Komika_Hand_Italic.ttf");
+  font-style: italic; }
 
 *[data-font="KomikaHand"] {
   font-family: "KomikaHand"; }
@@ -391,21 +401,25 @@
 
 @font-face {
   font-family: "KomikaText";
-  src: url("../assets/fonts/KOMTXTBI.ttf"); }
+  src: url("../assets/fonts/KOMTXTBI.ttf");
+  font-weight: bold;
+  font-style: italic; }
 
 *[data-font="KomikaText"] {
   font-family: "KomikaText"; }
 
 @font-face {
   font-family: "KomikaText";
-  src: url("../assets/fonts/KOMTXTB_.ttf"); }
+  src: url("../assets/fonts/KOMTXTB_.ttf");
+  font-weight: bold; }
 
 *[data-font="KomikaText"] {
   font-family: "KomikaText"; }
 
 @font-face {
   font-family: "KomikaText";
-  src: url("../assets/fonts/KOMTXTI_.ttf"); }
+  src: url("../assets/fonts/KOMTXTI_.ttf");
+  font-style: italic; }
 
 *[data-font="KomikaText"] {
   font-family: "KomikaText"; }
@@ -419,7 +433,8 @@
 
 @font-face {
   font-family: "KomikaTextTight";
-  src: url("../assets/fonts/KOMTXTTI.ttf"); }
+  src: url("../assets/fonts/KOMTXTTI.ttf");
+  font-style: italic; }
 
 *[data-font="KomikaTextTight"] {
   font-family: "KomikaTextTight"; }
@@ -433,7 +448,8 @@
 
 @font-face {
   font-family: "Luciferius";
-  src: url("../assets/fonts/LUCIFERI.ttf"); }
+  src: url("../assets/fonts/LUCIFERI.ttf");
+  font-style: italic; }
 
 *[data-font="Luciferius"] {
   font-family: "Luciferius"; }
@@ -522,21 +538,25 @@
 
 @font-face {
   font-family: "Punkboy";
-  src: url("../assets/fonts/punkboy_tbs_bold.ttf"); }
+  src: url("../assets/fonts/punkboy_tbs_bold.ttf");
+  font-weight: bold; }
 
 *[data-font="Punkboy"] {
   font-family: "Punkboy"; }
 
 @font-face {
   font-family: "Punkboy";
-  src: url("../assets/fonts/punkboy_tbs_ital.ttf"); }
+  src: url("../assets/fonts/punkboy_tbs_ital.ttf");
+  font-style: italic; }
 
 *[data-font="Punkboy"] {
   font-family: "Punkboy"; }
 
 @font-face {
   font-family: "Punkboy";
-  src: url("../assets/fonts/punkboy_tbs_italbold.ttf"); }
+  src: url("../assets/fonts/punkboy_tbs_italbold.ttf");
+  font-weight: bold;
+  font-style: italic; }
 
 *[data-font="Punkboy"] {
   font-family: "Punkboy"; }
@@ -571,28 +591,33 @@
 
 @font-face {
   font-family: "SFArchRival";
-  src: url("../assets/fonts/SF_Arch_Rival_Bold.ttf"); }
+  src: url("../assets/fonts/SF_Arch_Rival_Bold.ttf");
+  font-weight: bold; }
 
 *[data-font="SFArchRival"] {
   font-family: "SFArchRival"; }
 
 @font-face {
   font-family: "SFArchRival";
-  src: url("../assets/fonts/SF_Arch_Rival_Bold_Italic.ttf"); }
+  src: url("../assets/fonts/SF_Arch_Rival_Bold_Italic.ttf");
+  font-weight: bold;
+  font-style: italic; }
 
 *[data-font="SFArchRival"] {
   font-family: "SFArchRival"; }
 
 @font-face {
   font-family: "SFArchRival";
-  src: url("../assets/fonts/SF_Arch_Rival_Italic.ttf"); }
+  src: url("../assets/fonts/SF_Arch_Rival_Italic.ttf");
+  font-style: italic; }
 
 *[data-font="SFArchRival"] {
   font-family: "SFArchRival"; }
 
 @font-face {
   font-family: "SFComicScript";
-  src: url("../assets/fonts/SFComicScript-Bold.ttf"); }
+  src: url("../assets/fonts/SFComicScript-Bold.ttf");
+  font-weight: bold; }
 
 *[data-font="SFComicScript"] {
   font-family: "SFComicScript"; }
@@ -634,7 +659,8 @@
 
 @font-face {
   font-family: "SaintMartyr";
-  src: url("../assets/fonts/SaintMartyrItalic-X3ago.otf"); }
+  src: url("../assets/fonts/SaintMartyrItalic-X3ago.otf");
+  font-style: italic; }
 
 *[data-font="SaintMartyr"] {
   font-family: "SaintMartyr"; }
@@ -648,7 +674,8 @@
 
 @font-face {
   font-family: "SaintMartyrExpanded";
-  src: url("../assets/fonts/SaintMartyrExpandedItalic-x3qa8.otf"); }
+  src: url("../assets/fonts/SaintMartyrExpandedItalic-x3qa8.otf");
+  font-style: italic; }
 
 *[data-font="SaintMartyrExpanded"] {
   font-family: "SaintMartyrExpanded"; }
@@ -697,7 +724,8 @@
 
 @font-face {
   font-family: "ShakyHandSomeComic";
-  src: url("../assets/fonts/Shaky Hand Some Comic_bold.otf"); }
+  src: url("../assets/fonts/Shaky Hand Some Comic_bold.otf");
+  font-weight: bold; }
 
 *[data-font="ShakyHandSomeComic"] {
   font-family: "ShakyHandSomeComic"; }
@@ -718,7 +746,8 @@
 
 @font-face {
   font-family: "SugarDeath2";
-  src: url("../assets/fonts/Sugar Death 2 Italic.ttf"); }
+  src: url("../assets/fonts/Sugar Death 2 Italic.ttf");
+  font-style: italic; }
 
 *[data-font="SugarDeath2"] {
   font-family: "SugarDeath2"; }
@@ -732,14 +761,17 @@
 
 @font-face {
   font-family: "SuperWebcomicBros";
-  src: url("../assets/fonts/Super Webcomic Bros. Bold Italic.ttf"); }
+  src: url("../assets/fonts/Super Webcomic Bros. Bold Italic.ttf");
+  font-weight: bold;
+  font-style: italic; }
 
 *[data-font="SuperWebcomicBros"] {
   font-family: "SuperWebcomicBros"; }
 
 @font-face {
   font-family: "SuperWebcomicBros";
-  src: url("../assets/fonts/Super Webcomic Bros. Bold.ttf"); }
+  src: url("../assets/fonts/Super Webcomic Bros. Bold.ttf");
+  font-weight: bold; }
 
 *[data-font="SuperWebcomicBros"] {
   font-family: "SuperWebcomicBros"; }
@@ -1403,83 +1435,105 @@ span.trait {
                 transition: 0.25s; }
               .betterangels.actor .window-content form.editable .sheet-body .tab.front .trait-panel .trait-cell .trait-name .trait-label.is-dragging + .trait-label-bg {
                 visibility: visible; }
-              .betterangels.actor .window-content form.editable .sheet-body .tab.front .trait-panel .trait-cell .trait-name .trait-label > span {
+              .betterangels.actor .window-content form.editable .sheet-body .tab.front .trait-panel .trait-cell .trait-name .trait-label .display-name {
                 position: relative;
                 display: block; }
-                .betterangels.actor .window-content form.editable .sheet-body .tab.front .trait-panel .trait-cell .trait-name .trait-label > span.roll-desc, .betterangels.actor .window-content form.editable .sheet-body .tab.front .trait-panel .trait-cell .trait-name .trait-label > span.to-width-advantages {
+              .betterangels.actor .window-content form.editable .sheet-body .tab.front .trait-panel .trait-cell .trait-name .trait-label .icons-top, .betterangels.actor .window-content form.editable .sheet-body .tab.front .trait-panel .trait-cell .trait-name .trait-label .icons-bottom {
+                position: absolute;
+                display: block;
+                height: 14px;
+                pointer-events: none;
+                padding: 0;
+                margin: 0; }
+                .betterangels.actor .window-content form.editable .sheet-body .tab.front .trait-panel .trait-cell .trait-name .trait-label .icons-top.icons-top, .betterangels.actor .window-content form.editable .sheet-body .tab.front .trait-panel .trait-cell .trait-name .trait-label .icons-bottom.icons-top {
+                  top: -0.75em; }
+                .betterangels.actor .window-content form.editable .sheet-body .tab.front .trait-panel .trait-cell .trait-name .trait-label .icons-top.icons-bottom, .betterangels.actor .window-content form.editable .sheet-body .tab.front .trait-panel .trait-cell .trait-name .trait-label .icons-bottom.icons-bottom {
+                  bottom: -1em; }
+                .betterangels.actor .window-content form.editable .sheet-body .tab.front .trait-panel .trait-cell .trait-name .trait-label .icons-top .roll-icon, .betterangels.actor .window-content form.editable .sheet-body .tab.front .trait-panel .trait-cell .trait-name .trait-label .icons-bottom .roll-icon {
+                  border-radius: 5px;
+                  height: 14px;
+                  width: 14px;
+                  display: inline-block;
                   position: absolute;
-                  height: 1em;
-                  width: 200%;
-                  left: -50%;
-                  pointer-events: none;
-                  color: black; }
-                  .betterangels.actor .window-content form.editable .sheet-body .tab.front .trait-panel .trait-cell .trait-name .trait-label > span.roll-desc.roll-desc, .betterangels.actor .window-content form.editable .sheet-body .tab.front .trait-panel .trait-cell .trait-name .trait-label > span.to-width-advantages.roll-desc {
-                    bottom: -1em;
-                    font-family: Acme;
-                    /* family: Ashcan; */
-                    /* family: Ashcan (b); */
-                    /* family: BubblegumSans; */
-                    /* family: GoodDog; */
-                    /* family: KomikaTextTight; */
-                    /* family: MouseMemoirs; */
-                    /* family: ShakyHandSomeComic; */
-                    /* family: ShakyHandSomeComic (b); */
-                    /* family: SwingSet; */
-                    font-size: 0.4em;
-                    font-variant: normal;
-                    font-weight: normal;
-                    font-style: normal;
-                    line-height: 0.4em;
-                    letter-spacing: normal;
-                    word-spacing: normal;
-                    text-align: center;
-                    text-decoration: none;
-                    text-indent: 0;
-                    text-shadow: 0 0 0.1em white, 0 0 0.1em white, 0 0 0.1em white;
-                    text-transform: none;
-                    white-space: nowrap; }
-                  .betterangels.actor .window-content form.editable .sheet-body .tab.front .trait-panel .trait-cell .trait-name .trait-label > span.roll-desc.to-width-advantages, .betterangels.actor .window-content form.editable .sheet-body .tab.front .trait-panel .trait-cell .trait-name .trait-label > span.to-width-advantages.to-width-advantages {
-                    bottom: -2.5em;
-                    font-family: Acme;
-                    /* family: Ashcan; */
-                    /* family: Ashcan (b); */
-                    /* family: BubblegumSans; */
-                    /* family: GoodDog; */
-                    /* family: KomikaTextTight; */
-                    /* family: MouseMemoirs; */
-                    /* family: ShakyHandSomeComic; */
-                    /* family: ShakyHandSomeComic (b); */
-                    /* family: SwingSet; */
-                    font-size: 0.4em;
-                    font-variant: normal;
-                    font-weight: normal;
-                    font-style: normal;
-                    line-height: 0.4em;
-                    letter-spacing: normal;
-                    word-spacing: normal;
-                    text-align: center;
-                    text-decoration: none;
-                    text-indent: 0;
-                    text-shadow: 0 0 0.1em white, 0 0 0.1em white, 0 0 0.1em white;
-                    text-transform: none;
-                    white-space: nowrap; }
-                    .betterangels.actor .window-content form.editable .sheet-body .tab.front .trait-panel .trait-cell .trait-name .trait-label > span.roll-desc.to-width-advantages > *, .betterangels.actor .window-content form.editable .sheet-body .tab.front .trait-panel .trait-cell .trait-name .trait-label > span.to-width-advantages.to-width-advantages > * {
-                      display: inline;
-                      line-height: inherit;
-                      font-size: inherit; }
-                    .betterangels.actor .window-content form.editable .sheet-body .tab.front .trait-panel .trait-cell .trait-name .trait-label > span.roll-desc.to-width-advantages .to-width-tags, .betterangels.actor .window-content form.editable .sheet-body .tab.front .trait-panel .trait-cell .trait-name .trait-label > span.to-width-advantages.to-width-advantages .to-width-tags {
-                      text-shadow: 0 0 0.1em var(--shadow-color), 0 0 0.1em var(--shadow-color), 0 0 0.1em var(--shadow-color);
-                      text-shadow: none;
-                      border-radius: 0.25em;
-                      background-color: var(--shadow-color); }
-                      .betterangels.actor .window-content form.editable .sheet-body .tab.front .trait-panel .trait-cell .trait-name .trait-label > span.roll-desc.to-width-advantages .to-width-tags.general, .betterangels.actor .window-content form.editable .sheet-body .tab.front .trait-panel .trait-cell .trait-name .trait-label > span.to-width-advantages.to-width-advantages .to-width-tags.general {
-                        --shadow-color: white ; }
-                      .betterangels.actor .window-content form.editable .sheet-body .tab.front .trait-panel .trait-cell .trait-name .trait-label > span.roll-desc.to-width-advantages .to-width-tags.weapon, .betterangels.actor .window-content form.editable .sheet-body .tab.front .trait-panel .trait-cell .trait-name .trait-label > span.to-width-advantages.to-width-advantages .to-width-tags.weapon {
-                        --shadow-color: magenta ; }
-                      .betterangels.actor .window-content form.editable .sheet-body .tab.front .trait-panel .trait-cell .trait-name .trait-label > span.roll-desc.to-width-advantages .to-width-tags.secret, .betterangels.actor .window-content form.editable .sheet-body .tab.front .trait-panel .trait-cell .trait-name .trait-label > span.to-width-advantages.to-width-advantages .to-width-tags.secret {
-                        --shadow-color: blue ; }
-                      .betterangels.actor .window-content form.editable .sheet-body .tab.front .trait-panel .trait-cell .trait-name .trait-label > span.roll-desc.to-width-advantages .to-width-tags.surprise, .betterangels.actor .window-content form.editable .sheet-body .tab.front .trait-panel .trait-cell .trait-name .trait-label > span.to-width-advantages.to-width-advantages .to-width-tags.surprise {
-                        --shadow-color: yellow ; }
+                  border-radius: 0.25em;
+                  background: -o-linear-gradient(135deg, var(--icon-color-dark), var(--icon-color-bright));
+                  background: linear-gradient(-45deg, var(--icon-color-dark), var(--icon-color-bright));
+                  font-size: 10px;
+                  text-align: center;
+                  line-height: 14px;
+                  text-shadow: none; }
+                  .betterangels.actor .window-content form.editable .sheet-body .tab.front .trait-panel .trait-cell .trait-name .trait-label .icons-top .roll-icon[data-type="trait"], .betterangels.actor .window-content form.editable .sheet-body .tab.front .trait-panel .trait-cell .trait-name .trait-label .icons-bottom .roll-icon[data-type="trait"] {
+                    --icon-color-dark: transparent;
+                    --icon-color-bright: transparent; }
+                  .betterangels.actor .window-content form.editable .sheet-body .tab.front .trait-panel .trait-cell .trait-name .trait-label .icons-top .roll-icon[data-sub-type="general"], .betterangels.actor .window-content form.editable .sheet-body .tab.front .trait-panel .trait-cell .trait-name .trait-label .icons-bottom .roll-icon[data-sub-type="general"] {
+                    --icon-color-dark: #333333;
+                    --icon-color-bright: white; }
+                  .betterangels.actor .window-content form.editable .sheet-body .tab.front .trait-panel .trait-cell .trait-name .trait-label .icons-top .roll-icon[data-sub-type="weapon"], .betterangels.actor .window-content form.editable .sheet-body .tab.front .trait-panel .trait-cell .trait-name .trait-label .icons-bottom .roll-icon[data-sub-type="weapon"] {
+                    --icon-color-dark: #330033;
+                    --icon-color-bright: magenta; }
+                  .betterangels.actor .window-content form.editable .sheet-body .tab.front .trait-panel .trait-cell .trait-name .trait-label .icons-top .roll-icon[data-sub-type="surprise"], .betterangels.actor .window-content form.editable .sheet-body .tab.front .trait-panel .trait-cell .trait-name .trait-label .icons-bottom .roll-icon[data-sub-type="surprise"] {
+                    --icon-color-dark: #333300;
+                    --icon-color-bright: yellow;
+                    letter-spacing: -0.2em;
+                    text-indent: -0.2em; }
+                  .betterangels.actor .window-content form.editable .sheet-body .tab.front .trait-panel .trait-cell .trait-name .trait-label .icons-top .roll-icon[data-sub-type="secret"], .betterangels.actor .window-content form.editable .sheet-body .tab.front .trait-panel .trait-cell .trait-name .trait-label .icons-bottom .roll-icon[data-sub-type="secret"] {
+                    --icon-color-dark: #003333;
+                    --icon-color-bright: cyan; }
+                  .betterangels.actor .window-content form.editable .sheet-body .tab.front .trait-panel .trait-cell .trait-name .trait-label .icons-top .roll-icon[data-type="mastery"], .betterangels.actor .window-content form.editable .sheet-body .tab.front .trait-panel .trait-cell .trait-name .trait-label .icons-bottom .roll-icon[data-type="mastery"] {
+                    --icon-color-dark: purple;
+                    --icon-color-bright: gold; }
+                  .betterangels.actor .window-content form.editable .sheet-body .tab.front .trait-panel .trait-cell .trait-name .trait-label .icons-top .roll-icon[data-type="expert"], .betterangels.actor .window-content form.editable .sheet-body .tab.front .trait-panel .trait-cell .trait-name .trait-label .icons-bottom .roll-icon[data-type="expert"] {
+                    --icon-color-dark: blue;
+                    --icon-color-bright: lime; }
+              .betterangels.actor .window-content form.editable .sheet-body .tab.front .trait-panel .trait-cell .trait-name .trait-label .roll-desc {
+                position: absolute;
+                display: block;
+                background: black;
+                border-radius: 0.25em;
+                height: 1.2em;
+                width: 200%;
+                left: -50%;
+                pointer-events: none;
+                font-family: Acme;
+                /* family: Ashcan; */
+                /* family: Ashcan (b); */
+                /* family: BubblegumSans; */
+                /* family: GoodDog; */
+                /* family: KomikaTextTight; */
+                /* family: MouseMemoirs; */
+                /* family: ShakyHandSomeComic; */
+                /* family: ShakyHandSomeComic (b); */
+                /* family: SwingSet; */
+                font-size: 0.4em;
+                font-variant: normal;
+                font-weight: normal;
+                font-style: normal;
+                line-height: 0.4em;
+                letter-spacing: normal;
+                word-spacing: normal;
+                text-align: center;
+                text-decoration: none;
+                text-indent: 0;
+                text-shadow: 0 0 0.1em white, 0 0 0.1em white, 0 0 0.1em white;
+                text-transform: none;
+                white-space: nowrap;
+                color: white;
+                text-shadow: none;
+                bottom: -1em;
+                margin: 0;
+                padding: 0;
+                visibility: hidden; }
+                .betterangels.actor .window-content form.editable .sheet-body .tab.front .trait-panel .trait-cell .trait-name .trait-label .roll-desc .roll-desc-text {
+                  display: inline-block;
+                  padding-right: 2px;
+                  text-shadow: none;
+                  height: 100%;
+                  line-height: 1.5em; }
+                  .betterangels.actor .window-content form.editable .sheet-body .tab.front .trait-panel .trait-cell .trait-name .trait-label .roll-desc .roll-desc-text.strategy-text {
+                    color: lime;
+                    font-family: Bangers; }
+                  .betterangels.actor .window-content form.editable .sheet-body .tab.front .trait-panel .trait-cell .trait-name .trait-label .roll-desc .roll-desc-text.tactic-text {
+                    color: magenta; }
           .betterangels.actor .window-content form.editable .sheet-body .tab.front .trait-panel .trait-cell .dot-line {
             display: grid;
             grid-template-columns: 1fr repeat(7, 1em) 1fr;
@@ -1515,7 +1569,8 @@ span.trait {
             .betterangels.actor .window-content form.editable .sheet-body .tab.front .trait-panel .trait-cell .dot-line[data-sub-type="virtuous"] .dot-5 {
               grid-column: 4 / 5; }
           .betterangels.actor .window-content form.editable .sheet-body .tab.front .trait-panel .trait-cell .menu-positioner {
-            position: absolute; }
+            position: absolute;
+            z-index: 2; }
             .betterangels.actor .window-content form.editable .sheet-body .tab.front .trait-panel .trait-cell .menu-positioner .radial-menu {
               position: absolute;
               display: block;
@@ -1529,71 +1584,71 @@ span.trait {
               -webkit-transform: scale(0.3) rotate(-125deg);
               -ms-transform: scale(0.3) rotate(-125deg);
               transform: scale(0.3) rotate(-125deg); }
-              .betterangels.actor .window-content form.editable .sheet-body .tab.front .trait-panel .trait-cell .menu-positioner .radial-menu.size60px-8items {
-                top: calc(50% - 60px);
-                left: calc(50% - 60px);
+              .betterangels.actor .window-content form.editable .sheet-body .tab.front .trait-panel .trait-cell .menu-positioner .radial-menu.size80px-8items {
+                top: calc(50% - 80px);
+                left: calc(50% - 80px);
                 z-index: 6;
-                width: 120px;
-                height: 120px; }
-                .betterangels.actor .window-content form.editable .sheet-body .tab.front .trait-panel .trait-cell .menu-positioner .radial-menu.size60px-8items .menu-container .menu-button:nth-child(1) button, .betterangels.actor .window-content form.editable .sheet-body .tab.front .trait-panel .trait-cell .menu-positioner .radial-menu.size60px-8items .menu-container .menu-button:nth-child(1) label {
+                width: 160px;
+                height: 160px; }
+                .betterangels.actor .window-content form.editable .sheet-body .tab.front .trait-panel .trait-cell .menu-positioner .radial-menu.size80px-8items .menu-container .menu-button:nth-child(1) button, .betterangels.actor .window-content form.editable .sheet-body .tab.front .trait-panel .trait-cell .menu-positioner .radial-menu.size80px-8items .menu-container .menu-button:nth-child(1) label {
                   -webkit-animation-delay: 0.125s;
                   animation-delay: 0.125s; }
-                .betterangels.actor .window-content form.editable .sheet-body .tab.front .trait-panel .trait-cell .menu-positioner .radial-menu.size60px-8items .menu-container .menu-button:nth-child(2) button, .betterangels.actor .window-content form.editable .sheet-body .tab.front .trait-panel .trait-cell .menu-positioner .radial-menu.size60px-8items .menu-container .menu-button:nth-child(2) label {
+                .betterangels.actor .window-content form.editable .sheet-body .tab.front .trait-panel .trait-cell .menu-positioner .radial-menu.size80px-8items .menu-container .menu-button:nth-child(2) button, .betterangels.actor .window-content form.editable .sheet-body .tab.front .trait-panel .trait-cell .menu-positioner .radial-menu.size80px-8items .menu-container .menu-button:nth-child(2) label {
                   -webkit-animation-delay: 0.25s;
                   animation-delay: 0.25s; }
-                .betterangels.actor .window-content form.editable .sheet-body .tab.front .trait-panel .trait-cell .menu-positioner .radial-menu.size60px-8items .menu-container .menu-button:nth-child(3) button, .betterangels.actor .window-content form.editable .sheet-body .tab.front .trait-panel .trait-cell .menu-positioner .radial-menu.size60px-8items .menu-container .menu-button:nth-child(3) label {
+                .betterangels.actor .window-content form.editable .sheet-body .tab.front .trait-panel .trait-cell .menu-positioner .radial-menu.size80px-8items .menu-container .menu-button:nth-child(3) button, .betterangels.actor .window-content form.editable .sheet-body .tab.front .trait-panel .trait-cell .menu-positioner .radial-menu.size80px-8items .menu-container .menu-button:nth-child(3) label {
                   -webkit-animation-delay: 0.375s;
                   animation-delay: 0.375s; }
-                .betterangels.actor .window-content form.editable .sheet-body .tab.front .trait-panel .trait-cell .menu-positioner .radial-menu.size60px-8items .menu-container .menu-button:nth-child(4) button, .betterangels.actor .window-content form.editable .sheet-body .tab.front .trait-panel .trait-cell .menu-positioner .radial-menu.size60px-8items .menu-container .menu-button:nth-child(4) label {
+                .betterangels.actor .window-content form.editable .sheet-body .tab.front .trait-panel .trait-cell .menu-positioner .radial-menu.size80px-8items .menu-container .menu-button:nth-child(4) button, .betterangels.actor .window-content form.editable .sheet-body .tab.front .trait-panel .trait-cell .menu-positioner .radial-menu.size80px-8items .menu-container .menu-button:nth-child(4) label {
                   -webkit-animation-delay: 0.5s;
                   animation-delay: 0.5s; }
-                .betterangels.actor .window-content form.editable .sheet-body .tab.front .trait-panel .trait-cell .menu-positioner .radial-menu.size60px-8items .menu-container .menu-button:nth-child(5) button, .betterangels.actor .window-content form.editable .sheet-body .tab.front .trait-panel .trait-cell .menu-positioner .radial-menu.size60px-8items .menu-container .menu-button:nth-child(5) label {
+                .betterangels.actor .window-content form.editable .sheet-body .tab.front .trait-panel .trait-cell .menu-positioner .radial-menu.size80px-8items .menu-container .menu-button:nth-child(5) button, .betterangels.actor .window-content form.editable .sheet-body .tab.front .trait-panel .trait-cell .menu-positioner .radial-menu.size80px-8items .menu-container .menu-button:nth-child(5) label {
                   -webkit-animation-delay: 0.625s;
                   animation-delay: 0.625s; }
-                .betterangels.actor .window-content form.editable .sheet-body .tab.front .trait-panel .trait-cell .menu-positioner .radial-menu.size60px-8items .menu-container .menu-button:nth-child(6) button, .betterangels.actor .window-content form.editable .sheet-body .tab.front .trait-panel .trait-cell .menu-positioner .radial-menu.size60px-8items .menu-container .menu-button:nth-child(6) label {
+                .betterangels.actor .window-content form.editable .sheet-body .tab.front .trait-panel .trait-cell .menu-positioner .radial-menu.size80px-8items .menu-container .menu-button:nth-child(6) button, .betterangels.actor .window-content form.editable .sheet-body .tab.front .trait-panel .trait-cell .menu-positioner .radial-menu.size80px-8items .menu-container .menu-button:nth-child(6) label {
                   -webkit-animation-delay: 0.75s;
                   animation-delay: 0.75s; }
-                .betterangels.actor .window-content form.editable .sheet-body .tab.front .trait-panel .trait-cell .menu-positioner .radial-menu.size60px-8items .menu-container .menu-button:nth-child(7) button, .betterangels.actor .window-content form.editable .sheet-body .tab.front .trait-panel .trait-cell .menu-positioner .radial-menu.size60px-8items .menu-container .menu-button:nth-child(7) label {
+                .betterangels.actor .window-content form.editable .sheet-body .tab.front .trait-panel .trait-cell .menu-positioner .radial-menu.size80px-8items .menu-container .menu-button:nth-child(7) button, .betterangels.actor .window-content form.editable .sheet-body .tab.front .trait-panel .trait-cell .menu-positioner .radial-menu.size80px-8items .menu-container .menu-button:nth-child(7) label {
                   -webkit-animation-delay: 0.875s;
                   animation-delay: 0.875s; }
-                .betterangels.actor .window-content form.editable .sheet-body .tab.front .trait-panel .trait-cell .menu-positioner .radial-menu.size60px-8items .menu-container .menu-button:nth-child(8) button, .betterangels.actor .window-content form.editable .sheet-body .tab.front .trait-panel .trait-cell .menu-positioner .radial-menu.size60px-8items .menu-container .menu-button:nth-child(8) label {
+                .betterangels.actor .window-content form.editable .sheet-body .tab.front .trait-panel .trait-cell .menu-positioner .radial-menu.size80px-8items .menu-container .menu-button:nth-child(8) button, .betterangels.actor .window-content form.editable .sheet-body .tab.front .trait-panel .trait-cell .menu-positioner .radial-menu.size80px-8items .menu-container .menu-button:nth-child(8) label {
                   -webkit-animation-delay: 1s;
                   animation-delay: 1s; }
-                .betterangels.actor .window-content form.editable .sheet-body .tab.front .trait-panel .trait-cell .menu-positioner .radial-menu.size60px-8items .menu-container .menu-button {
+                .betterangels.actor .window-content form.editable .sheet-body .tab.front .trait-panel .trait-cell .menu-positioner .radial-menu.size80px-8items .menu-container .menu-button {
                   margin-top: -7px;
-                  margin-left: -15px; }
-                  .betterangels.actor .window-content form.editable .sheet-body .tab.front .trait-panel .trait-cell .menu-positioner .radial-menu.size60px-8items .menu-container .menu-button:nth-of-type(1) {
-                    -webkit-transform: rotate(0deg) translate(30px) rotate(0deg) translateX(0px);
-                    -ms-transform: rotate(0deg) translate(30px) rotate(0deg) translateX(0px);
-                    transform: rotate(0deg) translate(30px) rotate(0deg) translateX(0px); }
-                  .betterangels.actor .window-content form.editable .sheet-body .tab.front .trait-panel .trait-cell .menu-positioner .radial-menu.size60px-8items .menu-container .menu-button:nth-of-type(2) {
-                    -webkit-transform: rotate(45deg) translate(30px) rotate(-45deg) translateX(0px) translateY(0px);
-                    -ms-transform: rotate(45deg) translate(30px) rotate(-45deg) translateX(0px) translateY(0px);
-                    transform: rotate(45deg) translate(30px) rotate(-45deg) translateX(0px) translateY(0px); }
-                  .betterangels.actor .window-content form.editable .sheet-body .tab.front .trait-panel .trait-cell .menu-positioner .radial-menu.size60px-8items .menu-container .menu-button:nth-of-type(3) {
-                    -webkit-transform: rotate(90deg) translate(30px) rotate(-90deg) translateX(0px) translateY(0px);
-                    -ms-transform: rotate(90deg) translate(30px) rotate(-90deg) translateX(0px) translateY(0px);
-                    transform: rotate(90deg) translate(30px) rotate(-90deg) translateX(0px) translateY(0px); }
-                  .betterangels.actor .window-content form.editable .sheet-body .tab.front .trait-panel .trait-cell .menu-positioner .radial-menu.size60px-8items .menu-container .menu-button:nth-of-type(4) {
-                    -webkit-transform: rotate(135deg) translate(30px) rotate(-135deg) translateX(0px) translateY(-0px);
-                    -ms-transform: rotate(135deg) translate(30px) rotate(-135deg) translateX(0px) translateY(-0px);
-                    transform: rotate(135deg) translate(30px) rotate(-135deg) translateX(0px) translateY(-0px); }
-                  .betterangels.actor .window-content form.editable .sheet-body .tab.front .trait-panel .trait-cell .menu-positioner .radial-menu.size60px-8items .menu-container .menu-button:nth-of-type(5) {
-                    -webkit-transform: rotate(180deg) translate(30px) rotate(-180deg) translateX(-0px);
-                    -ms-transform: rotate(180deg) translate(30px) rotate(-180deg) translateX(-0px);
-                    transform: rotate(180deg) translate(30px) rotate(-180deg) translateX(-0px); }
-                  .betterangels.actor .window-content form.editable .sheet-body .tab.front .trait-panel .trait-cell .menu-positioner .radial-menu.size60px-8items .menu-container .menu-button:nth-of-type(6) {
-                    -webkit-transform: rotate(225deg) translate(30px) rotate(-225deg) translateX(-0px) translateY(-0px);
-                    -ms-transform: rotate(225deg) translate(30px) rotate(-225deg) translateX(-0px) translateY(-0px);
-                    transform: rotate(225deg) translate(30px) rotate(-225deg) translateX(-0px) translateY(-0px); }
-                  .betterangels.actor .window-content form.editable .sheet-body .tab.front .trait-panel .trait-cell .menu-positioner .radial-menu.size60px-8items .menu-container .menu-button:nth-of-type(7) {
-                    -webkit-transform: rotate(270deg) translate(30px) rotate(-270deg) translateX(-0px) translateY(-0px);
-                    -ms-transform: rotate(270deg) translate(30px) rotate(-270deg) translateX(-0px) translateY(-0px);
-                    transform: rotate(270deg) translate(30px) rotate(-270deg) translateX(-0px) translateY(-0px); }
-                  .betterangels.actor .window-content form.editable .sheet-body .tab.front .trait-panel .trait-cell .menu-positioner .radial-menu.size60px-8items .menu-container .menu-button:nth-of-type(8) {
-                    -webkit-transform: rotate(315deg) translate(30px) rotate(-315deg) translateX(-0px) translateY(0px);
-                    -ms-transform: rotate(315deg) translate(30px) rotate(-315deg) translateX(-0px) translateY(0px);
-                    transform: rotate(315deg) translate(30px) rotate(-315deg) translateX(-0px) translateY(0px); }
+                  margin-left: -20px; }
+                  .betterangels.actor .window-content form.editable .sheet-body .tab.front .trait-panel .trait-cell .menu-positioner .radial-menu.size80px-8items .menu-container .menu-button:nth-of-type(1) {
+                    -webkit-transform: rotate(0deg) translate(40px) rotate(0deg) translateX(0px);
+                    -ms-transform: rotate(0deg) translate(40px) rotate(0deg) translateX(0px);
+                    transform: rotate(0deg) translate(40px) rotate(0deg) translateX(0px); }
+                  .betterangels.actor .window-content form.editable .sheet-body .tab.front .trait-panel .trait-cell .menu-positioner .radial-menu.size80px-8items .menu-container .menu-button:nth-of-type(2) {
+                    -webkit-transform: rotate(45deg) translate(40px) rotate(-45deg) translateX(0px) translateY(0px);
+                    -ms-transform: rotate(45deg) translate(40px) rotate(-45deg) translateX(0px) translateY(0px);
+                    transform: rotate(45deg) translate(40px) rotate(-45deg) translateX(0px) translateY(0px); }
+                  .betterangels.actor .window-content form.editable .sheet-body .tab.front .trait-panel .trait-cell .menu-positioner .radial-menu.size80px-8items .menu-container .menu-button:nth-of-type(3) {
+                    -webkit-transform: rotate(90deg) translate(40px) rotate(-90deg) translateX(0px) translateY(0px);
+                    -ms-transform: rotate(90deg) translate(40px) rotate(-90deg) translateX(0px) translateY(0px);
+                    transform: rotate(90deg) translate(40px) rotate(-90deg) translateX(0px) translateY(0px); }
+                  .betterangels.actor .window-content form.editable .sheet-body .tab.front .trait-panel .trait-cell .menu-positioner .radial-menu.size80px-8items .menu-container .menu-button:nth-of-type(4) {
+                    -webkit-transform: rotate(135deg) translate(40px) rotate(-135deg) translateX(0px) translateY(-0px);
+                    -ms-transform: rotate(135deg) translate(40px) rotate(-135deg) translateX(0px) translateY(-0px);
+                    transform: rotate(135deg) translate(40px) rotate(-135deg) translateX(0px) translateY(-0px); }
+                  .betterangels.actor .window-content form.editable .sheet-body .tab.front .trait-panel .trait-cell .menu-positioner .radial-menu.size80px-8items .menu-container .menu-button:nth-of-type(5) {
+                    -webkit-transform: rotate(180deg) translate(40px) rotate(-180deg) translateX(-0px);
+                    -ms-transform: rotate(180deg) translate(40px) rotate(-180deg) translateX(-0px);
+                    transform: rotate(180deg) translate(40px) rotate(-180deg) translateX(-0px); }
+                  .betterangels.actor .window-content form.editable .sheet-body .tab.front .trait-panel .trait-cell .menu-positioner .radial-menu.size80px-8items .menu-container .menu-button:nth-of-type(6) {
+                    -webkit-transform: rotate(225deg) translate(40px) rotate(-225deg) translateX(-0px) translateY(-0px);
+                    -ms-transform: rotate(225deg) translate(40px) rotate(-225deg) translateX(-0px) translateY(-0px);
+                    transform: rotate(225deg) translate(40px) rotate(-225deg) translateX(-0px) translateY(-0px); }
+                  .betterangels.actor .window-content form.editable .sheet-body .tab.front .trait-panel .trait-cell .menu-positioner .radial-menu.size80px-8items .menu-container .menu-button:nth-of-type(7) {
+                    -webkit-transform: rotate(270deg) translate(40px) rotate(-270deg) translateX(-0px) translateY(-0px);
+                    -ms-transform: rotate(270deg) translate(40px) rotate(-270deg) translateX(-0px) translateY(-0px);
+                    transform: rotate(270deg) translate(40px) rotate(-270deg) translateX(-0px) translateY(-0px); }
+                  .betterangels.actor .window-content form.editable .sheet-body .tab.front .trait-panel .trait-cell .menu-positioner .radial-menu.size80px-8items .menu-container .menu-button:nth-of-type(8) {
+                    -webkit-transform: rotate(315deg) translate(40px) rotate(-315deg) translateX(-0px) translateY(0px);
+                    -ms-transform: rotate(315deg) translate(40px) rotate(-315deg) translateX(-0px) translateY(0px);
+                    transform: rotate(315deg) translate(40px) rotate(-315deg) translateX(-0px) translateY(0px); }
               .betterangels.actor .window-content form.editable .sheet-body .tab.front .trait-panel .trait-cell .menu-positioner .radial-menu.size50px-8items {
                 top: calc(50% - 50px);
                 left: calc(50% - 50px);
@@ -1898,7 +1953,8 @@ span.trait {
           position: absolute;
           height: 100px;
           width: 100px;
-          pointer-events: all; }
+          pointer-events: all;
+          visibility: hidden; }
           .betterangels.actor .window-content form.editable .sheet-body .tab.front .hover-triggers .hover-target.red {
             --hover-trigger-color: red ; }
           .betterangels.actor .window-content form.editable .sheet-body .tab.front .hover-triggers .hover-target.green {

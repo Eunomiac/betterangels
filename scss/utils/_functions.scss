@@ -2,6 +2,7 @@
 @function setAlpha($color, $alpha) { @return change-color($color, $alpha: $alpha); }
 @function fade($color, $fade-percent) { @return scale-color($color, $alpha: $fade-percent); }
 @function saturate($color, $saturate-percent) { @return scale-color($color, $saturation: $saturate-percent); }
+@function lighten($color, $lighten-percent) { @return scale-color($color, $lightness: $lighten-percent); }
 @function rept($item, $count, $separator: comma) {
 	$result: ();
 	@for $i from 1 through $count {
